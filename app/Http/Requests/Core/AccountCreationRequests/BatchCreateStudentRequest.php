@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\CourseManager;
+namespace App\Http\Requests\Core;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CourseRequest extends FormRequest
+class BatchCreateStudentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,7 @@ class CourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'course' => 'required|string',
-            'course_code' => 'required|string',
-            'department' => 'required|string',
-            'approval' => 'required|boolean',
-            'modules' => 'required|integer'
+            'files' => 'required|file|mimes:csv|max:25000'
         ];
     }
 }

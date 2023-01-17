@@ -21,7 +21,8 @@ class Admin extends Model
     protected $guard = 'Admin';
 
     protected $fillable = [
-    'name',
+    'first_name',
+    'last_name',
     'email',
     'password',
     ];

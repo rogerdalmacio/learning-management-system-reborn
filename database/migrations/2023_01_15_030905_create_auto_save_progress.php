@@ -22,11 +22,12 @@ return new class extends Migration
             $table->string('module_id')->index();
             $table->string('preliminaries');
             $table->string('quiz_type');
-            $table->string('terms');
             $table->string('attempt');
             $table->string('score')->nullable();
             $table->string('logs');
             $table->boolean('snapshot');
+            $table->dateTime('start_time');
+            $table->dateTime('end_time');
             $table->timestamps();
         });
     }

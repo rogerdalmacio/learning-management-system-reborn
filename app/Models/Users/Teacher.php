@@ -21,11 +21,12 @@ class Teacher extends Model
     protected $guard = 'Teacher';
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
-        'departments',
-        'year_level',
+        'year_and_section',
+        'department',
         'subjects',
     ];
 
@@ -56,5 +57,12 @@ class Teacher extends Model
     public function getAuthPassword()
     {
         return $this->password;
+    }
+
+    public function students() {
+       
+        $students = Student::whereIn('year_and_section', $this->year_and_section)->get();
+
+        return $students;
     }
 }

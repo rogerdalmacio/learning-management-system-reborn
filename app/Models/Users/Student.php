@@ -28,9 +28,8 @@ class Student extends Model
         'last_name',
         'email',
         'password',
-        'section',
-        'departments',
-        'year_level',
+        'year_and_section',
+        'department',
         'subjects',
     ];
 

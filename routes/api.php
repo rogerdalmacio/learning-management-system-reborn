@@ -60,6 +60,10 @@ Route::group(['prefix' => 'coursedeveloper', 'middleware' => ['auth:sanctum','ab
 //course manager route
 Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abilities:CourseManager']], function(){
     Route::post('/createtask', [CMToDoListController::class, 'createtask']);
+    Route::post('/taslist', [CMToDoListController::class, 'taskList']);
+    Route::patch('/edittask', [CMToDoListController::class, 'editTask']);
+    Route::post('/approvetask', [CMToDoListController::class, 'approveTask']);
+    Route::delete('/deletetask', [CMToDoListController::class, 'deleteTask']);
     Route::apiResource('course', CMCourseController::class);
 });
 
@@ -75,7 +79,13 @@ Route::group(['prefix' => 'superadmin', 'middleware' => ['auth:sanctum','abiliti
 
 //SuperAdmin Core
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:SuperAdmin']], function(){
-    Route::apiResource('createaccount', AccountCreationController::class);
+    Route::post('/batchcreatestudents', [AccountCreationController::class, 'batchCreateStudents']);
+    Route::post('/createsinglestudent', [AccountCreationController::class, 'createSingleStudent']);
+    Route::post('/createsingleadmin', [AccountCreationController::class, 'createSingleAdmin']);
+    Route::post('/createsinglecoursemanager', [AccountCreationController::class, 'createSingleCourseManager']);
+    Route::post('/createsinglecoursedeveloper', [AccountCreationController::class, 'createSingleCourseDeveloper']);
+    Route::post('/createsingleteacher', [AccountCreationController::class, 'createSingleTeacher']);
+    
 });
 
 //Admin Core

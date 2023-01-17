@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Core;
+namespace App\Http\Requests\Core\AccountCreationRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AccountCreationRequest extends FormRequest
+class CreateSingleAdminRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,9 @@ class AccountCreationRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|file|mimes:csv|max:25000'
+            'id' => 'required|unique:admin|integer',
+            'first_name' => 'required|string',
+            'last_name'  => 'required|string',
         ];
     }
 }

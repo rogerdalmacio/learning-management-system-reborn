@@ -34,7 +34,7 @@ class CourseFactory extends Factory
         return [
             'course' => $subject,
             'course_code' => $subject.'00',
-            'departments' => $department,
+            'department' => $department,
             'approval' => fake()->randomElement(array(1,0)) 
         ];
     }

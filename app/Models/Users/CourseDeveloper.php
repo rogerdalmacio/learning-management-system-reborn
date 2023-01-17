@@ -22,7 +22,8 @@ class CourseDeveloper extends Model
     protected $guard = 'CourseDeveloper';
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'department',

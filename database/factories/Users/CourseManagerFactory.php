@@ -17,7 +17,8 @@ class CourseManagerFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
             'department' =>fake()->randomElement(array(
                 'CCS',
                 'CRIM',

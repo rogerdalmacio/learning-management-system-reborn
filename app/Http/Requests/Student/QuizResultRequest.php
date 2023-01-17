@@ -30,11 +30,12 @@ class QuizResultRequest extends FormRequest
             'module_id' => 'require|string',
             'preliminaries' => 'required|string',
             'quiz_type' => 'required|string',
-            'terms' => 'required|string',
             'attempt' => 'required|string',
             'score' => 'required|integer|nullable',
             'logs' => 'required|string',
-            'snapshot' => 'required|boolean'
+            'snapshot' => 'required|boolean',
+            'start_time' => 'required|date',
+            'end_time' => 'required|date',
         ];
     }
 }

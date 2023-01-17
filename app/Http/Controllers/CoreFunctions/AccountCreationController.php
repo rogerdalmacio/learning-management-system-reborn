@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers\CoreFunctions;
 
+use Carbon\Carbon;
 use League\Csv\Reader;
 use App\Models\Users\Student;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\Core\AccountCreationRequest;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Core\BatchCreateStudentRequest;
+use App\Http\Requests\Core\AccountCreationRequests\CreateSingleAdminRequest;
+use App\Http\Requests\Core\AccountCreationRequests\CreateSingleStudentRequest;
+use App\Http\Requests\Core\AccountCreationRequests\CreateSingleTeacherRequest;
+use App\Http\Requests\Core\AccountCreationRequests\CreateSingleCourseManagerRequest;
+use App\Http\Requests\Core\AccountCreationRequests\CreateSingleCourseDeveloperRequest;
+use App\Models\Users\Admin;
+use App\Models\Users\CourseDeveloper;
+use App\Models\Users\CourseManager;
 
 class AccountCreationController extends Controller
 {
-    public function store(AccountCreationRequest $request)
+    public function batchCreateStudents(BatchCreateStudentRequest $request)
     {
         
         try {
@@ -22,21 +30,20 @@ class AccountCreationController extends Controller
             $insertStudents = [];
             $errors = [];
 
-            $csv = $request->file('file');
+            $csv = $request->file('files');
             $csv = Reader::createFromPath($csv->getRealPath(), 'r');
             $csv->setHeaderOffset(0);
 
             $rules = [
+                'id' => [
+                    'required',
+                    'unique:students'
+                ],
                 'first_name' => [
                     'required',
                 ],
                 'last_name' => [
                     'required',
-                ],
-                'email' => [
-                    'required',
-                    'email',
-                    'unique:students'
                 ],
                 'departments' => [
                     'required',
@@ -57,10 +64,13 @@ class AccountCreationController extends Controller
 
                 $password = '#' . $firstTwoCharactersOfLastName . $date;
 
+                $email = $student['id'] . '@lms.bcpsms.com';
+
                 $newstudent = [
+                    'id' => $student['id'],
                     'first_name' => $student['first_name'],
                     'last_name' => $student['last_name'],
-                    'email' => $student['email'],
+                    'email' => $email,
                     'password' => Hash::make($password),
                     'departments' => $student['departments'],
                     'section' => $student['section'],
@@ -70,7 +80,9 @@ class AccountCreationController extends Controller
                     'updated_at' => Carbon::now(),
                 ];
 
-                $message = ['email.unique' => 'Email :input is already taken'];
+                $message = [
+                    'id.unique' => 'ID :input already exists'
+                ];
                 $validator = Validator::make($newstudent, $rules, $message);
 
                 if($validator->fails()){
@@ -103,4 +115,154 @@ class AccountCreationController extends Controller
         ], 201);
 
     }
+
+    public function createSingleStudent(CreateSingleStudentRequest $request) {
+        
+        $firstTwoCharactersOfLastName = substr($request['last_name'], 0, 2);
+
+        $date = Carbon::now()->format('Y');
+
+        $password = '#' . $firstTwoCharactersOfLastName . $date;
+
+        $email = $request['id'] . '@lms.bcpsms.com';
+
+        $student = Student::insert([
+            'id' => $request['id'],
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'email' => $email,
+            'password' => Hash::make($password),
+            'departments' => $request['departments'],
+            'section' => $request['section'],
+            'year_level' => $request['year_level'],
+            'subjects' => '',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        $response = [
+            'Account Succesfully Created' => $student
+        ];
+
+        return response($response, 201);
+    }
+
+    public function createSingleAdmin(CreateSingleAdminRequest $request) {
+
+        $firstTwoCharactersOfLastName = substr($request['last_name'], 0, 2);
+
+        $date = Carbon::now()->format('Y');
+
+        $password = '#' . $firstTwoCharactersOfLastName . $date;
+
+        $email = 'admin' . $request['id'] . '@lms.bcpsms.com';
+
+        $admin = Admin::insert([
+            'id' => $request['id'],
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'email' => $email,
+            'password' => $password,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        $response = [
+            'Account Succesfully Created' => $admin
+        ];
+
+        return response($response, 201);
+
+    }
+
+    public function createSingleCourseManager(CreateSingleCourseManagerRequest $request) {
+        
+        $firstTwoCharactersOfLastName = substr($request['last_name'], 0, 2);
+
+        $date = Carbon::now()->format('Y');
+
+        $password = '#' . $firstTwoCharactersOfLastName . $date;
+
+        $email = 'coursemanager' . $request['id'] . '@lms.bcpsms.com';
+
+        $course_manager = CourseManager::insert([
+            'id' => $request['id'],
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'department' => $request['department'],
+            'email' => $email,
+            'password' => $password,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        $response = [
+            'Account Succesfully Created' => $course_manager
+        ];
+
+        return response($response, 201);
+
+    }
+
+    public function createSingleCourseDeveloper(CreateSingleCourseDeveloperRequest $request) {
+
+        $firstTwoCharactersOfLastName = substr($request['last_name'], 0, 2);
+
+        $date = Carbon::now()->format('Y');
+
+        $password = '#' . $firstTwoCharactersOfLastName . $date;
+
+        $email = 'coursedeveloper' . $request['id'] . '@lms.bcpsms.com';
+
+        $course_developer = CourseDeveloper::insert([
+            'id' => $request['id'],
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'department' => $request['department'],
+            'subjects' => '',
+            'email' => $email,
+            'password' => $password,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        $response = [
+            'Account Succesfully Created' => $course_developer
+        ];
+
+        return response($response, 201);
+
+    }
+
+    public function createSingleTeacher(CreateSingleTeacherRequest $request) {
+
+        $firstTwoCharactersOfLastName = substr($request['last_name'], 0, 2);
+
+        $date = Carbon::now()->format('Y');
+
+        $password = '#' . $firstTwoCharactersOfLastName . $date;
+
+        $email = 'teacher' . $request['id'] . '@lms.bcpsms.com';
+
+        $teacher = CourseDeveloper::insert([
+            'id' => $request['id'],
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'department' => $request['department'],
+            'subjects' => '',
+            'year_and_section' => '',
+            'email' => $email,
+            'password' => $password,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        $response = [
+            'Account Succesfully Created' => $teacher
+        ];
+
+        return response($response, 201);
+
+    }
+
 }

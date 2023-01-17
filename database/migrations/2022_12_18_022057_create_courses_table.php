@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('course');
             $table->string('course_code');
-            $table->string('departments');
+            $table->string('department');
             $table->boolean('approval');
             $table->timestamps();
         });

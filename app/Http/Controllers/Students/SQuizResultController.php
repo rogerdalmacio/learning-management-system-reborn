@@ -28,7 +28,18 @@ class QuizResultController extends Controller
      */
     public function store(QuizResultRequest $request)
     {
+
         $user = Auth::user();
+
+        $startTime = $request['start_time'];
+
+        $endTime = $request['end_time'];
+
+        // create function for checking task
+
+        if($startTime >= $endTime) {
+
+        }
 
         $quizType = $request['quiz_type'];
 
@@ -47,7 +58,18 @@ class QuizResultController extends Controller
             $newFileName
         );
         
-        $quizResult = QuizResult::create($request->all());
+        $quizResult = QuizResult::insert([
+            'student_id' => $request['student_id'],
+            'quiz_id' => $request['quiz_id'],
+            'module_id' => $request['module_id'],
+            'preliminaries' => $request['preliminaries'],
+            'quiz_type' => $request['quiz_type'],
+            'attempt' => $request['attempt'],
+            'score' => $request['score'],
+            'logs' => $request['logs'],
+            'snapshot' => $request['snapshot'],
+            'time_elapsed' => $request['time_elapsed']
+        ]);
 
         $response = [
             'Activity Result' => $quizResult,

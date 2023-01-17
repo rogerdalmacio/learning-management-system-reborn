@@ -13,7 +13,7 @@ class Course extends Model
     protected $fillable = [
         'course',
         'course_code',
-        'departments',
+        'department',
         'approval'
     ];
 

@@ -30,11 +30,12 @@ class AutoSaveProgressRequest extends FormRequest
             'module_id' => 'sometimes|string',
             'preliminaries' => 'sometimes|string',
             'quiz_type' => 'sometimes|string',
-            'terms' => 'sometimes|string',
             'attempt' => 'sometimes|string',
             'score' => 'sometimes|integer|nullable',
             'logs' => 'sometimes|string',
-            'snapshot' => 'sometimes|boolean'
+            'snapshot' => 'sometimes|boolean',
+            'start_time' => 'required|date',
+            'end_time' => 'required|date',
         ];
     }
 }

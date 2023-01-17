@@ -14,7 +14,8 @@ class CourseManager extends Model
     protected $guard = 'CourseManager';
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'department',
         'email',
         'password'

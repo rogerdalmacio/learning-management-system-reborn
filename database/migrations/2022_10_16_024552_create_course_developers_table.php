@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('course_developers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('departments');
+            $table->string('department');
             $table->string('subjects'); //subject codes
             $table->rememberToken();
             $table->timestamps();

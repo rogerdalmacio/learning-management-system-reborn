@@ -44,7 +44,7 @@ class CMCourseController extends Controller
 
         $exist = Course::where([
             ['course', '=', $request['course']],
-            ['departments', '=', $request['departments']] 
+            ['department', '=', $request['department']] 
         ])->get();
 
         $bool = 'True';
@@ -60,7 +60,7 @@ class CMCourseController extends Controller
         $course = Course::create([
             'course' => $request['course'],
             'course_code' => $request['course_code'],
-            'departments' => $request['departments'],
+            'department' => $request['department'],
             'approval' => $request['approval']
         ]);
 

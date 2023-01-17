@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('departments');
+            $table->string('department');
             $table->string('year_and_sections');
             $table->string('subjects');
             $table->rememberToken();

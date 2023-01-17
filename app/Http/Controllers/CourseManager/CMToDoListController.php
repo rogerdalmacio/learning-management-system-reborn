@@ -49,12 +49,17 @@ class ToDoListController extends Controller
 
     }
 
-    public function deleteTask(Request $request, $id) {
+    public function deleteTask($id) {
         
         $todolist = ToDoList::find($id);
 
         $todolist->delete();
 
+        $response = [
+            'Succesfully deleted' => $todolist
+        ];
+
+        return response($response, 200);
     }
 
 }

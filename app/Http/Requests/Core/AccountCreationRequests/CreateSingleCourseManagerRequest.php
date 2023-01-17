@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\CourseManager;
+namespace App\Http\Requests\Core\AccountCreationRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CourseRequest extends FormRequest
+class CreateSingleCourseManagerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,10 @@ class CourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'course' => 'required|string',
-            'course_code' => 'required|string',
+            'id' => 'required|unique:course_manager|integer',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
             'department' => 'required|string',
-            'approval' => 'required|boolean',
-            'modules' => 'required|integer'
         ];
     }
 }

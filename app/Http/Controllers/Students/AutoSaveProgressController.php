@@ -58,6 +58,8 @@ class AutoSaveProgressController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        
        
         $autoSave = AutoSaveProgress::where([
             'student_id' == $request['student_id'],
@@ -72,6 +74,7 @@ class AutoSaveProgressController extends Controller
         ];
 
         return response($response, 201);
+
 
     }
 
