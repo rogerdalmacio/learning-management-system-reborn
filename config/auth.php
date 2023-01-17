@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
+        'guard' => 'Student',
+        'passwords' => 'Student',
     ],
 
     /*
@@ -36,11 +36,57 @@ return [
     */
 
     'guards' => [
-        'web' => [
+
+        'Student' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'student',
+        ],
+
+        'Teacher' => [
+            'driver' => 'session',
+            'provider' => 'teacher',
+        ],
+
+        'CourseDeveloper' => [
+            'driver' => 'session',
+            'provider' => 'coursedeveloper',
+        ],
+
+        'CourseManager' => [
+            'driver' => 'session',
+            'provider' => 'coursemanager',
+        ],
+
+        'Admin' => [
+            'driver' => 'session',
+            'provider' => 'admin',
+        ],
+
+        'SuperAdmin' => [
+            'driver' => 'session',
+            'provider' => 'SuperAdmin',
         ],
     ],
+
+
+    // 'guards' => [
+    //     'web' => [
+    //         'driver' => 'session',
+    //         'provider' => 'Teacher',
+    //     ],
+    // ],
+    // 'guards' => [
+    //     'web' => [
+    //         'driver' => 'session',
+    //         'provider' => 'CourseDeveloper',
+    //     ],
+    // ],
+    // 'guards' => [
+    //     'web' => [
+    //         'driver' => 'session',
+    //         'provider' => 'Admin',
+    //     ],
+    // ],
 
     /*
     |--------------------------------------------------------------------------
@@ -60,16 +106,50 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'student' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Users\Student::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'teacher' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Users\Teacher::class,
+        ],
+        'coursedeveloper' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Users\CourseDeveloper::class,
+        ],
+        'coursemanager' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Users\CourseManager::class,
+        ],
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Users\Admin::class,
+        ],
+        'SuperAdmin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Users\SuperAdmin::class,
+        ]
     ],
+    // 'providers' => [
+    //     'Teacher' => [
+    //         'driver' => 'eloquent',
+    //         'model' => App\Models\Teacher::class,
+    //     ],
+    // ],
+    // 'providers' => [
+    //     'CourseDeveloper' => [
+    //         'driver' => 'eloquent',
+    //         'model' => App\Models\CourseDeveloper::class,
+    //     ],
+    // ],
+    // 'providers' => [
+    //     'Admin' => [
+    //         'driver' => 'eloquent',
+    //         'model' => App\Models\Admin::class,
+    //     ]
+    // ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -87,12 +167,42 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'Student' => [
+            'provider' => 'Student',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],
+        'Teacher' => [
+            'provider' => 'Teacher',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'CourseDeveloper' => [
+            'provider' => 'CourseDeveloper',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'CourseManger' => [
+            'provider' => 'CourseManager',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'Admin' => [
+            'provider' => 'Admin',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'SuperAdmin' => [
+            'provider' => 'SuperAdmin',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ]
     ],
 
     /*

@@ -1,26 +1,31 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Users;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\CoreFunctions\ToDoList;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class CourseDeveloper extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
+
+
+    protected $guard = 'CourseDeveloper';
+
     protected $fillable = [
         'name',
         'email',
         'password',
+        'department',
     ];
 
     /**
@@ -33,6 +38,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
     /**
      * The attributes that should be cast.
      *
@@ -41,4 +47,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function usertype()
+    {
+        return 'CourseDeveloper';
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
+
+    public function ToDolist()
+    {
+        return $this->hasMany(ToDoList::class);
+    }
 }
