@@ -1,0 +1,28 @@
+@use "../abstract/" as *;
+.dropdownMenu {
+    font-size: 20px !important;
+    border-radius: 0.375rem !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    background-color: $light-gray !important;
+    border: none !important;
+}
+
+.dropdown ul li button:focus {
+    background-color: $primary-color;
+}
+
+.smallDropdownMenu {
+    background-color: $light-gray;
+    border-radius: 0.375rem;
+
+    border: none;
+    border-radius: 0.375rem;
+}
+
+.smallDropdownList {
+    font-size: 15px !important;
+    padding: 6px 0px !important;
+    background-color: $light-gray !important;
+    border: none !important;
+}

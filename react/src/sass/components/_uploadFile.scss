@@ -1,0 +1,87 @@
+@use "../abstract/" as *;
+
+.fileUploadContainer {
+    width: 100%;
+    max-width: 500px !important;
+}
+.uploadFile {
+    width: 100%;
+    max-width: 500px !important;
+    height: 200px !important;
+    border: 2px dashed $primary-color;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 6px 12px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.fileUploadCancelBtn {
+    color: white;
+    background-color: red;
+    border-radius: 50%;
+    padding: 0px 2px;
+}
+
+.fileNameContainer {
+    border-radius: 3px;
+    background-color: $light-gray;
+}
+
+.iconAndFileName {
+    width: 60%;
+}
+
+.SizeAndLoading {
+    width: 30%;
+}
+
+.fileStateIcon {
+    width: 10%;
+}
+
+.fileName {
+    color: $black;
+    font-size: 18px;
+    line-height: 1.2em;
+    max-height: 2.4em;
+    overflow: hidden;
+}
+
+.fileSize {
+    color: $gray;
+    font-size: 18px;
+}
+
+.fileHeader {
+    color: $primary-color !important;
+}
+
+.uploadFileIcon {
+    font-size: 80px;
+    color: $primary-color !important;
+}
+
+.uploadedFileIcon {
+    color: $primary-color !important;
+    font-size: 30px;
+}
+
+@media screen and (max-width: 576px) {
+    .iconAndFileName {
+        width: 100%;
+    }
+
+    .SizeAndLoading {
+        width: 50% !important;
+    }
+
+    .fileStateIcon {
+        width: 50% !important;
+    }
+}

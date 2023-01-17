@@ -1,0 +1,28 @@
+.cardItemWidth {
+    width: 100%;
+}
+
+.cardTitle {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    height: 80px;
+    font-weight: 600;
+}
+
+.subjTeacher {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    height: 48px;
+    font-weight: 500;
+    align-items: center;
+}
+
+.lineBreak {
+    height: 2px !important;
+    color: rgba(16, 186, 230, 1);
+    background: rgba(16, 186, 230, 1);
+}

@@ -1,0 +1,10 @@
+.authFooter {
+    margin-left: 300px;
+    z-index: 4;
+}
+
+@media screen and (max-width: 992px) {
+    .authFooter {
+        margin-left: 0;
+    }
+}

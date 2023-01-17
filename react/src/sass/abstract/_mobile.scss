@@ -1,0 +1,11 @@
+@media screen and (max-width: 768px) {
+    .cardItemWidth {
+        width: 30rem !important;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .cardItemWidth {
+        width: 100% !important;
+    }
+}
