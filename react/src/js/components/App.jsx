@@ -13,14 +13,7 @@ import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminL
 // Course Developer
 import CourseDevLayout from "./layouts/authenticatedLayout/CourseDeveloperNavifationBar/CourseDevLayout";
 import DevDashboard from "../pages/courseDeveloper/DevDashboard";
-import CreateModules from "../pages/courseDeveloper/CreateModules/CreateModules";
-import ModuleWeek from "../pages/courseDeveloper/CreateModules/ModulePerWeek/ModuleWeek";
-import InputLesson from "../pages/courseDeveloper/CreateModules/InputLesson";
-import InputAnalysis from "../pages/courseDeveloper/CreateModules/InputAnalysis";
-import InputPrelim from "../pages/courseDeveloper/CreateModules/InputPrelimAct";
-import InputGeneralization from "../pages/courseDeveloper/CreateModules/InputGeneralization";
-import InputEvaluation from "../pages/courseDeveloper/CreateModules/InputEvaluation";
-import InputAssignment from "../pages/courseDeveloper/CreateModules/InputAssignment";
+
 // Student
 import StudentLayout from "./layouts/authenticatedLayout/StudentNavigationBar/StudentLayout";
 import Course from "../pages/student/Course";
@@ -78,40 +71,6 @@ function App() {
             <Route element={<RequireAuth allowedRoles={"courseDeveloper"} />}>
                 <Route element={<CourseDevLayout />}>
                     <Route path="/developer/home" element={<DevDashboard />} />
-                    <Route
-                        path="/developer/createModules"
-                        element={<CreateModules />}
-                    />
-                    {/* Learning Materials Weeks */}
-                    <Route
-                        path="/developer/createModules/:week"
-                        element={<ModuleWeek />}
-                    />
-                    {/* Learning Materials Content */}
-                    <Route
-                        path="/developer/createModules/:week/lesson"
-                        element={<InputLesson />}
-                    />
-                    <Route
-                        path="/developer/createModules/:week/analysis"
-                        element={<InputAnalysis />}
-                    />
-                    <Route
-                        path="/developer/createModules/:week/preliminaryActivity"
-                        element={<InputPrelim />}
-                    />
-                    <Route
-                        path="/developer/createModules/:week/generalization"
-                        element={<InputGeneralization />}
-                    />
-                    <Route
-                        path="/developer/createModules/:week/evaluation"
-                        element={<InputEvaluation />}
-                    />
-                    <Route
-                        path="/developer/createModules/:week/assignment"
-                        element={<InputAssignment />}
-                    />
                 </Route>
             </Route>
 
