@@ -1,0 +1,42 @@
+@media screen and (max-width: 768px) {
+  .cardItemWidth {
+    width: 30rem !important;
+  }
+}
+@media screen and (max-width: 576px) {
+  .cardItemWidth {
+    width: 100% !important;
+  }
+}
+.errorContainer {
+  width: 100%;
+  max-width: 600px !important;
+  background-color: #ffffff;
+}
+
+.errorSubTitle {
+  color: #506777 !important;
+  font-size: 160px;
+  font-weight: 700;
+}
+
+.errorTitle {
+  color: #d5d5d5 !important;
+  font-size: 160px;
+  font-weight: 700;
+}
+
+.errorParagraph {
+  color: #506777 !important;
+}
+
+@media screen and (max-width: 768px) {
+  .errorContainer {
+    max-width: 500px !important;
+  }
+}
+@media screen and (max-width: 576px) {
+  .errorTitle {
+    font-size: 112px !important;
+  }
+}/*# sourceMappingURL=404.css.map */

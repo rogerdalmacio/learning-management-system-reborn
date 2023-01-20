@@ -1,0 +1,74 @@
+@media screen and (max-width: 768px) {
+  .cardItemWidth {
+    width: 30rem !important;
+  }
+}
+@media screen and (max-width: 576px) {
+  .cardItemWidth {
+    width: 100% !important;
+  }
+}
+body,
+html,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+a,
+li {
+  font-family: "Inter", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: #edf2f9 !important;
+}
+
+/* Scrollbar Properties */
+::-webkit-scrollbar {
+  width: 0.5vw;
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d5d5d5;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #d8e2ef;
+}
+
+/* Logo properties */
+.topBarLogo .logo-details {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.topBarLogo .logo-details .icon {
+  transition: all 0.5s ease;
+}
+
+.topBarLogo .logo-details .logo_name {
+  color: #1b84d6 !important;
+  font-size: 20px;
+  font-weight: 600;
+  transition: all 0.5s ease;
+}
+
+/* Line Break - span */
+.lineBreak {
+  border-bottom: 2px solid #d8e2ef;
+  display: block;
+  margin: auto;
+}/*# sourceMappingURL=global.css.map */
