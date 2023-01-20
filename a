@@ -1,0 +1,15 @@
+[33mc89c75d[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m HEAD@{0}: commit: minor changes on api
+[33ma3fe46f[m HEAD@{1}: reset: moving to HEAD~
+[33m17a431c[m HEAD@{2}: reset: moving to HEAD~
+[33m3823873[m HEAD@{3}: commit: api
+[33m17a431c[m HEAD@{4}: reset: moving to HEAD~
+[33m3cbb607[m HEAD@{5}: commit: api
+[33m17a431c[m HEAD@{6}: reset: moving to HEAD~
+[33m4953412[m HEAD@{7}: reset: moving to HEAD
+[33m4953412[m HEAD@{8}: merge refs/remotes/origin/main: updating HEAD
+[33m4953412[m HEAD@{9}: commit: api
+[33m17a431c[m HEAD@{10}: reset: moving to HEAD
+[33m17a431c[m HEAD@{11}: commit: minor changes on api
+[33ma3fe46f[m HEAD@{12}: commit: laravel backend migration
+[33md74e279[m HEAD@{13}: pull: Fast-forward
+[33medf7b1e[m HEAD@{14}: commit (initial): first commit
