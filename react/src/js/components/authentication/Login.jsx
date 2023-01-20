@@ -29,7 +29,7 @@ function Login() {
   const SubmitHandler = async (e) => {
     e.preventDefault();
     let item = { email, password, type };
-    const fetchedData = await fetch("http://127.0.0.1:8000/api/login", {
+    const fetchedData = await fetch("http://localhost/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

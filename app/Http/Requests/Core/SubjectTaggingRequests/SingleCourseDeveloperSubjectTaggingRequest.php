@@ -4,7 +4,7 @@ namespace App\Http\Requests\Core\SubjectTaggingRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SingleCourseDeveloperSujectTaggingRequest extends FormRequest
+class SingleCourseDeveloperSubjectTaggingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

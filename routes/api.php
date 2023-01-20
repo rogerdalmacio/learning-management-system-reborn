@@ -30,8 +30,8 @@ use App\Models\Students\QuizResult;
 */
 
 //Login API
-
 Route::post('/login', [UserController::class, 'login']);
+//logout API
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 //student route
@@ -43,28 +43,40 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
     Route::apiResource('lesson', LessonController::class);
     Route::apiResource('activityresult', ActivityResult::class);
     Route::apiResource('quizresult', QuizResult::class);
+
 });
 
 //teachers route
 Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:Teacher']], function(){
+
     Route::post('/computegrade', [GradesController::class, 'computeGrades']);
+
 });
 
 //course developer route
 Route::group(['prefix' => 'coursedeveloper', 'middleware' => ['auth:sanctum','abilities:CourseDeveloper']], function(){
+
     Route::apiResource('lesson', CDLesson::class);
+
     Route::apiResource('quiz', CDQuiz::class);
+
     Route::apiResource('activity', CDActivity::class);
+
 });
 
 //course manager route
 Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abilities:CourseManager']], function(){
+
+    Route::apiResource('course', CMCourseController::class);
+
+    Route::post('/singlecoursedevelopersubjecttagging', [SubjectTaggingController::class, 'singleCourseDeveloperSubjectTagging']);
+
     Route::post('/createtask', [CMToDoListController::class, 'createtask']);
     Route::post('/taslist', [CMToDoListController::class, 'taskList']);
     Route::patch('/edittask', [CMToDoListController::class, 'editTask']);
     Route::post('/approvetask', [CMToDoListController::class, 'approveTask']);
     Route::delete('/deletetask', [CMToDoListController::class, 'deleteTask']);
-    Route::apiResource('course', CMCourseController::class);
+
 });
 
 //admin route
@@ -79,6 +91,7 @@ Route::group(['prefix' => 'superadmin', 'middleware' => ['auth:sanctum','abiliti
 
 //SuperAdmin Core
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:SuperAdmin']], function(){
+
     Route::post('/batchcreatestudents', [AccountCreationController::class, 'batchCreateStudents']);
     Route::post('/createsinglestudent', [AccountCreationController::class, 'createSingleStudent']);
     Route::post('/createsingleadmin', [AccountCreationController::class, 'createSingleAdmin']);
@@ -90,16 +103,25 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
 
 //Admin Core
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Admin']], function(){
-    Route::post('/batchmoduleupdatestatus', [ModuleStatusUpdateController::class, 'editModuleStatus']);
-    Route::post('/createannouncement', [AnnouncementsController::class, 'createAnnouncement']);
-    Route::post('/createannouncement', [AnnouncementsController::class, 'createAnnouncement']);
-    Route::patch('/editannouncement', [AnnouncementsController::class, 'editAnnouncement']);
-    Route::patch('/deleteannouncement', [AnnouncementsController::class, 'deleteAnnouncement']);
+
     Route::apiResource('examgrant', ExamGrantingController::class);
     Route::apiResource('modulestatusupdate', ModuleStatusUpdateController::class);
     Route::apiResource('tagsubject', SubjectTaggingController::class);
+
+    Route::post('/batchmoduleupdatestatus', [ModuleStatusUpdateController::class, 'editModuleStatus']);
+    Route::post('/createannouncement', [AnnouncementsController::class, 'createAnnouncement']);
+    Route::patch('/editannouncement', [AnnouncementsController::class, 'editAnnouncement']);
+    Route::delete('/deleteannouncement', [AnnouncementsController::class, 'deleteAnnouncement']);
+
+    Route::post('/batchstudentssubjecttagging', [SubjectTaggingController::class, 'batchStudentsSubjectTagging']);
+    Route::post('/batchteachersubjecttagging', [SubjectTaggingController::class, 'batchTeacherSubjectTagging']);
+    Route::post('/singlestudentsubjecttagging', [SubjectTaggingController::class, 'singleStudentSubjectTagging']);
+    Route::post('/singleteachersubjecttagging', [SubjectTaggingController::class, 'singleTeacherSubjectTagging']);
+
 });
 
 Route::group(['prefix' => 'users', 'middleware' => ['auth:sanctum']], function(){
+
     Route::post('/uploadprofilepicture', [ProfilePictureController::class, 'uploadProfilePicture']);
+
 });
