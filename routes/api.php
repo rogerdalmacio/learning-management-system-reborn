@@ -16,7 +16,9 @@ use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
 use App\Http\Controllers\CourseDeveloper\CDActivityController;
+use App\Http\Controllers\CourseDeveloper\CDCourseController;
 use App\Http\Controllers\CourseDeveloper\CDLessonController;
+use App\Http\Controllers\CourseDeveloper\CDModuleController;
 use App\Http\Controllers\CourseDeveloper\CDQuizController;
 
 /*
@@ -56,6 +58,10 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
 
 //course developer route
 Route::group(['prefix' => 'coursedeveloper', 'middleware' => ['auth:sanctum','abilities:CourseDeveloper']], function(){
+
+    Route::apiResource('course', CDCourseController::class);
+
+    Route::apiResource('module', CDModuleController::class);
 
     Route::apiResource('lesson', CDLessonController::class);
 
