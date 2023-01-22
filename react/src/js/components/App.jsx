@@ -6,6 +6,7 @@ import SuperDashboard from "../pages/superAdmin/superDashboard";
 // CourseManager
 import CourseManagerLayout from "./layouts/authenticatedLayout/CourseManagerNavigationBar/CourseManagerLayout";
 import ManagerDashboard from "../pages/courseManager/ManagerDashboard";
+import ManagerEditProfie from "../pages/courseManager/ManagerEditProfie";
 
 // Admin
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
@@ -13,6 +14,7 @@ import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminL
 // Course Developer
 import CourseDevLayout from "./layouts/authenticatedLayout/CourseDeveloperNavifationBar/CourseDevLayout";
 import DevDashboard from "../pages/courseDeveloper/DevDashboard";
+import DevEditProfile from "../pages/courseDeveloper/DevEditProfile";
 
 // Student
 import StudentLayout from "./layouts/authenticatedLayout/StudentNavigationBar/StudentLayout";
@@ -52,6 +54,10 @@ function App() {
                         path="/courseManager/home"
                         element={<ManagerDashboard />}
                     />
+                    <Route
+                        path="/courseManager/editprofile"
+                        element={<ManagerEditProfie />}
+                    />
                 </Route>
             </Route>
 
@@ -71,6 +77,10 @@ function App() {
             <Route element={<RequireAuth allowedRoles={"courseDeveloper"} />}>
                 <Route element={<CourseDevLayout />}>
                     <Route path="/developer/home" element={<DevDashboard />} />
+                    <Route
+                        path="/developer/editprofile"
+                        element={<DevEditProfile />}
+                    />
                 </Route>
             </Route>
 

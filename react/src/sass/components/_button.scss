@@ -7,6 +7,12 @@
     background-color: $primary-color !important;
 }
 
+.cancelSmallButtonTemplate {
+    border-radius: 0.375rem !important;
+    color: $white !important;
+    background-color: $gray !important;
+}
+
 .buttonTemplate {
     font-size: 20px !important;
     border-radius: 0.375rem !important;

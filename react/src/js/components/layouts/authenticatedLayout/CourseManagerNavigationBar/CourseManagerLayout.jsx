@@ -3,9 +3,21 @@ import SideNavbar from "./SideNavbar";
 import TopNavbar from "./TopNavbar";
 import { Outlet } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import useAuth from "../../../../hooks/useAuth";
 
 const Layout = () => {
+    const { userInfo } = useAuth();
+
     const [openSidebar, setOpenSidebar] = useState(true);
+    const [imageExisting, setImageExisting] = useState();
+    const [imageSrc, setImageSrc] = useState(
+        `${
+            import.meta.env.VITE_API_BASE_URL
+        }/storage/CourseManager/CourseManager${userInfo.id}.jpg`
+    );
+    const userImagePng = `${
+        import.meta.env.VITE_API_BASE_URL
+    }/storage/CourseManager/CourseManager${userInfo.id}.png`;
 
     return (
         <main>
@@ -37,7 +49,15 @@ const Layout = () => {
                                 pauseOnHover
                                 theme="light"
                             />
-                            <Outlet />
+                            <Outlet
+                                context={[
+                                    imageExisting,
+                                    setImageExisting,
+                                    imageSrc,
+                                    setImageSrc,
+                                    userImagePng,
+                                ]}
+                            />
                         </div>
                     </main>
                 </div>

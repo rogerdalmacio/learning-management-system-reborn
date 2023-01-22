@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import useAuth from "../../../../hooks/useAuth";
 import logoImg from "/images/newLogin/logo.png";
 import userProfile from "/images/man.png";
+import { Link } from "react-router-dom";
 
 function TopNavbar({ openSidebar, setOpenSidebar, children }) {
     const { userInfo } = useAuth();
@@ -83,7 +84,7 @@ function TopNavbar({ openSidebar, setOpenSidebar, children }) {
                                 aria-expanded="false"
                             >
                                 <h5 className="m-0 d-none d-sm-block">
-                                    {userInfo.name}
+                                    {userInfo.first_name} {userInfo.last_name}
                                 </h5>
                                 <img
                                     className="ms-0 ms-sm-3"
@@ -94,14 +95,19 @@ function TopNavbar({ openSidebar, setOpenSidebar, children }) {
                                 />
                             </a>
                             <ul className="dropdown-menu border shadow dropdownContainer">
-                                <li>
-                                    <button
-                                        type="button"
-                                        className="dropdown-item"
-                                    >
-                                        Edit Profile
-                                    </button>
-                                </li>
+                                <Link
+                                    className="text-decoration-none"
+                                    to="/coursemanager/editprofile"
+                                >
+                                    <li>
+                                        <button
+                                            type="button"
+                                            className="dropdown-item"
+                                        >
+                                            Edit Profile
+                                        </button>
+                                    </li>
+                                </Link>
                                 <li>
                                     <button
                                         type="button"

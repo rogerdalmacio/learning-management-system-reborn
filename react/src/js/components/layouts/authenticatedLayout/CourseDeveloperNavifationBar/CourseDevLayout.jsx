@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import SideNavbar from "./SideNavbar";
 import TopNavbar from "./TopNavbar";
 import { Outlet } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import useAuth from "../../../../hooks/useAuth";
 
 const Layout = () => {
+    const { userInfo } = useAuth();
+
     const [openSidebar, setOpenSidebar] = useState(true);
 
     return (
@@ -23,6 +27,18 @@ const Layout = () => {
 
                     <main className="home-section mx-3 bg-light rounded shadow w-100">
                         <div className="p-3 w-100">
+                            <ToastContainer
+                                position="top-right"
+                                autoClose={3000}
+                                hideProgressBar={false}
+                                newestOnTop={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnFocusLoss
+                                draggable
+                                pauseOnHover
+                                theme="light"
+                            />
                             <Outlet />
                         </div>
                     </main>

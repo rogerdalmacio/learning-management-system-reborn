@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import useAuth from "../../../../hooks/useAuth";
 import logoImg from "/images/newLogin/logo.png";
 import userProfile from "/images/man.png";
-import axios from "axios";
+import { Link } from "react-router-dom";
 
 function TopNavbar({ openSidebar, setOpenSidebar, children }) {
     const { userInfo } = useAuth();
@@ -95,14 +95,19 @@ function TopNavbar({ openSidebar, setOpenSidebar, children }) {
                                 />
                             </a>
                             <ul className="dropdown-menu border shadow dropdownContainer">
-                                <li>
-                                    <button
-                                        type="button"
-                                        className="dropdown-item"
-                                    >
-                                        Edit Profile
-                                    </button>
-                                </li>
+                                <Link
+                                    className="text-decoration-none"
+                                    to="/developer/editprofile"
+                                >
+                                    <li>
+                                        <button
+                                            type="button"
+                                            className="dropdown-item"
+                                        >
+                                            Edit Profile
+                                        </button>
+                                    </li>
+                                </Link>
                                 <li>
                                     <button
                                         type="button"
