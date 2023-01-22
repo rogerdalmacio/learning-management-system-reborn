@@ -1,22 +1,23 @@
 <?php
 
+use App\Models\Students\QuizResult;
 use Illuminate\Support\Facades\Route;
+use App\Models\Students\ActivityResult;
+use App\Models\Students\AutoSaveProgress;
 use App\Http\Controllers\Users\UserController;
-use App\Http\Controllers\CourseManager\CMCourseController;
-use App\Http\Controllers\CoreFunctions\ExamGrantingController;
-use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
-use App\Http\Controllers\CoreFunctions\AccountCreationController;
-use App\Http\Controllers\CoreFunctions\AnnouncementsController;
-use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
-use App\Http\Controllers\CourseDeveloper\CDActivity;
-use App\Http\Controllers\CourseDeveloper\CDLesson;
-use App\Http\Controllers\CourseDeveloper\CDQuiz;
 use App\Http\Controllers\Modules\LessonController;
 use App\Http\Controllers\Teacher\GradesController;
 use App\Http\Controllers\Users\ProfilePictureController;
-use App\Models\Students\ActivityResult;
-use App\Models\Students\AutoSaveProgress;
-use App\Models\Students\QuizResult;
+use App\Http\Controllers\CourseManager\CMCourseController;
+use App\Http\Controllers\CourseManager\CMToDoListController;
+use App\Http\Controllers\CoreFunctions\ExamGrantingController;
+use App\Http\Controllers\CoreFunctions\AnnouncementsController;
+use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
+use App\Http\Controllers\CoreFunctions\AccountCreationController;
+use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
+use App\Http\Controllers\CourseDeveloper\CDActivityController;
+use App\Http\Controllers\CourseDeveloper\CDLessonController;
+use App\Http\Controllers\CourseDeveloper\CDQuizController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,11 +57,11 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
 //course developer route
 Route::group(['prefix' => 'coursedeveloper', 'middleware' => ['auth:sanctum','abilities:CourseDeveloper']], function(){
 
-    Route::apiResource('lesson', CDLesson::class);
+    Route::apiResource('lesson', CDLessonController::class);
 
-    Route::apiResource('quiz', CDQuiz::class);
+    Route::apiResource('quiz', CDQuizController::class);
 
-    Route::apiResource('activity', CDActivity::class);
+    Route::apiResource('activity', CDActivityController::class);
 
 });
 
@@ -123,5 +124,6 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
 Route::group(['prefix' => 'users', 'middleware' => ['auth:sanctum']], function(){
 
     Route::post('/uploadprofilepicture', [ProfilePictureController::class, 'uploadProfilePicture']);
+    // Route::get('/fetchprofilepicture/{filename}', [ProfilePictureController::class, 'fetchProfilePicture']);
 
 });

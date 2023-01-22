@@ -7,17 +7,17 @@ use App\Models\Modules\Activity;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseDeveloper\ActivityRequest;
 
-class CDActivity extends Controller
+class CDActivityController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return 'test';
-    }
+    // public function index()
+    // {
+
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -27,8 +27,11 @@ class CDActivity extends Controller
      */
     public function store(ActivityRequest $request)
     {
-        $exist = Activity::where('module_id', $request['module_id'])
-            ->where('activity_type', $request['activity_type'])->get();
+
+        $exist = Activity::where([
+            'module_id' == $request['module_id'],
+            'activity_type' == $request['activity_type']
+        ])->get();
 
         $bool = 'True';
 
@@ -57,7 +60,15 @@ class CDActivity extends Controller
      */
     public function show($id)
     {
-        //
+        
+        $query = Activity::where('id', $id)->get();
+
+        $response = [
+            'Activity' => $query
+        ];
+
+        return response($response, 200);
+
     }
 
     /**

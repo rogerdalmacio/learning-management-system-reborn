@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\CourseDeveloper;
 
+use App\Models\Modules\Quiz;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CourseDeveloper\LessonRequest;
-use App\Models\Modules\Lesson;
+use App\Http\Requests\CourseDeveloper\QuizRequest;
 
-class CDLesson extends Controller
+class CDQuizController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,10 +25,14 @@ class CDLesson extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(LessonRequest $request)
+
+    public function store(QuizRequest $request)
     {
 
-        $exist = Lesson::where('module_id', $request['module_id'])->get();
+        $exist = Quiz::where([
+            'module_id' == $request['module_id'],
+            'quiz_type' == $request['quiz_type']
+        ])->get();
 
         $bool = 'True';
 
@@ -40,14 +44,14 @@ class CDLesson extends Controller
             return response(['already exist'], 201);
         }
 
-        Lesson::create($request->all());
+        Quiz::create($request->all());
 
         $response = [
             'Successfuly created' => $request['module_id'],
         ];
 
         return response($response, 201);
-
+        
     }
 
     /**
@@ -58,7 +62,15 @@ class CDLesson extends Controller
      */
     public function show($id)
     {
-        //
+
+        $query = Quiz::where('id', $id)->get();
+
+        $response = [
+            'Quiz' => $query
+        ];
+
+        return response($response, 200);
+         
     }
 
     /**
@@ -83,4 +95,5 @@ class CDLesson extends Controller
     {
         //
     }
+    
 }

@@ -16,8 +16,6 @@ class UserController extends Controller
 {
     public function login(Request $request){
 
-        $scrf_token = csrf_token();
-
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required',
@@ -38,12 +36,11 @@ class UserController extends Controller
                 'user' => $user,
                 'token' => $token,
                 'type' => 'student',
-                'csrf' => $scrf_token
             ];
 
             return response($response, 201)->cookie('sanctum', $token, 1440);
 
-        } elseif($request->type == 'Teacher') {
+        } elseif ($request->type == 'Teacher') {
 
             $user = Teacher::where('email', $request->email)->first();
 

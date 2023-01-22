@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\User\ProfilePictureRequest;
 
 class ProfilePictureController extends Controller
@@ -25,6 +26,21 @@ class ProfilePictureController extends Controller
 
         $newFileLocation = 'public/' . $userType;
 
+        $existPNG = storage_path('app/public/' . $userType . '/' . $userType . $userId . '.png');
+        $existJPG = storage_path('app/public/' . $userType . '/' . $userType . $userId . '.jpg');
+
+        if(File::exists($existPNG)) {
+
+            File::delete($existPNG);
+
+        }
+
+        if(File::exists($existJPG)) {
+
+            File::delete($existJPG);
+
+        }
+
         $path = $request->file('file')->storeAs(
             $newFileLocation,
             $newFileName
@@ -38,5 +54,25 @@ class ProfilePictureController extends Controller
         return response($response, 201);
 
     }
+
+    // public function fetchProfilePicture($filename) {
+
+    //     $user = Auth::user();
+
+    //     $userType = $user->userType();
+        
+    //     $path = storage_path('app/' . $userType . '/' . $filename);
+
+
+        // if(!File::exists($path)) {
+    //         return response(['file does not exists'], 404);
+    //     }
+
+    //     $file = File::get($path);
+    //     $type = File::mimeType($path);
+
+    //     return response($file, 200)->header("Content-Type", $type);
+
+    // }
 
 }

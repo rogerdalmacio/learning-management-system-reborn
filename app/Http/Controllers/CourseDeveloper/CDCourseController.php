@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\CourseDeveloper;
 
-use App\Models\Modules\Quiz;
 use Illuminate\Http\Request;
+use App\Models\Modules\Course;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CourseDeveloper\QuizRequest;
+use Illuminate\Support\Facades\Auth;
 
-class CDQuiz extends Controller
+class CDCourseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,17 @@ class CDQuiz extends Controller
      */
     public function index()
     {
-        //
+
+        $user = Auth::user();
+
+        $query = Course::with('modules')->where('course_code', $user->subject)->get();
+
+        $response = [
+            'course' => $query
+        ];
+
+        return response($response, 200);
+
     }
 
     /**
@@ -25,30 +35,9 @@ class CDQuiz extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(QuizRequest $request)
+    public function store(Request $request)
     {
-
-        $exist = Quiz::where('module_id', $request['module_id'])
-            ->where('quiz_type', $request['quiz_type'])->get();
-
-        $bool = 'True';
-
-        if($exist == '[]'){
-            $bool = 'False';
-        }
-
-        if($bool == 'True'){  
-            return response(['already exist'], 201);
-        }
-
-        Quiz::create($request->all());
-
-        $response = [
-            'Successfuly created' => $request['module_id'],
-        ];
-
-        return response($response, 201);
-        
+        //
     }
 
     /**
