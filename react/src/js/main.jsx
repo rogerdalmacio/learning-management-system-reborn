@@ -5,16 +5,17 @@ import App from "./components/App";
 import { AuthProvider } from "./context/AuthProvider";
 // import { CreateModuleProvider } from "./context/CourseDev/CreateModuleProvider";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { GetAvailableCourseProvider } from "./context/CourseDev/GetAvailableCourseProvider";
 
 if (document.getElementById("root")) {
     ReactDOM.render(
         <BrowserRouter>
             <AuthProvider>
-                {/* <CreateModuleProvider> */}
-                <Routes>
-                    <Route path="/*" element={<App />} />
-                </Routes>
-                {/* </CreateModuleProvider> */}
+                <GetAvailableCourseProvider>
+                    <Routes>
+                        <Route path="/*" element={<App />} />
+                    </Routes>
+                </GetAvailableCourseProvider>
             </AuthProvider>
         </BrowserRouter>,
         document.getElementById("root")

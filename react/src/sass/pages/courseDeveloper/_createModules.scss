@@ -4,28 +4,40 @@
     height: 500px;
     overflow: hidden;
     border: 1px solid #6c757d;
-}
 
-.inputAnalysisContainer {
+    .inputAnalysisContainer {
+        width: 100%;
+        max-width: 1000px;
+        border: 1px solid #6c757d;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .createModuleSubmit {
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    .moduleTitle {
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    .createModuleMargin {
+        margin-bottom: 30px;
+    }
+}
+.createModuleIframe {
     width: 100%;
-    max-width: 1000px;
-    border: 1px solid #6c757d;
+    max-width: 800px;
+    height: 100vh;
 }
 
-.createModuleSubmit {
-    width: 100%;
-    max-width: 1000px;
-}
-
-.moduleTitle {
-    width: 100%;
-    max-width: 1000px;
-}
-
-.createModuleMargin {
-    margin-bottom: 30px;
-}
-
-.errorBorderColor {
-    border: 1px solid red;
+@media screen and (max-width: 576px) {
+    .QuizChoicesContainer .IsCorrectButton {
+        border-radius: 5px !important;
+    }
+    .QuizChoicesContainer .InputChoices {
+        width: 100% !important;
+        border-radius: 5px !important;
+    }
 }

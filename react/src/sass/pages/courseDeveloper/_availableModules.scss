@@ -1,0 +1,24 @@
+@use "../../abstract/" as *;
+
+.DevCourseContainer {
+    color: $black;
+    border: 1.5px solid $primary-color;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.DevWeekContainer {
+    color: $black;
+    border: 1.5px solid $gray;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.DevAvailContent {
+    color: $black;
+    border: 1.5px solid $gray;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 600px;
+}

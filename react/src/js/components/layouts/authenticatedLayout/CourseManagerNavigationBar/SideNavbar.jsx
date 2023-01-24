@@ -38,7 +38,10 @@ function Navbar({ openSidebar }) {
                             <span className="tooltip">Dashboard</span>
                         </li>
                     </Link>
-                    <Link to="/student/course" className="text-decoration-none">
+                    <Link
+                        to="/courseManager/course"
+                        className="text-decoration-none"
+                    >
                         <li>
                             <a
                                 className={`${

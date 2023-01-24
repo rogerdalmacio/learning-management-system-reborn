@@ -4,7 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import dummyProfile from "/images/man.png";
 import { useOutletContext } from "react-router-dom";
 
-function DevEditProfile() {
+function AdminEditProfile() {
     const { userInfo, token, role } = useAuth();
 
     const [userImageJpg, imageExisting] = useOutletContext();
@@ -275,4 +275,4 @@ function DevEditProfile() {
     );
 }
 
-export default DevEditProfile;
+export default AdminEditProfile;

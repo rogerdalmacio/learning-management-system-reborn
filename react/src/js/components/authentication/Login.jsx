@@ -13,7 +13,7 @@ function Login() {
     const [showPassword, setShowPassword] = useState("password");
     let error;
 
-    console.log(type);
+
 
     const togglePassword = () => {
         if (showPassword === "password") {
@@ -43,7 +43,6 @@ function Login() {
             }
         );
 
-        console.log(fetchedData);
         const result = await fetchedData.json();
         if (result.user !== undefined && result.token !== undefined) {
             localStorage.setItem("user-info", JSON.stringify(result.user));

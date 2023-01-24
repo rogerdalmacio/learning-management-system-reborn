@@ -14,12 +14,10 @@ function ManagerDashboard() {
         course: "",
         course_code: "",
         approval: 0,
-        departments: userInfo.department,
+        department: userInfo.department,
         modules: 18,
     });
-    console.log(subject.modules);
 
-    console.log(subject);
 
     const SubmitCourseHandler = (e) => {
         e.preventDefault();
@@ -46,8 +44,6 @@ function ManagerDashboard() {
                     }
                 )
                 .then((response) => {
-                    console.log(response);
-                    console.log(response.status);
                     if (
                         response.status >= 200 &&
                         response.status < 300 &&
@@ -61,14 +57,12 @@ function ManagerDashboard() {
                     } else if (response.data[0] == "already exist") {
                         throw new Error("Course is already exists");
                     } else {
-                        console.log(response.status);
                         throw new Error(
                             response.status || "Something Went Wrong!"
                         );
                     }
                 })
                 .catch((error) => {
-                    console.log(error);
                     toast.update(toastId, {
                         render: `${error.message}`,
                         type: toast.TYPE.ERROR,

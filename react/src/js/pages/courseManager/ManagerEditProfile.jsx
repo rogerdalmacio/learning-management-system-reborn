@@ -4,82 +4,13 @@ import useAuth from "../../hooks/useAuth";
 import dummyProfile from "/images/man.png";
 import { useOutletContext } from "react-router-dom";
 
-function ManagerEditProfie() {
-    document.cookie = "mycookie=myvalue; SameSite=None; Secure; path=/";
-
+function ManagerEditProfile() {
     const { userInfo, token, role } = useAuth();
+
+    const [userImageJpg, imageExisting] = useOutletContext();
 
     const [file, setSelectedFile] = useState();
     const [preview, setPreview] = useState();
-    const [imageExisting, setImageExisting, imageSrc, setImageSrc] =
-        useOutletContext();
-
-    console.log(imageSrc);
-
-    const handleError = () => {
-        setImageSrc(
-            `${
-                import.meta.env.VITE_API_BASE_URL
-            }/storage/CourseManager/CourseManager${userInfo.id}.png`
-        );
-    };
-
-    useEffect(() => {
-        if (
-            `${
-                import.meta.env.VITE_API_BASE_URL
-            }/storage/CourseManager/CourseManager${userInfo.id}.png`
-        ) {
-        }
-    });
-
-    const userImagePng = `${
-        import.meta.env.VITE_API_BASE_URL
-    }/storage/CourseManager/CourseManager${userInfo.id}.png`;
-
-    // CHECK IF IMAGE EXISTS
-    useEffect(() => {
-        function checkIfImageExists(url, url2, callback) {
-            const img = new Image();
-            img.src = url;
-
-            if (img.complete) {
-                callback(true);
-            } else {
-                img.onload = () => {
-                    callback(true);
-                };
-
-                img.onerror = () => {
-                    callback(false);
-                };
-            }
-
-            const img2 = new Image();
-            img2.src = url2;
-
-            if (img2.complete) {
-                callback(true);
-            } else {
-                img2.onload = () => {
-                    callback(true);
-                };
-
-                img2.onerror = () => {
-                    callback(false);
-                };
-            }
-        }
-
-        // USAGE
-        checkIfImageExists(imageSrc, userImagePng, (exists) => {
-            if (exists) {
-                setImageExisting(true);
-            } else {
-                setImageExisting(false);
-            }
-        });
-    });
 
     // create a preview as a side effect, whenever selected file is changed
     useEffect(() => {
@@ -105,28 +36,25 @@ function ManagerEditProfie() {
         setSelectedFile(e.target.files[0]);
     };
 
+
     const ProfilePictureHandler = () => {
-        if (imageSrc && imageExisting === false) {
+        if (imageExisting === true) {
+            return (
+                <div>
+                    {file ? (
+                        <img src={preview} alt={userInfo.first_name} />
+                    ) : (
+                        <img src={userImageJpg} alt={userInfo.first_name} />
+                    )}
+                </div>
+            );
+        } else {
             return (
                 <div>
                     {file ? (
                         <img src={preview} alt={userInfo.first_name} />
                     ) : (
                         <img src={dummyProfile} alt={userInfo.first_name} />
-                    )}
-                </div>
-            );
-        } else if (imageSrc && imageExisting === true) {
-            return (
-                <div>
-                    {file ? (
-                        <img src={preview} alt={userInfo.first_name} />
-                    ) : (
-                        <img
-                            src={imageSrc}
-                            onError={handleError}
-                            alt={userInfo.first_name}
-                        />
                     )}
                 </div>
             );
@@ -142,11 +70,10 @@ function ManagerEditProfie() {
             } else if (file.size > 5242880) {
                 toast.error("The file must not be exceeded to 25 MB");
             } else if (
-                file.type !== "image/jpeg" &&
                 file.type !== "image/jpg" &&
-                file.type !== "image/png"
+                file.type !== "image/jpeg"
             ) {
-                toast.error("Image must be in jpg or png");
+                toast.error("Image must be in JPG format");
             } else {
                 const formData = new FormData();
                 formData.append("file", file);
@@ -182,7 +109,6 @@ function ManagerEditProfie() {
                     });
             }
         } catch (error) {
-            console.log(error);
             toast.update(toastId, {
                 render: `${error.message}`,
                 type: toast.TYPE.ERROR,
@@ -345,21 +271,8 @@ function ManagerEditProfie() {
                     </div>
                 </div>
             </div>
-            {/* <iframe
-                src="https://docs.google.com/gview?url=http://ieee802.org/secmail/docIZSEwEqHFr.doc&embedded=true"
-                width={800}
-                height={600}
-                frameborder="0"
-                sandbox="allow-same-origin allow-scripts"
-            ></iframe> */}
-            {/* <iframe
-                src="https://docs.google.com/document/d/1S8gJeCD_vDjbM2JKk8Ojkt-6Uj_fdn_NQPdzHeQnn0Y/edit"
-                sandbox="allow-same-origin allow-scripts"
-                width={800}
-                height={600}
-            ></iframe> */}
         </div>
     );
 }
 
-export default ManagerEditProfie;
+export default ManagerEditProfile;

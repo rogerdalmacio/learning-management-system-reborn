@@ -1,12 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SideNavbar from "./SideNavbar";
 import TopNavbar from "./TopNavbar";
 import { Outlet } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import useAuth from "../../../../hooks/useAuth";
 
 const Layout = () => {
-    const [openSidebar, setOpenSidebar] = useState(true);
+    const { userInfo } = useAuth();
 
+    const [openSidebar, setOpenSidebar] = useState(true);
+    const [imageExisting, setImageExisting] = useState();
+
+    const userImageJpg = `${
+        import.meta.env.VITE_API_BASE_URL
+    }/storage/SuperAdmin/SuperAdmin${userInfo.id}.jpg`;
+
+    // CHECK IF IMAGE EXISTS
+    useEffect(() => {
+        function checkIfImageExists(url, callback) {
+            const img = new Image();
+            img.src = url;
+
+            if (img.complete) {
+                callback(true);
+            } else {
+                img.onload = () => {
+                    callback(true);
+                };
+
+                img.onerror = () => {
+                    callback(false);
+                };
+            }
+        }
+
+        // USAGE
+        checkIfImageExists(userImageJpg, (exists) => {
+            if (exists) {
+                setImageExisting(true);
+            } else {
+                setImageExisting(false);
+            }
+        });
+    });
     return (
         <main>
             <div className="container-lg container-xl container-xxl" id="app">
@@ -14,6 +50,8 @@ const Layout = () => {
                     <TopNavbar
                         openSidebar={openSidebar}
                         setOpenSidebar={setOpenSidebar}
+                        imageExisting={imageExisting}
+                        userImagePng={userImageJpg}
                     />
                 </ul>
                 <div
@@ -36,7 +74,13 @@ const Layout = () => {
                                 pauseOnHover
                                 theme="light"
                             />
-                            <Outlet />
+                            <Outlet
+                                context={[
+                                    userImageJpg,
+                                    imageExisting,
+                                    setImageExisting,
+                                ]}
+                            />
                         </div>
                     </main>
                 </div>

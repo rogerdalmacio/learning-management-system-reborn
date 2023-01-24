@@ -10,7 +10,6 @@ function Navbar({ openSidebar }) {
 
     const pathName = useLocation().pathname;
 
-    console.log(pathName);
     const getToken = window.localStorage.getItem("token");
     return (
         <Fragment>
@@ -41,13 +40,13 @@ function Navbar({ openSidebar }) {
                         </li>
                     </Link>
                     <Link
-                        to="/developer/createModules"
+                        to="/developer/availableCourse"
                         className="text-decoration-none"
                     >
                         <li>
                             <a
                                 className={`${
-                                    pathName === "/developer/createModules"
+                                    pathName === "/developer/availableCourse"
                                         ? "activeSideBar"
                                         : ""
                                 }`}
@@ -83,7 +82,7 @@ function Navbar({ openSidebar }) {
                                 <a href="#">Errors UI</a>
                             </li>
                             <li>
-                                <div class="dropdown">
+                                <div className="dropdown">
                                     <div
                                         className={`d-flex ${
                                             openChildOneDropdown
@@ -97,7 +96,7 @@ function Navbar({ openSidebar }) {
                                         }}
                                     >
                                         <a
-                                            class="border-0"
+                                            className="border-0"
                                             aria-expanded="false"
                                         >
                                             Dropdown button
@@ -105,12 +104,12 @@ function Navbar({ openSidebar }) {
                                         <i className="bx bx-chevron-down arrow"></i>
                                     </div>
                                     <ul
-                                        class={`dropdownChildMenu dropdown-menu border-0 p-0 ps-3 ${
+                                        className={`dropdownChildMenu dropdown-menu border-0 p-0 ps-3 ${
                                             openChildOneDropdown ? "show" : ""
                                         }`}
                                     >
                                         <li>
-                                            <div class="dropdown">
+                                            <div className="dropdown">
                                                 <div
                                                     className={`d-flex ${
                                                         openChildTwoDropdown
@@ -124,7 +123,7 @@ function Navbar({ openSidebar }) {
                                                     }}
                                                 >
                                                     <a
-                                                        class="border-0"
+                                                        className="border-0"
                                                         aria-expanded="false"
                                                     >
                                                         Dropdown button2
@@ -132,7 +131,7 @@ function Navbar({ openSidebar }) {
                                                     <i className="bx bx-chevron-down arrow"></i>
                                                 </div>
                                                 <ul
-                                                    class={`dropdownChildMenu dropdown-menu border-0 p-0 ps-3 ${
+                                                    className={`dropdownChildMenu dropdown-menu border-0 p-0 ps-3 ${
                                                         openChildTwoDropdown
                                                             ? "show"
                                                             : ""
@@ -140,7 +139,7 @@ function Navbar({ openSidebar }) {
                                                 >
                                                     <li>
                                                         <a
-                                                            class="dropdown-item"
+                                                            className="dropdown-item"
                                                             href="#"
                                                         >
                                                             Hello
@@ -148,7 +147,7 @@ function Navbar({ openSidebar }) {
                                                     </li>
                                                     <li>
                                                         <a
-                                                            class="dropdown-item"
+                                                            className="dropdown-item"
                                                             href="#"
                                                         >
                                                             World
@@ -156,7 +155,7 @@ function Navbar({ openSidebar }) {
                                                     </li>
                                                     <li>
                                                         <a
-                                                            class="dropdown-item"
+                                                            className="dropdown-item"
                                                             href="#"
                                                         >
                                                             here
@@ -166,12 +165,18 @@ function Navbar({ openSidebar }) {
                                             </div>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">
+                                            <a
+                                                className="dropdown-item"
+                                                href="#"
+                                            >
                                                 Another action
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">
+                                            <a
+                                                className="dropdown-item"
+                                                href="#"
+                                            >
                                                 Something else here
                                             </a>
                                         </li>

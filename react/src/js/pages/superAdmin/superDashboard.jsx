@@ -9,13 +9,11 @@ function FileUpload() {
     const [submitFile, setSubmitFile] = useState(true);
     const [processing, setProcessing] = useState(false);
     const { userInfo, token } = useAuth();
-    console.log(file);
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     };
 
-    console.log(submitFile);
 
     useEffect(() => {
         if (file && file.size > 26214400) {
@@ -44,7 +42,6 @@ function FileUpload() {
                 const formData = new FormData();
                 formData.append("file", file);
 
-                console.log(formData);
 
                 toastId = toast.info("Sending Request...");
 
@@ -81,7 +78,6 @@ function FileUpload() {
         } catch (error) {
             setProcessing(false);
             setSubmitFile(false);
-            console.log(error);
             toast.update(toastId, {
                 render: `${error.message}`,
                 type: toast.TYPE.ERROR,
@@ -148,7 +144,7 @@ function FileUpload() {
                         </div>
                         <div className=" d-sm-flex align-items-center">
                             <div className="iconAndFileName d-flex align-items-center">
-                                <i class="uploadedFileIcon bi bi-file-earmark-text-fill me-2"></i>
+                                <i className="uploadedFileIcon bi bi-file-earmark-text-fill me-2"></i>
                                 <p className="fileName mb-0">{file.name}</p>
                                 <div className="fileStateIcon d-block d-sm-none w-25 text-center">
                                     {FileStateIcon()}

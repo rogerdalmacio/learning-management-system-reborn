@@ -8,8 +8,6 @@ function Navbar({ openSidebar }) {
 
     const pathName = useLocation().pathname;
 
-    console.log(pathName);
-
     return (
         <Fragment>
             <div

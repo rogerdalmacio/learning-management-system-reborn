@@ -2,24 +2,64 @@ import React from "react";
 import { Fragment } from "react";
 import useAuth from "../../../../hooks/useAuth";
 import logoImg from "/images/newLogin/logo.png";
-import userProfile from "/images/man.png";
+import dummyProfile from "/images/man.png";
 import { Link } from "react-router-dom";
 
-function TopNavbar({ openSidebar, setOpenSidebar, children }) {
-    const { userInfo } = useAuth();
+function TopNavbar({
+    openSidebar,
+    setOpenSidebar,
+    imageExisting,
+    userImagePng,
+}) {
+    const { userInfo, token } = useAuth();
 
     const LogoutHandler = async () => {
-        await fetch("http://127.0.0.1:8000/api/logout", {
+        const response = await fetch("http://127.0.0.1:8000/api/logout", {
             method: "POST",
             headers: {
-                Authorization: "Bearer" + localStorage.removeItem("token"),
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
         });
 
-        localStorage.clear();
-        window.location.reload();
+        if (response.ok) {
+            localStorage.clear();
+            window.location.reload();
+        } else {
+            console.log(response);
+        }
+
+        // localStorage.clear();
+        // window.location.reload();
+    };
+
+    const setTheUserProfile = () => {
+        if (imageExisting === true) {
+            return (
+                <Fragment>
+                    <img
+                        className="profilePicture ms-0 ms-sm-3"
+                        src={userImagePng}
+                        width="32"
+                        height="32"
+                        alt="profile-picture"
+                    />
+                </Fragment>
+            );
+        } else {
+            return (
+                <div>
+                    <img
+                        className="profilePicture ms-0 ms-sm-3"
+                        src={dummyProfile}
+                        width="32"
+                        height="32"
+                        alt="profile-picture"
+                    />
+                </div>
+            );
+        }
     };
 
     return (
@@ -74,15 +114,9 @@ function TopNavbar({ openSidebar, setOpenSidebar, children }) {
                                 aria-expanded="false"
                             >
                                 <h5 className="m-0 d-none d-sm-block">
-                                    {userInfo.name}
+                                    {userInfo.first_name} {userInfo.last_name}
                                 </h5>
-                                <img
-                                    className="ms-0 ms-sm-3"
-                                    src={userProfile}
-                                    width="32"
-                                    height="32"
-                                    alt="profile-picture"
-                                />
+                                {setTheUserProfile()}
                             </a>
                             <ul className="dropdown-menu border shadow dropdownContainer">
                                 <Link

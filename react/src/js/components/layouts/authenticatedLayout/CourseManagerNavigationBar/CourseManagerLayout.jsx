@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import SideNavbar from "./SideNavbar";
 import TopNavbar from "./TopNavbar";
 import { Outlet } from "react-router-dom";
@@ -10,14 +10,39 @@ const Layout = () => {
 
     const [openSidebar, setOpenSidebar] = useState(true);
     const [imageExisting, setImageExisting] = useState();
-    const [imageSrc, setImageSrc] = useState(
-        `${
-            import.meta.env.VITE_API_BASE_URL
-        }/storage/CourseManager/CourseManager${userInfo.id}.jpg`
-    );
-    const userImagePng = `${
+
+    const userImageJpg = `${
         import.meta.env.VITE_API_BASE_URL
-    }/storage/CourseManager/CourseManager${userInfo.id}.png`;
+    }/storage/CourseManager/CourseManager${userInfo.id}.jpg`;
+
+    // CHECK IF IMAGE EXISTS
+    useEffect(() => {
+        function checkIfImageExists(url, callback) {
+            const img = new Image();
+            img.src = url;
+
+            if (img.complete) {
+                callback(true);
+            } else {
+                img.onload = () => {
+                    callback(true);
+                };
+
+                img.onerror = () => {
+                    callback(false);
+                };
+            }
+        }
+
+        // USAGE
+        checkIfImageExists(userImageJpg, (exists) => {
+            if (exists) {
+                setImageExisting(true);
+            } else {
+                setImageExisting(false);
+            }
+        });
+    });
 
     return (
         <main>
@@ -26,6 +51,8 @@ const Layout = () => {
                     <TopNavbar
                         openSidebar={openSidebar}
                         setOpenSidebar={setOpenSidebar}
+                        imageExisting={imageExisting}
+                        userImagePng={userImageJpg}
                     />
                 </ul>
 
@@ -51,11 +78,9 @@ const Layout = () => {
                             />
                             <Outlet
                                 context={[
+                                    userImageJpg,
                                     imageExisting,
                                     setImageExisting,
-                                    imageSrc,
-                                    setImageSrc,
-                                    userImagePng,
                                 ]}
                             />
                         </div>

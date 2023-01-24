@@ -1,5 +1,9 @@
 @use "../../abstract/" as *;
 
+.profilePicture {
+    border-radius: 100px;
+}
+
 .account-settings {
     .user-profile {
         margin: 0 0 1rem 0;
