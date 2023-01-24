@@ -25,12 +25,14 @@ class StudentFactory extends Factory
                 'email' => fake()->unique()->safeEmail(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'year_and_section' => 1101,
+                'major' => '',
                 'department' => fake()->randomElement(array(
                     'CCS',
                     'CRIM',
                     'EDUC',
                     'Business'
                 )),
+                'program' => 'BSIT',
                 'subjects' => ''
             ];
         }

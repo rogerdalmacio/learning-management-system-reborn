@@ -29,7 +29,9 @@ class Student extends Model
         'email',
         'password',
         'year_and_section',
+        'major',
         'department',
+        'program',
         'subjects',
     ];
 

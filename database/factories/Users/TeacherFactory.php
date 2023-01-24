@@ -27,6 +27,7 @@ class TeacherFactory extends Factory
                 'EDUC',
                 'Business'
             )),
+            'program' => 'BSIT',
             'year_and_sections' => '0101',
             'subjects' => fake()->randomElement(array(
                 'Mathematics',

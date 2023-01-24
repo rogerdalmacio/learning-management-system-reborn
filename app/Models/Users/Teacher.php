@@ -25,8 +25,9 @@ class Teacher extends Model
         'last_name',
         'email',
         'password',
-        'year_and_section',
         'department',
+        'program',
+        'year_and_section',
         'subjects',
     ];
 

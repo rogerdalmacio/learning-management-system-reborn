@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 
+use Spatie\Glide\GlideImage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -26,25 +27,26 @@ class ProfilePictureController extends Controller
 
         $newFileLocation = 'public/' . $userType;
 
-        $existPNG = storage_path('app/public/' . $userType . '/' . $userType . $userId . '.png');
-        $existJPG = storage_path('app/public/' . $userType . '/' . $userType . $userId . '.jpg');
+        // $existPNG = storage_path('app/public/' . $userType . '/' . $userType . $userId . '.png');
+        // $existJPG = storage_path('app/public/' . $userType . '/' . $userType . $userId . '.jpg');
 
-        if(File::exists($existPNG)) {
+        // if(File::exists($existPNG)) {
 
-            File::delete($existPNG);
+        //     File::delete($existPNG);
 
-        }
+        // }
 
-        if(File::exists($existJPG)) {
+        // if(File::exists($existJPG)) {
 
-            File::delete($existJPG);
+        //     File::delete($existJPG);
 
-        }
+        // }
 
         $path = $request->file('file')->storeAs(
             $newFileLocation,
             $newFileName
         );
+
         
         $response = [
             'profile picture:' => $newFileName,

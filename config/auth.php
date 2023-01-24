@@ -15,7 +15,6 @@ return [
 
     'defaults' => [
         'guard' => 'Student',
-        'passwords' => 'Student',
     ],
 
     /*
@@ -67,26 +66,6 @@ return [
             'provider' => 'SuperAdmin',
         ],
     ],
-
-
-    // 'guards' => [
-    //     'web' => [
-    //         'driver' => 'session',
-    //         'provider' => 'Teacher',
-    //     ],
-    // ],
-    // 'guards' => [
-    //     'web' => [
-    //         'driver' => 'session',
-    //         'provider' => 'CourseDeveloper',
-    //     ],
-    // ],
-    // 'guards' => [
-    //     'web' => [
-    //         'driver' => 'session',
-    //         'provider' => 'Admin',
-    //     ],
-    // ],
 
     /*
     |--------------------------------------------------------------------------

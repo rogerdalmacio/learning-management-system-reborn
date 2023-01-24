@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('department');
+            $table->string('program');
             $table->string('year_and_sections');
             $table->string('subjects');
             $table->rememberToken();

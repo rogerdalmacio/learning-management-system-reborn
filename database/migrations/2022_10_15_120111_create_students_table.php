@@ -21,8 +21,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('year_and_section');
+            $table->string('major')->nullable();
             $table->string('department');
-            $table->string('subjects');
+            $table->string('program');
+            $table->string('subjects')->nullable();
             $table->timestamps(); // created and upated the user
             $table->rememberToken();
         });

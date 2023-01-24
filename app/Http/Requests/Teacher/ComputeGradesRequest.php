@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Teacher;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProfilePictureRequest extends FormRequest
+class ComputeGradesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,10 @@ class ProfilePictureRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|file|mimes:jpg|max:5000'
+            'year_and_section' => 'required',
+            'department' => 'required',
+            'program' => 'required',
+            'major' => 'required'
         ];
     }
 }
