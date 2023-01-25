@@ -45,13 +45,19 @@ class AccountCreationController extends Controller
                 'last_name' => [
                     'required',
                 ],
-                'departments' => [
+                'year_and_section' => [
                     'required',
                 ],
-                'section' => [
+                'major' => [
                     'required',
                 ],
-                'year_level' => [
+                'department' => [
+                    'required',
+                ],
+                'program' => [
+                    'required',
+                ],
+                'subjects' => [
                     'required',
                 ],
             ];
