@@ -1,120 +1,103 @@
 import React, { useEffect, useState } from "react";
+// import useCreateModule from "../../../hooks/CourseDev/useCreateModule";
 
-function DevCreateAAE() {
+function DevCreateAssignment() {
     // States
-    const [AAEquestions, setAAEQuestions] = useState([
+    const [AssignQuestions, setAssignQuestions] = useState([
         {
             id: "question1",
             question: "",
             options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
+                { id: "option1", isCorrect: "" },
+                { id: "option2", isCorrect: "" },
             ],
         },
         {
             id: "question2",
             question: "",
             options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
+                { id: "option1", isCorrect: "" },
+                { id: "option2", isCorrect: "" },
             ],
         },
         {
             id: "question3",
             question: "",
             options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
+                { id: "option1", isCorrect: "" },
+                { id: "option2", isCorrect: "" },
             ],
         },
         {
             id: "question4",
             question: "",
             options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
+                { id: "option1", isCorrect: "" },
+                { id: "option2", isCorrect: "" },
             ],
         },
         {
             id: "question5",
             question: "",
             options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
+                { id: "option1", isCorrect: "" },
+                { id: "option2", isCorrect: "" },
             ],
         },
         {
             id: "question6",
             question: "",
             options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
+                { id: "option1", isCorrect: "" },
+                { id: "option2", isCorrect: "" },
             ],
         },
         {
             id: "question7",
             question: "",
             options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
+                { id: "option1", isCorrect: "" },
+                { id: "option2", isCorrect: "" },
             ],
         },
         {
             id: "question8",
             question: "",
             options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
+                { id: "option1", isCorrect: "" },
+                { id: "option2", isCorrect: "" },
             ],
         },
         {
             id: "question9",
             question: "",
             options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
+                { id: "option1", isCorrect: "" },
+                { id: "option2", isCorrect: "" },
             ],
         },
         {
             id: "question10",
             question: "",
             options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
+                { id: "option1", isCorrect: "" },
+                { id: "option2", isCorrect: "" },
             ],
         },
     ]);
     const [error, setError] = useState(false);
 
     const [questionError, setQuestionError] = useState();
-    const [textError, setTextError] = useState();
+
     const [isCorrectError, setIsCorrectError] = useState();
 
+    console.log(questionError);
+
+    console.log(isCorrectError);
+
     const numberOfChoices = [
-        { id: "option1", rightAnswerNo: "rightAnswer1", letter: "A" },
-        { id: "option2", rightAnswerNo: "rightAnswer2", letter: "B" },
-        { id: "option3", rightAnswerNo: "rightAnswer3", letter: "C" },
-        { id: "option4", rightAnswerNo: "rightAnswer4", letter: "D" },
+        { id: "option1", rightAnswerNo: "rightAnswer1", letter: "TRUE" },
+        { id: "option2", rightAnswerNo: "rightAnswer2", letter: "FALSE" },
     ];
 
     const numberOfQuestions = [
@@ -186,20 +169,10 @@ function DevCreateAAE() {
         const option = e.currentTarget.dataset.option;
         const radio = e.currentTarget.dataset.radio;
 
-        let arr = [...AAEquestions];
+        let arr = [...AssignQuestions];
         arr.forEach((item) => {
             if (item.id == name) {
                 item.question = value;
-            }
-        });
-
-        arr.forEach((item, i) => {
-            if (item.id === option) {
-                item.options.map((val) => {
-                    if (val.id == name) {
-                        val.text = value;
-                    }
-                });
             }
         });
 
@@ -215,12 +188,12 @@ function DevCreateAAE() {
             }
         });
 
-        setAAEQuestions(arr);
+        setAssignQuestions(arr);
     };
 
     useEffect(() => {
         // Error Handling : filtering the questions.question if it has an empty string
-        let filterQuestion = AAEquestions.filter(
+        let filterQuestion = AssignQuestions.filter(
             (item) => item.question === ""
         );
 
@@ -230,20 +203,8 @@ function DevCreateAAE() {
             setQuestionError(false);
         }
 
-        //Error Handling : filtering the question.options[].text if it has an empty string
-        let filterText = AAEquestions.map((item, i) =>
-            item.options.filter((opt) => opt.text === "")
-        );
-        let filterTextAgain = filterText.filter((x) => x.length !== 0);
-
-        if (filterTextAgain.length !== 0) {
-            setTextError(true);
-        } else {
-            setTextError(false);
-        }
-
         //Error Handling : filtering the question.options[].isCorrect if it has an empty string
-        let filterIsCorrect = AAEquestions.map((item, i) =>
+        let filterIsCorrect = AssignQuestions.map((item, i) =>
             item.options.filter((opt) => opt.isCorrect === "")
         );
 
@@ -254,18 +215,14 @@ function DevCreateAAE() {
         } else {
             setIsCorrectError(false);
         }
-    }, [AAEquestions]);
+    }, [AssignQuestions]);
 
-    const SubmitQuizHandler = () => {
-        if (
-            questionError === true ||
-            textError === true ||
-            isCorrectError === true
-        ) {
+    const InputAnalysisHandler = () => {
+        if (questionError === true || isCorrectError === true) {
             console.log("ERROR");
             setError(true);
         } else {
-            console.log(AAEquestions);
+            console.log(AssignQuestions);
             setError(false);
         }
     };
@@ -290,7 +247,7 @@ function DevCreateAAE() {
                             className={`form-control ${
                                 error &&
                                 questionError &&
-                                AAEquestions[index].question === ""
+                                AssignQuestions[index].question === ""
                                     ? "errorInput"
                                     : ""
                             }`}
@@ -302,7 +259,7 @@ function DevCreateAAE() {
                             }}
                         />
                     </div>
-                    <div className="row gx-4 gy-2">
+                    <div className="d-block d-sm-flex">
                         {multipleChoiceHandler(
                             questionNumber,
                             radioNumber,
@@ -317,58 +274,56 @@ function DevCreateAAE() {
     // Mapping Options for optimization
     const multipleChoiceHandler = (questionNumber, radioNumber, index) => {
         return numberOfChoices.map((choice, i) => {
-            return (
-                <div className="col-xl-6 mb-3" key={choice.id}>
-                    <div className="d-flex">
+            const choiceLetterHandler = () => {
+                if (choice.letter == "TRUE") {
+                    return (
                         <label
-                            className="m-auto me-2 fw-semibold"
+                            className="DevTrueChoices my-auto fw-semibold"
                             htmlFor={choice.letter}
                         >
-                            {choice.letter}.
+                            {choice.letter}
                         </label>
-                        <div className="QuizChoicesContainer d-block d-sm-flex input-group">
-                            <input
-                                type="text"
-                                name={choice.id}
-                                className={`InputChoices form-control ${
-                                    error &&
-                                    textError &&
-                                    AAEquestions[index].options[i].text === ""
-                                        ? "errorInput"
-                                        : ""
-                                }`}
-                                data-option={questionNumber}
-                                onChange={setQuestionHandler}
-                            />
-                            <div
-                                className={`IsCorrectButton form-check input-group-text m-0 ${
-                                    error &&
-                                    isCorrectError &&
-                                    AAEquestions[index].options[i].isCorrect ===
-                                        ""
-                                        ? "errorInput"
-                                        : ""
-                                }`}
-                            >
-                                <input
-                                    className={`form-check-input me-1 ms-0 mt-0`}
-                                    type="radio"
-                                    name={radioNumber}
-                                    data-option={questionNumber}
-                                    data-radio={choice.id}
-                                    id={questionNumber + choice.rightAnswerNo}
-                                    onChange={setQuestionHandler}
-                                />
-                                <label
-                                    htmlFor={
-                                        questionNumber + choice.rightAnswerNo
-                                    }
-                                    className="form-check-label w-100 d-flex justify-content-start"
-                                >
-                                    Right Answer
-                                </label>
-                            </div>
-                        </div>
+                    );
+                } else {
+                    return (
+                        <label
+                            className="my-auto me-2 fw-semibold"
+                            htmlFor={choice.letter}
+                        >
+                            {choice.letter}
+                        </label>
+                    );
+                }
+            };
+
+            return (
+                <div className="d-flex mb-2 mb-sm-0" key={choice.id}>
+                    {choiceLetterHandler()}
+
+                    <div
+                        className={`form-check input-group-text my-0 me-3 ${
+                            error &&
+                            isCorrectError &&
+                            AssignQuestions[index].options[i].isCorrect === ""
+                                ? "errorInput"
+                                : ""
+                        }`}
+                    >
+                        <input
+                            className={`form-check-input me-2 ms-1 `}
+                            type="radio"
+                            name={radioNumber}
+                            data-option={questionNumber}
+                            data-radio={choice.id}
+                            id={questionNumber + choice.rightAnswerNo}
+                            onChange={setQuestionHandler}
+                        />
+                        <label
+                            htmlFor={questionNumber + choice.rightAnswerNo}
+                            className="form-check-label"
+                        >
+                            Right Answer
+                        </label>
                     </div>
                 </div>
             );
@@ -378,10 +333,8 @@ function DevCreateAAE() {
     // Render it all here
     return (
         <div className="mb-4 w-100">
-            <label className="fs-5 fw-semibold">
-                Application, Analysis, and Exploration
-            </label>
-            <div className="inputAnalysisContainer sm-shadow py-3 px-0 px-sm-3 px-xl-5">
+            <label className="fs-5 fw-semibold">Assignment</label>
+            <div className="p-3 inputAnalysisContainer">
                 {numberOfQuestionsHandler()}
                 <div className="d-flex justify-content-end">
                     <p className="my-auto me-3 fst-italic text-danger">
@@ -392,7 +345,7 @@ function DevCreateAAE() {
                     <button
                         type="button"
                         className="btn btn-primary btn-lg"
-                        onClick={SubmitQuizHandler}
+                        onClick={InputAnalysisHandler}
                     >
                         Submit
                     </button>
@@ -402,4 +355,4 @@ function DevCreateAAE() {
     );
 }
 
-export default DevCreateAAE;
+export default DevCreateAssignment;

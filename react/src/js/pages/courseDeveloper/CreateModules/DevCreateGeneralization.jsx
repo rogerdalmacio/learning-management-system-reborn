@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function DevCreatePrelimAct() {
+function DevCreateGeneralization() {
     const [item, setItem] = useState();
     const [error, setError] = useState(false);
 
@@ -8,7 +8,7 @@ function DevCreatePrelimAct() {
 
     return (
         <div className="DevModuleContentContainer">
-            <h4 className="mb-4">Preliminary Activity</h4>
+            <h4 className="mb-4">Generalization</h4>
             <div className="ms-3">
                 <label htmlFor="insertItem">
                     <h5 className="mb-3">Insert Google Docs Here:</h5>
@@ -51,4 +51,4 @@ function DevCreatePrelimAct() {
     );
 }
 
-export default DevCreatePrelimAct;
+export default DevCreateGeneralization;

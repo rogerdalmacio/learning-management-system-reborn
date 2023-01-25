@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function DevCreateAAE() {
+function DevCreateEvaluation() {
     // States
     const [AAEquestions, setAAEQuestions] = useState([
         {
@@ -378,9 +378,7 @@ function DevCreateAAE() {
     // Render it all here
     return (
         <div className="mb-4 w-100">
-            <label className="fs-5 fw-semibold">
-                Application, Analysis, and Exploration
-            </label>
+            <label className="fs-5 fw-semibold">Evaluation</label>
             <div className="inputAnalysisContainer sm-shadow py-3 px-0 px-sm-3 px-xl-5">
                 {numberOfQuestionsHandler()}
                 <div className="d-flex justify-content-end">
@@ -402,4 +400,4 @@ function DevCreateAAE() {
     );
 }
 
-export default DevCreateAAE;
+export default DevCreateEvaluation;

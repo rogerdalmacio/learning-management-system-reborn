@@ -63,7 +63,7 @@ const Layout = () => {
                     <SideNavbar openSidebar={openSidebar} />
 
                     <main className="home-section mx-3 bg-light rounded shadow w-100">
-                        <div className="p-3 w-100">
+                        <div className="p-3 p-sm-5 w-100">
                             <ToastContainer
                                 position="top-right"
                                 autoClose={3000}

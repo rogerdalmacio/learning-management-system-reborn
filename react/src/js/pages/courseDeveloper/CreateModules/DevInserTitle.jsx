@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function DevCreatePrelimAct() {
+function DevInsertTitle() {
     const [item, setItem] = useState();
     const [error, setError] = useState(false);
 
@@ -8,17 +8,10 @@ function DevCreatePrelimAct() {
 
     return (
         <div className="DevModuleContentContainer">
-            <h4 className="mb-4">Preliminary Activity</h4>
+            <h4 className="mb-4">Module Title</h4>
             <div className="ms-3">
                 <label htmlFor="insertItem">
-                    <h5 className="mb-3">Insert Google Docs Here:</h5>
-                    <p>
-                        Note:{" "}
-                        <span className="fst-italic">
-                            The file need to be publish to the web before
-                            uploading the link
-                        </span>
-                    </p>
+                    <h5 className="mb-3">Insert Module Title:</h5>
                 </label>
                 <input
                     type="text"
@@ -30,13 +23,6 @@ function DevCreatePrelimAct() {
                         setItem(e.target.value);
                     }}
                 />
-                <h5>Preview Document</h5>
-                {item && (
-                    <iframe
-                        className="createModuleIframe"
-                        src={`${item}?embedded=true`}
-                    ></iframe>
-                )}
                 <div className="row gutters mt-4 ">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div className="d-flex justify-content-end">
@@ -51,4 +37,4 @@ function DevCreatePrelimAct() {
     );
 }
 
-export default DevCreatePrelimAct;
+export default DevInsertTitle;

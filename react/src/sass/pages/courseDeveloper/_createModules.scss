@@ -26,10 +26,17 @@
         margin-bottom: 30px;
     }
 }
-.createModuleIframe {
+
+.DevModuleContentContainer {
     width: 100%;
-    max-width: 800px;
-    height: 100vh;
+    .createModuleIframe {
+        width: 100%;
+        max-width: 800px;
+        height: 100vh;
+    }
+}
+.DevTrueChoices {
+    margin-right: 8px !important;
 }
 
 @media screen and (max-width: 576px) {
@@ -39,5 +46,9 @@
     .QuizChoicesContainer .InputChoices {
         width: 100% !important;
         border-radius: 5px !important;
+    }
+
+    .DevTrueChoices {
+        margin-right: 15px !important;
     }
 }

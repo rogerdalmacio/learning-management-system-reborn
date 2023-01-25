@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-function DevCreateAAE() {
+function DevCreateExam() {
+    const { id } = useParams();
+
+    const ExamNewWord =
+        id[0].toUpperCase() +
+        id.slice(1).split("examination").join(" Examination");
+    console.log(ExamNewWord); // Output: "Preliminary Examination"
+
     // States
     const [AAEquestions, setAAEQuestions] = useState([
         {
@@ -378,9 +386,7 @@ function DevCreateAAE() {
     // Render it all here
     return (
         <div className="mb-4 w-100">
-            <label className="fs-5 fw-semibold">
-                Application, Analysis, and Exploration
-            </label>
+            <label className="fs-5 fw-semibold">{ExamNewWord}</label>
             <div className="inputAnalysisContainer sm-shadow py-3 px-0 px-sm-3 px-xl-5">
                 {numberOfQuestionsHandler()}
                 <div className="d-flex justify-content-end">
@@ -402,4 +408,4 @@ function DevCreateAAE() {
     );
 }
 
-export default DevCreateAAE;
+export default DevCreateExam;

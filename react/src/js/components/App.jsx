@@ -25,6 +25,11 @@ import DevAvailableModules from "../pages/courseDeveloper/AvailableCourse/DevAva
 import DevAvailableContent from "../pages/courseDeveloper/AvailableCourse/DevAvailableContent";
 import DevCreateAAE from "../pages/courseDeveloper/CreateModules/DevCreateAAE";
 import DevCreatePrelimAct from "../pages/courseDeveloper/CreateModules/DevCreatePrelimAct";
+import DevInserTitle from "../pages/courseDeveloper/CreateModules/DevInserTitle";
+import DevCreateGeneralization from "../pages/courseDeveloper/CreateModules/DevCreateGeneralization";
+import DevCreateEvaluation from "../pages/courseDeveloper/CreateModules/DevCreateEvaluation";
+import DevCreateAssignment from "../pages/courseDeveloper/CreateModules/DevCreateAssignment";
+import DevCreateExam from "../pages/courseDeveloper/CreateModules/DevCreateExam";
 
 // Student
 import StudentLayout from "./layouts/authenticatedLayout/StudentNavigationBar/StudentLayout";
@@ -148,6 +153,26 @@ function App() {
                     <Route
                         path="/developer/:id/modules/:id/preliminaryactivity"
                         element={<DevCreatePrelimAct />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/inserttitle"
+                        element={<DevInserTitle />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/generalization"
+                        element={<DevCreateGeneralization />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/evaluation"
+                        element={<DevCreateEvaluation />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/assignment"
+                        element={<DevCreateAssignment />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/:id"
+                        element={<DevCreateExam />}
                     />
                 </Route>
             </Route>
