@@ -82,7 +82,21 @@ class CDQuizController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        $quiz = Quiz::find($id);
+
+        $quiz->update([
+            'quiz_info' => $request['quiz_info'],
+            'preliminaries' => $request['preliminaries'],
+            'quiz_type' => $request['quiz_type']
+        ]);
+
+        $response = [
+            'Quiz Successfully updated' => $quiz
+        ];
+
+        return response($response, 201);
+
     }
 
     /**

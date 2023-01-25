@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->string('module_id')->foreign()->references('id')->on('modules');
+            $table->string('module_id')->foreign()->references('id')->on('modules')->onDelete('cascade');
             $table->string('preliminaries');
             $table->string('activity_type');
             $table->string('title');
-            $table->string('body');
+            $table->string('embed_links');
             $table->timestamps();
-        });
+        }); 
     }
 
     /**

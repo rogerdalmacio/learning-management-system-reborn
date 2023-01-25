@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->string('module_id')->foreign()->references('id')->on('modules');
+            $table->string('module_id')->foreign()->references('id')->on('modules')->onDelete('cascade');
             $table->json('quiz_info');
             $table->string('preliminaries');
             $table->string('quiz_type');

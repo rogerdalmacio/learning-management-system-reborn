@@ -80,7 +80,20 @@ class CDActivityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $activity = Activity::find($id);
+
+        $activity->update([
+            'title' => $request['title'],
+            'embed_link' => $request['embed_link']
+        ]);
+        
+        $response = [
+            'Activity successfully updated' => $activity
+        ];
+
+        return response($response, 201); 
+
     }
 
     /**

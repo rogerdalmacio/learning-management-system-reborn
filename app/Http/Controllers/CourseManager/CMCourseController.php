@@ -76,6 +76,7 @@ class CMCourseController extends Controller
             $module = Module::create([
                 'id' => $moduleId,
                 'course_id' => $course['id'],
+                'title' => '',
                 'week' => $moduleWeek,
                 'status' => 0,
             ]);
@@ -124,6 +125,19 @@ class CMCourseController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $course = Course::find($id);
+
+        $response = [
+            'Course Successfully deleted' => $course->course 
+        ];
+        
+        $course->lesson()->delete();
+        $course->activity()->delete();
+        $course->quiz()->delete();
+        $course->module()->delete();
+        $course->delete();
+
+        return response($response, 204);
     }
 }

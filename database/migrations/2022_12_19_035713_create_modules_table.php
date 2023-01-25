@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('modules', function (Blueprint $table) {
             $table->string('id')->primary()->unique();
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->string('title');
             $table->string('week');
             $table->boolean('status');
             $table->timestamps();

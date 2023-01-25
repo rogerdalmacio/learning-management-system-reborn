@@ -48,7 +48,15 @@ class CDCourseController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $course = Course::find($id);
+
+        $response = [
+            'Course' => $course
+        ];
+        
+        return response($response, 200);
+
     }
 
     /**

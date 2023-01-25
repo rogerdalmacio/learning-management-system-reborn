@@ -196,6 +196,6 @@ return [
     |
     */
 
-    'same_site' => "None"
+    'same_site' => "none"
 
 ];
