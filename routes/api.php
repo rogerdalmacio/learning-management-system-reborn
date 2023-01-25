@@ -20,6 +20,9 @@ use App\Http\Controllers\CourseDeveloper\CDCourseController;
 use App\Http\Controllers\CourseDeveloper\CDLessonController;
 use App\Http\Controllers\CourseDeveloper\CDModuleController;
 use App\Http\Controllers\CourseDeveloper\CDQuizController;
+use App\Http\Controllers\Teacher\QuizAttemptController;
+use App\Http\Controllers\Teacher\TCourseController;
+use App\Http\Controllers\Users\ChangePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +56,12 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
 Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:Teacher']], function(){
 
     Route::post('/computegrade', [GradesController::class, 'computeGrades']);
+
+    Route::post('/listofstudents', [ListOfStudentController::class, 'listOfStudents']);
+    
+    Route::delete('/deletequizattempt', [QuizAttemptController::class, 'deleteAttempt']);
+
+    Route::apiResource('course', TCourseController::class);
 
 });
 
@@ -130,6 +139,8 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
 Route::group(['prefix' => 'users', 'middleware' => ['auth:sanctum']], function(){
 
     Route::post('/uploadprofilepicture', [ProfilePictureController::class, 'uploadProfilePicture']);
+    Route::post('/changepassword', [ChangePasswordController::class, 'changePassword']);
+
     // Route::get('/fetchprofilepicture/{filename}', [ProfilePictureController::class, 'fetchProfilePicture']);
 
 });

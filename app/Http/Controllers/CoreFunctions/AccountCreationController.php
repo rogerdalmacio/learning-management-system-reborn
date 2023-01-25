@@ -4,20 +4,20 @@ namespace App\Http\Controllers\CoreFunctions;
 
 use Carbon\Carbon;
 use League\Csv\Reader;
+use App\Models\Users\Admin;
 use App\Models\Users\Student;
+use App\Models\Users\CourseManager;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Users\CourseDeveloper;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\Core\BatchCreateStudentRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleAdminRequest;
+use App\Http\Requests\Core\AccountCreationRequests\BatchCreateStudentRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleStudentRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleTeacherRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleCourseManagerRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleCourseDeveloperRequest;
-use App\Models\Users\Admin;
-use App\Models\Users\CourseDeveloper;
-use App\Models\Users\CourseManager;
 
 class AccountCreationController extends Controller
 {
@@ -72,9 +72,10 @@ class AccountCreationController extends Controller
                     'last_name' => $student['last_name'],
                     'email' => $email,
                     'password' => Hash::make($password),
-                    'departments' => $student['departments'],
-                    'section' => $student['section'],
-                    'year_level' => $student['year_level'],
+                    'year_and_section' => $student['year_and_section'],
+                    'major' => $student['major'],
+                    'department' => $student['department'],
+                    'program' => $student['program'],
                     'subjects' => '',
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
@@ -132,9 +133,10 @@ class AccountCreationController extends Controller
             'last_name' => $request['last_name'],
             'email' => $email,
             'password' => Hash::make($password),
-            'departments' => $request['departments'],
-            'section' => $request['section'],
-            'year_level' => $request['year_level'],
+            'year_and_section' => $request['year_and_section'],
+            'major' => $request['major'],
+            'department' => $request['department'],
+            'program' => $request['program'],
             'subjects' => '',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -248,11 +250,12 @@ class AccountCreationController extends Controller
             'id' => $request['id'],
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
-            'department' => $request['department'],
-            'subjects' => '',
-            'year_and_section' => '',
             'email' => $email,
             'password' => $password,
+            'department' => $request['department'],
+            'program' => $request['program'],
+            'year_and_section' => '',
+            'subjects' => '',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
