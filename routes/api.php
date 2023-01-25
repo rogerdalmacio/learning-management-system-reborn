@@ -23,6 +23,7 @@ use App\Http\Controllers\CourseDeveloper\CDQuizController;
 use App\Http\Controllers\Teacher\QuizAttemptController;
 use App\Http\Controllers\Teacher\TCourseController;
 use App\Http\Controllers\Users\ChangePasswordController;
+use App\Models\CoreFunctions\ExaminationGrant;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,9 +121,11 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
 //Admin Core
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Admin']], function(){
 
-    Route::apiResource('examgrant', ExamGrantingController::class);
     Route::apiResource('modulestatusupdate', ModuleStatusUpdateController::class);
     Route::apiResource('tagsubject', SubjectTaggingController::class);
+
+    Route::post('/batchgrantexam', [ExamGrantingController::class, 'batchExamGrant']);
+    Route::post('/singlegrantexam', [ExamGrantingController::class, 'singleExamGrant']);
 
     Route::post('/batchmoduleupdatestatus', [ModuleStatusUpdateController::class, 'editModuleStatus']);
     Route::post('/createannouncement', [AnnouncementsController::class, 'createAnnouncement']);

@@ -34,14 +34,8 @@ class CDQuizController extends Controller
             'quiz_type' == $request['quiz_type']
         ])->get();
 
-        $bool = 'True';
-
-        if($exist == '[]'){
-            $bool = 'False';
-        }
-
-        if($bool == 'True'){  
-            return response(['already exist'], 201);
+        if(!$exist == '[]'){
+            return response(['already exist'], 204);
         }
 
         Quiz::create($request->all());

@@ -47,13 +47,7 @@ class CMCourseController extends Controller
             ['department', '=', $request['department']] 
         ])->get();
 
-        $bool = 'True';
-
-        if($exist == '[]'){
-            $bool = 'False';
-        }
-
-        if($bool == 'True'){  
+        if(!$exist == '[]'){
             return response(['already exist'], 201);
         }
 
@@ -63,8 +57,6 @@ class CMCourseController extends Controller
             'department' => $request['department'],
             'approval' => $request['approval']
         ]);
-
-
 
         $moduleCount = $request['modules'];
         $moduleWeek = 1;

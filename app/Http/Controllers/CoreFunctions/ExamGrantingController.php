@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\CoreFunctions;
 
+use Carbon\Carbon;
 use League\Csv\Reader;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\Core\ExamGrantRequest;
 use App\Models\CoreFunctions\ExaminationGrant;
-use Carbon\Carbon;
+use App\Http\Requests\Core\SubjectTaggingRequests\ExamGrantRequest;
+use Illuminate\Http\Request;
 
 class ExamGrantingController extends Controller
 {
-    public function store(ExamGrantRequest $request){
+    public function batchExamGrant(ExamGrantRequest $request){
         
         try {
 
@@ -38,6 +39,13 @@ class ExamGrantingController extends Controller
             ];
 
             foreach($csv as $grant) {
+
+                $grantExists = ExaminationGrant::where('student_id', $grant['student_id'])
+                                ->where('preliminaries', $grant['preliminaries'])->get(); 
+
+                if(!$grantExists === '[]') {
+                    return response(['already exist'], 201);
+                }
 
                 $newGrant = [
                     'student_id' => $grant['student_id'],
@@ -78,7 +86,29 @@ class ExamGrantingController extends Controller
             'errors' => $errors
         ], 201);
 
+    }
 
+    public function singleExamGrant(Request $request) {
+
+        $request->validate([
+            'student_id' => 'required|unique:examination_grants',
+            'grant' => 'required',
+            'preliminaries' => 'required',
+        ]);
+
+        $grantExists = ExaminationGrant::where('student_id', $request['student_id'])
+                        ->where('preliminaries', $request['preliminaries'])->get(); 
+
+        if(!$grantExists === '[]') {
+            return response(['already exist'], 201);
+        }
+    
+        ExaminationGrant::create([
+            'student_id' => $request['student_id'],
+            'grant' => $request['grant'],
+            'preliminaries' => $request['preliminaries']
+        ]);
 
     }
+
 }

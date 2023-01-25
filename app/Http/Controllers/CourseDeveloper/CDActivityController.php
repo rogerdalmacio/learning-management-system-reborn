@@ -33,13 +33,7 @@ class CDActivityController extends Controller
             'activity_type' == $request['activity_type']
         ])->get();
 
-        $bool = 'True';
-
-        if($exist == '[]'){
-            $bool = 'False';
-        }
-
-        if($bool == 'True'){  
+        if(!$exist == '[]'){
             return response(['already exist'], 201);
         }
 

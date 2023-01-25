@@ -12,6 +12,12 @@ class QuizAttemptController extends Controller
     
     public function deleteAttempt(Request $request) {
 
+        $request->validate([
+            'student_id' => 'required',
+            'quiz_id' => 'required',
+            'quiz_type' => 'required'
+        ]);
+
         $attempt = QuizResult::where('student_id', $request['student_id'])
                     ->where('quiz_id', $request['quiz_id'])
                     ->where('quiz_type', $request['quiz_type'])
