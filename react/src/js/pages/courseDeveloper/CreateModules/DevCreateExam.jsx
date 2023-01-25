@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import DevCreateExamState from "./DevCreateExamState/DevCreateExamOptionsState";
+import numberOfQuestions from "./DevCreateExamState/DevCreateExamQuestionState";
 
 function DevCreateExam() {
     const { id } = useParams();
@@ -10,108 +12,7 @@ function DevCreateExam() {
     console.log(ExamNewWord); // Output: "Preliminary Examination"
 
     // States
-    const [AAEquestions, setAAEQuestions] = useState([
-        {
-            id: "question1",
-            question: "",
-            options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
-            ],
-        },
-        {
-            id: "question2",
-            question: "",
-            options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
-            ],
-        },
-        {
-            id: "question3",
-            question: "",
-            options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
-            ],
-        },
-        {
-            id: "question4",
-            question: "",
-            options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
-            ],
-        },
-        {
-            id: "question5",
-            question: "",
-            options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
-            ],
-        },
-        {
-            id: "question6",
-            question: "",
-            options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
-            ],
-        },
-        {
-            id: "question7",
-            question: "",
-            options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
-            ],
-        },
-        {
-            id: "question8",
-            question: "",
-            options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
-            ],
-        },
-        {
-            id: "question9",
-            question: "",
-            options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
-            ],
-        },
-        {
-            id: "question10",
-            question: "",
-            options: [
-                { id: "option1", text: "", isCorrect: "" },
-                { id: "option2", text: "", isCorrect: "" },
-                { id: "option3", text: "", isCorrect: "" },
-                { id: "option4", text: "", isCorrect: "" },
-            ],
-        },
-    ]);
+    const [AAEquestions, setAAEQuestions] = useState(DevCreateExamState);
     const [error, setError] = useState(false);
 
     const [questionError, setQuestionError] = useState();
@@ -123,69 +24,6 @@ function DevCreateExam() {
         { id: "option2", rightAnswerNo: "rightAnswer2", letter: "B" },
         { id: "option3", rightAnswerNo: "rightAnswer3", letter: "C" },
         { id: "option4", rightAnswerNo: "rightAnswer4", letter: "D" },
-    ];
-
-    const numberOfQuestions = [
-        {
-            id: 0,
-            question: "Question 1",
-            questionNumber: "question1",
-            radio: "radio1",
-        },
-        {
-            id: 1,
-            question: "Question 2",
-            questionNumber: "question2",
-            radio: "radio2",
-        },
-        {
-            id: 2,
-            question: "Question 3",
-            questionNumber: "question3",
-            radio: "radio3",
-        },
-        {
-            id: 3,
-            question: "Question 4",
-            questionNumber: "question4",
-            radio: "radio4",
-        },
-        {
-            id: 4,
-            question: "Question 5",
-            questionNumber: "question5",
-            radio: "radio5",
-        },
-        {
-            id: 5,
-            question: "Question 6",
-            questionNumber: "question6",
-            radio: "radio6",
-        },
-        {
-            id: 6,
-            question: "Question 7",
-            questionNumber: "question7",
-            radio: "radio7",
-        },
-        {
-            id: 7,
-            question: "Question 8",
-            questionNumber: "question8",
-            radio: "radio8",
-        },
-        {
-            id: 8,
-            question: "Question 9",
-            questionNumber: "question9",
-            radio: "radio9",
-        },
-        {
-            id: 9,
-            question: "Question 10",
-            questionNumber: "question10",
-            radio: "radio10",
-        },
     ];
 
     const setQuestionHandler = (e) => {
@@ -257,7 +95,7 @@ function DevCreateExam() {
 
         let filterIsCorrectAgain = filterIsCorrect.filter((x) => x.length == 0);
 
-        if (filterIsCorrectAgain.length !== 10) {
+        if (filterIsCorrectAgain.length !== 50) {
             setIsCorrectError(true);
         } else {
             setIsCorrectError(false);

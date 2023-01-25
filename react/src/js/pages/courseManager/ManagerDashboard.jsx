@@ -18,7 +18,6 @@ function ManagerDashboard() {
         modules: 18,
     });
 
-
     const SubmitCourseHandler = (e) => {
         e.preventDefault();
 
@@ -44,6 +43,7 @@ function ManagerDashboard() {
                     }
                 )
                 .then((response) => {
+                    console.log(response);
                     if (
                         response.status >= 200 &&
                         response.status < 300 &&
@@ -63,6 +63,7 @@ function ManagerDashboard() {
                     }
                 })
                 .catch((error) => {
+                    console.log(error);
                     toast.update(toastId, {
                         render: `${error.message}`,
                         type: toast.TYPE.ERROR,

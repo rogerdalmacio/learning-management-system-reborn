@@ -14,7 +14,6 @@ function FileUpload() {
         setFile(e.target.files[0]);
     };
 
-
     useEffect(() => {
         if (file && file.size > 26214400) {
             setSubmitFile(false);
@@ -30,59 +29,58 @@ function FileUpload() {
 
         let toastId;
 
-        try {
-            if (!file) {
-                toast.error("Please Choose your File First");
-                return;
-            } else if (file.size > 26214400) {
-                toast.error("The file must not be exceeded to 25 MB");
-            } else if (file.type !== "text/csv") {
-                toast.error("The file must be in a CSV format");
-            } else {
-                const formData = new FormData();
-                formData.append("file", file);
+        if (!file) {
+            toast.error("Please Choose your File First");
+            return;
+        } else if (file.size > 26214400) {
+            toast.error("The file must not be exceeded to 25 MB");
+        } else if (file.type !== "text/csv") {
+            toast.error("The file must be in a CSV format");
+        } else {
+            const formData = new FormData();
+            formData.append("files", file);
 
+            toastId = toast.info("Sending Request...");
 
-                toastId = toast.info("Sending Request...");
-
-                axios
-                    .post(
-                        `${
-                            import.meta.env.VITE_API_BASE_URL
-                        }/api/core/createaccount`,
-                        formData,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                "Content-Type": "application/json",
-                                Accept: "application/json",
-                            },
-                        }
-                    )
-                    .then((response) => {
-                        if (response.status >= 200 && response.status < 300) {
-                            toast.update(toastId, {
-                                render: "Request Successfully",
-                                type: toast.TYPE.SUCCESS,
-                                autoClose: 2000,
-                            });
-                            setSubmitFile(true);
-                            setProcessing(false);
-                        } else {
-                            throw new Error(
-                                response.status || "Something Went Wrong!"
-                            );
-                        }
+            axios
+                .post(
+                    `${
+                        import.meta.env.VITE_API_BASE_URL
+                    }/api/core/batchcreatestudents`,
+                    formData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+                    }
+                )
+                .then((response) => {
+                    if (response.status >= 200 && response.status <= 300) {
+                        toast.update(toastId, {
+                            render: "Request Successfully",
+                            type: toast.TYPE.SUCCESS,
+                            autoClose: 2000,
+                        });
+                        setSubmitFile(true);
+                        setProcessing(false);
+                    } else {
+                        throw new Error(
+                            response.status || "Something Went Wrong!"
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toast.update(toastId, {
+                        render: `${error.message}`,
+                        type: toast.TYPE.ERROR,
+                        autoClose: 2000,
                     });
-            }
-        } catch (error) {
-            setProcessing(false);
-            setSubmitFile(false);
-            toast.update(toastId, {
-                render: `${error.message}`,
-                type: toast.TYPE.ERROR,
-                autoClose: 2000,
-            });
+                    setProcessing(false);
+                    setSubmitFile(false);
+                });
         }
     };
 

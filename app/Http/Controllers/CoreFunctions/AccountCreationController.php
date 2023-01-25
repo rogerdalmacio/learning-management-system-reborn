@@ -56,10 +56,7 @@ class AccountCreationController extends Controller
                 ],
                 'program' => [
                     'required',
-                ],
-                'subjects' => [
-                    'required',
-                ],
+                ]
             ];
         
             foreach ($csv as $student) {
