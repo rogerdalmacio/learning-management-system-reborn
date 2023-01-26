@@ -6,8 +6,9 @@ const GetAvailableCourseContext = createContext({});
 export const GetAvailableCourseProvider = ({ children }) => {
     const { token, role } = useAuth();
 
-
     const [course, setCourse] = useState();
+
+    console.log(course);
 
     useEffect(() => {
         const renderCourse = async () => {

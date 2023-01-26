@@ -28,10 +28,10 @@ class CDActivityController extends Controller
     public function store(ActivityRequest $request)
     {
 
-        $exist = Activity::where([
-            'module_id' == $request['module_id'],
-            'activity_type' == $request['activity_type']
-        ])->get();
+        $exist = Activity::where('module_id', $request['module_id'])
+                ->where('activity_type', $request['activity_type'])
+                ->get();
+
 
         if(!$exist == '[]'){
             return response(['already exist'], 201);
@@ -79,7 +79,7 @@ class CDActivityController extends Controller
 
         $activity->update([
             'title' => $request['title'],
-            'embed_link' => $request['embed_link']
+            'embed_links' => $request['embed_link']
         ]);
         
         $response = [

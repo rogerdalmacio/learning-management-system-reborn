@@ -28,11 +28,13 @@ class CDQuizController extends Controller
 
     public function store(QuizRequest $request)
     {
+        
+        // return $request['quiz_info'];
 
-        $exist = Quiz::where([
-            'module_id' == $request['module_id'],
-            'quiz_type' == $request['quiz_type']
-        ])->get();
+        $exist = Quiz::where('module_id', $request['module_id'])
+                ->where('quiz_type', $request['quiz_type'])
+                ->get();
+
 
         if(!$exist == '[]'){
             return response(['already exist'], 204);

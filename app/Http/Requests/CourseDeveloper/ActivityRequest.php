@@ -28,7 +28,7 @@ class ActivityRequest extends FormRequest
             'preliminaries' => 'required',
             'activity_type' => 'required',
             'title' => 'required',
-            'body' => 'required',
+            'embed_links' => 'required',
         ];
     }
 }

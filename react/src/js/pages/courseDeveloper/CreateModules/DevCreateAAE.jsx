@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from "react";
+import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
+import { useParams } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 
 function DevCreateAAE() {
     // States
+
+    const { course } = useGetAvailableCourse();
+    const { token } = useAuth();
+
+    const [moduleId, setModuleId] = useState();
+    const [term, setTerm] = useState();
+
     const [AAEquestions, setAAEQuestions] = useState([
         {
             id: "question1",
@@ -180,6 +190,114 @@ function DevCreateAAE() {
         },
     ];
 
+    const { id } = useParams();
+
+    console.log(moduleId);
+
+    // Course Title
+    const pathname = window.location.pathname;
+    const pathArray = pathname.split("/");
+    const courseBase = pathArray[2];
+    const courseTitle = courseBase.replace(/%20/g, " ");
+    console.log(courseTitle);
+
+    // WEEK number
+    const weekNumber = id.match(/\d+/)[0];
+    console.log(weekNumber);
+
+    useEffect(() => {
+        if (course) {
+            return course.map((item) => {
+                if (item.course == courseTitle) {
+                    item.module.map((mod) => {
+                        if (mod.week == weekNumber) {
+                            setModuleId(mod.id);
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    // Term
+    useEffect(() => {
+        if (weekNumber >= 12) {
+            setTerm("finals");
+        } else if (weekNumber >= 6) {
+            setTerm("midterm");
+        } else {
+            setTerm("prelim");
+        }
+    });
+
+    // QUIZ SUMBITTION
+    // const SubmitActivityHandler = async (e) => {
+    //     e.preventDefault();
+    //     let activity = {
+    //         module_id: moduleId,
+    //         quiz_type: "AAE",
+    //         preliminaries: term,
+    //         quiz_info: AAEquestions,
+    //     };
+
+    //     console.log(activity);
+    //     await axios
+    //         .post(
+    //             `${
+    //                 import.meta.env.VITE_API_BASE_URL
+    //             }/api/coursedeveloper/activity`,
+    //             activity,
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                     "Content-Type": "application/json",
+    //                     Accept: "application/json",
+    //                 },
+    //             }
+    //         )
+    //         .then((response) => {
+    //             console.log(response);
+    //         });
+    // };
+    const SubmitQuizHandler = async () => {
+        if (
+            questionError === true ||
+            textError === true ||
+            isCorrectError === true
+        ) {
+            console.log("ERROR");
+            setError(true);
+        } else {
+            console.log(AAEquestions);
+            setError(false);
+            let activity = {
+                module_id: moduleId,
+                quiz_type: "AAE",
+                preliminaries: term,
+                quiz_info: AAEquestions,
+            };
+
+            console.log(activity);
+            await axios
+                .post(
+                    `${
+                        import.meta.env.VITE_API_BASE_URL
+                    }/api/coursedeveloper/quiz`,
+                    activity,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+                    }
+                )
+                .then((response) => {
+                    console.log(response);
+                });
+        }
+    };
+
     const setQuestionHandler = (e) => {
         const { name, value } = e.target;
 
@@ -255,20 +373,6 @@ function DevCreateAAE() {
             setIsCorrectError(false);
         }
     }, [AAEquestions]);
-
-    const SubmitQuizHandler = () => {
-        if (
-            questionError === true ||
-            textError === true ||
-            isCorrectError === true
-        ) {
-            console.log("ERROR");
-            setError(true);
-        } else {
-            console.log(AAEquestions);
-            setError(false);
-        }
-    };
 
     // Mapping Question for optimization
     const numberOfQuestionsHandler = () => {

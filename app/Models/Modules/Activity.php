@@ -15,7 +15,7 @@ class Activity extends Model
         'preliminaries',
         'activity_type',
         'title',
-        'body',
+        'embed_links',
     ];
 
     public function module(){
