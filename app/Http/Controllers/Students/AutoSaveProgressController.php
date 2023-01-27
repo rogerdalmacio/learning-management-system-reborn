@@ -2,29 +2,78 @@
 
 namespace App\Http\Controllers\Students;
 
+use PDO;
+use App\Models\Modules\Quiz;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Students\AutoSaveProgress;
-use App\Http\Requests\Student\AutoSaveProgressRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Students\AutoSaveProgress;
+use App\Http\Requests\Student\UpdateProgressRequest;
+use App\Http\Requests\Student\AutoSaveProgressRequest;
+use App\Models\Students\QuizResult;
 
 class AutoSaveProgressController extends Controller
 {
 
-    public function fetchProgress(Request $request) {
+    public function fetchProgress() {
 
         $userId = Auth::user()->id;
 
-        $quizType = $request['quiz_type'];
-        $quizId = $request['quiz_id'];
+        $autoSavedProgress = AutoSaveProgress::where('student_id', $userId)->get();
 
-        $autoSavedProgress = AutoSaveProgress::where('student_id', $userId)
-                            ->where('quiz_id', $quizId)
-                            ->where('quiz_type', $quizType)
-                            ->get();
+        foreach($autoSavedProgress as $progress){
+
+            if($progress['start_time'] >= $progress['end_time']) {
+
+                $startTime = $progress['start_time'];
+
+                $endTime = $progress['end_time'];
+        
+                $timeFinished = $progress['time_finished'];
+
+                $timeElapsed = $endTime - $timeFinished;
+
+                $quiz = Quiz::find($progress['id']);
+
+                $answerKeys = explode("|", $quiz->answers);
+
+                $numberOfItems = count($answerKeys);
+                
+                $answers = explode("|", $progress->answers);
+
+                $wrongAnswers = array_diff($answers, $answerKeys);
+
+                $numberOfWrongItems = count($wrongAnswers);
+
+                $score = $numberOfItems - $numberOfWrongItems;
+                
+                $quizResult = QuizResult::create([
+                    'student_id' => $progress['student_id'],
+                    'quiz_id' => $progress['quiz_id'],
+                    'module_id' => $progress['module_id'],
+                    'preliminaries' => $progress['preliminaries'],
+                    'quiz_type' => $progress['quiz_type'],
+                    'attempt' => $progress['attempt'],
+                    'score' => $score,
+                    'logs' => $progress['logs'],
+                    'snapshot' => $progress['snapshot'],
+                    'time_elapsed' => $timeElapsed
+                ]);
+
+                $response = [
+                    'quiz submitted' => $quizResult
+                ];
+
+                return response($response, 201);
+
+            }
+
+        }
+
+        $sorted = $autoSavedProgress->sortBy('start_time');
 
         $response = [
-            'progress' => $autoSavedProgress
+            'progress' => $sorted
         ];
 
         return response($response, 200);
@@ -39,7 +88,7 @@ class AutoSaveProgressController extends Controller
      */
     public function saveProgress(AutoSaveProgressRequest $request)
     {
-        
+
         $autoSave = AutoSaveProgress::create($request->all());
 
         $response = [
@@ -57,7 +106,7 @@ class AutoSaveProgressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateProgress(Request $request)
+    public function updateProgress(UpdateProgressRequest $request)
     {
 
         $autoSave = AutoSaveProgress::where([

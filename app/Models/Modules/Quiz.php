@@ -12,9 +12,11 @@ class Quiz extends Model
 
     protected $fillable = [
         'module_id',
-        'quiz_info',
         'preliminaries',
         'quiz_type',
+        'questions',
+        'answers',
+        'options'
     ];
 
     public function module(){

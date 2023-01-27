@@ -16,9 +16,11 @@ return new class extends Migration
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
             $table->string('module_id')->foreign()->references('id')->on('modules')->onDelete('cascade');
-            $table->json('quiz_info');
             $table->string('preliminaries');
             $table->string('quiz_type');
+            $table->string('questions');
+            $table->string('answers');
+            $table->string('options');
             $table->timestamps();
         });
     }

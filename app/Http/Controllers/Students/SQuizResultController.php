@@ -31,21 +31,35 @@ class QuizResultController extends Controller
 
         $user = Auth::user();
 
+        $userId = $user->id;
+
         $startTime = $request['start_time'];
 
         $endTime = $request['end_time'];
 
+        $timeFinished = $request['time_finished'];
+
+        $timeElapsed = $endTime - $timeFinished;
+
         // create function for checking task
-
-        if($startTime >= $endTime) {
-
-        }
 
         $quizType = $request['quiz_type'];
 
         $quizId = $request['quiz_id'];
 
-        $userId = $user->id;
+        $quiz = Quiz::find($quizId);
+
+        $answerKeys = explode("|", $quiz->answers);
+
+        $numberOfItems = count($answerKeys);
+
+        $answers = explode("|", $request['answers']);
+
+        $wrongItems = array_diff($answers, $answerKeys);
+        
+        $numberOfWrongItems = count($wrongItems);
+        
+        $score = $numberOfItems - $numberOfWrongItems;
 
         $extension = $request->file('file')->getClientOriginalExtension();
 
@@ -65,14 +79,14 @@ class QuizResultController extends Controller
             'preliminaries' => $request['preliminaries'],
             'quiz_type' => $request['quiz_type'],
             'attempt' => $request['attempt'],
-            'score' => $request['score'],
+            'score' => $score,
             'logs' => $request['logs'],
             'snapshot' => $request['snapshot'],
-            'time_elapsed' => $request['time_elapsed']
+            'time_elapsed' => $timeElapsed
         ]);
 
         $response = [
-            'Activity Result' => $quizResult,
+            'quiz result' => $quizResult,
             'Snapshot' => $path
         ];
 

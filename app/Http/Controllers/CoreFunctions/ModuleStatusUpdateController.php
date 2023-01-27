@@ -10,26 +10,29 @@ class ModuleStatusUpdateController extends Controller
 {
     public function editModuleStatus(Request $request) {
 
-        $modulesArr = [];
+        // $modulesArr = [];
         $modules = Module::where('week', $request['week'])->get();
 
-        foreach($modules as $module) {
+        $modules->update(['status' => $request['status']]);
 
-            $modulesArr[] = $module->id;
+        // foreach($modules as $module) {
 
-        }
+        //     $modulesArr[] = $module->id;
 
-        $chunks = array_chunk($modulesArr, 100);
+        // }
 
-        foreach($chunks as $chunk) {
-            Module::whereIn('id', $chunk)->update(['status' => $request['status']]);
-        }
+        // $chunks = array_chunk($modulesArr, 100);
+
+        // foreach($chunks as $chunk) {
+        //     Module::whereIn('id', $chunk)->update(['status' => $request['status']]);
+        // }
 
         $response = [
-            'Module status updated: ' => $modulesArr,
+            'Module status updated: ' => $modules,
         ];
 
         return response($response, 201);
 
     }   
 }
+    
