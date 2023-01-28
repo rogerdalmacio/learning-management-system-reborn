@@ -27,7 +27,7 @@ return new class extends Migration
             $table->boolean('snapshot');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
-            $table->timestamps();
+            $table->timestamps();   
         });
     }
 
