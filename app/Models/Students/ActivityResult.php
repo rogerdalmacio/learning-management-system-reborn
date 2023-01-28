@@ -10,6 +10,15 @@ class ActivityResult extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'student_id',
+        'activity_id',
+        'module_id',
+        'terms',
+        'attempt',
+        'score'
+    ];
+
     public function student(){
         return $this->belongsTo(Student::class);    
     }

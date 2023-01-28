@@ -12,6 +12,7 @@ class ToDoList extends Model
 
     protected $fillable = [
         'course_developer_id',
+        'course_id',
         'title',
         'message',
         'status',

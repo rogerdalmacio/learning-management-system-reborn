@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('module_id')->foreign()->references('id')->on('modules')->onDelete('cascade');
             $table->string('preliminaries');
             $table->string('quiz_type');
-            $table->string('questions');
-            $table->string('answers');
-            $table->string('options');
+            $table->text('questions');
+            $table->text('answers');
+            $table->text('options');
             $table->timestamps();
         });
     }

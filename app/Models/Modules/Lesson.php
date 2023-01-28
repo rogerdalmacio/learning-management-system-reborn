@@ -14,7 +14,6 @@ class Lesson extends Model
         'module_id',
         'preliminaries',
         'title',
-        'body',
         'embed_links',
     ];
     

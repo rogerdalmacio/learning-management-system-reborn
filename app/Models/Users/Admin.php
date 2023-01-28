@@ -21,10 +21,10 @@ class Admin extends Model
     protected $guard = 'Admin';
 
     protected $fillable = [
-    'first_name',
-    'last_name',
-    'email',
-    'password',
+        'first_name',
+        'last_name',
+        'email',
+        'password',
     ];
 
     /**
@@ -33,8 +33,8 @@ class Admin extends Model
     * @var array<int, string>
     */
     protected $hidden = [
-    'password',
-    'remember_token',
+        'password',
+        'remember_token',
     ];
 
 
@@ -44,18 +44,18 @@ class Admin extends Model
     * @var array<string, string>
     */
     protected $casts = [
-    'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime',
     ];
 
     public function usertype() {
 
-    return 'Admin';
+        return 'Admin';
 
     }
 
     public function getAuthPassword() {
 
-    return $this->password;
+        return $this->password;
 
     }
 
