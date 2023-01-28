@@ -7,7 +7,7 @@ use App\Models\Modules\Quiz;
 use Illuminate\Http\Request;
 
 
-class QuizController extends Controller
+class SQuizController extends Controller
 {
         //  /**
     //  * Display a listing of the resource.

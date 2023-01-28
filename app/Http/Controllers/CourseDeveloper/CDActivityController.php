@@ -75,6 +75,11 @@ class CDActivityController extends Controller
     public function update(Request $request, $id)
     {
 
+        $request->validate([
+            'title' => 'required',
+            'embed_link' => 'required' 
+        ]);
+
         $activity = Activity::find($id);
 
         $activity->update([

@@ -5,25 +5,25 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Students\ActivityResult;
 use App\Models\Students\AutoSaveProgress;
 use App\Http\Controllers\Users\UserController;
-use App\Http\Controllers\Modules\LessonController;
 use App\Http\Controllers\Teacher\GradesController;
+use App\Http\Controllers\Teacher\TCourseController;
+use App\Http\Controllers\Students\SCourseController;
+use App\Http\Controllers\Students\SLessonController;
+use App\Http\Controllers\Teacher\QuizAttemptController;
+use App\Http\Controllers\Users\ChangePasswordController;
 use App\Http\Controllers\Users\ProfilePictureController;
+use App\Http\Controllers\CourseDeveloper\CDQuizController;
 use App\Http\Controllers\CourseManager\CMCourseController;
+use App\Http\Controllers\CourseDeveloper\CDCourseController;
+use App\Http\Controllers\CourseDeveloper\CDLessonController;
+use App\Http\Controllers\CourseDeveloper\CDModuleController;
 use App\Http\Controllers\CourseManager\CMToDoListController;
 use App\Http\Controllers\CoreFunctions\ExamGrantingController;
+use App\Http\Controllers\CourseDeveloper\CDActivityController;
 use App\Http\Controllers\CoreFunctions\AnnouncementsController;
 use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
-use App\Http\Controllers\CourseDeveloper\CDActivityController;
-use App\Http\Controllers\CourseDeveloper\CDCourseController;
-use App\Http\Controllers\CourseDeveloper\CDLessonController;
-use App\Http\Controllers\CourseDeveloper\CDModuleController;
-use App\Http\Controllers\CourseDeveloper\CDQuizController;
-use App\Http\Controllers\Teacher\QuizAttemptController;
-use App\Http\Controllers\Teacher\TCourseController;
-use App\Http\Controllers\Users\ChangePasswordController;
-use App\Models\CoreFunctions\ExaminationGrant;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,8 +46,8 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
     // auto save feature
     Route::apiResource('autosave', AutoSaveProgress::class);
 
-    Route::apiResource('courses', CourseController::class);
-    Route::apiResource('lesson', LessonController::class);
+    Route::apiResource('courses', SCourseController::class);
+    Route::apiResource('lesson', SLessonController::class);
     Route::apiResource('activityresult', ActivityResult::class);
     Route::apiResource('quizresult', QuizResult::class);
 

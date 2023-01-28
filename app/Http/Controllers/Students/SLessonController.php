@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Modules\Lesson;
 use Illuminate\Support\Facades\Auth;
 
-class LessonController extends Controller
+class SLessonController extends Controller
 {
     /**
      * Display a listing of the resource.

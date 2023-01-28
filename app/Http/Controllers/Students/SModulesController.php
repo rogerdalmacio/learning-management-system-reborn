@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Modules\Module;
 use Illuminate\Http\Request;
 
-class ModulesController extends Controller
+class SModulesController extends Controller
 {
     //  /**
     //  * Display a listing of the resource.

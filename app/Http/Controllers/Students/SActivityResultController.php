@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Students\ActivityResult;
 use App\Http\Requests\Student\ActivityResultRequest;
 
-class ActivityResultController extends Controller
+class SActivityResultController extends Controller
 {
             //  /**
     //  * Display a listing of the resource.

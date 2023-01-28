@@ -10,6 +10,11 @@ class ModuleStatusUpdateController extends Controller
 {
     public function editModuleStatus(Request $request) {
 
+        $request->validate([
+            'week' => 'required',
+            'status' => 'required'
+        ]);
+
         // $modulesArr = [];
         $modules = Module::where('week', $request['week'])->get();
 

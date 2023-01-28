@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Modules\Activity;
 use Illuminate\Support\Facades\Auth;
 
-class ActivityController extends Controller
+class SActivityController extends Controller
 {
     
     // /**
