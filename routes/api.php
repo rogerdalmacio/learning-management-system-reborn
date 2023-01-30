@@ -51,11 +51,12 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
 
     Route::apiResource('courses', SCourseController::class);
     Route::apiResource('lesson', SLessonController::class);
-    Route::apiResource('activityresult', ActivityResult::class);
-    Route::apiResource('quizresult', QuizResult::class);
     Route::apiResource('activity', SActivityController::class);
     Route::apiResource('quiz', SQuizController::class);
     Route::apiResource('module', SModulesController::class);
+
+    Route::apiResource('activityresult', ActivityResult::class);
+    Route::apiResource('quizresult', QuizResult::class);
 
 });
 
