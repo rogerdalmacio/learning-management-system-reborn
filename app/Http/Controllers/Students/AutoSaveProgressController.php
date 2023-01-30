@@ -11,6 +11,7 @@ use App\Models\Students\AutoSaveProgress;
 use App\Http\Requests\Student\UpdateProgressRequest;
 use App\Http\Requests\Student\AutoSaveProgressRequest;
 use App\Models\Students\QuizResult;
+use Carbon\Carbon;
 
 class AutoSaveProgressController extends Controller
 {
@@ -23,13 +24,13 @@ class AutoSaveProgressController extends Controller
 
         foreach($autoSavedProgress as $progress){
 
-            if($progress['start_time'] >= $progress['end_time']) {
+            if($progress['start_time'] > $progress['end_time']) {
 
                 $startTime = $progress['start_time'];
 
                 $endTime = $progress['end_time'];
         
-                $timeFinished = $progress['time_finished'];
+                $timeFinished = Carbon::now();
 
                 $timeElapsed = $endTime - $timeFinished;
 
@@ -61,7 +62,7 @@ class AutoSaveProgressController extends Controller
                 ]);
 
                 $response = [
-                    'quiz submitted' => $quizResult
+                    'time passed! Quiz submitted' => $quizResult
                 ];
 
                 return response($response, 201);
@@ -98,7 +99,7 @@ class AutoSaveProgressController extends Controller
         return response($response, 201);
 
     }
-
+    
     /**
      * Update the specified resource in storage.
      *

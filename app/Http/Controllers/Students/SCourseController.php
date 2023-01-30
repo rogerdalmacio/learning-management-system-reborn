@@ -29,7 +29,7 @@ class SCourseController extends Controller
             'subjects' => $courses
         ];
 
-        return response($response, 201);
+        return response($response, 200);
         
     }
 

@@ -36,7 +36,7 @@ class CDQuizController extends Controller
                 ->get();
 
 
-        if(!$exist == '[]'){
+        if($exist->count() > 0){
             return response(['already exist'], 204);
         }
 
@@ -78,14 +78,16 @@ class CDQuizController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $request->validate([
+            'quiz_info' => 'sometimes',
+            'preliminaries' => 'sometimes',
+            'quiz_type' => 'sometimes',
+        ]);
         
         $quiz = Quiz::find($id);
 
-        $quiz->update([
-            'quiz_info' => $request['quiz_info'],
-            'preliminaries' => $request['preliminaries'],
-            'quiz_type' => $request['quiz_type']
-        ]);
+        $quiz->update([$request->all()]);
 
         $response = [
             'Quiz Successfully updated' => $quiz

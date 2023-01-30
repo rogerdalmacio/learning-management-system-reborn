@@ -216,7 +216,7 @@ class SubjectTaggingController extends Controller
 
         $userSubjects = $user->subjects;
 
-        if($userSubjects) {
+        if($userSubjects->count() > 0) {
 
             $error = [
                 'You can only tag single subject to a Course Developer',

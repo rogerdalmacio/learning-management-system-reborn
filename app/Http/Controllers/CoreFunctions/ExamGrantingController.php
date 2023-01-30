@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 
 class ExamGrantingController extends Controller
 {
+    
     public function batchExamGrant(ExamGrantRequest $request){
         
         try {
@@ -99,7 +100,7 @@ class ExamGrantingController extends Controller
         $grantExists = ExaminationGrant::where('student_id', $request['student_id'])
                         ->where('preliminaries', $request['preliminaries'])->get(); 
 
-        if(!$grantExists === '[]') {
+        if($grantExists->count() > 0) {
             return response(['already exist'], 201);
         }
     

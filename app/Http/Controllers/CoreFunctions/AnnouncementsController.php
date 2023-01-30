@@ -27,20 +27,15 @@ class AnnouncementsController extends Controller
     public function editAnnouncement(Request $request, $id) {
 
         $request->validate([
-            'title' => 'required',
-            'body' => 'required',
-            'status' => 'required|boolean',
-            'embed_link' => 'required',
+            'title' => 'sometimes',
+            'body' => 'sometimes',
+            'status' => 'sometimes|boolean',
+            'embed_link' => 'sometimes',
         ]);
 
         $announcement = Announcement::find($id);
 
-        $announcement->update([
-            'title' => $request['title'],
-            'body' => $request['body'],
-            'status' => $request['status'],
-            'embed_link' => $request['embed_link']
-        ]);
+        $announcement->update([$request->all()]);
 
         $response = [
             'Announcement Edited Succesfully: ' => $announcement,

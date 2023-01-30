@@ -42,12 +42,11 @@ class CMCourseController extends Controller
     public function store(CourseRequest $request)
     {
 
-        $exist = Course::where([
-            ['course', '=', $request['course']],
-            ['department', '=', $request['department']] 
-        ])->get();
+        $exist = Course::where('course', $request['course'])
+                ->where('department', $request['department'])
+                ->get();
 
-        if(!$exist == '[]'){
+        if(!$exist->count() > 0){
             return response(['already exist'], 201);
         }
 
@@ -106,7 +105,25 @@ class CMCourseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $request->validate([
+            'course' => 'sometimes|string',
+            'course_code' => 'sometimes|string',
+            'department' => 'sometimes|string',
+            'approval' => 'sometimes|boolean',
+            'modules' => 'sometimes|integer'
+        ]);
+        
+        $course = Course::find($id);
+
+        $course->update([$request->all()]);
+
+        $response = [
+            'Course updated' => $course
+        ];
+
+        return response($response, 204);
+
     }
 
     /**

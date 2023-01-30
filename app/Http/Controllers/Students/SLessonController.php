@@ -30,7 +30,7 @@ class SLessonController extends Controller
             'test'
         ];
 
-        return response($response, 201);
+        return response($response, 200);
         
     }
 

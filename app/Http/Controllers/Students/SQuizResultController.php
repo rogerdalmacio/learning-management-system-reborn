@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Students;
+use Carbon\Carbon;
 use App\Models\Modules\Quiz;
 use Illuminate\Http\Request;
 use App\Models\Students\QuizResult;
@@ -37,7 +38,7 @@ class SQuizResultController extends Controller
 
         $endTime = $request['end_time'];
 
-        $timeFinished = $request['time_finished'];
+        $timeFinished = Carbon::now();
 
         $timeElapsed = $endTime - $timeFinished;
 

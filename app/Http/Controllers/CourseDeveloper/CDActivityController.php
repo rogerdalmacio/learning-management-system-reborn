@@ -33,7 +33,7 @@ class CDActivityController extends Controller
                 ->get();
 
 
-        if(!$exist == '[]'){
+        if($exist->count() > 0){
             return response(['already exist'], 201);
         }
 
