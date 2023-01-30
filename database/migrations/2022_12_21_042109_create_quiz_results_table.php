@@ -24,8 +24,10 @@ return new class extends Migration
             $table->string('quiz_type');
             $table->string('attempt');
             $table->string('score')->nullable();
-            $table->string('logs');
-            $table->boolean('snapshot');
+            $table->string('logs')->nullable();
+            $table->boolean('snapshot')->nullable();
+            $table->dateTime('start_time');
+            $table->dateTime('end_time')->nullable();
             $table->dateTime('time_elapsed')->nullable();
             $table->timestamps();
         });

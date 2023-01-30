@@ -81,6 +81,8 @@ class SQuizResultController extends Controller
             'score' => $score,
             'logs' => $request['logs'],
             'snapshot' => $request['snapshot'],
+            'start_time' => $request['start_time'],
+            'end_time' => $request['snapshot'],
             'time_elapsed' => $timeElapsed
         ]);
 
