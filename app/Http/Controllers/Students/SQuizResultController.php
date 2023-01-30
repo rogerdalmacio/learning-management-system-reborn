@@ -42,8 +42,6 @@ class SQuizResultController extends Controller
 
         $timeElapsed = $endTime - $timeFinished;
 
-        // create function for checking task
-
         $quizType = $request['quiz_type'];
 
         $quizId = $request['quiz_id'];

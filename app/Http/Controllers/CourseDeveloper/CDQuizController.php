@@ -28,8 +28,6 @@ class CDQuizController extends Controller
 
     public function store(QuizRequest $request)
     {
-        
-        // return $request['quiz_info'];
 
         $exist = Quiz::where('module_id', $request['module_id'])
                 ->where('quiz_type', $request['quiz_type'])
@@ -80,7 +78,9 @@ class CDQuizController extends Controller
     {
 
         $request->validate([
-            'quiz_info' => 'sometimes',
+            'questions' => 'sometimes',
+            'answers'  => 'sometimes',
+            'options'  => 'sometimes',
             'preliminaries' => 'sometimes',
             'quiz_type' => 'sometimes',
         ]);

@@ -40,10 +40,15 @@ class SQuizController extends Controller
     public function show($id)
     {
 
-        $acitivty = Quiz::find($id);
+        $quiz = Quiz::find($id);
+
+        $questions = explode("|", $quiz->questions);
+
+        $options = explode("|", $quiz->options);
 
         $response = [
-            'Quiz' => $acitivty
+            $questions,
+            $options
         ];
 
         return response($response, 200);
