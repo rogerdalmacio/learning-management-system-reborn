@@ -10,15 +10,17 @@ export const StudContextProvider = ({ children }) => {
     const [activity, setActivity] = useState();
     const [module, setModule] = useState();
     const [week, setWeek] = useState();
+    const [lesson, setLesson] = useState();
+    const [weekLesson, setWeekLesson] = useState();
+    const [officialQuiz, setOfficialQuiz] = useState();
+    const [quiz, setQuiz] = useState();
+    const [weekQuiz, setWeekQuiz] = useState();
+    const [quizid, setQuizId] = useState();
 
     // const pathname = window.location.pathname;
     // const pathArray = pathname.split("/");
     // const courseBase = pathArray[4];
     // console.log(courseBase);
-    console.log(activity);
-    console.log(courses);
-    console.log(week);
-    console.log(module);
 
     useEffect(() => {
         const renderCourse = async () => {
@@ -63,7 +65,6 @@ export const StudContextProvider = ({ children }) => {
                         }
                     )
                     .then((response) => {
-                        console.log(response);
                         setModule(response.data.Module);
                     });
             }
@@ -73,13 +74,38 @@ export const StudContextProvider = ({ children }) => {
     }, [week]);
 
     useEffect(() => {
-        const renderActivity = async () => {
+        const renderLesson = async () => {
+            if (role === "student" && weekLesson) {
+                await axios
+                    .get(
+                        `${
+                            import.meta.env.VITE_API_BASE_URL
+                        }/api/student/lesson/${weekLesson}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json",
+                                Accept: "application/json",
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        setLesson(response.data.Lesson);
+                    });
+            }
+        };
+
+        renderLesson();
+    }, [weekLesson]);
+
+    useEffect(() => {
+        const renderQuiz = async () => {
             if (role === "student") {
                 await axios
                     .get(
                         `${
                             import.meta.env.VITE_API_BASE_URL
-                        }/api/student/lesson/${week}`,
+                        }/api/student/module/${weekQuiz}`,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -90,16 +116,55 @@ export const StudContextProvider = ({ children }) => {
                     )
                     .then((response) => {
                         console.log(response);
-                        setActivity(response.data);
+                        setQuiz(response.data.Module);
                     });
             }
         };
 
-        renderActivity();
-    }, []);
+        renderQuiz();
+    }, [weekQuiz]);
+
+    useEffect(() => {
+        const renderSpecificQuiz = async () => {
+            if (role === "student" && quizid) {
+                await axios
+                    .get(
+                        `${
+                            import.meta.env.VITE_API_BASE_URL
+                        }/api/student/quiz/${quizid}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json",
+                                Accept: "application/json",
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        console.log(response);
+                        setOfficialQuiz(response.data);
+                    });
+            }
+        };
+
+        renderSpecificQuiz();
+    }, [quizid]);
 
     return (
-        <StudentContext.Provider value={{ courses, setWeek, module, activity }}>
+        <StudentContext.Provider
+            value={{
+                courses,
+                setWeek,
+                setWeekLesson,
+                lesson,
+                module,
+                activity,
+                quiz,
+                setWeekQuiz,
+                setQuizId,
+                officialQuiz,
+            }}
+        >
             {children}
         </StudentContext.Provider>
     );

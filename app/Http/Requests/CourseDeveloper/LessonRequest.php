@@ -27,8 +27,7 @@ class LessonRequest extends FormRequest
             'module_id' => 'required',
             'preliminaries' => 'required',
             'title' => 'required',
-            'body' => 'required',
-            'embed_links' => 'sometimes',
+            'embed_links' => 'required',
         ];
     }
 }

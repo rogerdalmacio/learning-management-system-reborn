@@ -46,7 +46,7 @@ class CMCourseController extends Controller
                 ->where('department', $request['department'])
                 ->get();
 
-        if(!$exist->count() > 0){
+        if($exist->count() > 0){
             return response(['already exist'], 201);
         }
 

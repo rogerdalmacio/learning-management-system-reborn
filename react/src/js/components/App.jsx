@@ -41,6 +41,7 @@ import StudPrelimActivity from "../pages/student/AvailableModules/StudPrelimActi
 import StudGeneralization from "../pages/student/AvailableModules/StudGeneralization";
 import StudLesson from "../pages/student/AvailableModules/StudLesson";
 import StudAAE from "../pages/student/AvailableModules/StudAAE";
+import StudQuizAAE from "../pages/student/AvailableModules/AnotherTabForQuiz/StudQuizAAE";
 
 // Teacher
 import TeacherLayout from "./layouts/authenticatedLayout/TeacherNavigationBar/TeacherLayout";
@@ -73,6 +74,10 @@ function App() {
 
             {/* STUDENT */}
             <Route element={<RequireAuth allowedRoles={"student"} />}>
+                <Route
+                    path="/student/:id/modules/:id/aae/quiz"
+                    element={<StudQuizAAE />}
+                />
                 <Route element={<StudentLayout />}>
                     <Route path="/student/home" element={<Dashboard />}></Route>
                     <Route

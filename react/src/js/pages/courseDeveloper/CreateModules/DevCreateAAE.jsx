@@ -300,7 +300,7 @@ function DevCreateAAE() {
 
             let activity = {
                 module_id: moduleId,
-                quiz_type: "AAE",
+                quiz_type: "aae",
                 preliminaries: term,
                 questions: questions,
                 answers: correctAnswers,

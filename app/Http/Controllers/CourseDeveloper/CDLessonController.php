@@ -72,9 +72,9 @@ class CDLessonController extends Controller
     {
 
         $request->validate([
+            'module_id' => 'sometimes',
             'preliminaries' => 'sometimes',
             'title' => 'sometimes',
-            'body' => 'sometimes',
             'embed_links' => 'sometimes',
         ]);
         

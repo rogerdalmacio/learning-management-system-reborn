@@ -19,25 +19,6 @@ function StudAvailableContent() {
     const newWeek = id.replace("week", "WEEK ");
     const weekNumber = newWeek.match(/\d+/)[0];
 
-    // const weekMod = pathArray[4];
-    // const weekForModule = weekMod.match(/\d+/)[0];
-    // console.log(weekForModule);
-
-    // //getting module_id for modules
-    // useEffect(() => {
-    //     if (courses) {
-    //         courses.map((course) => {
-    //             if (course.course == courseTitle) {
-    //                 course.module.map((mod) => {
-    //                     if (mod.week == weekForModule) {
-    //                         setWeek(mod.id);
-    //                     }
-    //                 });
-    //             }
-    //         });
-    //     }
-    // });
-
     const NameOfExam = () => {
         if (weekNumber == 6) {
             return (
