@@ -25,9 +25,12 @@ class QuizRequest extends FormRequest
     {
         return [
             'module_id' => 'required',
-            'quiz_info' => 'required',
             'preliminaries' => 'required',
             'quiz_type' => 'required',
+            'questions' => 'required',
+            'answers'=> 'required',
+            'options'=> 'required',
+
         ];
     }
 }

@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 // SuperAdmin
@@ -30,16 +31,25 @@ import DevCreateGeneralization from "../pages/courseDeveloper/CreateModules/DevC
 import DevCreateEvaluation from "../pages/courseDeveloper/CreateModules/DevCreateEvaluation";
 import DevCreateAssignment from "../pages/courseDeveloper/CreateModules/DevCreateAssignment";
 import DevCreateExam from "../pages/courseDeveloper/CreateModules/DevCreateExam";
+import DevCreateLesson from "../pages/courseDeveloper/CreateModules/DevCreateLesson";
 
 // Student
 import StudentLayout from "./layouts/authenticatedLayout/StudentNavigationBar/StudentLayout";
 import Course from "../pages/student/Course";
 import Dashboard from "../pages/student/Dashboard";
+import StudPrelimActivity from "../pages/student/AvailableModules/StudPrelimActivity";
+import StudGeneralization from "../pages/student/AvailableModules/StudGeneralization";
+import StudLesson from "../pages/student/AvailableModules/StudLesson";
+import StudAAE from "../pages/student/AvailableModules/StudAAE";
 
 // Teacher
 import TeacherLayout from "./layouts/authenticatedLayout/TeacherNavigationBar/TeacherLayout";
 import TeachDashboard from "../pages/Teacher/TeachDashboard";
 import TeachEditProfile from "../pages/Teacher/TeachEditProfile";
+import StudEditProfile from "../pages/student/StudEditProfile";
+import StudAvailableSubjects from "../pages/student/AvailableCourse/StudAvailableSubjects";
+import StudAvailableModules from "../pages/student/AvailableCourse/StudAvailableModules";
+import StudAvailableContent from "../pages/student/AvailableCourse/StudAvailableContent";
 
 // Others
 import Login from "./authentication/Login";
@@ -47,9 +57,14 @@ import RequireAuth from "./authentication/RequireAuth";
 import NotRequireAuth from "./authentication/notRequireAuth";
 import UnAuthorized from "./layouts/unAuthorized";
 import Missing from "./layouts/Missing";
-import StudEditProfile from "../pages/student/StudEditProfile";
 
 function App() {
+    useEffect(() => {
+        document.cookie = `name=value;samesite=None;secure;httponly;expires=${new Date(
+            Date.now() + 86400 * 1000
+        ).toUTCString()}`;
+    }, []);
+
     return (
         <Routes>
             <Route element={<NotRequireAuth />}>
@@ -60,11 +75,38 @@ function App() {
             <Route element={<RequireAuth allowedRoles={"student"} />}>
                 <Route element={<StudentLayout />}>
                     <Route path="/student/home" element={<Dashboard />}></Route>
-                    <Route path="/student/course" element={<Course />}></Route>
                     <Route
                         path="/student/editprofile"
                         element={<StudEditProfile />}
                     ></Route>
+                    <Route
+                        path="/student/subjects"
+                        element={<StudAvailableSubjects />}
+                    />
+                    <Route
+                        path="/student/:id/modules"
+                        element={<StudAvailableModules />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id"
+                        element={<StudAvailableContent />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/preliminaryactivity"
+                        element={<StudPrelimActivity />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/generalization"
+                        element={<StudGeneralization />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/lesson"
+                        element={<StudLesson />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/aae"
+                        element={<StudAAE />}
+                    />
                 </Route>
             </Route>
 
@@ -173,6 +215,10 @@ function App() {
                     <Route
                         path="/developer/:id/modules/:id/:id"
                         element={<DevCreateExam />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/lesson"
+                        element={<DevCreateLesson />}
                     />
                 </Route>
             </Route>

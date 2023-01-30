@@ -1,4 +1,5 @@
 import React from "react";
+import logoPng from "/images/newLogin/logo.png";
 
 function Loading() {
     return (
@@ -9,7 +10,7 @@ function Loading() {
                 <div></div>
                 <div></div>
                 <div>
-                    <img src="/image/logo.png" alt="bestlink-logo" />
+                    <img src={logoPng} alt="bestlink-logo" />
                 </div>
             </div>
         </div>

@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
-// import useCreateModule from "../../../hooks/CourseDev/useCreateModule";
+import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
+import useAuth from "../../../hooks/useAuth";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 function DevCreateAssignment() {
     // States
+    const { course } = useGetAvailableCourse();
+    const { token } = useAuth();
+
+    const [moduleId, setModuleId] = useState();
+    const [term, setTerm] = useState();
+
     const [AssignQuestions, setAssignQuestions] = useState([
         {
             id: "question1",
@@ -162,6 +171,131 @@ function DevCreateAssignment() {
             radio: "radio10",
         },
     ];
+
+    console.log(AssignQuestions);
+
+    const { id } = useParams();
+
+    console.log(moduleId);
+
+    // Course Title
+    const pathname = window.location.pathname;
+    const pathArray = pathname.split("/");
+    const courseBase = pathArray[2];
+    const courseTitle = courseBase.replace(/%20/g, " ");
+    console.log(courseTitle);
+
+    // WEEK number
+    const weekNumber = id.match(/\d+/)[0];
+    console.log(weekNumber);
+
+    useEffect(() => {
+        if (course) {
+            return course.map((item) => {
+                if (item.course == courseTitle) {
+                    item.module.map((mod) => {
+                        if (mod.week == weekNumber) {
+                            setModuleId(mod.id);
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    // Term
+    useEffect(() => {
+        if (weekNumber > 12) {
+            setTerm("finals");
+        } else if (weekNumber > 6) {
+            setTerm("midterm");
+        } else {
+            setTerm("prelim");
+        }
+    });
+
+    const SubmitQuizHandler = async () => {
+        let toastId;
+
+        if (questionError === true || isCorrectError === true) {
+            console.log("ERROR");
+            setError(true);
+        } else {
+            console.log(AssignQuestions);
+            setError(false);
+
+            // Questions
+            const questions = AssignQuestions.reduce(
+                (acc, curr) => `${acc}|${curr.question}`,
+                ""
+            ).slice(1);
+            console.log(questions);
+
+            // Options
+            const options = AssignQuestions.map((question) => {
+                return question.options
+                    .map((option) => option.isCorrect)
+                    .join("|");
+            }).join("|");
+            console.log(options);
+
+            // Correct Answer
+            const correctAnswers = AssignQuestions.map((question) => {
+                const correctOption = question.options.find(
+                    (option) => option.isCorrect === true
+                );
+                return correctOption.id;
+            }).join("|");
+            console.log(correctAnswers);
+
+            let activity = {
+                module_id: moduleId,
+                quiz_type: "assignment",
+                preliminaries: term,
+                questions: questions,
+                answers: correctAnswers,
+                options: options,
+            };
+
+            toastId = toast.info("Sending Request...");
+
+            await axios
+                .post(
+                    `${
+                        import.meta.env.VITE_API_BASE_URL
+                    }/api/coursedeveloper/quiz`,
+                    activity,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+                    }
+                )
+                .then((response) => {
+                    if (response.status >= 200 && response.status <= 300) {
+                        toast.update(toastId, {
+                            render: "Request Successfully",
+                            type: toast.TYPE.SUCCESS,
+                            autoClose: 2000,
+                        });
+                    } else {
+                        throw new Error(
+                            response.status || "Something Went Wrong!"
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toast.update(toastId, {
+                        render: `${error.message}`,
+                        type: toast.TYPE.ERROR,
+                        autoClose: 2000,
+                    });
+                });
+        }
+    };
 
     const setQuestionHandler = (e) => {
         const { name, value } = e.target;
@@ -345,7 +479,7 @@ function DevCreateAssignment() {
                     <button
                         type="button"
                         className="btn btn-primary btn-lg"
-                        onClick={InputAnalysisHandler}
+                        onClick={SubmitQuizHandler}
                     >
                         Submit
                     </button>

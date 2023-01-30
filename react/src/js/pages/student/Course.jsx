@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import useStudentContext from "../../hooks/Student/useStudentContext";
+import useAuth from "../../hooks/useAuth";
 
 function Course() {
+    const { courses } = useStudentContext();
+
+    console.log(courses);
+
     const Subjects = [
         {
             id: 1,

@@ -382,6 +382,19 @@
     color: #11101d;
     opacity: 1;
 }
+
+// First Child of Navbar
+.NavbarCourseTitle {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+.sidebar .nav-list li .sub-menu .firstNavbarChild {
+    background: #fff !important;
+    color: #11101d;
+    opacity: 1;
+}
 /* sidebar close */
 .sidebar.close .nav-list li.showMenu .sub-menu {
     display: none !important;

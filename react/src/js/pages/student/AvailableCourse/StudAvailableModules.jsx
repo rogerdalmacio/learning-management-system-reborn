@@ -1,18 +1,22 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
 import Loading from "../../../components/layouts/Loading";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import useStudentContext from "../../../hooks/Student/useStudentContext";
 
-function DevAvailableModules() {
-    const { course } = useGetAvailableCourse();
+function StudAvailableModules() {
+    const { courses } = useStudentContext();
 
     const { id } = useParams();
 
+    console.log(id);
+
     const GetModulesHandler = () => {
-        if (course) {
-            return course.map((item) => {
+        if (courses) {
+            return courses.map((item) => {
+                console.log(item);
+                console.log("Mathematics In The Modern World" == id);
                 if (item.course == id) {
                     return (
                         <div key={item.id}>
@@ -76,7 +80,7 @@ function DevAvailableModules() {
                                         return (
                                             <div key={mod.id}>
                                                 <Link
-                                                    to={`/developer/${item.course}/modules/week${mod.week}`}
+                                                    to={`/student/${item.course}/modules/week${mod.week}`}
                                                     className="text-decoration-none"
                                                 >
                                                     <div className="DevWeekContainer shadow mb-3 py-3 px-2">
@@ -99,4 +103,4 @@ function DevAvailableModules() {
     return <div>{GetModulesHandler()}</div>;
 }
 
-export default DevAvailableModules;
+export default StudAvailableModules;

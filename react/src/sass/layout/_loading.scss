@@ -10,6 +10,8 @@
     // position: fixed; kapag gusto mo sakupin yung buong screen, ito rin ung default value na sinet
     position: absolute;
     display: flex;
+    top: 0;
+    left: 0;
     background-color: rgba(27, 132, 214, 0.4);
     height: 100vh;
     width: 100%;

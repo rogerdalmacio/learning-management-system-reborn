@@ -1,13 +1,14 @@
 import React, { Fragment, useEffect, useState } from "react";
-import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
+
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layouts/Loading";
+import useStudentContext from "../../../hooks/Student/useStudentContext";
 
-function DevAvailableCourse() {
-    const { course } = useGetAvailableCourse();
+function StudAvailableSubjects() {
+    const { courses } = useStudentContext();
 
     const AvailableCourseHandler = () => {
-        return course.map((item) => {
+        return courses.map((item) => {
             const count = item.module.reduce((acc, curr) => acc + 1, 0);
 
             const date = new Date(item.created_at);
@@ -35,7 +36,7 @@ function DevAvailableCourse() {
             return (
                 <div key={item.id}>
                     <Link
-                        to={`/developer/${item.course}/modules`}
+                        to={`/student/${item.course}/modules`}
                         className="text-decoration-none"
                     >
                         <div className="DevCourseContainer py-3 px-2 mb-3 shadow p-3">
@@ -55,11 +56,11 @@ function DevAvailableCourse() {
         });
     };
 
-    const AvailableCourse = () => {
-        if (course) {
+    const AvailableSubjects = () => {
+        if (courses) {
             return (
                 <Fragment>
-                    <h2>Course/s</h2>
+                    <h2>Subject/s</h2>
                     <div className="ms-4">{AvailableCourseHandler()}</div>
                 </Fragment>
             );
@@ -68,7 +69,7 @@ function DevAvailableCourse() {
         }
     };
 
-    return <div>{AvailableCourse()}</div>;
+    return <div>{AvailableSubjects()}</div>;
 }
 
-export default DevAvailableCourse;
+export default StudAvailableSubjects;

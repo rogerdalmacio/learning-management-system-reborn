@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useAuth from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
 
 function DevCreatePrelimAct() {
@@ -60,32 +61,60 @@ function DevCreatePrelimAct() {
 
     const SubmitActivityHandler = async (e) => {
         e.preventDefault();
-        let activity = {
-            module_id: moduleId,
-            title: "preliminaryactivity",
-            activity_type: "preliminary",
-            preliminaries: term,
-            embed_links: item,
-        };
 
-        console.log(activity);
-        await axios
-            .post(
-                `${
-                    import.meta.env.VITE_API_BASE_URL
-                }/api/coursedeveloper/activity`,
-                activity,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                    },
-                }
-            )
-            .then((response) => {
-                console.log(response);
-            });
+        let toastId;
+
+        if (item === 0 || item === "" || item === undefined) {
+            toast.error("Please Insert a link");
+        } else if (item && !item.includes("https://docs.google.com")) {
+            toast.error("The Link is not Valid");
+        } else {
+            let activity = {
+                module_id: moduleId,
+                title: "preliminaryactivity",
+                activity_type: "preliminaryactivity",
+                preliminaries: term,
+                embed_links: item,
+            };
+
+            toastId = toast.info("Sending Request...");
+
+            await axios
+                .post(
+                    `${
+                        import.meta.env.VITE_API_BASE_URL
+                    }/api/coursedeveloper/activity`,
+                    activity,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+                    }
+                )
+                .then((response) => {
+                    if (response.status >= 200 && response.status <= 300) {
+                        toast.update(toastId, {
+                            render: "Request Successfully",
+                            type: toast.TYPE.SUCCESS,
+                            autoClose: 2000,
+                        });
+                    } else {
+                        throw new Error(
+                            response.status || "Something Went Wrong!"
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toast.update(toastId, {
+                        render: `${error.message}`,
+                        type: toast.TYPE.ERROR,
+                        autoClose: 2000,
+                    });
+                });
+        }
     };
 
     return (

@@ -8,7 +8,10 @@ use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Teacher\GradesController;
 use App\Http\Controllers\Teacher\TCourseController;
 use App\Http\Controllers\Students\SCourseController;
+use App\Http\Controllers\Students\SModulesController;
+use App\Http\Controllers\Students\SActivityController;
 use App\Http\Controllers\Students\SLessonController;
+use App\Http\Controllers\Students\SQuizController;
 use App\Http\Controllers\Teacher\QuizAttemptController;
 use App\Http\Controllers\Users\ChangePasswordController;
 use App\Http\Controllers\Users\ProfilePictureController;
@@ -50,6 +53,9 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
     Route::apiResource('lesson', SLessonController::class);
     Route::apiResource('activityresult', ActivityResult::class);
     Route::apiResource('quizresult', QuizResult::class);
+    Route::apiResource('activity', SActivityController::class);
+    Route::apiResource('quiz', SQuizController::class);
+    Route::apiResource('module', SModulesController::class);
 
 });
 

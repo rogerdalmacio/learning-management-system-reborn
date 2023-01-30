@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
+import useAuth from "../../../hooks/useAuth";
 import DevCreateExamState from "./DevCreateExamState/DevCreateExamOptionsState";
 import numberOfQuestions from "./DevCreateExamState/DevCreateExamQuestionState";
+import { toast } from "react-toastify";
 
 function DevCreateExam() {
     const { id } = useParams();
+    const { course } = useGetAvailableCourse();
+    const { token } = useAuth();
+
+    console.log(id);
 
     const ExamNewWord =
         id[0].toUpperCase() +
@@ -12,6 +19,8 @@ function DevCreateExam() {
     console.log(ExamNewWord); // Output: "Preliminary Examination"
 
     // States
+    const [moduleId, setModuleId] = useState();
+    const [term, setTerm] = useState();
     const [AAEquestions, setAAEQuestions] = useState(DevCreateExamState);
     const [error, setError] = useState(false);
 
@@ -25,6 +34,137 @@ function DevCreateExam() {
         { id: "option3", rightAnswerNo: "rightAnswer3", letter: "C" },
         { id: "option4", rightAnswerNo: "rightAnswer4", letter: "D" },
     ];
+
+    console.log(AAEquestions);
+
+    console.log(id);
+
+    // Course Title
+    const pathname = window.location.pathname;
+
+    const pathArray = pathname.split("/");
+    const courseBase = pathArray[2];
+
+    const courseTitle = courseBase.replace(/%20/g, " ");
+
+    // WEEK number
+    const pathname1 = window.location.pathname;
+
+    const pathArray1 = pathname1.split("/");
+    const numberofWeek = pathArray1[4];
+    const weekNumber = numberofWeek.match(/\d+/)[0];
+    console.log(weekNumber);
+
+    useEffect(() => {
+        if (course) {
+            return course.map((item) => {
+                if (item.course == courseTitle) {
+                    item.module.map((mod) => {
+                        if (mod.week == weekNumber) {
+                            setModuleId(mod.id);
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    // Term
+    useEffect(() => {
+        if (weekNumber > 12) {
+            setTerm("finals");
+        } else if (weekNumber > 6) {
+            setTerm("midterm");
+        } else {
+            setTerm("prelim");
+        }
+    });
+
+    // QUIZ SUMBITTION
+    const SubmitQuizHandler = async () => {
+        let toastId;
+
+        if (
+            questionError === true ||
+            textError === true ||
+            isCorrectError === true
+        ) {
+            toast.error("You must fill out the blank area");
+            setError(true);
+        } else {
+            console.log(AAEquestions);
+            setError(false);
+
+            // Questions
+            const questions = AAEquestions.reduce(
+                (acc, curr) => `${acc}|${curr.question}`,
+                ""
+            ).slice(1);
+            console.log(questions);
+
+            // Options
+            const options = AAEquestions.map((question) => {
+                return question.options.map((option) => option.text).join("|");
+            }).join("|");
+            console.log(options);
+
+            // Correct Answer
+            const correctAnswers = AAEquestions.map((question) => {
+                const correctOption = question.options.find(
+                    (option) => option.isCorrect === true
+                );
+                return correctOption.text;
+            }).join("|");
+            console.log(correctAnswers);
+
+            let activity = {
+                module_id: moduleId,
+                quiz_type: id,
+                preliminaries: term,
+                questions: questions,
+                answers: correctAnswers,
+                options: options,
+            };
+
+            toastId = toast.info("Sending Request...");
+
+            await axios
+                .post(
+                    `${
+                        import.meta.env.VITE_API_BASE_URL
+                    }/api/coursedeveloper/quiz`,
+                    activity,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+                    }
+                )
+                .then((response) => {
+                    if (response.status >= 200 && response.status <= 300) {
+                        toast.update(toastId, {
+                            render: "Request Successfully",
+                            type: toast.TYPE.SUCCESS,
+                            autoClose: 2000,
+                        });
+                    } else {
+                        throw new Error(
+                            response.status || "Something Went Wrong!"
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toast.update(toastId, {
+                        render: `${error.message}`,
+                        type: toast.TYPE.ERROR,
+                        autoClose: 2000,
+                    });
+                });
+        }
+    };
 
     const setQuestionHandler = (e) => {
         const { name, value } = e.target;
@@ -101,20 +241,6 @@ function DevCreateExam() {
             setIsCorrectError(false);
         }
     }, [AAEquestions]);
-
-    const SubmitQuizHandler = () => {
-        if (
-            questionError === true ||
-            textError === true ||
-            isCorrectError === true
-        ) {
-            console.log("ERROR");
-            setError(true);
-        } else {
-            console.log(AAEquestions);
-            setError(false);
-        }
-    };
 
     // Mapping Question for optimization
     const numberOfQuestionsHandler = () => {

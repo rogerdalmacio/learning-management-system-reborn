@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
 import { useParams } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 function DevCreateAAE() {
     // States
@@ -190,6 +191,8 @@ function DevCreateAAE() {
         },
     ];
 
+    console.log(AAEquestions);
+
     const { id } = useParams();
 
     console.log(moduleId);
@@ -221,9 +224,9 @@ function DevCreateAAE() {
 
     // Term
     useEffect(() => {
-        if (weekNumber >= 12) {
+        if (weekNumber > 12) {
             setTerm("finals");
-        } else if (weekNumber >= 6) {
+        } else if (weekNumber > 6) {
             setTerm("midterm");
         } else {
             setTerm("prelim");
@@ -260,24 +263,52 @@ function DevCreateAAE() {
     //         });
     // };
     const SubmitQuizHandler = async () => {
+        let toastId;
+
         if (
             questionError === true ||
             textError === true ||
             isCorrectError === true
         ) {
-            console.log("ERROR");
+            toast.error("You must fill out the blank area");
             setError(true);
         } else {
             console.log(AAEquestions);
             setError(false);
+
+            // Questions
+            const questions = AAEquestions.reduce(
+                (acc, curr) => `${acc}|${curr.question}`,
+                ""
+            ).slice(1);
+            console.log(questions);
+
+            // Options
+            const options = AAEquestions.map((question) => {
+                return question.options.map((option) => option.text).join("|");
+            }).join("|");
+            console.log(options);
+
+            // Correct Answer
+            const correctAnswers = AAEquestions.map((question) => {
+                const correctOption = question.options.find(
+                    (option) => option.isCorrect === true
+                );
+                return correctOption.text;
+            }).join("|");
+            console.log(correctAnswers);
+
             let activity = {
                 module_id: moduleId,
                 quiz_type: "AAE",
                 preliminaries: term,
-                quiz_info: AAEquestions,
+                questions: questions,
+                answers: correctAnswers,
+                options: options,
             };
 
-            console.log(activity);
+            toastId = toast.info("Sending Request...");
+
             await axios
                 .post(
                     `${
@@ -293,7 +324,25 @@ function DevCreateAAE() {
                     }
                 )
                 .then((response) => {
-                    console.log(response);
+                    if (response.status >= 200 && response.status <= 300) {
+                        toast.update(toastId, {
+                            render: "Request Successfully",
+                            type: toast.TYPE.SUCCESS,
+                            autoClose: 2000,
+                        });
+                    } else {
+                        throw new Error(
+                            response.status || "Something Went Wrong!"
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toast.update(toastId, {
+                        render: `${error.message}`,
+                        type: toast.TYPE.ERROR,
+                        autoClose: 2000,
+                    });
                 });
         }
     };
@@ -490,7 +539,7 @@ function DevCreateAAE() {
                 <div className="d-flex justify-content-end">
                     <p className="my-auto me-3 fst-italic text-danger">
                         {error && error
-                            ? "*Please Fill Up The Blank Area*"
+                            ? "*Please Fill Out The Blank Area*"
                             : ""}
                     </p>
                     <button

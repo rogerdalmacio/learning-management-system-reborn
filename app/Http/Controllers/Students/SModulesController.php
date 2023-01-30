@@ -39,7 +39,7 @@ class SModulesController extends Controller
     public function show($id)
     {
 
-        $module = Module::find($id);
+        $module = Module::with('activity')->find($id);
 
         $response = [
             'Module' => $module

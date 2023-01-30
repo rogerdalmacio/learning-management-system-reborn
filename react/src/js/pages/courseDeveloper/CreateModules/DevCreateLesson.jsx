@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
 
-function DevCreateGeneralization() {
+function DevCreateLesson() {
     const [item, setItem] = useState();
     const [moduleId, setModuleId] = useState();
     const [term, setTerm] = useState();
@@ -72,8 +72,7 @@ function DevCreateGeneralization() {
         } else {
             let activity = {
                 module_id: moduleId,
-                title: "generalization",
-                activity_type: "generalization",
+                title: "lesson",
                 preliminaries: term,
                 embed_links: item,
             };
@@ -85,7 +84,7 @@ function DevCreateGeneralization() {
                 .post(
                     `${
                         import.meta.env.VITE_API_BASE_URL
-                    }/api/coursedeveloper/activity`,
+                    }/api/coursedeveloper/lesson`,
                     activity,
                     {
                         headers: {
@@ -121,7 +120,7 @@ function DevCreateGeneralization() {
 
     return (
         <div className="DevModuleContentContainer">
-            <h4 className="mb-4">Preliminary Activity</h4>
+            <h4 className="mb-4">Lesson</h4>
             <form onSubmit={SubmitActivityHandler} className="ms-3">
                 <label htmlFor="insertItem">
                     <h5 className="mb-3">Insert Google Docs Here:</h5>
@@ -164,4 +163,4 @@ function DevCreateGeneralization() {
     );
 }
 
-export default DevCreateGeneralization;
+export default DevCreateLesson;

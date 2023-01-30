@@ -1,11 +1,12 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import useStudentContext from "../../../hooks/Student/useStudentContext";
 import Loading from "../../../components/layouts/Loading";
 
-function DevAvailableContent() {
-    const { course } = useGetAvailableCourse();
+function StudAvailableContent() {
+    const { courses, setWeek, week, module } = useStudentContext();
     const { id } = useParams();
 
     // Course Title
@@ -18,11 +19,30 @@ function DevAvailableContent() {
     const newWeek = id.replace("week", "WEEK ");
     const weekNumber = newWeek.match(/\d+/)[0];
 
+    // const weekMod = pathArray[4];
+    // const weekForModule = weekMod.match(/\d+/)[0];
+    // console.log(weekForModule);
+
+    // //getting module_id for modules
+    // useEffect(() => {
+    //     if (courses) {
+    //         courses.map((course) => {
+    //             if (course.course == courseTitle) {
+    //                 course.module.map((mod) => {
+    //                     if (mod.week == weekForModule) {
+    //                         setWeek(mod.id);
+    //                     }
+    //                 });
+    //             }
+    //         });
+    //     }
+    // });
+
     const NameOfExam = () => {
         if (weekNumber == 6) {
             return (
                 <Link
-                    to={`/developer/${courseTitle}/modules/${id}/preliminaryexamination`}
+                    to={`/student/${courseTitle}/modules/${id}/preliminaryexamination`}
                     className="text-decoration-none"
                 >
                     <div className="DevAvailContent shadow-sm py-3 px-2 mb-2">
@@ -33,7 +53,7 @@ function DevAvailableContent() {
         } else if (weekNumber == 12) {
             return (
                 <Link
-                    to={`/developer/${courseTitle}/modules/${id}/midtermexamination`}
+                    to={`/student/${courseTitle}/modules/${id}/midtermexamination`}
                     className="text-decoration-none"
                 >
                     <div className="DevAvailContent shadow-sm py-3 px-2 mb-2">
@@ -44,7 +64,7 @@ function DevAvailableContent() {
         } else if (weekNumber == 18) {
             return (
                 <Link
-                    to={`/developer/${courseTitle}/modules/${id}/finalexamination`}
+                    to={`/student/${courseTitle}/modules/${id}/finalexamination`}
                     className="text-decoration-none"
                 >
                     <div className="DevAvailContent shadow-sm py-3 px-2 mb-2">
@@ -55,7 +75,7 @@ function DevAvailableContent() {
         } else {
             return (
                 <Link
-                    to={`/developer/${courseTitle}/modules/${id}/examination`}
+                    to={`/student/${courseTitle}/modules/${id}/examination`}
                     className="text-decoration-none"
                 >
                     <div className="DevAvailContent shadow-sm py-3 px-2 mb-2">
@@ -73,15 +93,7 @@ function DevAvailableContent() {
             return (
                 <Fragment>
                     <Link
-                        to={`/developer/${courseTitle}/modules/${id}/inserttitle`}
-                        className="text-decoration-none"
-                    >
-                        <div className="DevAvailContent shadow-sm py-3 px-2 mb-2">
-                            <h5 className="mb-0">Insert Title</h5>
-                        </div>
-                    </Link>
-                    <Link
-                        to={`/developer/${courseTitle}/modules/${id}/lesson`}
+                        to={`/student/${courseTitle}/modules/${id}/lesson`}
                         className="text-decoration-none"
                     >
                         <div className="DevAvailContent shadow-sm py-3 px-2 mb-2">
@@ -89,7 +101,7 @@ function DevAvailableContent() {
                         </div>
                     </Link>
                     <Link
-                        to={`/developer/${courseTitle}/modules/${id}/preliminaryactivity`}
+                        to={`/student/${courseTitle}/modules/${id}/preliminaryactivity`}
                         className="text-decoration-none"
                     >
                         <div className="DevAvailContent shadow-sm py-3 px-2 mb-2">
@@ -97,7 +109,7 @@ function DevAvailableContent() {
                         </div>
                     </Link>
                     <Link
-                        to={`/developer/${courseTitle}/modules/${id}/generalization`}
+                        to={`/student/${courseTitle}/modules/${id}/generalization`}
                         className="text-decoration-none"
                     >
                         <div className="DevAvailContent shadow-sm py-3 px-2 mb-2">
@@ -105,7 +117,7 @@ function DevAvailableContent() {
                         </div>
                     </Link>
                     <Link
-                        to={`/developer/${courseTitle}/modules/${id}/aae`}
+                        to={`/student/${courseTitle}/modules/${id}/aae`}
                         className="text-decoration-none"
                     >
                         <div className="DevAvailContent shadow-sm py-3 px-2 mb-2">
@@ -115,7 +127,7 @@ function DevAvailableContent() {
                         </div>
                     </Link>
                     <Link
-                        to={`/developer/${courseTitle}/modules/${id}/evaluation`}
+                        to={`/student/${courseTitle}/modules/${id}/evaluation`}
                         className="text-decoration-none"
                     >
                         <div className="DevAvailContent shadow-sm py-3 px-2 mb-2">
@@ -123,7 +135,7 @@ function DevAvailableContent() {
                         </div>
                     </Link>
                     <Link
-                        to={`/developer/${courseTitle}/modules/${id}/assignment`}
+                        to={`/student/${courseTitle}/modules/${id}/assignment`}
                         className="text-decoration-none"
                     >
                         <div className="DevAvailContent shadow-sm py-3 px-2 mb-2">
@@ -135,8 +147,8 @@ function DevAvailableContent() {
         }
     };
 
-    const AvailableContentHandler = () => {
-        if (course) {
+    const AvailableModules = () => {
+        if (courses) {
             return (
                 <Fragment>
                     <h3>{courseTitle}</h3>
@@ -149,7 +161,7 @@ function DevAvailableContent() {
         }
     };
 
-    return <div>{AvailableContentHandler()}</div>;
+    return <div>{AvailableModules()}</div>;
 }
 
-export default DevAvailableContent;
+export default StudAvailableContent;
