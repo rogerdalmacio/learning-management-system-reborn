@@ -11,6 +11,7 @@ class QuizResult extends Model
     use HasFactory;
 
     protected $fillable = [
+        'student_id',
         'quiz_id',
         'module_id',
         'preliminaries',
@@ -19,7 +20,10 @@ class QuizResult extends Model
         'score',
         'logs',
         'snapshot',
-        'time_elapsed'
+        'start_time',
+        'end_time',
+        'time_elapsed',
+        
     ];
 
     public function student(){

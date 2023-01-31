@@ -9,6 +9,7 @@ function StudAvailableContent() {
     const { courses, setWeek, week, module } = useStudentContext();
     const { id } = useParams();
 
+
     // Course Title
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");

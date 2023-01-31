@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
+import useStudentContext from "../../../hooks/Student/useStudentContext";
 
 function StudAAE() {
+    const { userInfo } = useAuth();
+    const { quizid, courses, setWeekQuiz, setQuizId } = useStudentContext();
+
+    console.log(quizid);
+
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
     const courseBase = pathArray[2];
@@ -12,12 +19,44 @@ function StudAAE() {
     const contentType = pathArray[5];
     console.log(contentType);
 
+    //getting module_id for modules
+    // useEffect(() => {
+    //     if (courses) {
+    //         courses.map((course) => {
+    //             if (course.course == courseTitle) {
+    //                 course.module.map((mod) => {
+    //                     if (mod.week == weekForModule) {
+    //                         setWeekQuiz(mod.id);
+    //                     }
+    //                 });
+    //             }
+    //         });
+    //     }
+
+    //     if (quiz) {
+    //         const act = quiz.quiz
+    //             .filter((qui) => qui.quiz_type == contentType)
+    //             .map((content) => {
+    //                 setQuizId(content.id);
+    //             });
+    //     }
+    // }, []);
+
     const openNewTab = () => {
         window.open(
             `${window.location.origin}/student/${courseBase}/modules/${weekMod}/aae/quiz`,
             "_blank",
             `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
         );
+
+        const AttemptHandler = () => {
+            const Item = {
+                student_id: userInfo.id,
+                quiz_id: userInfo,
+            };
+        };
+
+        AttemptHandler();
     };
 
     return (

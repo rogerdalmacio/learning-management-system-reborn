@@ -34,7 +34,7 @@ class SQuizResultController extends Controller
 
         $userId = $user->id;
 
-        $startTime = $request['start_time'];
+        $startTime = Carbon::now();
 
         $endTime = $request['end_time'];
 
@@ -81,7 +81,7 @@ class SQuizResultController extends Controller
             'score' => $score,
             'logs' => $request['logs'],
             'snapshot' => $request['snapshot'],
-            'start_time' => $request['start_time'],
+            'start_time' =>  $startTime,
             'end_time' => $request['snapshot'],
             'time_elapsed' => $timeElapsed
         ]);

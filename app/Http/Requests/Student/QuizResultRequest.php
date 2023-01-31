@@ -34,7 +34,6 @@ class QuizResultRequest extends FormRequest
             'score' => 'required|integer|nullable',
             'logs' => 'required|string',
             'snapshot' => 'required|boolean',
-            'start_time' => 'required|date',
             'end_time' => 'required|date',
         ];
     }

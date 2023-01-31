@@ -161,6 +161,7 @@ export const StudContextProvider = ({ children }) => {
                 activity,
                 quiz,
                 setWeekQuiz,
+                quizid,
                 setQuizId,
                 officialQuiz,
             }}
