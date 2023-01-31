@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('auto_save_progress', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')
+                ->constrained()
+                ->onDelete('cascade');
             $table->foreignId('quiz_result_id')
                 ->constrained()
                 ->onDelete('cascade');

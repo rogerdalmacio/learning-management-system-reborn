@@ -40,16 +40,16 @@ class SQuizResultController extends Controller
 
         $quizId = $request['quiz_id'];
 
-        $extension = $request->file('file')->getClientOriginalExtension();
+        // $extension = $request->file('file')->getClientOriginalExtension();
 
-        $newFileName = $userId . $quizType . $quizId . '.' . $extension;
+        // $newFileName = $userId . $quizType . $quizId . '.' . $extension;
 
-        $newFileLocation = 'public/quiz/' . $quizType;
+        // $newFileLocation = 'public/quiz/' . $quizType;
 
-        $path = $request->file('file')->storeAs(
-            $newFileLocation,
-            $newFileName
-        );
+        // $path = $request->file('file')->storeAs(
+        //     $newFileLocation,
+        //     $newFileName
+        // );
         
         $quizResult = QuizResult::create([
             'student_id' => $request['student_id'],
@@ -61,14 +61,14 @@ class SQuizResultController extends Controller
             'score' => null,
             'logs' => $request['logs'],
             'snapshot' => $request['snapshot'],
-            'start_time' =>  $startTime,
+            'start_time' =>  Carbon::now(),
             'end_time' => $startTime->addHour(),
             'time_elapsed' => null
         ]);
 
         $response = [
             'quiz result' => $quizResult,
-            'Snapshot' => $path
+            // 'Snapshot' => $path
         ];
 
         return response($response, 201);

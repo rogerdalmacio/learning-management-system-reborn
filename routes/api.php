@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Students\QuizResult;
+use App\Http\Controllers\Students\SQuizResultController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Students\ActivityResult;
-use App\Models\Students\AutoSaveProgress;
+use App\Http\Controllers\Students\SActivityResultController;
+use App\Http\Controllers\Students\AutoSaveProgressController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Teacher\GradesController;
 use App\Http\Controllers\Teacher\TCourseController;
@@ -47,7 +47,7 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanc
 //student route
 Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:Student']], function(){
     // auto save feature
-    Route::apiResource('autosave', AutoSaveProgress::class);
+    Route::apiResource('autosave', AutoSaveProgressController::class);
 
     Route::apiResource('courses', SCourseController::class);
     Route::apiResource('lesson', SLessonController::class);
@@ -55,8 +55,8 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
     Route::apiResource('quiz', SQuizController::class);
     Route::apiResource('module', SModulesController::class);
 
-    Route::apiResource('activityresult', ActivityResult::class);
-    Route::apiResource('quizresult', QuizResult::class);
+    Route::apiResource('activityresult', ActivityResultController::class);
+    Route::apiResource('quizresult', SQuizResultController::class);
 
 });
 

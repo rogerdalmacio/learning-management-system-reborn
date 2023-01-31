@@ -24,6 +24,7 @@ class AutoSaveProgressRequest extends FormRequest
     public function rules()
     {
         return [
+            'student_id' => 'required',
             'quiz_result_id' => 'required|unique:auto_save_progress',
             'answers' => 'sometimes|string',
             'logs' => 'sometimes|string',

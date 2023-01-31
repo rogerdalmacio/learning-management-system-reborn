@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
 
 function StudAAE() {
-    const { userInfo } = useAuth();
-    const { quizid, courses, setWeekQuiz, setQuizId } = useStudentContext();
+    const { userInfo, token } = useAuth();
+    const { quizid, quiz, courses, setWeekQuiz, setQuizId } =
+        useStudentContext();
 
-    console.log(quizid);
+    const [quizInfo, setQuizInfo] = useState();
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -20,44 +20,86 @@ function StudAAE() {
     console.log(contentType);
 
     //getting module_id for modules
-    // useEffect(() => {
-    //     if (courses) {
-    //         courses.map((course) => {
-    //             if (course.course == courseTitle) {
-    //                 course.module.map((mod) => {
-    //                     if (mod.week == weekForModule) {
-    //                         setWeekQuiz(mod.id);
-    //                     }
-    //                 });
-    //             }
-    //         });
-    //     }
+    useEffect(() => {
+        if (courses) {
+            courses.map((course) => {
+                if (course.course == courseTitle) {
+                    course.module.map((mod) => {
+                        if (mod.week == weekForModule) {
+                            setWeekQuiz(mod.id);
+                        }
+                    });
+                }
+            });
+        }
+        console.log(quiz);
+        if (quiz) {
+            const act = quiz.quiz
+                .filter((qui) => qui.quiz_type == contentType)
+                .map((content) => {
+                    setQuizInfo(content);
+                    setQuizId(content.id);
+                });
+        }
+    });
 
-    //     if (quiz) {
-    //         const act = quiz.quiz
-    //             .filter((qui) => qui.quiz_type == contentType)
-    //             .map((content) => {
-    //                 setQuizId(content.id);
-    //             });
-    //     }
-    // }, []);
-
-    const openNewTab = () => {
+    const AttemptQuizHandler = async () => {
         window.open(
             `${window.location.origin}/student/${courseBase}/modules/${weekMod}/aae/quiz`,
-            "_blank",
-            `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
+            "_blank"
+            // ,
+            // `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
         );
 
-        const AttemptHandler = () => {
-            const Item = {
-                student_id: userInfo.id,
-                quiz_id: userInfo,
-            };
+        const item = {
+            student_id: userInfo.id,
+            quiz_id: quizid,
+            module_id: quizInfo.module_id,
+            preliminaries: quizInfo.preliminaries,
+            quiz_type: quizInfo.quiz_type,
+            attempt: true,
+            score: 0,
+            logs: "x",
+            snapshot: false,
         };
 
-        AttemptHandler();
+        await axios
+            .post(
+                `${import.meta.env.VITE_API_BASE_URL}/api/student/quizresult`,
+                item,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                }
+            )
+            .then((response) => {
+                console.log(response);
+                if (response.status >= 200 && response.status <= 300) {
+                } else {
+                    throw new Error(response.status || "Something Went Wrong!");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
+
+    // const AttemptQuizHandler = () => {
+    //     const Item = {
+    //         student_id: userInfo.id,
+    //         quiz_id: quizid,
+    //         module_id: quizInfo.module_id,
+    //         preliminaries: quizInfo.preliminaries,
+    //         quiz_type: quizInfo.quiz_type,
+    //         attempt: false,
+    //         score: null,
+    //         logs: null,
+    //         snapshot: false,
+    //     };
+    // };
 
     return (
         <div>
@@ -71,7 +113,7 @@ function StudAAE() {
                     <p>Time Limit: 1 hour</p>
                     <button
                         className=" smallButtonTemplate text-right sumbit-button btn px-5"
-                        onClick={openNewTab}
+                        onClick={AttemptQuizHandler}
                     >
                         Attempt Quiz Now
                     </button>

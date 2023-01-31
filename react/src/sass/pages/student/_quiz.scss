@@ -11,14 +11,24 @@
 .quizOption {
     cursor: pointer;
     // box-shadow: 0px 0px 10px rgb(200, 200, 200);
+    background-color: transparent;
     border: 1px solid $light-gray;
     border-radius: 5px;
+}
+
+.quizOption:hover {
+    box-shadow: 0px 0px 5px $primary-color;
+}
+
+.quizOptionAnswer {
+    box-shadow: 0px 0px 5px $primary-color;
 }
 
 .QuizNavItemContainer {
     width: 100%;
 }
 
+// Answered Numbers
 .QuizNavItem {
     color: $white;
     background-color: #503fb3;
@@ -29,6 +39,7 @@
     margin: 5px 5px !important;
 }
 
+// Skipped Numbers
 .QuizNavItemSkip {
     color: $white;
     background-color: $danger-color;
@@ -39,6 +50,7 @@
     margin: 5px 5px !important;
 }
 
+// Not yet answered
 .QuizNavItemNone {
     color: $black;
     background-color: $light-gray;

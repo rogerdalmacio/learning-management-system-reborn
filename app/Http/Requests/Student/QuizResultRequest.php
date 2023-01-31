@@ -24,18 +24,16 @@ class QuizResultRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|mimetypes:jpg,png|max:5000',
+            'file' => 'sometimes|mimetypes:jpg,png|max:5000',
             'student_id' => 'required|integer',
-            'quiz_id' => 'required|string',
-            'module_id' => 'require|string',
+            'quiz_id' => 'required|integer',
+            'module_id' => 'required|string',
             'preliminaries' => 'required|string',
             'quiz_type' => 'required|string',
-            'attempt' => 'required|string',
+            'attempt' => 'required|boolean',
             'score' => 'required|integer|nullable',
-            'logs' => 'required|string',
             'snapshot' => 'required|boolean',
-            'end_time' => 'required|date',
-            'time_elapsed' => 'required|date',
+            'logs' => 'required|string',
         ];
     }
 }
