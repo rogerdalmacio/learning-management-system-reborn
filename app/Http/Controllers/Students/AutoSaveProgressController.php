@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Students\AutoSaveProgress;
-use App\Http\Requests\Student\UpdateProgressRequest;
 use App\Http\Requests\Student\AutoSaveProgressRequest;
 use App\Models\Students\QuizResult;
 use Carbon\Carbon;
@@ -104,10 +103,28 @@ class AutoSaveProgressController extends Controller
     public function saveProgress(AutoSaveProgressRequest $request)
     {
 
-        $autoSave = AutoSaveProgress::create($request->all());
+        $autoSave = AutoSaveProgress::where('quiz_result_id', $request['quiz_result_id'])->get();
+
+        if($autoSave->count() > 0) {
+
+            $autoSave->update([
+                'answers' => $request['answers'],
+                'logs' => $request['logs'],
+                'snapshot' => $request['snapshot'],
+            ]);
+    
+            $response = [
+                'Saved' => $autoSave
+            ];
+    
+            return response($response, 201);
+
+        }
+
+        $autoSaveQuiz = AutoSaveProgress::create($request->all());
 
         $response = [
-            'Saved' => $autoSave
+            'Saved' => $autoSaveQuiz
         ];
 
         return response($response, 201);
@@ -121,25 +138,9 @@ class AutoSaveProgressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateProgress(UpdateProgressRequest $request)
-    {
+    // public function updateProgress(UpdateProgressRequest $request)
+    // {
 
-        $autoSave = AutoSaveProgress::where([
-            'quiz_result_id' => $request['quiz_result_id']
-        ]);
-
-        $autoSave->update([
-            'answers' => $request['answers'],
-            'logs' => $request['logs'],
-            'snapshot' => $request['snapshot'],
-        ]);
-
-        $response = [
-            'Saved' => $autoSave
-        ];
-
-        return response($response, 201);
-
-    }
+    // }
 
 }

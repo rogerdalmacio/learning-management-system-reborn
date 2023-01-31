@@ -27,7 +27,8 @@ class ComputeGradesRequest extends FormRequest
             'year_and_section' => 'required',
             'department' => 'required',
             'program' => 'required',
-            'major' => 'required'
+            'major' => 'required',
+            'preliminaries' => 'required'
         ];
     }
 }

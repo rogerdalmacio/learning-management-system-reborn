@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Teacher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Teacher\ComputeGradesRequest;
+use App\Models\Modules\Activity;
 use App\Models\Users\Student;
 
 class GradesController extends Controller
@@ -17,10 +18,21 @@ class GradesController extends Controller
                     ->where('department', $request['department'])
                     ->where('program', $request['program'])
                     ->where('major', $request['major'])
+                    ->where('activity_results.preliminaries', $request['preliminaries'])
+                    ->where('quiz_results.preliminaries', $request['preliminaries'])
                     ->get();
 
         foreach($students as $student) {
+
+            $activity = [];
+            $quiz = [];
             
+            $data = [
+                'Activity' => $activity,
+                'Quiz' => $quiz,
+                'Exam' => $student['exam']['score']
+            ];
+
         }
 
     }
