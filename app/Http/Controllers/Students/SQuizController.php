@@ -14,10 +14,11 @@ class SQuizController extends Controller
     //  *
     //  * @return \Illuminate\Http\Response
     //  */
-    // public function index()
-    // {
+    
+    public function index()
+    {
         
-    // }
+    }
 
     // /**
     //  * Store a newly created resource in storage.

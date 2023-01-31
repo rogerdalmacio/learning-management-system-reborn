@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('preliminaries');
             $table->string('quiz_type');
             $table->string('attempt');
-            $table->string('score')->nullable();
+            $table->int('score')->nullable();
             $table->string('logs')->nullable();
             $table->boolean('snapshot')->nullable();
             $table->dateTime('start_time');

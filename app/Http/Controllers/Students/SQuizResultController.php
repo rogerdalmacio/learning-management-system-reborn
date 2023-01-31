@@ -36,29 +36,9 @@ class SQuizResultController extends Controller
 
         $startTime = Carbon::now();
 
-        $endTime = $request['end_time'];
-
-        $timeFinished = Carbon::now();
-
-        $timeElapsed = $endTime - $timeFinished;
-
         $quizType = $request['quiz_type'];
 
         $quizId = $request['quiz_id'];
-
-        $quiz = Quiz::find($quizId);
-
-        $answerKeys = explode("|", $quiz->answers);
-
-        $numberOfItems = count($answerKeys);
-
-        $answers = explode("|", $request['answers']);
-
-        $wrongItems = array_diff($answers, $answerKeys);
-        
-        $numberOfWrongItems = count($wrongItems);
-        
-        $score = $numberOfItems - $numberOfWrongItems;
 
         $extension = $request->file('file')->getClientOriginalExtension();
 
@@ -71,19 +51,19 @@ class SQuizResultController extends Controller
             $newFileName
         );
         
-        $quizResult = QuizResult::insert([
+        $quizResult = QuizResult::create([
             'student_id' => $request['student_id'],
             'quiz_id' => $request['quiz_id'],
             'module_id' => $request['module_id'],
             'preliminaries' => $request['preliminaries'],
             'quiz_type' => $request['quiz_type'],
             'attempt' => $request['attempt'],
-            'score' => $score,
+            'score' => null,
             'logs' => $request['logs'],
             'snapshot' => $request['snapshot'],
             'start_time' =>  $startTime,
-            'end_time' => $request['snapshot'],
-            'time_elapsed' => $timeElapsed
+            'end_time' => $startTime->addHour(),
+            'time_elapsed' => null
         ]);
 
         $response = [
@@ -121,10 +101,51 @@ class SQuizResultController extends Controller
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response
     //  */
-    // public function update(Request $request, $id)
-    // {
-    //     //
-    // }
+    public function update(Request $request, $id)
+    {
+
+        $request->validate([
+            'answers' => 'required',
+            'logs' => 'sometimes',
+            'snapshot' => 'required',
+        ]);
+
+        $quizresult = QuizResult::find($id);
+
+        $quiz = Quiz::find($quizresult->quiz_id);
+
+        $answerKeys = explode("|", $quiz->answers);
+
+        $numberOfItems = count($answerKeys);
+
+        $answers = explode("|", $request['answers']);
+
+        $wrongItems = array_diff($answers, $answerKeys);
+        
+        $numberOfWrongItems = count($wrongItems);
+        
+        $score = $numberOfItems - $numberOfWrongItems;
+
+        $timeFinished = Carbon::now();
+
+        $startTime = $quizresult->start_time;
+
+        $timeElapsed = $timeFinished - $startTime;
+
+        $quizresult->update([
+            'score' => $score,
+            'logs' => $request['logs'],
+            'snapshot' => $request['snapshot'],
+            'time_elapsed' => $timeElapsed
+        ]);
+
+        $response = [
+            'Quiz Result' => $quizresult
+        ];
+
+        return response($response, 201);
+
+    }
 
     // /**
     //  * Remove the specified resource from storage.

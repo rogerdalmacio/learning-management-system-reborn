@@ -24,17 +24,10 @@ class UpdateProgressRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'sometimes|mimetypes:jpg,png|max:5000',
-            'student_id' => 'sometimes|integer',
-            'quiz_id' => 'sometimes|string',
-            'module_id' => 'sometimes|string',
-            'preliminaries' => 'sometimes|string',
-            'quiz_type' => 'sometimes|string',
+            'quiz_result_id' => 'required',
             'answers' => 'sometimes|string',
             'logs' => 'sometimes|string',
             'snapshot' => 'sometimes|boolean',
-            'start_time' => 'required|date',
-            'end_time' => 'required|date',
         ];
     }
 }

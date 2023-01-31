@@ -23,7 +23,6 @@ class QuizResult extends Model
         'start_time',
         'end_time',
         'time_elapsed',
-        
     ];
 
     public function student(){
