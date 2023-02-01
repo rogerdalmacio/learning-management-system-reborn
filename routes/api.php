@@ -1,18 +1,17 @@
 <?php
 
-use App\Http\Controllers\Students\SQuizResultController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Students\SActivityResultController;
-use App\Http\Controllers\Students\AutoSaveProgressController;
 use App\Http\Controllers\Users\UserController;
+use App\Http\Controllers\Students\SQuizController;
 use App\Http\Controllers\Teacher\GradesController;
 use App\Http\Controllers\Teacher\TCourseController;
 use App\Http\Controllers\Students\SCourseController;
-use App\Http\Controllers\Students\SModulesController;
-use App\Http\Controllers\Students\SActivityController;
 use App\Http\Controllers\Students\SLessonController;
-use App\Http\Controllers\Students\SQuizController;
+use App\Http\Controllers\Students\SModulesController;
+use App\Http\Controllers\Students\SnapshotController;
+use App\Http\Controllers\Students\SActivityController;
 use App\Http\Controllers\Teacher\QuizAttemptController;
+use App\Http\Controllers\Students\SQuizResultController;
 use App\Http\Controllers\Users\ChangePasswordController;
 use App\Http\Controllers\Users\ProfilePictureController;
 use App\Http\Controllers\CourseDeveloper\CDQuizController;
@@ -21,6 +20,8 @@ use App\Http\Controllers\CourseDeveloper\CDCourseController;
 use App\Http\Controllers\CourseDeveloper\CDLessonController;
 use App\Http\Controllers\CourseDeveloper\CDModuleController;
 use App\Http\Controllers\CourseManager\CMToDoListController;
+use App\Http\Controllers\Students\SActivityResultController;
+use App\Http\Controllers\Students\AutoSaveProgressController;
 use App\Http\Controllers\CoreFunctions\ExamGrantingController;
 use App\Http\Controllers\CourseDeveloper\CDActivityController;
 use App\Http\Controllers\CoreFunctions\AnnouncementsController;
@@ -55,8 +56,10 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
     Route::apiResource('quiz', SQuizController::class);
     Route::apiResource('module', SModulesController::class);
 
-    Route::apiResource('activityresult', ActivityResultController::class);
+    Route::apiResource('activityresult', SActivityResultController::class);
     Route::apiResource('quizresult', SQuizResultController::class);
+
+    Route::post('/snapshot', [SnapshotController::class, 'saveSnapshot']);
 
 });
 

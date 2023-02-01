@@ -24,7 +24,6 @@ class QuizResultRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'sometimes|mimetypes:jpg,png|max:5000',
             'student_id' => 'required|integer',
             'quiz_id' => 'required|integer',
             'module_id' => 'required|string',

@@ -29,27 +29,6 @@ class SQuizResultController extends Controller
      */
     public function store(QuizResultRequest $request)
     {
-
-        $user = Auth::user();
-
-        $userId = $user->id;
-
-        $startTime = Carbon::now();
-
-        $quizType = $request['quiz_type'];
-
-        $quizId = $request['quiz_id'];
-
-        // $extension = $request->file('file')->getClientOriginalExtension();
-
-        // $newFileName = $userId . $quizType . $quizId . '.' . $extension;
-
-        // $newFileLocation = 'public/quiz/' . $quizType;
-
-        // $path = $request->file('file')->storeAs(
-        //     $newFileLocation,
-        //     $newFileName
-        // );
         
         $quizResult = QuizResult::create([
             'student_id' => $request['student_id'],
@@ -62,7 +41,7 @@ class SQuizResultController extends Controller
             'logs' => $request['logs'],
             'snapshot' => $request['snapshot'],
             'start_time' =>  Carbon::now(),
-            'end_time' => $startTime->addHour(),
+            'end_time' => Carbon::now()->addHour(),
             'time_elapsed' => null
         ]);
 
@@ -107,7 +86,6 @@ class SQuizResultController extends Controller
         $request->validate([
             'answers' => 'required',
             'logs' => 'sometimes',
-            'snapshot' => 'required',
         ]);
 
         $quizresult = QuizResult::find($id);
@@ -135,12 +113,11 @@ class SQuizResultController extends Controller
         $quizresult->update([
             'score' => $score,
             'logs' => $request['logs'],
-            'snapshot' => $request['snapshot'],
             'time_elapsed' => $timeElapsed
         ]);
 
         $response = [
-            'Quiz Result' => $quizresult
+            'Quiz Result' => $quizresult,
         ];
 
         return response($response, 201);
