@@ -11,6 +11,27 @@ use App\Http\Requests\Student\QuizResultRequest;
 
 class SQuizResultController extends Controller
 {
+
+    // custom function 
+
+    public function getQuizResultId(Request $request) {
+
+        $request->validate([
+            'quiz_id' => 'required'
+        ]);
+
+        $quizResult = QuizResult::where('student_id', Auth::user()->id)
+                        ->where('quiz_id', $request['quiz_id'])
+                        ->get();
+
+        $response = [
+            $quizResult
+        ];
+
+        return response($response, 200);
+
+    }
+
         //  /**
     //  * Display a listing of the resource.
     //  *
@@ -29,6 +50,16 @@ class SQuizResultController extends Controller
      */
     public function store(QuizResultRequest $request)
     {
+
+        $exists = QuizResult::where('student_id', Auth::user()->id)
+                    ->where('quiz_id', $request['quiz_id'])
+                    ->get();
+
+        if($exists->count() > 0) {
+
+            return response('quiz attempted', 404);
+
+        }
         
         $quizResult = QuizResult::create([
             'student_id' => $request['student_id'],
@@ -71,7 +102,7 @@ class SQuizResultController extends Controller
 
         return response($response, 200);
 
-    }
+    }   
 
     // /**
     //  * Update the specified resource in storage.
