@@ -77,7 +77,7 @@ class SQuizResultController extends Controller
         ]);
 
         $response = [
-            'quiz result' => $quizResult,
+            'quiz_result' => $quizResult,
             // 'Snapshot' => $path
         ];
 
@@ -139,12 +139,12 @@ class SQuizResultController extends Controller
 
         $startTime = $quizresult->start_time;
 
-        $timeElapsed = $timeFinished - $startTime;
+        // $timeElapsed = $timeFinished - $startTime;
 
         $quizresult->update([
             'score' => $score,
             'logs' => $request['logs'],
-            'time_elapsed' => $timeElapsed
+            'time_elapsed' => Carbon::now()
         ]);
 
         $response = [

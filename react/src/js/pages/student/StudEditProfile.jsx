@@ -36,7 +36,6 @@ function StudEditProfile() {
         setSelectedFile(e.target.files[0]);
     };
 
-
     const ProfilePictureHandler = () => {
         if (imageExisting === true) {
             return (
@@ -75,8 +74,11 @@ function StudEditProfile() {
             ) {
                 toast.error("Image must be in JPG format");
             } else {
+                console.log(file);
                 const formData = new FormData();
                 formData.append("file", file);
+
+                console.log(formData);
 
                 toastId = toast.info("Sending Request...");
 

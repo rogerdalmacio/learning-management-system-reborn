@@ -76,7 +76,6 @@ function StudAAE() {
                 }
             )
             .then((response) => {
-                console.log(response);
                 if (response.status >= 200 && response.status <= 300) {
                 } else {
                     throw new Error(response.status || "Something Went Wrong!");
@@ -86,20 +85,6 @@ function StudAAE() {
                 console.log(error);
             });
     };
-
-    // const AttemptQuizHandler = () => {
-    //     const Item = {
-    //         student_id: userInfo.id,
-    //         quiz_id: quizid,
-    //         module_id: quizInfo.module_id,
-    //         preliminaries: quizInfo.preliminaries,
-    //         quiz_type: quizInfo.quiz_type,
-    //         attempt: false,
-    //         score: null,
-    //         logs: null,
-    //         snapshot: false,
-    //     };
-    // };
 
     return (
         <div>

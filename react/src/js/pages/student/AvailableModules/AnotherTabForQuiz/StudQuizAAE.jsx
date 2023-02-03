@@ -1,13 +1,44 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Loading from "../../../../components/layouts/Loading";
 import useStudentContext from "../../../../hooks/Student/useStudentContext";
+import Camera from "../Camera/Camera";
+import { ToastContainer } from "react-toastify";
+import useAuth from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 function StudQuizAAE() {
-    const { courses, officialQuiz, quiz, setWeekQuiz, setQuizId } =
-        useStudentContext();
+    const {
+        courses,
+        officialQuiz,
+        quiz,
+        setWeekQuiz,
+        setQuizId,
+        quizResultId,
+    } = useStudentContext();
+    const { token } = useAuth();
     const [content, setContent] = useState();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [getAnswer, setGetAnswer] = useState([]);
+    const [getAnswer, setGetAnswer] = useState([
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+    ]);
+
+    // useEffect(() => {
+    //     if (getAnswer) {
+    //         const newArray = getAnswer.map((item) =>
+    //             typeof item === "undefined" ? "@$#" : item
+    //         );
+    //         console.log(newArray);
+    //     }
+    // });
     console.log(getAnswer);
 
     const pathname = window.location.pathname;
@@ -136,7 +167,7 @@ function StudQuizAAE() {
                     <button
                         value={i}
                         className={`${
-                            getAnswer[i] == undefined
+                            getAnswer[i] == undefined || getAnswer[i] == "@$#"
                                 ? "QuizNavItemNone"
                                 : "QuizNavItem"
                         } m-auto text-center d-flex align-items-center justify-content-center`}
@@ -151,16 +182,78 @@ function StudQuizAAE() {
         });
     };
 
+    // for setting up camera
+    let contentArrayLength;
+    let dynamicNumberLength;
     if (content) {
-        const lastElement = content.length - 1;
-        console.log(lastElement);
+        contentArrayLength = content.length;
+        dynamicNumberLength = currentQuestionIndex + 1;
     }
+
+    const SubmitQuizHandler = async () => {
+        let quizResultIdItem;
+        if (quizResultId) {
+            console.log(quizResultId[0].id);
+            quizResultIdItem = quizResultId[0].id;
+        }
+
+        const data = getAnswer.join("|");
+        console.log(data);
+
+        const item = {
+            answers: data,
+            logs: "x",
+        };
+        let toastId;
+
+        toastId = toast.info("Sending Request...");
+
+        await axios
+            .patch(
+                `${
+                    import.meta.env.VITE_API_BASE_URL
+                }/api/student/quizresult/${quizResultIdItem}`,
+                item,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                }
+            )
+            .then((response) => {
+                console.log(response);
+                if (response.status >= 200 && response.status <= 300) {
+                    toast.update(toastId, {
+                        render: "Request Successfully",
+                        type: toast.TYPE.SUCCESS,
+                        autoClose: 2000,
+                    });
+                    localStorage.removeItem("image");
+                    localStorage.removeItem("ranNumber");
+                } else {
+                    throw new Error(response.status || "Something Went Wrong!");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                toast.update(toastId, {
+                    render: `${error.message}`,
+                    type: toast.TYPE.ERROR,
+                    autoClose: 2000,
+                });
+            });
+    };
 
     const LastNumberHandler = () => {
         if (currentQuestionIndex == 9) {
             return (
-                <button className="smallButtonTemplate text-right sumbit-button btn px-4 px-sm-5">
-                    Submit <i class="bi bi-arrow-right-short"></i>
+                <button
+                    onClick={SubmitQuizHandler}
+                    className="smallButtonTemplate text-right sumbit-button btn px-4 px-sm-5"
+                >
+                    Submit <i className="bi bi-arrow-right-short"></i>
                 </button>
             );
         } else {
@@ -170,7 +263,7 @@ function StudQuizAAE() {
                     onClick={handleNext}
                     disabled={currentQuestionIndex === content.length - 1}
                 >
-                    Next <i class="bi bi-arrow-right-short"></i>
+                    Next <i className="bi bi-arrow-right-short"></i>
                 </button>
             );
         }
@@ -179,7 +272,19 @@ function StudQuizAAE() {
     const MainContent = () => {
         if (content) {
             return (
-                <div className="py-4 px-3 py-sm-5 px-sm-5">
+                <div className="py-4 px-3 py-sm-5 px-sm-5 position-relative">
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="light"
+                    />
                     <h4 className="text-center mb-3 mb-sm-5">
                         Analysis, Application, and Exploration
                     </h4>
@@ -198,12 +303,17 @@ function StudQuizAAE() {
                             </div>
                         </div>
                         <div className="col-12 col-md-4 col-lg-3">
-                            <div className="QuizContentCont Quizcontainer2 shadow p-3">
+                            <div className="QuizContentCont Quizcontainer2 shadow p-3 mb-3">
                                 <p>Question {currentQuestionIndex + 1}/10</p>
                                 <div className="QuizNavItemContainer d-flex flex-wrap">
                                     {NavigationContent()}
                                 </div>
                             </div>
+                            <Camera
+                                contentArrayLength={contentArrayLength}
+                                dynamicNumberLength={dynamicNumberLength}
+                                content
+                            />
                         </div>
                     </div>
                 </div>
