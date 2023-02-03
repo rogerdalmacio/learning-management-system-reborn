@@ -7,7 +7,7 @@ use Spatie\Glide\GlideImage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use App\Http\Requests\User\ProfilePictureRequest;
+use App\Http\Requests\Users\ProfilePictureRequest;
 
 class ProfilePictureController extends Controller
 {

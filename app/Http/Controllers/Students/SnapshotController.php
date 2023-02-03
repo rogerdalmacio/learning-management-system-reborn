@@ -14,11 +14,17 @@ class SnapshotController extends Controller
 
         $request->validate([
             'quiz_result_id' => 'required',
-            'file' => 'sometimes|mimetypes:jpg|max:5000',
+            'file' => 'required|mimes:jpg|max:5000',
             'snapshot' => 'required',
         ]);
 
         $quizresult = QuizResult::find($request['quiz_result_id']);
+
+        if($quizresult->snapshot == true) {
+
+            return response('snapshot already exists', 404);
+
+        } 
 
         $user = Auth::user();
 
