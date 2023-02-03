@@ -25,7 +25,7 @@ class SnapshotRequest extends FormRequest
     {
         return [
             'quiz_result_id' => 'required',
-            'file' => 'required|mimetypes:jpg|max:5000',
+            'file' => 'required|mimes:jpg|max:5000',
             'snapshot' => 'required',
         ];
     }
