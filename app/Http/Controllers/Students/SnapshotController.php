@@ -6,17 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Students\QuizResult;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Student\SnapshotRequest;
 
 class SnapshotController extends Controller
 {
     
-    public function saveSnapshot(Request $request) {
-
-        $request->validate([
-            'quiz_result_id' => 'required',
-            'file' => 'required|mimes:jpg|max:5000',
-            'snapshot' => 'required',
-        ]);
+    public function saveSnapshot(SnapshotRequest $request) {
 
         $quizresult = QuizResult::find($request['quiz_result_id']);
 
