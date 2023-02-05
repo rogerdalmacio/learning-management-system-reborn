@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Students\SQuizController;
@@ -39,6 +40,18 @@ use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/test', function() {
+    $carbonHour1 = Carbon::createFromFormat('Y-m-d H:i:s', '2022-01-01 10:00:10');
+    $carbonHour2 = Carbon::createFromFormat('Y-m-d H:i:s', '2022-01-01 12:00:00');
+
+    $diffInSeconds = $carbonHour1->diffInSeconds($carbonHour2);
+
+    $minutes = floor($diffInSeconds / 60);
+    $seconds = $diffInSeconds % 60;
+
+    return $minutes . ':' . $seconds;
+});
 
 //Login API
 Route::post('/login', [UserController::class, 'login']);

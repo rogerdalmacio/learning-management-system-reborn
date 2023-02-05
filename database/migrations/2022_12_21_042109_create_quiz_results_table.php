@@ -25,10 +25,10 @@ return new class extends Migration
             $table->string('attempt');
             $table->integer('score')->nullable();
             $table->string('logs')->nullable();
-            $table->boolean('snapshot')->nullable();
+            $table->boolean('snapshot')->default(false)->nullable();
             $table->dateTime('start_time');
             $table->dateTime('end_time')->nullable();
-            $table->dateTime('time_elapsed')->nullable();
+            $table->integer('time_elapsed')->nullable();
             $table->timestamps();
         });
     }

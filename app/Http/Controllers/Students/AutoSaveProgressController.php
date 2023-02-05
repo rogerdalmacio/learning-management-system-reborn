@@ -21,73 +21,69 @@ class AutoSaveProgressController extends Controller
 
         $autoSavedProgress = AutoSaveProgress::where('student_id', $userId)->get();
 
-        foreach($autoSavedProgress as $progress){
+        if($autoSavedProgress['end_time']->diffInMinutes($autoSavedProgress['start_time']) > 60) {
 
-            if($progress['start_time'] > $progress['end_time']) {
+            if($autoSavedProgress['snapshot'] === false) {
 
-                if($progress['snapshot'] === null) {
-
-                    $quizresult = QuizResult::find($progress['quiz_result_id']);
-
-                    $timeFinished = Carbon::now();
-
-                    $timeElapsed = $timeFinished - $progress['start_time'];
-
-                    $quizresult->update([
-                        'score' => 0,
-                        'logs' => $progress['logs'],
-                        'time_elapsed' => $timeElapsed
-                    ]);
-
-                    $response = [
-                        'Time Elapsed without snapshot, score nulled' => $quizresult
-                    ];
-
-                    return response($response, 204);
-
-                }
-
-                $quizresult = QuizResult::find($progress['quiz_result_id']);
-
-                $quiz = Quiz::find($quizresult->quiz_id);
-
-                $answerKeys = explode("|", $quiz->answers);
-
-                $numberOfItems = count($answerKeys);
-
-                $answers = explode("|", $progress['answers']);
-
-                $wrongItems = array_diff($answers, $answerKeys);
-                
-                $numberOfWrongItems = count($wrongItems);
-                
-                $score = $numberOfItems - $numberOfWrongItems;
+                $quizresult = QuizResult::find($autoSavedProgress['quiz_result_id']);
 
                 $timeFinished = Carbon::now();
 
-                $timeElapsed = $timeFinished - $progress['start_time'];
+                $timeElapsed = $timeFinished - $autoSavedProgress['start_time'];
 
                 $quizresult->update([
-                    'score' => $score,
-                    'logs' => $progress['logs'],
-                    'snapshot' => $progress['snapshot'],
+                    'score' => 0,
+                    'logs' => $autoSavedProgress['logs'],
                     'time_elapsed' => $timeElapsed
                 ]);
 
                 $response = [
-                    'time passed! Quiz submitted' => $quizresult
+                    'Time Elapsed without snapshot, score nulled' => $quizresult
                 ];
 
-                return response($response, 201);
+                return response($response, 204);
 
             }
+
+            $quizresult = QuizResult::find($autoSavedProgress['quiz_result_id']);
+
+            $quiz = Quiz::find($quizresult->quiz_id);
+
+            $answerKeys = explode("|", $quiz->answers);
+
+            $numberOfItems = count($answerKeys);
+
+            $answers = explode("|", $autoSavedProgress['answers']);
+
+            $wrongItems = array_diff($answers, $answerKeys);
+            
+            $numberOfWrongItems = count($wrongItems);
+            
+            $score = $numberOfItems - $numberOfWrongItems;
+
+            $timeFinished = Carbon::now();
+
+            $timeElapsed = $timeFinished->diffInMinutes($autoSavedProgress['start_time']);
+
+            $quizresult->update([
+                'score' => $score,
+                'logs' => $autoSavedProgress['logs'],
+                'snapshot' => $autoSavedProgress['snapshot'],
+                'time_elapsed' => $timeElapsed
+            ]);
+
+            $response = [
+                'time passed! Quiz submitted' => $quizresult
+            ];
+
+            return response($response, 201);
 
         }
 
         $sorted = $autoSavedProgress->sortBy('start_time');
 
         $response = [
-            'progress' => $sorted
+            'request' => $sorted
         ];
 
         return response($response, 200);

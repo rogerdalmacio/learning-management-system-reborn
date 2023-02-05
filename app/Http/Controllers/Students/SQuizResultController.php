@@ -119,6 +119,27 @@ class SQuizResultController extends Controller
             'logs' => 'sometimes',
         ]);
 
+        // check if user have pending quiz to be finished
+
+        $user = Auth::user();
+
+        $exists = QuizResult::where('student_id', $user->id)
+                    ->where('attempt', 'on progress')
+                    ->get();
+
+        if($exists->count() > 0) {
+
+            $response = [
+                'You have a pending quiz'
+            ];
+
+            return response($response, 404);
+
+        }
+
+
+        // process quiz information
+
         $quizresult = QuizResult::find($id);
 
         $quiz = Quiz::find($quizresult->quiz_id);
@@ -139,12 +160,12 @@ class SQuizResultController extends Controller
 
         $startTime = $quizresult->start_time;
 
-        // $timeElapsed = $timeFinished - $startTime;
+        $timeElapsed = $timeFinished->diffInMinutes($startTime);
 
         $quizresult->update([
             'score' => $score,
             'logs' => $request['logs'],
-            'time_elapsed' => Carbon::now()
+            'time_elapsed' => $timeElapsed
         ]);
 
         $response = [
@@ -165,4 +186,5 @@ class SQuizResultController extends Controller
     // {
     //     //
     // }
+
 }
