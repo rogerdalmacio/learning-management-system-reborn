@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
 import Loading from "../../../components/layouts/Loading";
+import { toast } from "react-toastify";
 
 function StudAAE() {
     const { userInfo, token } = useAuth();
@@ -9,6 +10,9 @@ function StudAAE() {
         useStudentContext();
 
     const [quizInfo, setQuizInfo] = useState();
+    const [allow, setAllow] = useState(true);
+    const [permissionGranted, setPermissionGranted] = useState(true);
+    const [disableBut, setDisableBut] = useState(true);
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -20,6 +24,30 @@ function StudAAE() {
     const contentType = pathArray[5];
     console.log(contentType);
 
+    useEffect(() => {
+        navigator.mediaDevices
+            .getUserMedia({ video: true, audio: false })
+            .then((stream) => {
+                setPermissionGranted(false);
+                // You can use the stream to display the camera feed
+                // ...
+            })
+            .catch((err) => {
+                toast.error(
+                    "Please Allow the permission before taking the exam"
+                );
+                console.error(err);
+            });
+    }, []);
+
+    console.log(disableBut);
+    // useEffect(() => {
+    //     if (allow == true && allowCam == true) {
+    //         setDisableBut(false);
+    //     }
+    // });
+
+    //getting module_id for modules
     useEffect(() => {
         if (courses) {
             courses.map((course) => {
@@ -45,9 +73,10 @@ function StudAAE() {
 
     const AttemptQuizHandler = async () => {
         window.open(
-            `${window.location.origin}/student/${courseBase}/modules/${weekMod}/aae/quiz`,
-            "_blank",
-            `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
+            `${window.location.origin}/student/${courseBase}/modules/${weekMod}/evaluation/quiz`,
+            "_blank"
+            // ,
+            // `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
         );
 
         const item = {
@@ -61,14 +90,6 @@ function StudAAE() {
             logs: "x",
             snapshot: false,
         };
-
-        window.addEventListener("beforeunload", function (event) {
-            // Check if there are multiple tabs open in the same window
-            if (window.opener) {
-                // Refresh the current tab if another tab is closed
-                location.reload();
-            }
-        });
 
         await axios
             .post(
@@ -91,6 +112,12 @@ function StudAAE() {
             .catch((error) => {
                 console.log(error);
             });
+    };
+
+    console.log(allow);
+
+    const AllowCameraHandler = () => {
+        setAllow(!allow);
     };
 
     const GetScoreHandler = () => {
@@ -148,16 +175,35 @@ function StudAAE() {
         if (quizResultId) {
             return (
                 <div>
-                    <h4 className="mb-3">
-                        Analysis, Application, and Exploration for {currentWeek}
-                    </h4>
+                    <h4 className="mb-3">Evaluation {currentWeek}</h4>
 
                     <div className="d-flex justify-content-center">
                         <div className="d-block text-center">
                             <p>Attempt allowed: 1</p>
                             <p>Time Limit: 1 hour</p>
+                            <div className="quizNoteBeforeQuiz form-check d-flex justify-content-start mb-3">
+                                <input
+                                    className="quizInputChecker form-check-input"
+                                    type="checkbox"
+                                    onClick={AllowCameraHandler}
+                                    id="flexCheckDefault"
+                                />
+                                <label
+                                    className="quizInputCheckerLabel form-check-label"
+                                    htmlFor="flexCheckDefault"
+                                >
+                                    Note:{" "}
+                                    <span className="fst-italic">
+                                        by allowing this site to access your
+                                        camera and take a random snapshot while
+                                        taking the quiz, you are eligible to
+                                        take this examination.
+                                    </span>
+                                </label>
+                            </div>
                             <button
                                 className=" smallButtonTemplate text-right sumbit-button btn px-5"
+                                disabled={permissionGranted}
                                 onClick={AttemptQuizHandler}
                             >
                                 Attempt Quiz Now

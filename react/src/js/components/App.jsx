@@ -42,6 +42,12 @@ import StudGeneralization from "../pages/student/AvailableModules/StudGeneraliza
 import StudLesson from "../pages/student/AvailableModules/StudLesson";
 import StudAAE from "../pages/student/AvailableModules/StudAAE";
 import StudQuizAAE from "../pages/student/AvailableModules/AnotherTabForQuiz/StudQuizAAE";
+import StudEvaluation from "../pages/student/AvailableModules/StudEvaluation";
+import StudQuizEvaluation from "../pages/student/AvailableModules/AnotherTabForQuiz/StudQuizEvaluation";
+import StudAssignment from "../pages/student/AvailableModules/StudAssignment";
+import StudQuizAssignment from "../pages/student/AvailableModules/AnotherTabForQuiz/StudQuizAssignment";
+import StudPrelimExam from "../pages/student/AvailableModules/StudPrelimExam";
+import StudQuizPrelimExam from "../pages/student/AvailableModules/AnotherTabForQuiz/StudQuizPrelimExam";
 
 // Teacher
 import TeacherLayout from "./layouts/authenticatedLayout/TeacherNavigationBar/TeacherLayout";
@@ -78,6 +84,18 @@ function App() {
                     path="/student/:id/modules/:id/aae/quiz"
                     element={<StudQuizAAE />}
                 />
+                <Route
+                    path="/student/:id/modules/:id/evaluation/quiz"
+                    element={<StudQuizEvaluation />}
+                />
+                <Route
+                    path="/student/:id/modules/:id/assignment/quiz"
+                    element={<StudQuizAssignment />}
+                />
+                <Route
+                    path="/student/:id/modules/:id/preliminaryexamination/quiz"
+                    element={<StudQuizPrelimExam />}
+                />
                 <Route element={<StudentLayout />}>
                     <Route path="/student/home" element={<Dashboard />}></Route>
                     <Route
@@ -111,6 +129,18 @@ function App() {
                     <Route
                         path="/student/:id/modules/:id/aae"
                         element={<StudAAE />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/evaluation"
+                        element={<StudEvaluation />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/assignment"
+                        element={<StudAssignment />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/preliminaryexamination"
+                        element={<StudPrelimExam />}
                     />
                 </Route>
             </Route>

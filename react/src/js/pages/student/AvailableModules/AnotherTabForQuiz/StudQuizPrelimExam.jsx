@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Loading from "../../../../components/layouts/Loading";
 import useStudentContext from "../../../../hooks/Student/useStudentContext";
-// import Camera from "../Camera/Camera";
+import Camera from "../Camera/Camera";
 import { ToastContainer } from "react-toastify";
 import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-function StudQuizAAE() {
+function StudQuizEvaluation() {
     const {
         courses,
         officialQuiz,
@@ -15,11 +15,11 @@ function StudQuizAAE() {
         setWeekQuiz,
         setQuizId,
         quizResultId,
-        setQuizDone,
     } = useStudentContext();
     const { token } = useAuth();
     const [content, setContent] = useState();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [quizExist, setQuizExist] = useState(false);
     const [getAnswer, setGetAnswer] = useState([
         "@$#",
         "@$#",
@@ -31,13 +31,47 @@ function StudQuizAAE() {
         "@$#",
         "@$#",
         "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
+        "@$#",
     ]);
-
-    // const location = useLocation();
-    // console.log(location.pathname);
-    // const currentLocation = location.pathname;
-    // const newPathname = currentLocation.split("/").slice(0, -1).join("/");
-    // console.log(newPathname);
 
     // useEffect(() => {
     //     if (getAnswer) {
@@ -168,7 +202,6 @@ function StudQuizAAE() {
     // Content of Navigation Container
     const NavigationContent = () => {
         return content.map((cont, i) => {
-            console.log(i);
             const numberOfItem = i + 1;
             return (
                 <div key={i} className="py-2 px-1">
@@ -242,12 +275,8 @@ function StudQuizAAE() {
                         type: toast.TYPE.SUCCESS,
                         autoClose: 2000,
                     });
-
                     localStorage.removeItem("image");
                     localStorage.removeItem("ranNumber");
-                    // window.location.href = newPathname;
-                    window.opener.location.reload();
-                    window.close();
                 } else {
                     throw new Error(response.status || "Something Went Wrong!");
                 }
@@ -263,7 +292,7 @@ function StudQuizAAE() {
     };
 
     const LastNumberHandler = () => {
-        if (currentQuestionIndex == 9) {
+        if (currentQuestionIndex == 49) {
             return (
                 <button
                     onClick={SubmitQuizHandler}
@@ -285,8 +314,14 @@ function StudQuizAAE() {
         }
     };
 
-    const MainContent = () => {
+    useEffect(() => {
         if (quizResultId && content && quizResultId[0].score !== null) {
+            setQuizExist(true);
+        }
+    });
+
+    const MainContent = () => {
+        if (quizExist == true) {
             return <Navigate replace to="/unauthorized" />;
         } else {
             if (content) {
@@ -304,9 +339,7 @@ function StudQuizAAE() {
                             pauseOnHover
                             theme="light"
                         />
-                        <h4 className="text-center mb-3 mb-sm-5">
-                            Analysis, Application, and Exploration
-                        </h4>
+                        <h4 className="text-center mb-3 mb-sm-5">Evaluation</h4>
                         <div className="row g-3">
                             <div className="col-12 col-md-8 col-lg-9">
                                 {QuizContent()}
@@ -331,11 +364,13 @@ function StudQuizAAE() {
                                         {NavigationContent()}
                                     </div>
                                 </div>
-                                {/* <Camera
-                                contentArrayLength={contentArrayLength}
-                                dynamicNumberLength={dynamicNumberLength}
-                                content
-                            /> */}
+                                <Camera
+                                    contentArrayLength={contentArrayLength}
+                                    dynamicNumberLength={dynamicNumberLength}
+                                    content
+                                    getAnswer={getAnswer}
+                                    currentQuestionIndex={currentQuestionIndex}
+                                />
                             </div>
                         </div>
                     </div>
@@ -349,4 +384,4 @@ function StudQuizAAE() {
     return <div>{MainContent()}</div>;
 }
 
-export default StudQuizAAE;
+export default StudQuizEvaluation;

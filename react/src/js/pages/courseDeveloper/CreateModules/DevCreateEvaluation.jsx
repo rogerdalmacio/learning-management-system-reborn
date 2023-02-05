@@ -271,7 +271,7 @@ function DevCreateEvaluation() {
 
             let activity = {
                 module_id: moduleId,
-                quiz_type: "preliminaryActivity",
+                quiz_type: "evaluation",
                 preliminaries: term,
                 questions: questions,
                 answers: correctAnswers,

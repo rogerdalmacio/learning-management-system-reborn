@@ -3,12 +3,22 @@ import useStudentContext from "../../../../hooks/Student/useStudentContext";
 import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
 
-function Camera({ contentArrayLength, dynamicNumberLength }) {
+function Camera({
+    contentArrayLength,
+    dynamicNumberLength,
+    getAnswer,
+    currentQuestionIndex,
+    setPermissionGranted,
+}) {
     const { quizid, quizResultId } = useStudentContext();
     const { token } = useAuth();
 
     console.log(quizid);
     console.log(quizResultId);
+
+    let lastIndex = getAnswer.length - 1;
+    console.log(lastIndex);
+    console.log(currentQuestionIndex);
 
     const videoRef = useRef(null);
     const photoRef = useRef(null);
@@ -32,14 +42,32 @@ function Camera({ contentArrayLength, dynamicNumberLength }) {
                 video: { width: 1920, height: 1080 },
             })
             .then((stream) => {
+                setPermissionGranted(false);
                 let video = videoRef.current;
                 video.srcObject = stream;
                 video.play();
             })
             .catch((error) => {
+                setPermissionGranted(true);
                 console.error(error);
             });
     };
+
+    // useEffect(() => {
+    //     navigator.mediaDevices
+    //         .getUserMedia({ video: true, audio: false })
+    //         .then((stream) => {
+    //             setPermissionGranted(false);
+    //             // You can use the stream to display the camera feed
+    //             // ...
+    //         })
+    //         .catch((err) => {
+    //             toast.error(
+    //                 "Please Allow the permission before taking the exam"
+    //             );
+    //             console.error(err);
+    //         });
+    // }, []);
 
     const takePhoto = () => {
         if (!localImage) {
@@ -170,7 +198,10 @@ function Camera({ contentArrayLength, dynamicNumberLength }) {
 
     useEffect(() => {
         if (!localImage) {
-            if (dynamicNumberLength == randomNum) {
+            if (
+                dynamicNumberLength == randomNum ||
+                getAnswer.length - 1 == currentQuestionIndex
+            ) {
                 takePhoto();
             }
         }

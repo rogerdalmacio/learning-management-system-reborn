@@ -233,9 +233,7 @@ function DevCreateAssignment() {
 
             // Options
             const options = AssignQuestions.map((question) => {
-                return question.options
-                    .map((option) => option.isCorrect)
-                    .join("|");
+                return question.options.map((option) => option.id).join("|");
             }).join("|");
             console.log(options);
 
@@ -274,6 +272,7 @@ function DevCreateAssignment() {
                     }
                 )
                 .then((response) => {
+                    console.log(response);
                     if (response.status >= 200 && response.status <= 300) {
                         toast.update(toastId, {
                             render: "Request Successfully",

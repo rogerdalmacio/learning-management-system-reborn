@@ -8,6 +8,22 @@
     background-color: $shady-white;
 }
 
+.quizNoteBeforeQuiz {
+    width: 100%;
+    max-width: 500px;
+}
+
+.quizInputChecker {
+    font-size: 20px !important;
+    width: 100% !important;
+    max-width: 20px !important;
+    cursor: pointer !important;
+}
+
+.quizInputCheckerLabel {
+    cursor: pointer !important;
+}
+
 .quizOption {
     cursor: pointer;
     // box-shadow: 0px 0px 10px rgb(200, 200, 200);

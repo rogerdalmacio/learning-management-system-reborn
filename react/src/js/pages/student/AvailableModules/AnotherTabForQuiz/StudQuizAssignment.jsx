@@ -5,9 +5,9 @@ import useStudentContext from "../../../../hooks/Student/useStudentContext";
 import { ToastContainer } from "react-toastify";
 import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-function StudQuizAAE() {
+function StudQuizAssignment() {
     const {
         courses,
         officialQuiz,
@@ -15,7 +15,6 @@ function StudQuizAAE() {
         setWeekQuiz,
         setQuizId,
         quizResultId,
-        setQuizDone,
     } = useStudentContext();
     const { token } = useAuth();
     const [content, setContent] = useState();
@@ -33,12 +32,6 @@ function StudQuizAAE() {
         "@$#",
     ]);
 
-    // const location = useLocation();
-    // console.log(location.pathname);
-    // const currentLocation = location.pathname;
-    // const newPathname = currentLocation.split("/").slice(0, -1).join("/");
-    // console.log(newPathname);
-
     // useEffect(() => {
     //     if (getAnswer) {
     //         const newArray = getAnswer.map((item) =>
@@ -48,6 +41,10 @@ function StudQuizAAE() {
     //     }
     // });
     console.log(getAnswer);
+
+    if (quizResultId) {
+        console.log(quizResultId[0].attempt);
+    }
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -90,8 +87,8 @@ function StudQuizAAE() {
             const newArray = [];
 
             for (let i = 0; i < firstArray.length; i++) {
-                const startIndex = i * 4;
-                const endIndex = startIndex + 4;
+                const startIndex = i * 2;
+                const endIndex = startIndex + 2;
                 const subArray = secondArray.slice(startIndex, endIndex);
                 newArray.push({
                     question: firstArray[i],
@@ -107,7 +104,6 @@ function StudQuizAAE() {
 
     const OptionsContentHandler = () => {
         return content[currentQuestionIndex].options.map((opt, index) => {
-            console.log(opt);
             const OptionLetter = ["A", "B", "C", "D"];
 
             const handleClick = (questionIndex, answer) => {
@@ -135,7 +131,8 @@ function StudQuizAAE() {
                                 : ""
                         }`}
                     >
-                        {OptionLetter[index]}. {opt}
+                        {OptionLetter[index]}.{" "}
+                        {opt == "option1" ? "TRUE" : "FALSE"}
                     </button>
                 </Fragment>
             );
@@ -168,7 +165,6 @@ function StudQuizAAE() {
     // Content of Navigation Container
     const NavigationContent = () => {
         return content.map((cont, i) => {
-            console.log(i);
             const numberOfItem = i + 1;
             return (
                 <div key={i} className="py-2 px-1">
@@ -242,12 +238,8 @@ function StudQuizAAE() {
                         type: toast.TYPE.SUCCESS,
                         autoClose: 2000,
                     });
-
                     localStorage.removeItem("image");
                     localStorage.removeItem("ranNumber");
-                    // window.location.href = newPathname;
-                    window.opener.location.reload();
-                    window.close();
                 } else {
                     throw new Error(response.status || "Something Went Wrong!");
                 }
@@ -304,9 +296,7 @@ function StudQuizAAE() {
                             pauseOnHover
                             theme="light"
                         />
-                        <h4 className="text-center mb-3 mb-sm-5">
-                            Analysis, Application, and Exploration
-                        </h4>
+                        <h4 className="text-center mb-3 mb-sm-5">Assignment</h4>
                         <div className="row g-3">
                             <div className="col-12 col-md-8 col-lg-9">
                                 {QuizContent()}
@@ -349,4 +339,4 @@ function StudQuizAAE() {
     return <div>{MainContent()}</div>;
 }
 
-export default StudQuizAAE;
+export default StudQuizAssignment;

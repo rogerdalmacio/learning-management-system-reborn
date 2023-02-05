@@ -1,0 +1,41 @@
+@use "../abstract/" as *;
+
+.tableRowHeader {
+    background-color: $white;
+    color: $black;
+}
+
+table thead tr th {
+    padding: 10px 15px !important;
+    font-weight: 600 !important;
+}
+
+table tbody tr td,
+table tbody tr th {
+    padding: 10px 15px !important;
+    font-weight: 400 !important;
+}
+
+.tableBodyColor tr:nth-child(odd) {
+    color: black !important;
+    font-weight: 450;
+    background-color: $white;
+}
+
+.tableBodyColor tr td span {
+    color: $black !important;
+}
+
+.tableBodyColor tr:nth-child(even) {
+    font-weight: 450;
+    background-color: #e6e6e6;
+}
+
+table tbody tr:hover th,
+table tbody tr:hover td {
+    background-color: $light-gray;
+}
+
+table tbody tr:hover td span {
+    color: $black !important;
+}
