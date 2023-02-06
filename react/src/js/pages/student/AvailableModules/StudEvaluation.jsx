@@ -75,8 +75,8 @@ function StudAAE() {
     const AttemptQuizHandler = async () => {
         window.open(
             `${window.location.origin}/student/${courseBase}/modules/${weekMod}/evaluation/quiz`,
-            "_blank",
-            `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
+            "_blank"
+            // `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
         );
 
         const item = {
@@ -85,7 +85,7 @@ function StudAAE() {
             module_id: quizInfo.module_id,
             preliminaries: quizInfo.preliminaries,
             quiz_type: quizInfo.quiz_type,
-            attempt: true,
+            attempt: "inProgress",
             score: 0,
             logs: "x",
             snapshot: false,
@@ -153,9 +153,14 @@ function StudAAE() {
                         <tbody className="tableBodyColor">
                             <tr scope="row">
                                 <td>
-                                    <span className="text-secondary">
-                                        Submitted {formattedDate}
-                                    </span>
+                                    <div className="d-block">
+                                        <span className="text-secondary">
+                                            Submitted {formattedDate}
+                                        </span>
+                                        <span className="text-secondary">
+                                            {quizResultId[0].attempt}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td>
                                     <span className="text-secondary">

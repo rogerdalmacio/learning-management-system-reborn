@@ -25,7 +25,7 @@ class AutoSaveProgressRequest extends FormRequest
     {
         return [
             'student_id' => 'required',
-            'quiz_result_id' => 'required|unique:auto_save_progress',
+            'quiz_result_id' => 'required',
             'answers' => 'sometimes|string',
             'logs' => 'sometimes|string',
             'snapshot' => 'sometimes|boolean',

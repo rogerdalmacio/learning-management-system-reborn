@@ -16,11 +16,12 @@ function StudQuizEvaluation() {
         setQuizId,
         quizResultId,
     } = useStudentContext();
-    const { token } = useAuth();
+    const { token, userInfo } = useAuth();
     const [content, setContent] = useState();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [quizExist, setQuizExist] = useState(false);
     const [permissionGranted, setPermissionGranted] = useState();
+    const [isSnapshotAvail, setIsSnapShotAvail] = useState(false);
     const [getAnswer, setGetAnswer] = useState([
         "@$#",
         "@$#",
@@ -44,6 +45,7 @@ function StudQuizEvaluation() {
     // });
     console.log(permissionGranted);
     console.log(getAnswer);
+    console.log(isSnapshotAvail);
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -154,9 +156,44 @@ function StudQuizEvaluation() {
     };
 
     // Next and Previous Button
-    const handleNext = () => {
+    const handleNext = async () => {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
+
+        const item = {
+            student_id: userInfo.id,
+            quiz_result_id: quizResultId[0].id,
+            answers: getAnswer.join("|"),
+            snapshot: isSnapshotAvail,
+            start_time: quizResultId[0].start_time,
+            end_time: quizResultId[0].end_time,
+        };
+
+        console.log(item);
+
+        await axios
+            .post(
+                `${import.meta.env.VITE_API_BASE_URL}/api/student/autosave`,
+                item,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                }
+            )
+            .then((response) => {
+                if (response.status >= 200 && response.status <= 300) {
+                } else {
+                    throw new Error(response.status || "Something Went Wrong!");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
+
+    console.log(quizResultId);
 
     const handlePrevious = () => {
         setCurrentQuestionIndex(currentQuestionIndex - 1);
@@ -165,7 +202,6 @@ function StudQuizEvaluation() {
     const NavigationContent = () => {
         return content.map((cont, i) => {
             const numberOfItem = i + 1;
-            console.log(numberOfItem);
 
             return (
                 <div key={i} className="py-2 px-1">
@@ -212,6 +248,7 @@ function StudQuizEvaluation() {
         const item = {
             answers: data,
             logs: "x",
+            attempt: "finished",
         };
         let toastId;
 
@@ -340,6 +377,7 @@ function StudQuizEvaluation() {
                                     currentQuestionIndex={currentQuestionIndex}
                                     getAnswer={getAnswer}
                                     setPermissionGranted={setPermissionGranted}
+                                    setIsSnapShotAvail={setIsSnapShotAvail}
                                 />
                             </div>
                         </div>

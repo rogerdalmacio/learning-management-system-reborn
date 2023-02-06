@@ -115,6 +115,7 @@ class SQuizResultController extends Controller
     {
 
         $request->validate([
+            'attempt' => 'required',
             'answers' => 'required',
             'logs' => 'sometimes',
         ]);
@@ -165,7 +166,8 @@ class SQuizResultController extends Controller
         $quizresult->update([
             'score' => $score,
             'logs' => $request['logs'],
-            'time_elapsed' => $timeElapsed
+            'time_elapsed' => $timeElapsed,
+            'attempt' => $request['attempt']
         ]);
 
         $response = [

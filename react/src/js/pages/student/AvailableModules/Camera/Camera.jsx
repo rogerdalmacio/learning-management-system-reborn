@@ -9,6 +9,7 @@ function Camera({
     getAnswer,
     currentQuestionIndex,
     setPermissionGranted,
+    setIsSnapShotAvail,
 }) {
     const { quizid, quizResultId } = useStudentContext();
     const { token } = useAuth();
@@ -30,11 +31,11 @@ function Camera({
     const [randomNum, setRandomNum] = useState(
         localStorage.getItem("ranNumber") || ""
     );
-    console.log(randomNum);
-    console.log(dynamicNumberLength);
-    console.log(image);
-    console.log(localImage);
-    console.log(randomNum);
+    // console.log(randomNum);
+    // console.log(dynamicNumberLength);
+    // console.log(image);
+    // console.log(localImage);
+    // console.log(randomNum);
 
     const getVideo = () => {
         navigator.mediaDevices
@@ -186,6 +187,7 @@ function Camera({
         const storedImage = localStorage.getItem("image");
         if (storedImage) {
             setLocalImage(storedImage);
+            setIsSnapShotAvail(true);
         }
     });
 

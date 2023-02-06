@@ -61,7 +61,8 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanc
 //student route
 Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:Student']], function(){
     // auto save feature
-    Route::apiResource('autosave', AutoSaveProgressController::class);
+    Route::post('/autosave', [AutoSaveProgressController::class, 'saveProgress']);
+    Route::get('/fetchautosave', [AutoSaveProgressController::class, 'fetchProgress']);
 
     Route::apiResource('courses', SCourseController::class);
     Route::apiResource('lesson', SLessonController::class);

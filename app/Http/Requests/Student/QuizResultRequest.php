@@ -29,7 +29,7 @@ class QuizResultRequest extends FormRequest
             'module_id' => 'required|string',
             'preliminaries' => 'required|string',
             'quiz_type' => 'required|string',
-            'attempt' => 'required|boolean',
+            'attempt' => 'required|string',
             'score' => 'required|integer|nullable',
             'snapshot' => 'required|boolean',
             'logs' => 'required|string',
