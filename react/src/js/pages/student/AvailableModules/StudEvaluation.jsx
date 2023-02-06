@@ -3,6 +3,7 @@ import useAuth from "../../../hooks/useAuth";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
 import Loading from "../../../components/layouts/Loading";
 import { toast } from "react-toastify";
+import QuizResult from "./QuizResult/QuizResult";
 
 function StudAAE() {
     const { userInfo, token } = useAuth();
@@ -74,9 +75,8 @@ function StudAAE() {
     const AttemptQuizHandler = async () => {
         window.open(
             `${window.location.origin}/student/${courseBase}/modules/${weekMod}/evaluation/quiz`,
-            "_blank"
-            // ,
-            // `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
+            "_blank",
+            `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
         );
 
         const item = {
@@ -122,9 +122,13 @@ function StudAAE() {
 
     const GetScoreHandler = () => {
         console.log(quizResultId && quizResultId.length === 0);
+
         if (quizResultId && quizResultId.length === 0) {
             return null;
         } else {
+            const percentage = quizResultId[0].score * 10;
+            const percentage2 = quizResultId[0].score * 1;
+
             const date = new Date(quizResultId[0].end_time);
             const options = {
                 weekday: "short",
@@ -155,12 +159,12 @@ function StudAAE() {
                                 </td>
                                 <td>
                                     <span className="text-secondary">
-                                        {quizResultId[0].score}.00
+                                        <QuizResult percentage2={percentage2} />
                                     </span>
                                 </td>
                                 <td>
                                     <span className="text-secondary">
-                                        {quizResultId[0].score * 10}.00
+                                        <QuizResult percentage={percentage} />
                                     </span>
                                 </td>
                             </tr>
@@ -203,7 +207,10 @@ function StudAAE() {
                             </div>
                             <button
                                 className=" smallButtonTemplate text-right sumbit-button btn px-5"
-                                disabled={permissionGranted}
+                                disabled={
+                                    permissionGranted ||
+                                    quizResultId.length !== 0
+                                }
                                 onClick={AttemptQuizHandler}
                             >
                                 Attempt Quiz Now

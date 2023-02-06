@@ -241,6 +241,8 @@ function StudQuizEvaluation() {
                     });
                     localStorage.removeItem("image");
                     localStorage.removeItem("ranNumber");
+                    window.opener.location.reload();
+                    window.close();
                 } else {
                     throw new Error(response.status || "Something Went Wrong!");
                 }

@@ -31,11 +31,6 @@ table tbody tr th {
     background-color: #e6e6e6;
 }
 
-table tbody tr:hover th,
-table tbody tr:hover td {
-    background-color: $light-gray;
-}
-
 table tbody tr:hover td span {
     color: $black !important;
 }

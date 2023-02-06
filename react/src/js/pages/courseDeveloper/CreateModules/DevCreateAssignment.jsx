@@ -17,80 +17,80 @@ function DevCreateAssignment() {
             id: "question1",
             question: "",
             options: [
-                { id: "option1", isCorrect: "" },
-                { id: "option2", isCorrect: "" },
+                { id: "optionOne", isCorrect: "" },
+                { id: "optionTwo", isCorrect: "" },
             ],
         },
         {
             id: "question2",
             question: "",
             options: [
-                { id: "option1", isCorrect: "" },
-                { id: "option2", isCorrect: "" },
+                { id: "optionOne", isCorrect: "" },
+                { id: "optionTwo", isCorrect: "" },
             ],
         },
         {
             id: "question3",
             question: "",
             options: [
-                { id: "option1", isCorrect: "" },
-                { id: "option2", isCorrect: "" },
+                { id: "optionOne", isCorrect: "" },
+                { id: "optionTwo", isCorrect: "" },
             ],
         },
         {
             id: "question4",
             question: "",
             options: [
-                { id: "option1", isCorrect: "" },
-                { id: "option2", isCorrect: "" },
+                { id: "optionOne", isCorrect: "" },
+                { id: "optionTwo", isCorrect: "" },
             ],
         },
         {
             id: "question5",
             question: "",
             options: [
-                { id: "option1", isCorrect: "" },
-                { id: "option2", isCorrect: "" },
+                { id: "optionOne", isCorrect: "" },
+                { id: "optionTwo", isCorrect: "" },
             ],
         },
         {
             id: "question6",
             question: "",
             options: [
-                { id: "option1", isCorrect: "" },
-                { id: "option2", isCorrect: "" },
+                { id: "optionOne", isCorrect: "" },
+                { id: "optionTwo", isCorrect: "" },
             ],
         },
         {
             id: "question7",
             question: "",
             options: [
-                { id: "option1", isCorrect: "" },
-                { id: "option2", isCorrect: "" },
+                { id: "optionOne", isCorrect: "" },
+                { id: "optionTwo", isCorrect: "" },
             ],
         },
         {
             id: "question8",
             question: "",
             options: [
-                { id: "option1", isCorrect: "" },
-                { id: "option2", isCorrect: "" },
+                { id: "optionOne", isCorrect: "" },
+                { id: "optionTwo", isCorrect: "" },
             ],
         },
         {
             id: "question9",
             question: "",
             options: [
-                { id: "option1", isCorrect: "" },
-                { id: "option2", isCorrect: "" },
+                { id: "optionOne", isCorrect: "" },
+                { id: "optionTwo", isCorrect: "" },
             ],
         },
         {
             id: "question10",
             question: "",
             options: [
-                { id: "option1", isCorrect: "" },
-                { id: "option2", isCorrect: "" },
+                { id: "optionOne", isCorrect: "" },
+                { id: "optionTwo", isCorrect: "" },
             ],
         },
     ]);
@@ -105,8 +105,8 @@ function DevCreateAssignment() {
     console.log(isCorrectError);
 
     const numberOfChoices = [
-        { id: "option1", rightAnswerNo: "rightAnswer1", letter: "TRUE" },
-        { id: "option2", rightAnswerNo: "rightAnswer2", letter: "FALSE" },
+        { id: "optionOne", rightAnswerNo: "rightAnswer1", letter: "TRUE" },
+        { id: "optionTwo", rightAnswerNo: "rightAnswer2", letter: "FALSE" },
     ];
 
     const numberOfQuestions = [
@@ -219,6 +219,7 @@ function DevCreateAssignment() {
 
         if (questionError === true || isCorrectError === true) {
             console.log("ERROR");
+            toast.error("You must fill out the blank area");
             setError(true);
         } else {
             console.log(AssignQuestions);

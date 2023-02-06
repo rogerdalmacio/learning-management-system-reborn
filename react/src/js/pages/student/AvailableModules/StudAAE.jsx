@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
 import Loading from "../../../components/layouts/Loading";
+import QuizResult from "./QuizResult/QuizResult";
 
 function StudAAE() {
     const { userInfo, token } = useAuth();
@@ -98,6 +99,9 @@ function StudAAE() {
         if (quizResultId && quizResultId.length === 0) {
             return null;
         } else {
+            const percentage = quizResultId[0].score * 10;
+            const percentage2 = quizResultId[0].score * 1;
+
             const date = new Date(quizResultId[0].end_time);
             const options = {
                 weekday: "short",
@@ -128,12 +132,12 @@ function StudAAE() {
                                 </td>
                                 <td>
                                     <span className="text-secondary">
-                                        {quizResultId[0].score}.00
+                                        <QuizResult percentage2={percentage2} />
                                     </span>
                                 </td>
                                 <td>
                                     <span className="text-secondary">
-                                        {quizResultId[0].score * 10}.00
+                                        <QuizResult percentage={percentage} />
                                     </span>
                                 </td>
                             </tr>
@@ -159,6 +163,7 @@ function StudAAE() {
                             <button
                                 className=" smallButtonTemplate text-right sumbit-button btn px-5"
                                 onClick={AttemptQuizHandler}
+                                disabled={quizResultId.length !== 0}
                             >
                                 Attempt Quiz Now
                             </button>

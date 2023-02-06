@@ -20,6 +20,7 @@ function StudQuizEvaluation() {
     const [content, setContent] = useState();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [quizExist, setQuizExist] = useState(false);
+    const [permissionGranted, setPermissionGranted] = useState();
     const [getAnswer, setGetAnswer] = useState([
         "@$#",
         "@$#",
@@ -277,6 +278,8 @@ function StudQuizEvaluation() {
                     });
                     localStorage.removeItem("image");
                     localStorage.removeItem("ranNumber");
+                    window.opener.location.reload();
+                    window.close();
                 } else {
                     throw new Error(response.status || "Something Went Wrong!");
                 }
@@ -321,7 +324,10 @@ function StudQuizEvaluation() {
     });
 
     const MainContent = () => {
-        if (quizExist == true) {
+        if (
+            quizExist == true ||
+            (permissionGranted && permissionGranted == true)
+        ) {
             return <Navigate replace to="/unauthorized" />;
         } else {
             if (content) {
@@ -370,6 +376,7 @@ function StudQuizEvaluation() {
                                     content
                                     getAnswer={getAnswer}
                                     currentQuestionIndex={currentQuestionIndex}
+                                    setPermissionGranted={setPermissionGranted}
                                 />
                             </div>
                         </div>

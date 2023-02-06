@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
+import Loading from "../../../components/layouts/Loading";
+import QuizResult from "./QuizResult/QuizResult";
 
 function StudAssignment() {
     const { userInfo, token } = useAuth();
-    const { quizid, quiz, courses, setWeekQuiz, setQuizId } =
+    const { quizid, quiz, courses, setWeekQuiz, setQuizId, quizResultId } =
         useStudentContext();
-
 
     const [quizInfo, setQuizInfo] = useState();
 
@@ -47,9 +48,8 @@ function StudAssignment() {
     const AttemptQuizHandler = async () => {
         window.open(
             `${window.location.origin}/student/${courseBase}/modules/${weekMod}/assignment/quiz`,
-            "_blank"
-            // ,
-            // `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
+            "_blank",
+            `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
         );
 
         const item = {
@@ -87,23 +87,91 @@ function StudAssignment() {
             });
     };
 
-    return (
-        <div>
-            <h4 className="mb-3">Assignment {currentWeek}</h4>
+    const GetScoreHandler = () => {
+        console.log(quizResultId && quizResultId.length === 0);
 
-            <div className="d-flex justify-content-center">
-                <div className="d-block text-center">
-                    <p>Attempt allowed: 1</p>
-                    <p>Time Limit: 1 hour</p>
-                    <button
-                        className=" smallButtonTemplate text-right sumbit-button btn px-5"
-                        onClick={AttemptQuizHandler}
-                    >
-                        Attempt Quiz Now
-                    </button>
+        if (quizResultId && quizResultId.length === 0) {
+            return null;
+        } else {
+            const percentage = quizResultId[0].score * 10;
+            const percentage2 = quizResultId[0].score * 1;
+
+            const date = new Date(quizResultId[0].end_time);
+            const options = {
+                weekday: "short",
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+            };
+            const formattedDate = new Intl.DateTimeFormat(
+                "en-US",
+                options
+            ).format(date);
+            return (
+                <div className="container mt-5">
+                    <table className="table rounded-2 overflow-hidden shadow-sm">
+                        <thead className="fw-normal">
+                            <tr className="tableRowHeader align-top  fw-normal">
+                                <th scope="col-3">State</th>
+                                <th scope="col-3">Marks / 10.00</th>
+                                <th scope="col-3">Grade / 100.00</th>
+                            </tr>
+                        </thead>
+                        <tbody className="tableBodyColor">
+                            <tr scope="row">
+                                <td>
+                                    <span className="text-secondary">
+                                        Submitted {formattedDate}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span className="text-secondary">
+                                        <QuizResult percentage2={percentage2} />
+                                    </span>
+                                </td>
+                                <td>
+                                    <span className="text-secondary">
+                                        <QuizResult percentage={percentage} />
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-        </div>
-    );
+            );
+        }
+    };
+
+    const MainContent = () => {
+        if (quizResultId) {
+            console.log(quizResultId.length == 0);
+            console.log(quizResultId[0] !== null);
+
+            return (
+                <div>
+                    <h4 className="mb-3">Assignment {currentWeek}</h4>
+
+                    <div className="d-flex justify-content-center">
+                        <div className="d-block text-center">
+                            <p>Attempt allowed: 1</p>
+                            <p>Time Limit: 1 hour</p>
+                            <button
+                                className=" smallButtonTemplate text-right sumbit-button btn px-5"
+                                onClick={AttemptQuizHandler}
+                                disabled={quizResultId.length !== 0}
+                            >
+                                Attempt Quiz Now
+                            </button>
+                        </div>
+                    </div>
+                    {GetScoreHandler()}
+                </div>
+            );
+        } else {
+            return <Loading />;
+        }
+    };
+
+    return <div>{MainContent()}</div>;
 }
 export default StudAssignment;

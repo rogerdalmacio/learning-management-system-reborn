@@ -78,11 +78,14 @@ function StudQuizAssignment() {
                 });
         }
     });
+    console.log(content);
 
     useEffect(() => {
         if (officialQuiz) {
             const firstArray = officialQuiz[0];
             const secondArray = officialQuiz[1];
+            console.log(firstArray);
+            console.log(secondArray);
 
             const newArray = [];
 
@@ -132,7 +135,7 @@ function StudQuizAssignment() {
                         }`}
                     >
                         {OptionLetter[index]}.{" "}
-                        {opt == "option1" ? "TRUE" : "FALSE"}
+                        {opt == "optionOne" ? "TRUE" : "FALSE"}
                     </button>
                 </Fragment>
             );
@@ -240,6 +243,8 @@ function StudQuizAssignment() {
                     });
                     localStorage.removeItem("image");
                     localStorage.removeItem("ranNumber");
+                    window.opener.location.reload();
+                    window.close();
                 } else {
                     throw new Error(response.status || "Something Went Wrong!");
                 }
