@@ -99,9 +99,9 @@ class AutoSaveProgressController extends Controller
     public function saveProgress(AutoSaveProgressRequest $request)
     {
 
-        $autoSave = AutoSaveProgress::where('quiz_result_id', $request['quiz_result_id'])->get();
+        $autoSave = AutoSaveProgress::where('quiz_result_id', $request['quiz_result_id'])->first();
 
-        if($autoSave->count() > 0) {
+        if($autoSave) {
 
             $autoSave->update([
                 'answers' => $request['answers'],
