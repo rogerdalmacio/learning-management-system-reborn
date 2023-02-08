@@ -183,6 +183,7 @@ function StudQuizEvaluation() {
                 }
             )
             .then((response) => {
+                console.log(response)
                 if (response.status >= 200 && response.status <= 300) {
                 } else {
                     throw new Error(response.status || "Something Went Wrong!");
@@ -318,13 +319,16 @@ function StudQuizEvaluation() {
     };
 
     useEffect(() => {
-        if (quizResultId && content && quizResultId[0].score !== null) {
+        if (quizResultId && content && quizResultId[0].attempt == "finished") {
             setQuizExist(true);
         }
     });
 
     const MainContent = () => {
-        if (
+        if(quizResultId && quizResultId.length === 0) {
+            return <Navigate replace to="/unauthorized" />;
+        }
+        else if (
             quizExist == true ||
             (permissionGranted && permissionGranted == true)
         ) {

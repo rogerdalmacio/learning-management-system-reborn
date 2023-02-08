@@ -10,6 +10,7 @@ function StudAAE() {
         useStudentContext();
 
     const [quizInfo, setQuizInfo] = useState();
+    const [hasAttempt, setHasAttempt] = useState();
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -57,7 +58,7 @@ function StudAAE() {
             module_id: quizInfo.module_id,
             preliminaries: quizInfo.preliminaries,
             quiz_type: quizInfo.quiz_type,
-            attempt: true,
+            attempt: "inProgress",
             score: 0,
             logs: "x",
             snapshot: false,
@@ -95,8 +96,7 @@ function StudAAE() {
     };
 
     const GetScoreHandler = () => {
-        console.log(quizResultId && quizResultId.length === 0);
-        if (quizResultId && quizResultId.length === 0) {
+        if (quizResultId && quizResultId[0].attempt !== 'finished') {
             return null;
         } else {
             const percentage = quizResultId[0].score * 10;
@@ -147,8 +147,25 @@ function StudAAE() {
             );
         }
     };
+    console.log(hasAttempt)
+
+    useEffect(() => {
+        const hasAttemptHandler = () => {
+            if(quizResultId) {
+                if(quizResultId.length == 0) {
+                    setHasAttempt(false)
+                } else if (quizResultId.length !== 0 && quizResultId[0].attempt == "finished") {
+                    setHasAttempt(true)
+                } 
+            }
+        }
+        hasAttemptHandler()
+    },)
 
     const MainContent = () => {
+        console.log(quizResultId)
+
+
         if (quizResultId) {
             return (
                 <div>
@@ -163,7 +180,7 @@ function StudAAE() {
                             <button
                                 className=" smallButtonTemplate text-right sumbit-button btn px-5"
                                 onClick={AttemptQuizHandler}
-                                disabled={quizResultId.length !== 0}
+                                disabled={hasAttempt}
                             >
                                 Attempt Quiz Now
                             </button>

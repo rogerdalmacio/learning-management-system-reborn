@@ -13,6 +13,7 @@ function StudAAE() {
     const [quizInfo, setQuizInfo] = useState();
     const [allow, setAllow] = useState(true);
     const [permissionGranted, setPermissionGranted] = useState(true);
+    const [hasAttempt, setHasAttempt] = useState();
     const [disableBut, setDisableBut] = useState(true);
 
     const pathname = window.location.pathname;
@@ -123,62 +124,77 @@ function StudAAE() {
     const GetScoreHandler = () => {
         console.log(quizResultId && quizResultId.length === 0);
 
-        if (quizResultId && quizResultId.length === 0) {
-            return null;
-        } else {
-            const percentage = quizResultId[0].score * 10;
-            const percentage2 = quizResultId[0].score * 1;
-
-            const date = new Date(quizResultId[0].end_time);
-            const options = {
-                weekday: "short",
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-            };
-            const formattedDate = new Intl.DateTimeFormat(
-                "en-US",
-                options
-            ).format(date);
-            return (
-                <div className="container mt-5">
-                    <table className="table rounded-2 overflow-hidden shadow-sm">
-                        <thead className="fw-normal">
-                            <tr className="tableRowHeader align-top  fw-normal">
-                                <th scope="col-3">State</th>
-                                <th scope="col-3">Marks / 10.00</th>
-                                <th scope="col-3">Grade / 100.00</th>
-                            </tr>
-                        </thead>
-                        <tbody className="tableBodyColor">
-                            <tr scope="row">
-                                <td>
-                                    <div className="d-block">
+        if(quizResultId.length !== 0) {
+            if (quizResultId &&  quizResultId[0].attempt !== "finished") {
+                return null;
+            } else {
+                const percentage = quizResultId[0].score * 10;
+                const percentage2 = quizResultId[0].score * 1;
+    
+                const date = new Date(quizResultId[0].end_time);
+                const options = {
+                    weekday: "short",
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                };
+                const formattedDate = new Intl.DateTimeFormat(
+                    "en-US",
+                    options
+                ).format(date);
+                return (
+                    <div className="container mt-5">
+                        <table className="table rounded-2 overflow-hidden shadow-sm">
+                            <thead className="fw-normal">
+                                <tr className="tableRowHeader align-top  fw-normal">
+                                    <th scope="col-3">State</th>
+                                    <th scope="col-3">Marks / 10.00</th>
+                                    <th scope="col-3">Grade / 100.00</th>
+                                </tr>
+                            </thead>
+                            <tbody className="tableBodyColor">
+                                <tr scope="row">
+                                    <td>
+                                        <div className="d-block">
+                                            <span className="text-secondary">
+                                                Submitted {formattedDate}
+                                            </span>
+                                            <span className="text-secondary">
+                                                {quizResultId[0].attempt}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
                                         <span className="text-secondary">
-                                            Submitted {formattedDate}
+                                            <QuizResult percentage2={percentage2} />
                                         </span>
+                                    </td>
+                                    <td>
                                         <span className="text-secondary">
-                                            {quizResultId[0].attempt}
+                                            <QuizResult percentage={percentage} />
                                         </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span className="text-secondary">
-                                        <QuizResult percentage2={percentage2} />
-                                    </span>
-                                </td>
-                                <td>
-                                    <span className="text-secondary">
-                                        <QuizResult percentage={percentage} />
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            );
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                );
+            }
         }
     };
+
+    useEffect(() => {
+        const hasAttemptHandler = () => {
+            if(quizResultId) {
+                if(quizResultId.length == 0) {
+                    setHasAttempt(false)
+                } else if (quizResultId.length !== 0 && quizResultId[0].attempt == "finished") {
+                    setHasAttempt(true)
+                } 
+            }
+        }
+        hasAttemptHandler()
+    },)
 
     const MainContent = () => {
         if (quizResultId) {
@@ -214,7 +230,7 @@ function StudAAE() {
                                 className=" smallButtonTemplate text-right sumbit-button btn px-5"
                                 disabled={
                                     permissionGranted ||
-                                    quizResultId.length !== 0
+                                    hasAttempt
                                 }
                                 onClick={AttemptQuizHandler}
                             >

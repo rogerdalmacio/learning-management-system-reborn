@@ -215,6 +215,7 @@ function StudQuizAAE() {
         const item = {
             answers: data,
             logs: "x",
+            attempt: "finished"
         };
         let toastId;
 
@@ -286,7 +287,7 @@ function StudQuizAAE() {
     };
 
     const MainContent = () => {
-        if (quizResultId && content && quizResultId[0].score !== null) {
+        if (quizResultId && content && quizResultId[0].attempt == "finished") {
             return <Navigate replace to="/unauthorized" />;
         } else {
             if (content) {
