@@ -7,7 +7,7 @@ import useAuth from "../../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { Navigate } from "react-router-dom";
 
-function StudQuizEvaluation() {
+function StudQuizEvaluation({}) {
     const {
         courses,
         officialQuiz,
@@ -16,24 +16,31 @@ function StudQuizEvaluation() {
         setQuizId,
         quizResultId,
     } = useStudentContext();
-    const { token, userInfo } = useAuth();
+    const { token, userInfo, role } = useAuth();
     const [content, setContent] = useState();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [quizExist, setQuizExist] = useState(false);
     const [permissionGranted, setPermissionGranted] = useState();
     const [isSnapshotAvail, setIsSnapShotAvail] = useState(false);
-    const [getAnswer, setGetAnswer] = useState([
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-    ]);
+    const [hasProgress, setHasProgress] = useState(false);
+
+    const [progress, setProgress] = useState();
+    const [getAnswer, setGetAnswer] = useState(
+        hasProgress
+            ? progress
+            : [
+                  "@$#",
+                  "@$#",
+                  "@$#",
+                  "@$#",
+                  "@$#",
+                  "@$#",
+                  "@$#",
+                  "@$#",
+                  "@$#",
+                  "@$#",
+              ]
+    );
 
     // useEffect(() => {
     //     if (getAnswer) {
@@ -43,9 +50,39 @@ function StudQuizEvaluation() {
     //         console.log(newArray);
     //     }
     // });
-    console.log(permissionGranted);
-    console.log(getAnswer);
-    console.log(isSnapshotAvail);
+    // console.log(permissionGranted);
+    // console.log(getAnswer);
+    // console.log(isSnapshotAvail);
+    console.log(progress);
+    console.log(hasProgress);
+
+    // useEffect(() => {
+    //     const progressHandler = async () => {
+    //         if (role === "student") {
+    //             await axios
+    //                 .get(
+    //                     `${
+    //                         import.meta.env.VITE_API_BASE_URL
+    //                     }/api/student/fetchautosave`,
+    //                     {
+    //                         headers: {
+    //                             Authorization: `Bearer ${token}`,
+    //                             "Content-Type": "application/json",
+    //                             Accept: "application/json",
+    //                         },
+    //                     }
+    //                 )
+    //                 .then((response) => {
+    //                     setProgress(response.data.request);
+    //                 })
+    //                 .catch((error) => {
+    //                     console.log(error);
+    //                 });
+    //         }
+    //     };
+
+    //     progressHandler();
+    // }, []);
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -106,7 +143,6 @@ function StudQuizEvaluation() {
 
     const OptionsContentHandler = () => {
         return content[currentQuestionIndex].options.map((opt, index) => {
-            console.log(opt);
             const OptionLetter = ["A", "B", "C", "D"];
 
             const handleClick = (questionIndex, answer) => {
@@ -168,7 +204,7 @@ function StudQuizEvaluation() {
             end_time: quizResultId[0].end_time,
         };
 
-        console.log(item);
+        // console.log(item);
 
         await axios
             .post(
@@ -183,7 +219,7 @@ function StudQuizEvaluation() {
                 }
             )
             .then((response) => {
-                console.log(response)
+                console.log(response);
                 if (response.status >= 200 && response.status <= 300) {
                 } else {
                     throw new Error(response.status || "Something Went Wrong!");
@@ -192,9 +228,31 @@ function StudQuizEvaluation() {
             .catch((error) => {
                 console.log(error);
             });
-    };
 
-    console.log(quizResultId);
+        // getting autosaveprogress
+        await axios
+            .get(
+                `${
+                    import.meta.env.VITE_API_BASE_URL
+                }/api/student/fetchautosave`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                }
+            )
+            .then((response) => {
+                setProgress(response.data.request);
+                if (response.data.request) {
+                    setHasProgress(true);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     const handlePrevious = () => {
         setCurrentQuestionIndex(currentQuestionIndex - 1);
@@ -325,10 +383,9 @@ function StudQuizEvaluation() {
     });
 
     const MainContent = () => {
-        if(quizResultId && quizResultId.length === 0) {
+        if (quizResultId && quizResultId.length === 0) {
             return <Navigate replace to="/unauthorized" />;
-        }
-        else if (
+        } else if (
             quizExist == true ||
             (permissionGranted && permissionGranted == true)
         ) {

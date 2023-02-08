@@ -32,14 +32,6 @@ function StudQuizAssignment() {
         "@$#",
     ]);
 
-    // useEffect(() => {
-    //     if (getAnswer) {
-    //         const newArray = getAnswer.map((item) =>
-    //             typeof item === "undefined" ? "@$#" : item
-    //         );
-    //         console.log(newArray);
-    //     }
-    // });
     console.log(getAnswer);
 
     if (quizResultId) {
@@ -214,7 +206,7 @@ function StudQuizAssignment() {
         const item = {
             answers: data,
             logs: "x",
-            attempt: 'finished'
+            attempt: "finished",
         };
         let toastId;
 

@@ -5,6 +5,7 @@ import Loading from "../../../components/layouts/Loading";
 import { toast } from "react-toastify";
 import QuizResult from "./QuizResult/QuizResult";
 
+
 function StudAAE() {
     const { userInfo, token } = useAuth();
     const { quizid, quiz, courses, setWeekQuiz, setQuizId, quizResultId } =
@@ -124,13 +125,13 @@ function StudAAE() {
     const GetScoreHandler = () => {
         console.log(quizResultId && quizResultId.length === 0);
 
-        if(quizResultId.length !== 0) {
-            if (quizResultId &&  quizResultId[0].attempt !== "finished") {
+        if (quizResultId.length !== 0) {
+            if (quizResultId && quizResultId[0].attempt !== "finished") {
                 return null;
             } else {
                 const percentage = quizResultId[0].score * 10;
                 const percentage2 = quizResultId[0].score * 1;
-    
+
                 const date = new Date(quizResultId[0].end_time);
                 const options = {
                     weekday: "short",
@@ -166,12 +167,16 @@ function StudAAE() {
                                     </td>
                                     <td>
                                         <span className="text-secondary">
-                                            <QuizResult percentage2={percentage2} />
+                                            <QuizResult
+                                                percentage2={percentage2}
+                                            />
                                         </span>
                                     </td>
                                     <td>
                                         <span className="text-secondary">
-                                            <QuizResult percentage={percentage} />
+                                            <QuizResult
+                                                percentage={percentage}
+                                            />
                                         </span>
                                     </td>
                                 </tr>
@@ -185,16 +190,19 @@ function StudAAE() {
 
     useEffect(() => {
         const hasAttemptHandler = () => {
-            if(quizResultId) {
-                if(quizResultId.length == 0) {
-                    setHasAttempt(false)
-                } else if (quizResultId.length !== 0 && quizResultId[0].attempt == "finished") {
-                    setHasAttempt(true)
-                } 
+            if (quizResultId) {
+                if (quizResultId.length == 0) {
+                    setHasAttempt(false);
+                } else if (
+                    quizResultId.length !== 0 &&
+                    quizResultId[0].attempt == "finished"
+                ) {
+                    setHasAttempt(true);
+                }
             }
-        }
-        hasAttemptHandler()
-    },)
+        };
+        hasAttemptHandler();
+    });
 
     const MainContent = () => {
         if (quizResultId) {
@@ -228,10 +236,7 @@ function StudAAE() {
                             </div>
                             <button
                                 className=" smallButtonTemplate text-right sumbit-button btn px-5"
-                                disabled={
-                                    permissionGranted ||
-                                    hasAttempt
-                                }
+                                disabled={permissionGranted || hasAttempt}
                                 onClick={AttemptQuizHandler}
                             >
                                 Attempt Quiz Now

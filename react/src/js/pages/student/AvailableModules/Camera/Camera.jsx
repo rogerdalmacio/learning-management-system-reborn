@@ -14,12 +14,12 @@ function Camera({
     const { quizid, quizResultId } = useStudentContext();
     const { token } = useAuth();
 
-    console.log(quizid);
-    console.log(quizResultId);
+    // console.log(quizid);
+    // console.log(quizResultId);
 
     let lastIndex = getAnswer.length - 1;
-    console.log(lastIndex);
-    console.log(currentQuestionIndex);
+    // console.log(lastIndex);
+    // console.log(currentQuestionIndex);
 
     const videoRef = useRef(null);
     const photoRef = useRef(null);
@@ -143,8 +143,8 @@ function Camera({
                 formData.append("snapshot", true);
                 formData.append("quiz_result_id", quizResultId[0].id);
 
-                console.log(file);
-                console.log(formData);
+                // console.log(file);
+                // console.log(formData);
 
                 // let item = {
                 //     snapshot: true,
@@ -169,7 +169,7 @@ function Camera({
                         }
                     )
                     .then((response) => {
-                        console.log(response);
+                        // console.log(response);
                         if (response.status >= 200 && response.status <= 300) {
                             toast.success("Snapshot uploaded!");
                         } else {
@@ -179,7 +179,7 @@ function Camera({
                         }
                     })
                     .catch((error) => {
-                        console.log(error);
+                        // console.log(error);
                     });
             }
         };
@@ -192,7 +192,7 @@ function Camera({
     });
 
     // setting random Number
-    console.log(countQuiz);
+    // console.log(countQuiz);
 
     useEffect(() => {
         getVideo();

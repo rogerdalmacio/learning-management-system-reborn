@@ -19,9 +19,15 @@ class AutoSaveProgressController extends Controller
 
         $userId = Auth::user()->id;
 
-        $autoSavedProgress = AutoSaveProgress::where('student_id', $userId)->get();
+        $autoSavedProgress = AutoSaveProgress::where('student_id', $userId)->first();
 
-        if($autoSavedProgress['end_time']->diffInMinutes($autoSavedProgress['start_time']) > 60) {
+        // return $autoSavedProgress;
+
+        $startTime = Carbon::parse($autoSavedProgress['start_time']);
+
+        $endTime = Carbon::parse($autoSavedProgress['end_time']);
+
+        if($startTime->diffInMinutes($endTime) > 60) {
 
             if($autoSavedProgress['snapshot'] === false) {
 
@@ -80,10 +86,10 @@ class AutoSaveProgressController extends Controller
 
         }
 
-        $sorted = $autoSavedProgress->sortBy('start_time');
+        $returnanswer = explode("|", $autoSavedProgress['answers']);
 
         $response = [
-            'request' => $sorted
+            'request' => $returnanswer
         ];
 
         return response($response, 200);
