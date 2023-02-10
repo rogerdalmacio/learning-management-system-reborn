@@ -11,7 +11,9 @@ function StudAssignment() {
 
     const [quizInfo, setQuizInfo] = useState();
     const [hasAttempt, setHasAttempt] = useState();
+    const [getQuizId, setGetQuizId] = useState();
     const [hasAutoSave, setHasAutoSave] = useState(false);
+    const [hasAutoSaveChange, setHasAutoSaveChange] = useState(false);
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -24,6 +26,7 @@ function StudAssignment() {
     console.log(contentType);
 
     console.log(hasAutoSave);
+    console.log(getQuizId);
 
     //getting module_id for modules
     useEffect(() => {
@@ -69,6 +72,7 @@ function StudAssignment() {
                     .then((response) => {
                         console.log(response.data);
                         if (response.data.request) {
+                            setGetQuizId(response.data);
                             setHasAutoSave(true);
                         }
                     })
@@ -79,15 +83,18 @@ function StudAssignment() {
         };
 
         progressHandler();
-    }, []);
+    }, [hasAutoSaveChange]);
 
-    // attempt quiz 
+    // attempt quiz
     const AttemptQuizHandler = async () => {
         window.open(
             `${window.location.origin}/student/${courseBase}/modules/${weekMod}/assignment/quiz`,
             "_blank"
             // `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
         );
+
+        //what if the autosaveprogress is changing
+        setHasAutoSaveChange(true);
 
         const item = {
             student_id: userInfo.id,
@@ -256,8 +263,8 @@ function StudAssignment() {
 
     const MainContent = () => {
         if (quizResultId) {
-            console.log(quizResultId.length == 0);
-            console.log(quizResultId[0] !== null);
+            // console.log(quizResultId.length == 0);
+            // console.log(quizResultId[0] !== null);
 
             return (
                 <div>

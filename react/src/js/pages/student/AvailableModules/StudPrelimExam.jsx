@@ -6,14 +6,18 @@ import { toast } from "react-toastify";
 import QuizResult from "./QuizResult/QuizResult";
 
 function StudPrelimExam() {
-    const { userInfo, token } = useAuth();
+    const { userInfo, token, role } = useAuth();
     const { quizid, quiz, courses, setWeekQuiz, setQuizId, quizResultId } =
         useStudentContext();
 
     const [quizInfo, setQuizInfo] = useState();
     const [allow, setAllow] = useState(true);
     const [permissionGranted, setPermissionGranted] = useState(true);
+    const [hasAttempt, setHasAttempt] = useState();
     const [disableBut, setDisableBut] = useState(true);
+    const [getQuizId, setGetQuizId] = useState();
+    const [hasAutoSave, setHasAutoSave] = useState(false);
+    const [hasAutoSaveChange, setHasAutoSaveChange] = useState(false);
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -24,6 +28,8 @@ function StudPrelimExam() {
     const weekForModule = weekMod.match(/\d+/)[0];
     const contentType = pathArray[5];
     console.log(contentType);
+
+    console.log(hasAutoSave);
 
     useEffect(() => {
         navigator.mediaDevices
@@ -72,12 +78,16 @@ function StudPrelimExam() {
         }
     });
 
+    // attempt quiz
     const AttemptQuizHandler = async () => {
         window.open(
             `${window.location.origin}/student/${courseBase}/modules/${weekMod}/preliminaryexamination/quiz`,
-            "_blank",
-            `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
+            "_blank"
+            // `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
         );
+
+        //what if the autosaveprogress is changing
+        setHasAutoSaveChange(true);
 
         const item = {
             student_id: userInfo.id,
@@ -85,10 +95,12 @@ function StudPrelimExam() {
             module_id: quizInfo.module_id,
             preliminaries: quizInfo.preliminaries,
             quiz_type: quizInfo.quiz_type,
-            attempt: true,
+            attempt: "inProgress",
             score: 0,
             logs: "x",
             snapshot: false,
+            answers:
+                "@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#",
         };
 
         await axios
@@ -109,8 +121,102 @@ function StudPrelimExam() {
                     throw new Error(response.status || "Something Went Wrong!");
                 }
             })
-            .catch((error) => {
-                console.log(error);
+            .then(() => {
+                if (quizResultId && quizResultId.length !== 0) {
+                    const initialAnswer = [
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                    ];
+
+                    const item2 = {
+                        student_id: userInfo.id,
+                        quiz_result_id: quizResultId[0].id,
+                        answers: initialAnswer.join("|"),
+                        snapshot: false,
+                        start_time: quizResultId[0].start_time,
+                        end_time: quizResultId[0].end_time,
+                    };
+
+                    // console.log(item);
+
+                    axios
+                        .post(
+                            `${
+                                import.meta.env.VITE_API_BASE_URL
+                            }/api/student/autosave`,
+                            item2,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    "Content-Type": "application/json",
+                                    Accept: "application/json",
+                                },
+                            }
+                        )
+                        .then((response) => {
+                            console.log(response);
+                            if (
+                                response.status >= 200 &&
+                                response.status <= 300
+                            ) {
+                            } else {
+                                throw new Error(
+                                    response.status || "Something Went Wrong!"
+                                );
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
             });
     };
 
@@ -122,58 +228,89 @@ function StudPrelimExam() {
 
     const GetScoreHandler = () => {
         console.log(quizResultId && quizResultId.length === 0);
-        if (quizResultId && quizResultId.length === 0) {
-            return null;
-        } else {
-            const date = new Date(quizResultId[0].end_time);
-            const options = {
-                weekday: "short",
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-            };
-            const formattedDate = new Intl.DateTimeFormat(
-                "en-US",
-                options
-            ).format(date);
-            return (
-                <div className="container mt-5">
-                    <table className="table rounded-2 overflow-hidden shadow-sm">
-                        <thead className="fw-normal">
-                            <tr className="tableRowHeader align-top  fw-normal">
-                                <th scope="col-3">State</th>
-                                <th scope="col-3">Marks / 50.00</th>
-                                <th scope="col-3">Grade / 100.00</th>
-                            </tr>
-                        </thead>
-                        <tbody className="tableBodyColor">
-                            <tr scope="row">
-                                <td>
-                                    <span className="text-secondary">
-                                        Submitted {formattedDate}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span className="text-secondary">
-                                        {quizResultId[0].score}.00
-                                    </span>
-                                </td>
-                                <td>
-                                    <span className="text-secondary">
-                                        {quizResultId[0].score * 2}.00
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            );
+        if (quizResultId.length !== 0) {
+            if (quizResultId && quizResultId[0].attempt !== "finished") {
+                return null;
+            } else {
+                const percentageExam = quizResultId[0].score * 2;
+                const percentageExam2 = quizResultId[0].score * 1;
+
+                const date = new Date(quizResultId[0].end_time);
+                const options = {
+                    weekday: "short",
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                };
+                const formattedDate = new Intl.DateTimeFormat(
+                    "en-US",
+                    options
+                ).format(date);
+                return (
+                    <div className="container mt-5">
+                        <table className="table rounded-2 overflow-hidden shadow-sm">
+                            <thead className="fw-normal">
+                                <tr className="tableRowHeader align-top  fw-normal">
+                                    <th scope="col-3">State</th>
+                                    <th scope="col-3">Marks / 50.00</th>
+                                    <th scope="col-3">Grade / 100.00</th>
+                                </tr>
+                            </thead>
+                            <tbody className="tableBodyColor">
+                                <tr scope="row">
+                                    <td>
+                                        <div className="d-block">
+                                            <span className="text-secondary">
+                                                Submitted {formattedDate}
+                                            </span>
+                                            <span className="text-secondary">
+                                                {quizResultId[0].attempt}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span className="text-secondary">
+                                            <QuizResult
+                                                percentageExam2={
+                                                    percentageExam2
+                                                }
+                                            />
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span className="text-secondary">
+                                            <QuizResult
+                                                percentageExam={percentageExam}
+                                            />
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                );
+            }
         }
     };
 
+    useEffect(() => {
+        const hasAttemptHandler = () => {
+            if (quizResultId) {
+                if (quizResultId.length == 0) {
+                    setHasAttempt(false);
+                } else if (
+                    quizResultId.length !== 0 &&
+                    quizResultId[0].attempt == "finished"
+                ) {
+                    setHasAttempt(true);
+                }
+            }
+        };
+        hasAttemptHandler();
+    });
+
     const MainContent = () => {
         if (quizResultId) {
-            const percentage = quizResultId[0].score * 2;
             return (
                 <div>
                     <h4 className="mb-3">
@@ -206,10 +343,7 @@ function StudPrelimExam() {
                             </div>
                             <button
                                 className=" smallButtonTemplate text-right sumbit-button btn px-5"
-                                disabled={
-                                    permissionGranted ||
-                                    quizResultId.length !== 0
-                                }
+                                disabled={permissionGranted || hasAttempt}
                                 onClick={AttemptQuizHandler}
                             >
                                 Attempt Quiz Now
@@ -217,7 +351,6 @@ function StudPrelimExam() {
                         </div>
                     </div>
                     {GetScoreHandler()}
-                    <QuizResult percentage={percentage} />
                 </div>
             );
         } else {

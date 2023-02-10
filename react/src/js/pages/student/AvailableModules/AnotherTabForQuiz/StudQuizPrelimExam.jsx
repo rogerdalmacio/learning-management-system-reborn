@@ -16,63 +16,15 @@ function StudQuizEvaluation() {
         setQuizId,
         quizResultId,
     } = useStudentContext();
-    const { token } = useAuth();
+    const { token, userInfo, role } = useAuth();
     const [content, setContent] = useState();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [quizExist, setQuizExist] = useState(false);
     const [permissionGranted, setPermissionGranted] = useState();
-    const [getAnswer, setGetAnswer] = useState([
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-    ]);
+    const [isSnapshotAvail, setIsSnapShotAvail] = useState(false);
+
+    const [progress, setProgress] = useState();
+    const [getAnswer, setGetAnswer] = useState();
 
     // useEffect(() => {
     //     if (getAnswer) {
@@ -93,6 +45,36 @@ function StudQuizEvaluation() {
     const weekForModule = weekMod.match(/\d+/)[0];
     const contentType = pathArray[5];
     console.log(contentType);
+
+    useEffect(() => {
+        const progressHandler = async () => {
+            if (role === "student") {
+                await axios
+                    .get(
+                        `${
+                            import.meta.env.VITE_API_BASE_URL
+                        }/api/student/fetchautosave`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json",
+                                Accept: "application/json",
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        setGetAnswer(response.data.request);
+                        if (response.data.request) {
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        };
+
+        progressHandler();
+    }, []);
 
     //getting module_id for modules
     useEffect(() => {
@@ -192,8 +174,42 @@ function StudQuizEvaluation() {
     };
 
     // Next and Previous Button
-    const handleNext = () => {
+    const handleNext = async () => {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
+
+        const item = {
+            student_id: userInfo.id,
+            quiz_result_id: quizResultId[0].id,
+            answers: getAnswer.join("|"),
+            snapshot: isSnapshotAvail,
+            start_time: quizResultId[0].start_time,
+            end_time: quizResultId[0].end_time,
+        };
+
+        // console.log(item);
+
+        await axios
+            .post(
+                `${import.meta.env.VITE_API_BASE_URL}/api/student/autosave`,
+                item,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                }
+            )
+            .then((response) => {
+                console.log(response);
+                if (response.status >= 200 && response.status <= 300) {
+                } else {
+                    throw new Error(response.status || "Something Went Wrong!");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     const handlePrevious = () => {
@@ -249,6 +265,7 @@ function StudQuizEvaluation() {
         const item = {
             answers: data,
             logs: "x",
+            attempt: "finished",
         };
         let toastId;
 
@@ -318,13 +335,15 @@ function StudQuizEvaluation() {
     };
 
     useEffect(() => {
-        if (quizResultId && content && quizResultId[0].score !== null) {
+        if (quizResultId && content && quizResultId[0].attempt == "finished") {
             setQuizExist(true);
         }
     });
 
     const MainContent = () => {
-        if (
+        if (quizResultId && quizResultId.length === 0) {
+            return <Navigate replace to="/unauthorized" />;
+        } else if (
             quizExist == true ||
             (permissionGranted && permissionGranted == true)
         ) {
@@ -374,9 +393,10 @@ function StudQuizEvaluation() {
                                     contentArrayLength={contentArrayLength}
                                     dynamicNumberLength={dynamicNumberLength}
                                     content
-                                    getAnswer={getAnswer}
                                     currentQuestionIndex={currentQuestionIndex}
+                                    getAnswer={getAnswer}
                                     setPermissionGranted={setPermissionGranted}
+                                    setIsSnapShotAvail={setIsSnapShotAvail}
                                 />
                             </div>
                         </div>

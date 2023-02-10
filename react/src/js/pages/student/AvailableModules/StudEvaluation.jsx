@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import QuizResult from "./QuizResult/QuizResult";
 
 function StudAAE() {
-    const { userInfo, token } = useAuth();
+    const { userInfo, token, role } = useAuth();
     const { quizid, quiz, courses, setWeekQuiz, setQuizId, quizResultId } =
         useStudentContext();
 
@@ -15,6 +15,9 @@ function StudAAE() {
     const [permissionGranted, setPermissionGranted] = useState(true);
     const [hasAttempt, setHasAttempt] = useState();
     const [disableBut, setDisableBut] = useState(true);
+    const [getQuizId, setGetQuizId] = useState();
+    const [hasAutoSave, setHasAutoSave] = useState(false);
+    const [hasAutoSaveChange, setHasAutoSaveChange] = useState(false);
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -25,6 +28,8 @@ function StudAAE() {
     const weekForModule = weekMod.match(/\d+/)[0];
     const contentType = pathArray[5];
     console.log(contentType);
+
+    console.log(hasAutoSave);
 
     useEffect(() => {
         navigator.mediaDevices
@@ -73,12 +78,48 @@ function StudAAE() {
         }
     });
 
+    useEffect(() => {
+        const progressHandler = async () => {
+            if (role === "student") {
+                await axios
+                    .get(
+                        `${
+                            import.meta.env.VITE_API_BASE_URL
+                        }/api/student/fetchautosave`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json",
+                                Accept: "application/json",
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        console.log(response.data);
+                        if (response.data.request) {
+                            setGetQuizId(response.data);
+                            setHasAutoSave(true);
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        };
+
+        progressHandler();
+    }, [hasAutoSaveChange]);
+
+    // attempt quiz
     const AttemptQuizHandler = async () => {
         window.open(
             `${window.location.origin}/student/${courseBase}/modules/${weekMod}/evaluation/quiz`,
             "_blank"
             // `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
         );
+
+        //what if the autosaveprogress is changing
+        setHasAutoSaveChange(true);
 
         const item = {
             student_id: userInfo.id,

@@ -89,7 +89,7 @@ class AutoSaveProgressController extends Controller
         $returnanswer = explode("|", $autoSavedProgress['answers']);
 
         $response = [
-            'request' => $returnanswer
+            'request' => $returnanswer,
         ];
 
         return response($response, 200);

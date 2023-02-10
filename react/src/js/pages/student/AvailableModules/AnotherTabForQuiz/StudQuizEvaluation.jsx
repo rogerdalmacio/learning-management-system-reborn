@@ -37,6 +37,16 @@ function StudQuizEvaluation({}) {
     // console.log(permissionGranted);
     // console.log(getAnswer);
     // console.log(isSnapshotAvail);
+
+    const pathname = window.location.pathname;
+    const pathArray = pathname.split("/");
+    const courseBase = pathArray[2];
+    const courseTitle = courseBase.replace(/%20/g, " ");
+    const weekMod = pathArray[4];
+    const currentWeek = weekMod.replace("week", "Week ");
+    const weekForModule = weekMod.match(/\d+/)[0];
+    const contentType = pathArray[5];
+    console.log(contentType);
     console.log(progress);
 
     console.log(quizResultId && quizResultId);
@@ -70,16 +80,6 @@ function StudQuizEvaluation({}) {
 
         progressHandler();
     }, []);
-
-    const pathname = window.location.pathname;
-    const pathArray = pathname.split("/");
-    const courseBase = pathArray[2];
-    const courseTitle = courseBase.replace(/%20/g, " ");
-    const weekMod = pathArray[4];
-    const currentWeek = weekMod.replace("week", "Week ");
-    const weekForModule = weekMod.match(/\d+/)[0];
-    const contentType = pathArray[5];
-    console.log(contentType);
 
     //getting module_id for modules
     useEffect(() => {
