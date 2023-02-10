@@ -16,21 +16,10 @@ function StudQuizAssignment() {
         setQuizId,
         quizResultId,
     } = useStudentContext();
-    const { token } = useAuth();
+    const { token, role, userInfo } = useAuth();
     const [content, setContent] = useState();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [getAnswer, setGetAnswer] = useState([
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-    ]);
+    const [getAnswer, setGetAnswer] = useState();
 
     console.log(getAnswer);
 
@@ -48,6 +37,36 @@ function StudQuizAssignment() {
     const contentType = pathArray[5];
     console.log(contentType);
 
+    // Implementing Auto Save Progress
+    useEffect(() => {
+        const progressHandler = async () => {
+            if (role === "student") {
+                await axios
+                    .get(
+                        `${
+                            import.meta.env.VITE_API_BASE_URL
+                        }/api/student/fetchautosave`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json",
+                                Accept: "application/json",
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        setGetAnswer(response.data.request);
+                        if (response.data.request) {
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        };
+
+        progressHandler();
+    }, []);
     //getting module_id for modules
     useEffect(() => {
         if (courses) {
@@ -149,8 +168,41 @@ function StudQuizAssignment() {
     };
 
     // Next and Previous Button
-    const handleNext = () => {
+    const handleNext = async () => {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
+        const item = {
+            student_id: userInfo.id,
+            quiz_result_id: quizResultId[0].id,
+            answers: getAnswer.join("|"),
+            snapshot: false,
+            start_time: quizResultId[0].start_time,
+            end_time: quizResultId[0].end_time,
+        };
+
+        // console.log(item);
+
+        await axios
+            .post(
+                `${import.meta.env.VITE_API_BASE_URL}/api/student/autosave`,
+                item,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                }
+            )
+            .then((response) => {
+                console.log(response);
+                if (response.status >= 200 && response.status <= 300) {
+                } else {
+                    throw new Error(response.status || "Something Went Wrong!");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     const handlePrevious = () => {

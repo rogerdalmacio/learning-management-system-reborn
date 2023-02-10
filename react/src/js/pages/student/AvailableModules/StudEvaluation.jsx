@@ -5,7 +5,6 @@ import Loading from "../../../components/layouts/Loading";
 import { toast } from "react-toastify";
 import QuizResult from "./QuizResult/QuizResult";
 
-
 function StudAAE() {
     const { userInfo, token } = useAuth();
     const { quizid, quiz, courses, setWeekQuiz, setQuizId, quizResultId } =
@@ -91,6 +90,7 @@ function StudAAE() {
             score: 0,
             logs: "x",
             snapshot: false,
+            answers: "@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#",
         };
 
         await axios
@@ -111,8 +111,62 @@ function StudAAE() {
                     throw new Error(response.status || "Something Went Wrong!");
                 }
             })
-            .catch((error) => {
-                console.log(error);
+            .then(() => {
+                if (quizResultId && quizResultId.length !== 0) {
+                    const initialAnswer = [
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                        "@$#",
+                    ];
+
+                    const item2 = {
+                        student_id: userInfo.id,
+                        quiz_result_id: quizResultId[0].id,
+                        answers: initialAnswer.join("|"),
+                        snapshot: false,
+                        start_time: quizResultId[0].start_time,
+                        end_time: quizResultId[0].end_time,
+                    };
+
+                    // console.log(item);
+
+                    axios
+                        .post(
+                            `${
+                                import.meta.env.VITE_API_BASE_URL
+                            }/api/student/autosave`,
+                            item2,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    "Content-Type": "application/json",
+                                    Accept: "application/json",
+                                },
+                            }
+                        )
+                        .then((response) => {
+                            console.log(response);
+                            if (
+                                response.status >= 200 &&
+                                response.status <= 300
+                            ) {
+                            } else {
+                                throw new Error(
+                                    response.status || "Something Went Wrong!"
+                                );
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
             });
     };
 

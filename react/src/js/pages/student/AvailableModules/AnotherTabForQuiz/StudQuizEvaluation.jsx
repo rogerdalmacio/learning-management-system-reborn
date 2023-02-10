@@ -22,25 +22,9 @@ function StudQuizEvaluation({}) {
     const [quizExist, setQuizExist] = useState(false);
     const [permissionGranted, setPermissionGranted] = useState();
     const [isSnapshotAvail, setIsSnapShotAvail] = useState(false);
-    const [hasProgress, setHasProgress] = useState(false);
 
     const [progress, setProgress] = useState();
-    const [getAnswer, setGetAnswer] = useState(
-        hasProgress
-            ? progress
-            : [
-                  "@$#",
-                  "@$#",
-                  "@$#",
-                  "@$#",
-                  "@$#",
-                  "@$#",
-                  "@$#",
-                  "@$#",
-                  "@$#",
-                  "@$#",
-              ]
-    );
+    const [getAnswer, setGetAnswer] = useState();
 
     // useEffect(() => {
     //     if (getAnswer) {
@@ -54,35 +38,38 @@ function StudQuizEvaluation({}) {
     // console.log(getAnswer);
     // console.log(isSnapshotAvail);
     console.log(progress);
-    console.log(hasProgress);
 
-    // useEffect(() => {
-    //     const progressHandler = async () => {
-    //         if (role === "student") {
-    //             await axios
-    //                 .get(
-    //                     `${
-    //                         import.meta.env.VITE_API_BASE_URL
-    //                     }/api/student/fetchautosave`,
-    //                     {
-    //                         headers: {
-    //                             Authorization: `Bearer ${token}`,
-    //                             "Content-Type": "application/json",
-    //                             Accept: "application/json",
-    //                         },
-    //                     }
-    //                 )
-    //                 .then((response) => {
-    //                     setProgress(response.data.request);
-    //                 })
-    //                 .catch((error) => {
-    //                     console.log(error);
-    //                 });
-    //         }
-    //     };
+    console.log(quizResultId && quizResultId);
 
-    //     progressHandler();
-    // }, []);
+    useEffect(() => {
+        const progressHandler = async () => {
+            if (role === "student") {
+                await axios
+                    .get(
+                        `${
+                            import.meta.env.VITE_API_BASE_URL
+                        }/api/student/fetchautosave`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json",
+                                Accept: "application/json",
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        setGetAnswer(response.data.request);
+                        if (response.data.request) {
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        };
+
+        progressHandler();
+    }, []);
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -230,28 +217,28 @@ function StudQuizEvaluation({}) {
             });
 
         // getting autosaveprogress
-        await axios
-            .get(
-                `${
-                    import.meta.env.VITE_API_BASE_URL
-                }/api/student/fetchautosave`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                    },
-                }
-            )
-            .then((response) => {
-                setProgress(response.data.request);
-                if (response.data.request) {
-                    setHasProgress(true);
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        // await axios
+        //     .get(
+        //         `${
+        //             import.meta.env.VITE_API_BASE_URL
+        //         }/api/student/fetchautosave`,
+        //         {
+        //             headers: {
+        //                 Authorization: `Bearer ${token}`,
+        //                 "Content-Type": "application/json",
+        //                 Accept: "application/json",
+        //             },
+        //         }
+        //     )
+        //     .then((response) => {
+        //         setProgress(response.data.request);
+        //         if (response.data.request) {
+        //             setHasProgress(true);
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
     };
 
     const handlePrevious = () => {

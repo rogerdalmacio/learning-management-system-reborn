@@ -33,6 +33,7 @@ class QuizResultRequest extends FormRequest
             'score' => 'required|integer|nullable',
             'snapshot' => 'required|boolean',
             'logs' => 'required|string',
+            'answers' => 'required|string',
         ];
     }
 }

@@ -80,7 +80,7 @@ class SQuizResultController extends Controller
         $autoSaveProgress = AutoSaveProgress::create([
             'student_id' => Auth::user()->id,
             'quiz_result_id' => $quizResult->id,
-            'answers' => null,
+            'answers' => $request['answers'],
             'logs' => $request['logs'],
             'snapshot' => $request['snapshot'],
             'start_time' => $quizResult->start_time,
