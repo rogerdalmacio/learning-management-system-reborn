@@ -12,6 +12,7 @@ class AutoSaveProgress extends Model
     protected $fillable = [
         'student_id',
         'quiz_result_id',
+        'quiz_id',
         'answers',
         'logs',
         'snapshot',

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('quiz_result_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->integer('quiz_id');
             $table->string('answers')->nullable();
             $table->string('logs')->nullable();
             $table->boolean('snapshot')->nullable();
