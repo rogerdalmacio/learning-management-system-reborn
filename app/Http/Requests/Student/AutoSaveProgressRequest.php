@@ -24,13 +24,10 @@ class AutoSaveProgressRequest extends FormRequest
     public function rules()
     {
         return [
-            'student_id' => 'required',
             'quiz_result_id' => 'required',
             'answers' => 'sometimes|string',
             'logs' => 'sometimes|string',
             'snapshot' => 'sometimes|boolean',
-            'start_time' => 'required|date',
-            'end_time' => 'required|date',
         ];
     }
 }

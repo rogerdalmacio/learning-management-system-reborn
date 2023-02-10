@@ -107,26 +107,14 @@ class AutoSaveProgressController extends Controller
 
         $autoSave = AutoSaveProgress::where('quiz_result_id', $request['quiz_result_id'])->first();
 
-        if($autoSave) {
-
-            $autoSave->update([
-                'answers' => $request['answers'],
-                'logs' => $request['logs'],
-                'snapshot' => $request['snapshot'],
-            ]);
-    
-            $response = [
-                'Saved' => $autoSave
-            ];
-    
-            return response($response, 201);
-
-        }
-
-        $autoSaveQuiz = AutoSaveProgress::create($request->all());
+        $autoSave->update([
+            'answers' => $request['answers'],
+            'logs' => $request['logs'],
+            'snapshot' => $request['snapshot'],
+        ]);
 
         $response = [
-            'Saved' => $autoSaveQuiz
+            'Saved' => $autoSave
         ];
 
         return response($response, 201);

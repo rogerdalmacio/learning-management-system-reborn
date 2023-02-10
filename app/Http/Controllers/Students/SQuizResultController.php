@@ -8,6 +8,7 @@ use App\Models\Students\QuizResult;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Student\QuizResultRequest;
+use App\Models\Students\AutoSaveProgress;
 
 class SQuizResultController extends Controller
 {
@@ -76,8 +77,19 @@ class SQuizResultController extends Controller
             'time_elapsed' => null
         ]);
 
+        $autoSaveProgress = AutoSaveProgress::create([
+            'student_id' => Auth::user()->id,
+            'quiz_result_id' => $quizResult->id,
+            'answers' => null,
+            'logs' => $request['logs'],
+            'snapshot' => $request['snapshot'],
+            'start_time' => $quizResult->start_time,
+            'end_time' => $quizResult->end_time,
+        ]);
+
         $response = [
             'quiz_result' => $quizResult,
+            'auto_save' => $autoSaveProgress
             // 'Snapshot' => $path
         ];
 
