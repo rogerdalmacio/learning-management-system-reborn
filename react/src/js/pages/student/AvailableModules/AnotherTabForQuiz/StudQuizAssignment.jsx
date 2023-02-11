@@ -23,9 +23,7 @@ function StudQuizAssignment() {
 
     console.log(getAnswer);
 
-    if (quizResultId) {
-        console.log(quizResultId[0].attempt);
-    }
+    console.log(quizResultId);
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -328,7 +326,13 @@ function StudQuizAssignment() {
     };
 
     const MainContent = () => {
-        if (quizResultId && content && quizResultId[0].attempt == "finished") {
+        if (quizResultId && quizResultId == undefined) {
+            return <Navigate replace to="/unauthorized" />;
+        } else if (
+            quizResultId &&
+            content &&
+            quizResultId[0].attempt == "finished"
+        ) {
             return <Navigate replace to="/unauthorized" />;
         } else {
             if (content) {

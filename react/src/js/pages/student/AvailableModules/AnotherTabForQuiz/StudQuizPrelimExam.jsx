@@ -341,6 +341,9 @@ function StudQuizEvaluation() {
     });
 
     const MainContent = () => {
+        if (quizResultId && quizResultId == undefined) {
+            return <Navigate replace to="/unauthorized" />;
+        }
         if (quizResultId && quizResultId.length === 0) {
             return <Navigate replace to="/unauthorized" />;
         } else if (

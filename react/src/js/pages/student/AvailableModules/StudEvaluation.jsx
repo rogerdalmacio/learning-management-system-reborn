@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
 import Loading from "../../../components/layouts/Loading";
@@ -17,7 +17,13 @@ function StudAAE() {
     const [disableBut, setDisableBut] = useState(true);
     const [getQuizId, setGetQuizId] = useState();
     const [hasAutoSave, setHasAutoSave] = useState(false);
+    // these two isloading is responsible for disabling attempt quiz
+    const [isloading, setIsloading] = useState();
+    const [isloading2, setIsloading2] = useState(false);
+
     const [hasAutoSaveChange, setHasAutoSaveChange] = useState(false);
+    const [quizIdAvailable, setQuizIdAvailable] = useState(false);
+    const [isHiatus, setIsHiatus] = useState();
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -76,6 +82,10 @@ function StudAAE() {
                     setQuizId(content.id);
                 });
         }
+
+        if (quizid) {
+            setQuizIdAvailable(true);
+        }
     });
 
     useEffect(() => {
@@ -99,9 +109,13 @@ function StudAAE() {
                         if (response.data.request) {
                             setGetQuizId(response.data);
                             setHasAutoSave(true);
+                            setIsloading(true);
                         }
                     })
                     .catch((error) => {
+                        if (error) {
+                            setIsloading(false);
+                        }
                         console.log(error);
                     });
             }
@@ -109,6 +123,25 @@ function StudAAE() {
 
         progressHandler();
     }, [hasAutoSaveChange]);
+
+    // checking if there is existing autosave
+    useEffect(() => {
+        if (hasAutoSave == true) {
+            toast.error(`Please! Finish your Quiz`);
+        }
+
+        if (quizIdAvailable == true && getQuizId !== undefined) {
+            if (getQuizId && quiz) {
+                if (quizid === getQuizId.quiz_id) {
+                    setIsHiatus(false);
+                } else {
+                    setIsHiatus(true);
+                }
+            }
+        } else {
+            setIsHiatus(false);
+        }
+    }, [quizResultId, quizIdAvailable, getQuizId]);
 
     // attempt quiz
     const AttemptQuizHandler = async () => {
@@ -285,19 +318,66 @@ function StudAAE() {
 
     useEffect(() => {
         const hasAttemptHandler = () => {
-            if (quizResultId) {
-                if (quizResultId.length == 0) {
+            if (
+                quizResultId &&
+                quizResultId.length == 0 &&
+                hasAutoSave == false
+            ) {
+                setHasAttempt(false);
+            } else {
+                if (isHiatus == false) {
                     setHasAttempt(false);
-                } else if (
-                    quizResultId.length !== 0 &&
-                    quizResultId[0].attempt == "finished"
-                ) {
+                } else {
                     setHasAttempt(true);
                 }
             }
         };
         hasAttemptHandler();
+        setIsloading2(true);
     });
+
+    console.log(isloading);
+    const Button = () => {
+        if (isloading2 && isloading && hasAttempt) {
+            return (
+                <Fragment>
+                    {hasAttempt && (
+                        <button
+                            className=" smallButtonTemplate text-right sumbit-button btn px-5"
+                            onClick={AttemptQuizHandler}
+                            disabled={permissionGranted || hasAttempt}
+                        >
+                            Attempt Quiz Now
+                        </button>
+                    )}
+                </Fragment>
+            );
+        } else if (isloading2 && isloading === undefined) {
+            return <p>loading...</p>;
+        } else if (
+            quizResultId.length !== 0 &&
+            quizResultId[0].attempt === "finished"
+        ) {
+            return (
+                <button
+                    className=" smallButtonTemplate text-right sumbit-button btn px-5"
+                    disabled={true}
+                >
+                    Attempt Quiz Now
+                </button>
+            );
+        } else {
+            return (
+                <button
+                    className=" smallButtonTemplate text-right sumbit-button btn px-5"
+                    onClick={AttemptQuizHandler}
+                    disabled={permissionGranted || hasAttempt}
+                >
+                    Attempt Quiz Now
+                </button>
+            );
+        }
+    };
 
     const MainContent = () => {
         if (quizResultId) {
@@ -329,13 +409,7 @@ function StudAAE() {
                                     </span>
                                 </label>
                             </div>
-                            <button
-                                className=" smallButtonTemplate text-right sumbit-button btn px-5"
-                                disabled={permissionGranted || hasAttempt}
-                                onClick={AttemptQuizHandler}
-                            >
-                                Attempt Quiz Now
-                            </button>
+                            {Button()}
                         </div>
                     </div>
                     {GetScoreHandler()}

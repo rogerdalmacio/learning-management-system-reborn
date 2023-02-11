@@ -17,7 +17,6 @@ export const StudContextProvider = ({ children }) => {
     const [weekQuiz, setWeekQuiz] = useState();
     const [quizid, setQuizId] = useState();
     const [quizResultId, setQuizResultId] = useState();
-    
 
     // const pathname = window.location.pathname;
     // const pathArray = pathname.split("/");

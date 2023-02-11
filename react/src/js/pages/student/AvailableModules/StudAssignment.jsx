@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
 import Loading from "../../../components/layouts/Loading";
 import QuizResult from "./QuizResult/QuizResult";
+import { toast } from "react-toastify";
 
 function StudAssignment() {
     const { userInfo, token, role } = useAuth();
@@ -13,7 +14,13 @@ function StudAssignment() {
     const [hasAttempt, setHasAttempt] = useState();
     const [getQuizId, setGetQuizId] = useState();
     const [hasAutoSave, setHasAutoSave] = useState(false);
+    // these two isloading is responsible for disabling attempt quiz
+    const [isloading, setIsloading] = useState();
+    const [isloading2, setIsloading2] = useState(false);
+
     const [hasAutoSaveChange, setHasAutoSaveChange] = useState(false);
+    const [quizIdAvailable, setQuizIdAvailable] = useState(false);
+    const [isHiatus, setIsHiatus] = useState();
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -26,7 +33,8 @@ function StudAssignment() {
     console.log(contentType);
 
     console.log(hasAutoSave);
-    console.log(getQuizId);
+    console.log(quizid);
+    console.log(quizIdAvailable);
 
     //getting module_id for modules
     useEffect(() => {
@@ -50,6 +58,11 @@ function StudAssignment() {
                     setQuizId(content.id);
                 });
         }
+
+        // this will check if quizId is available
+        if (quizid) {
+            setQuizIdAvailable(true);
+        }
     });
 
     // checking if AutoSaveProgress has value
@@ -70,13 +83,16 @@ function StudAssignment() {
                         }
                     )
                     .then((response) => {
-                        console.log(response.data);
                         if (response.data.request) {
                             setGetQuizId(response.data);
                             setHasAutoSave(true);
+                            setIsloading(true);
                         }
                     })
                     .catch((error) => {
+                        if (error) {
+                            setIsloading(false);
+                        }
                         console.log(error);
                     });
             }
@@ -84,6 +100,28 @@ function StudAssignment() {
 
         progressHandler();
     }, [hasAutoSaveChange]);
+
+    // checking if there is existing autosave
+    useEffect(() => {
+        if (hasAutoSave == true) {
+            toast.error(`Please! Finish your Quiz`);
+        }
+        console.log(quiz);
+        console.log(quizIdAvailable);
+        console.log(getQuizId);
+        console.log(quizIdAvailable == true && getQuizId !== undefined);
+        if (quizIdAvailable == true && getQuizId !== undefined) {
+            if (getQuizId && quiz) {
+                if (quizid === getQuizId.quiz_id) {
+                    setIsHiatus(false);
+                } else {
+                    setIsHiatus(true);
+                }
+            }
+        } else {
+            setIsHiatus(false);
+        }
+    }, [quizResultId, quizIdAvailable, getQuizId]);
 
     // attempt quiz
     const AttemptQuizHandler = async () => {
@@ -244,28 +282,73 @@ function StudAssignment() {
             }
         }
     };
-
+    console.log(isHiatus);
     useEffect(() => {
         const hasAttemptHandler = () => {
-            if (quizResultId) {
-                if (quizResultId.length == 0) {
+            if (
+                quizResultId &&
+                quizResultId.length == 0 &&
+                hasAutoSave == false
+            ) {
+                setHasAttempt(false);
+            } else {
+                if (isHiatus == false) {
                     setHasAttempt(false);
-                } else if (
-                    quizResultId.length !== 0 &&
-                    quizResultId[0].attempt == "finished"
-                ) {
+                } else if (isHiatus == true) {
                     setHasAttempt(true);
                 }
             }
         };
         hasAttemptHandler();
+        setIsloading2(true);
     });
 
+    console.log(isloading);
+    const Button = () => {
+        if (isloading2 && isloading && hasAttempt) {
+            return (
+                <Fragment>
+                    {hasAttempt && (
+                        <button
+                            className=" smallButtonTemplate text-right sumbit-button btn px-5"
+                            onClick={AttemptQuizHandler}
+                            disabled={hasAttempt}
+                        >
+                            Attempt Quiz Now
+                        </button>
+                    )}
+                </Fragment>
+            );
+        } else if (isloading2 && isloading === undefined) {
+            return <p>loading...</p>;
+        } else if (
+            quizResultId.length !== 0 &&
+            quizResultId[0].attempt === "finished"
+        ) {
+            return (
+                <button
+                    className=" smallButtonTemplate text-right sumbit-button btn px-5"
+                    disabled={true}
+                >
+                    Attempt Quiz Now
+                </button>
+            );
+        } else {
+            return (
+                <button
+                    className=" smallButtonTemplate text-right sumbit-button btn px-5"
+                    onClick={AttemptQuizHandler}
+                    disabled={hasAttempt}
+                >
+                    Attempt Quiz Now
+                </button>
+            );
+        }
+    };
+
+    console.log(hasAttempt);
     const MainContent = () => {
         if (quizResultId) {
-            // console.log(quizResultId.length == 0);
-            // console.log(quizResultId[0] !== null);
-
             return (
                 <div>
                     <h4 className="mb-3">Assignment {currentWeek}</h4>
@@ -274,13 +357,7 @@ function StudAssignment() {
                         <div className="d-block text-center">
                             <p>Attempt allowed: 1</p>
                             <p>Time Limit: 1 hour</p>
-                            <button
-                                className=" smallButtonTemplate text-right sumbit-button btn px-5"
-                                onClick={AttemptQuizHandler}
-                                disabled={hasAttempt}
-                            >
-                                Attempt Quiz Now
-                            </button>
+                            {Button()}
                         </div>
                     </div>
                     {GetScoreHandler()}

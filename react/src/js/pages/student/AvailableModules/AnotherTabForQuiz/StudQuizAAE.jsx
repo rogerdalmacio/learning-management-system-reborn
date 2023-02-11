@@ -20,18 +20,7 @@ function StudQuizAAE() {
     const { token, role, userInfo } = useAuth();
     const [content, setContent] = useState();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [getAnswer, setGetAnswer] = useState([
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-        "@$#",
-    ]);
+    const [getAnswer, setGetAnswer] = useState();
 
     // const location = useLocation();
     // console.log(location.pathname);
@@ -47,7 +36,6 @@ function StudQuizAAE() {
     //         console.log(newArray);
     //     }
     // });
-    console.log(getAnswer);
 
     const pathname = window.location.pathname;
     const pathArray = pathname.split("/");
@@ -138,7 +126,6 @@ function StudQuizAAE() {
 
     const OptionsContentHandler = () => {
         return content[currentQuestionIndex].options.map((opt, index) => {
-            console.log(opt);
             const OptionLetter = ["A", "B", "C", "D"];
 
             const handleClick = (questionIndex, answer) => {
@@ -233,7 +220,6 @@ function StudQuizAAE() {
     // Content of Navigation Container
     const NavigationContent = () => {
         return content.map((cont, i) => {
-            console.log(i);
             const numberOfItem = i + 1;
             return (
                 <div key={i} className="py-2 px-1">
@@ -352,7 +338,13 @@ function StudQuizAAE() {
     };
 
     const MainContent = () => {
-        if (quizResultId && content && quizResultId[0].attempt == "finished") {
+        if (quizResultId && quizResultId == undefined) {
+            return <Navigate replace to="/unauthorized" />;
+        } else if (
+            quizResultId &&
+            content &&
+            quizResultId[0].attempt == "finished"
+        ) {
             return <Navigate replace to="/unauthorized" />;
         } else {
             if (content) {
