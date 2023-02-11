@@ -176,6 +176,10 @@ class SQuizResultController extends Controller
 
         $timeElapsed = $timeFinished->diffInMinutes($startTime);
 
+        $autoSave = AutoSaveProgress::where('quiz_result_id', $quizresult->id)->first();
+
+        $autoSave->delete();
+
         $quizresult->update([
             'score' => $score,
             'logs' => $request['logs'],

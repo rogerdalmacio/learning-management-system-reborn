@@ -89,6 +89,7 @@ class AutoSaveProgressController extends Controller
         $returnanswer = explode("|", $autoSavedProgress['answers']);
 
         $response = [
+            'quiz_id' => $autoSavedProgress->quiz_id,
             'request' => $returnanswer,
         ];
 
