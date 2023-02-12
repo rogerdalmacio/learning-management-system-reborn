@@ -366,11 +366,14 @@ function StudPrelimExam() {
                 hasAutoSave == false
             ) {
                 setHasAttempt(false);
+                console.log("unaaaaa");
             } else {
                 if (isHiatus == false) {
                     setHasAttempt(false);
+                    console.log("pangalawaaaaa");
                 } else {
                     setHasAttempt(true);
+                    console.log("pangatllloooo");
                 }
             }
         };

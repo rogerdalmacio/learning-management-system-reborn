@@ -355,6 +355,7 @@ function StudAAE() {
         } else if (isloading2 && isloading === undefined) {
             return <p>loading...</p>;
         } else if (
+            isloading2 &&
             quizResultId.length !== 0 &&
             quizResultId[0].attempt === "finished"
         ) {
@@ -378,9 +379,9 @@ function StudAAE() {
             );
         }
     };
-
+    console.log(isloading2);
     const MainContent = () => {
-        if (quizResultId) {
+        if (quizResultId && isloading2) {
             return (
                 <div>
                     <h4 className="mb-3">Evaluation {currentWeek}</h4>

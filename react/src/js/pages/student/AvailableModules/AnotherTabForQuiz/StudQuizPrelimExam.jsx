@@ -334,80 +334,94 @@ function StudQuizEvaluation() {
         }
     };
 
-    useEffect(() => {
-        if (quizResultId && content && quizResultId[0].attempt == "finished") {
-            setQuizExist(true);
-        }
-    });
+    // useEffect(() => {
+    //     if (quizResultId && content && quizResultId[0].attempt == "finished") {
+    //         setQuizExist(true);
+    //     }
+    // });
 
     const MainContent = () => {
-        if (quizResultId && quizResultId == undefined) {
-            return <Navigate replace to="/unauthorized" />;
-        }
-        if (quizResultId && quizResultId.length === 0) {
-            return <Navigate replace to="/unauthorized" />;
-        } else if (
-            quizExist == true ||
-            (permissionGranted && permissionGranted == true)
-        ) {
-            return <Navigate replace to="/unauthorized" />;
-        } else {
-            if (content) {
-                return (
-                    <div className="py-4 px-3 py-sm-5 px-sm-5 position-relative">
-                        <ToastContainer
-                            position="top-right"
-                            autoClose={3000}
-                            hideProgressBar={false}
-                            newestOnTop={false}
-                            closeOnClick
-                            rtl={false}
-                            pauseOnFocusLoss
-                            draggable
-                            pauseOnHover
-                            theme="light"
-                        />
-                        <h4 className="text-center mb-3 mb-sm-5">Evaluation</h4>
-                        <div className="row g-3">
-                            <div className="col-12 col-md-8 col-lg-9">
-                                {QuizContent()}
-                                <div className="d-flex justify-content-end">
-                                    <button
-                                        className="QuizSmallButtonTemplate text-right sumbit-button btn px-4 px-sm-5 me-3 me-sm-5"
-                                        onClick={handlePrevious}
-                                        disabled={currentQuestionIndex === 0}
-                                    >
-                                        <i class="bi bi-arrow-left-short"></i>{" "}
-                                        Prev
-                                    </button>
-                                    {LastNumberHandler()}
-                                </div>
-                            </div>
-                            <div className="col-12 col-md-4 col-lg-3">
-                                <div className="QuizContentCont Quizcontainer2 shadow p-3 mb-3">
-                                    <p>
-                                        Question {currentQuestionIndex + 1}/10
-                                    </p>
-                                    <div className="QuizNavItemContainer d-flex flex-wrap">
-                                        {NavigationContent()}
+        if (quizResultId && quizResultId.length !== 0) {
+            if (
+                (quizResultId &&
+                    content &&
+                    quizResultId[0].attempt == "finished") ||
+                (permissionGranted && permissionGranted == true)
+            ) {
+                return <Navigate replace to="/unauthorized" />;
+            } else {
+                if (content) {
+                    return (
+                        <div className="py-4 px-3 py-sm-5 px-sm-5 position-relative">
+                            <ToastContainer
+                                position="top-right"
+                                autoClose={3000}
+                                hideProgressBar={false}
+                                newestOnTop={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnFocusLoss
+                                draggable
+                                pauseOnHover
+                                theme="light"
+                            />
+                            <h4 className="text-center mb-3 mb-sm-5">
+                                Evaluation
+                            </h4>
+                            <div className="row g-3">
+                                <div className="col-12 col-md-8 col-lg-9">
+                                    {QuizContent()}
+                                    <div className="d-flex justify-content-end">
+                                        <button
+                                            className="QuizSmallButtonTemplate text-right sumbit-button btn px-4 px-sm-5 me-3 me-sm-5"
+                                            onClick={handlePrevious}
+                                            disabled={
+                                                currentQuestionIndex === 0
+                                            }
+                                        >
+                                            <i class="bi bi-arrow-left-short"></i>{" "}
+                                            Prev
+                                        </button>
+                                        {LastNumberHandler()}
                                     </div>
                                 </div>
-                                <Camera
-                                    contentArrayLength={contentArrayLength}
-                                    dynamicNumberLength={dynamicNumberLength}
-                                    content
-                                    currentQuestionIndex={currentQuestionIndex}
-                                    getAnswer={getAnswer}
-                                    setPermissionGranted={setPermissionGranted}
-                                    setIsSnapShotAvail={setIsSnapShotAvail}
-                                />
+                                <div className="col-12 col-md-4 col-lg-3">
+                                    <div className="QuizContentCont Quizcontainer2 shadow p-3 mb-3">
+                                        <p>
+                                            Question {currentQuestionIndex + 1}
+                                            /10
+                                        </p>
+                                        <div className="QuizNavItemContainer d-flex flex-wrap">
+                                            {NavigationContent()}
+                                        </div>
+                                    </div>
+                                    <Camera
+                                        contentArrayLength={contentArrayLength}
+                                        dynamicNumberLength={
+                                            dynamicNumberLength
+                                        }
+                                        content
+                                        currentQuestionIndex={
+                                            currentQuestionIndex
+                                        }
+                                        getAnswer={getAnswer}
+                                        setPermissionGranted={
+                                            setPermissionGranted
+                                        }
+                                        setIsSnapShotAvail={setIsSnapShotAvail}
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                );
-            } else {
-                return <Loading />;
+                    );
+                } else {
+                    return <Loading />;
+                }
             }
+        } else if (quizResultId === undefined) {
+            return <Loading />;
+        } else {
+            return <Navigate replace to="/unauthorized" />;
         }
     };
 
