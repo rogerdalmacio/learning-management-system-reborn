@@ -145,8 +145,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
 
 //Admin Core
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Admin']], function(){
-
-    Route::apiResource('modulestatusupdate', ModuleStatusUpdateController::class);
+    
     Route::apiResource('tagsubject', SubjectTaggingController::class);
 
     Route::post('/batchgrantexam', [ExamGrantingController::class, 'batchExamGrant']);

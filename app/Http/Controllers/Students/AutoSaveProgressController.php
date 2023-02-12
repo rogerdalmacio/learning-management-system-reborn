@@ -78,6 +78,8 @@ class AutoSaveProgressController extends Controller
                 'time_elapsed' => $timeElapsed
             ]);
 
+            $autoSavedProgress->delete();
+
             $response = [
                 'time passed! Quiz submitted' => $quizresult
             ];
