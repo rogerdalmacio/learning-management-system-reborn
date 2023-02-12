@@ -14,14 +14,17 @@ function TopNavbar({
     const { userInfo, token } = useAuth();
 
     const LogoutHandler = async () => {
-        const response = await fetch("http://127.0.0.1:8000/api/logout", {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-        });
+        const response = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL}/api/logout`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+            }
+        );
 
         if (response.ok) {
             localStorage.clear();

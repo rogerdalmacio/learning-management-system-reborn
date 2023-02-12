@@ -31,8 +31,11 @@ function ManagerDashboard() {
         } else {
             const toastId = toast.info("Sending Request...");
             const response = axios
+
                 .post(
-                    "http://127.0.0.1:8000/api/coursemanager/course",
+                    `${
+                        import.meta.env.VITE_API_BASE_URL
+                    }/api/coursemanager/course`,
                     subject,
                     {
                         headers: {

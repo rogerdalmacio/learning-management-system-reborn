@@ -5,6 +5,7 @@ import { Fragment } from "react";
 
 function Navbar({ openSidebar }) {
     const [openDropdown, setOpenDropdown] = useState(false);
+    const [openDropdown2, setOpenDropdown2] = useState(false);
 
     const pathName = useLocation().pathname;
 
@@ -21,11 +22,11 @@ function Navbar({ openSidebar }) {
                         <input type="text" placeholder="Search..." />
                         <span className="tooltip">Search</span>
                     </li>
-                    <Link to="/student/home" className="text-decoration-none">
+                    <Link to="/admin/home" className="text-decoration-none">
                         <li>
                             <a
                                 className={`${
-                                    pathName === "/student/home"
+                                    pathName === "/admin/home"
                                         ? "activeSideBar"
                                         : ""
                                 }`}
@@ -36,28 +37,6 @@ function Navbar({ openSidebar }) {
                             <span className="tooltip">Dashboard</span>
                         </li>
                     </Link>
-                    <Link to="/student/course" className="text-decoration-none">
-                        <li>
-                            <a
-                                className={`${
-                                    pathName === "/student/course"
-                                        ? "activeSideBar"
-                                        : ""
-                                }`}
-                            >
-                                <i className="bx bx-palette"></i>
-                                <span className="links_name">Course</span>
-                            </a>
-                            <span className="tooltip">Course</span>
-                        </li>
-                    </Link>
-                    <li>
-                        <a href="/login/login.html">
-                            <i className="bx bx-log-in"></i>
-                            <span className="links_name">Login UI</span>
-                        </a>
-                        <span className="tooltip">Login UI</span>
-                    </li>
                     <li className={`${openDropdown ? "showMenu" : ""}`}>
                         <div
                             className="iocn-link arrow"
@@ -66,55 +45,123 @@ function Navbar({ openSidebar }) {
                             }}
                         >
                             <a>
-                                <i className="bx bx-message-square-error"></i>
-                                <span className="links_name">Errors</span>
+                                <i className="bx bxs-tag-alt"></i>
+                                <span className="links_name">
+                                    Bulk Subject Tagging
+                                </span>
                             </a>
                             <i className="bx bx-chevron-down arrow"></i>
                         </div>
-                        <ul className="sub-menu">
-                            <li>
-                                <a className="link_name p-0">Errors UI</a>
+                        <ul className={`sub-menu pe-0`}>
+                            <li className={`${openSidebar ? "" : "d-none"}`}>
+                                <div className="firstChildDropdownContainer dropdown overflow-hidden">
+                                    <div>
+                                        <Link
+                                            to={`/admin/studentSubjectTagging`}
+                                            className={`overflow-hidden ${
+                                                pathName ===
+                                                "/admin/studentSubjectTagging"
+                                                    ? "firstNavbarChild"
+                                                    : ""
+                                            }`}
+                                        >
+                                            <p
+                                                className={`mb-0 NavbarCourseTitle `}
+                                            >
+                                                Student Subject Tagging
+                                            </p>
+                                        </Link>
+                                    </div>
+                                </div>
                             </li>
-                            <li>
-                                <a href="/error/404.html">404 Error</a>
-                            </li>
-                            <li>
-                                <a href="/error/500.html">500 Error</a>
+                            <li className={`${openSidebar ? "" : "d-none"}`}>
+                                <div className="firstChildDropdownContainer dropdown overflow-hidden">
+                                    <div>
+                                        <Link
+                                            to={`/admin/teacherSubjectTagging`}
+                                            className={`overflow-hidden ${
+                                                pathName ===
+                                                "/admin/teacherSubjectTagging"
+                                                    ? "firstNavbarChild"
+                                                    : ""
+                                            }`}
+                                        >
+                                            <p
+                                                className={`mb-0 NavbarCourseTitle `}
+                                            >
+                                                Teacher Subject Tagging
+                                            </p>
+                                        </Link>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
-                        {/* <!-- <span className="tooltip">Analytics</span> --> */}
+                        <span className="tooltip">Bulk Subject Tagging</span>
                     </li>
-                    <li>
-                        <a href="/loading/loading.html">
-                            <i className="bx bx-message-dots"></i>
-                            <span className="links_name">Loading UI</span>
-                        </a>
-                        <span className="tooltip">Loading UI</span>
-                    </li>
-                    <li>
-                        <a href="/inputAndButton/inputAndButton.html">
-                            <i className="bx bx-edit-alt"></i>
-                            <span className="links_name">
-                                Input, btn, & Dropdown
-                            </span>
-                        </a>
+                    <li className={`${openDropdown2 ? "showMenu" : ""}`}>
+                        <div
+                            className="iocn-link arrow"
+                            onClick={() => {
+                                setOpenDropdown2((prev) => !prev);
+                            }}
+                        >
+                            <a>
+                                <i className="bx bx-tag-alt"></i>
+                                <span className="links_name">
+                                    Ind. Subject Tagging
+                                </span>
+                            </a>
+                            <i className="bx bx-chevron-down arrow"></i>
+                        </div>
+                        <ul className={`sub-menu pe-0`}>
+                            <li className={`${openSidebar ? "" : "d-none"}`}>
+                                <div className="firstChildDropdownContainer dropdown overflow-hidden">
+                                    <div>
+                                        <Link
+                                            to={`/admin/studentIndividualSubjectTagging`}
+                                            className={`overflow-hidden ${
+                                                pathName ===
+                                                "/admin/studentIndividualSubjectTagging"
+                                                    ? "firstNavbarChild"
+                                                    : ""
+                                            }`}
+                                        >
+                                            <p
+                                                className={`mb-0 NavbarCourseTitle `}
+                                            >
+                                                Student Individual Subject
+                                                Tagging
+                                            </p>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </li>
+                            <li className={`${openSidebar ? "" : "d-none"}`}>
+                                <div className="firstChildDropdownContainer dropdown overflow-hidden">
+                                    <div>
+                                        <Link
+                                            to={`/admin/teacherIndividualSubjectTagging`}
+                                            className={`overflow-hidden ${
+                                                pathName ===
+                                                "/admin/teacherIndividualSubjectTagging"
+                                                    ? "firstNavbarChild"
+                                                    : ""
+                                            }`}
+                                        >
+                                            <p
+                                                className={`mb-0 NavbarCourseTitle `}
+                                            >
+                                                Teacher Individual Subject
+                                                Tagging
+                                            </p>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                         <span className="tooltip">
-                            Input, Button, & Dropdown
+                            Individual Subject Tagging
                         </span>
-                    </li>
-                    <li>
-                        <a href="/table/table.html">
-                            <i className="bx bx-table"></i>
-                            <span className="links_name">Table</span>
-                        </a>
-                        <span className="tooltip">Table</span>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i className="bx bx-cog"></i>
-                            <span className="links_name">Setting</span>
-                        </a>
-                        <span className="tooltip">Setting</span>
                     </li>
                 </ul>
             </div>

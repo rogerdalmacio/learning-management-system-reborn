@@ -16,6 +16,10 @@ import ManagerGetCreatedCourse from "../pages/courseManager/ManagerGetCreatedCou
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
 import AdminEditProfile from "../pages/Admin/AdminEditProfile";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
+import AdminStudentSubjectTagging from "../pages/Admin/AdminStudentSubjectTagging";
+import AdminTeacherSubjectTagging from "../pages/Admin/AdminTeacherSubjectTagging";
+import StudentIndividualSubjectTagging from "../pages/Admin/IndividualSubjectTagging/StudentIndividualSubjectTagging";
+import TeacherIndividualSubjectTagging from "../pages/Admin/IndividualSubjectTagging/TeacherIndividualSubjectTagging";
 
 // Course Developer
 import CourseDevLayout from "./layouts/authenticatedLayout/CourseDeveloperNavifationBar/CourseDevLayout";
@@ -191,14 +195,27 @@ function App() {
             {/* ADMIN */}
             <Route element={<RequireAuth allowedRoles={"admin"} />}>
                 <Route element={<AdminLayout />}>
-                    <Route
-                        path="/admin/home"
-                        element={<AdminDashboard />}
-                    ></Route>
+                    <Route path="/admin/home" element={<AdminDashboard />} />
                     <Route
                         path="/admin/editProfile"
                         element={<AdminEditProfile />}
-                    ></Route>
+                    />
+                    <Route
+                        path="/admin/studentSubjectTagging"
+                        element={<AdminStudentSubjectTagging />}
+                    />
+                    <Route
+                        path="/admin/teacherSubjectTagging"
+                        element={<AdminTeacherSubjectTagging />}
+                    />
+                    <Route
+                        path="/admin/studentIndividualSubjectTagging"
+                        element={<StudentIndividualSubjectTagging />}
+                    />
+                    <Route
+                        path="/admin/teacherIndividualSubjectTagging"
+                        element={<TeacherIndividualSubjectTagging />}
+                    />
                 </Route>
             </Route>
 

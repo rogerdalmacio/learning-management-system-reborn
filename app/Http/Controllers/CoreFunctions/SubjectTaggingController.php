@@ -149,7 +149,7 @@ class SubjectTaggingController extends Controller
         if(count($intersects) > 0) {
             
             $response = [
-                'Subject Already Exists' => $intersects
+                'SubjectAlreadyExists' => $intersects
             ];
 
             return response($response, 409);
@@ -186,7 +186,7 @@ class SubjectTaggingController extends Controller
         if(count($intersects) > 0) {
             
             $response = [
-                'Subject Already Exists' => $intersects
+                'SubjectAlreadyExists' => $intersects
             ];
 
             return response($response, 409);

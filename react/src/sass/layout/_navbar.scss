@@ -159,7 +159,7 @@
 }
 
 .sidebar.open {
-    width: 300px;
+    width: 320px;
     overflow-x: hidden !important;
 }
 
@@ -490,10 +490,18 @@
     width: calc(100% - 234px);
 }
 
+@media (max-width: 1399px) {
+    .sidebar.open {
+        opacity: 1;
+        width: 350px;
+        visibility: visible;
+    }
+}
+
 @media (max-width: 1200px) {
     .sidebar.open {
         opacity: 1;
-        width: 45%;
+        width: 370px;
         visibility: visible;
     }
 

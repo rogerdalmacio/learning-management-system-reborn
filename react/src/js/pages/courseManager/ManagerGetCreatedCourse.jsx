@@ -9,13 +9,16 @@ function ManagerGetCreatedCourse() {
 
     useEffect(() => {
         axios
-            .get(`http://127.0.0.1:8000/api/coursemanager/course`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-            })
+            .get(
+                `${import.meta.env.VITE_API_BASE_URL}/api/coursemanager/course`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                }
+            )
             .then((response) => {
                 console.log(response);
             });
