@@ -29,7 +29,9 @@ use App\Http\Controllers\CourseDeveloper\CDActivityController;
 use App\Http\Controllers\CoreFunctions\AnnouncementsController;
 use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
+use App\Http\Controllers\CoreFunctions\ListOfSubjectsController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
+use App\Http\Controllers\Teacher\ListOfStudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -149,6 +151,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Admin']], function(){
     
     Route::apiResource('tagsubject', SubjectTaggingController::class);
+    Route::apiResource('subjects', ListOfSubjectsController::class);
 
     Route::post('/batchgrantexam', [ExamGrantingController::class, 'batchExamGrant']);
     Route::post('/singlegrantexam', [ExamGrantingController::class, 'singleExamGrant']);
