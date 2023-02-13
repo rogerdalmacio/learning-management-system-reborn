@@ -1,0 +1,34 @@
+@use "../abstract/" as *;
+
+.modalContentContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: $gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    transition: all 0.5s ease-in-out !important;
+}
+.modalContentContainer.show {
+    background-color: rgba(0, 0, 0, 0.5);
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.modalContent {
+    position: relative;
+    background-color: white;
+    margin: 0px 20px;
+    width: 100%;
+    max-width: 600px !important;
+    opacity: 0 !important;
+    transition: all 0.5s ease-in-out !important;
+}
+
+.modalContent.show {
+    opacity: 1 !important;
+}

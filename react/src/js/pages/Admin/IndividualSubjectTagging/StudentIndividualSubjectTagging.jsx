@@ -5,9 +5,11 @@ import useAuth from "../../../hooks/useAuth";
 function StudentIndividualSubjectTagging() {
     const { token } = useAuth();
 
-    const [studentId, setStudentId] = useState();
-    const [studentSubject, setStudentSubject] = useState();
+    const [studentId, setStudentId] = useState("");
+    const [studentSubject, setStudentSubject] = useState("");
     const [error, setError] = useState();
+
+    console.log(studentSubject);
 
     const StudTagSubjSubmit = () => {
         let toastId;
@@ -28,6 +30,8 @@ function StudentIndividualSubjectTagging() {
                 subjects: studentSubject,
             };
 
+            console.log(item);
+
             toastId = toast.info("Sending Request...");
 
             axios
@@ -45,6 +49,7 @@ function StudentIndividualSubjectTagging() {
                     }
                 )
                 .then((response) => {
+                    console.log(response);
                     if (response.status >= 200 && response.status <= 300) {
                         toast.update(toastId, {
                             render: "Request Successfully",

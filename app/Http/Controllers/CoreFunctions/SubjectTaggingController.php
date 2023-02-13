@@ -141,7 +141,6 @@ class SubjectTaggingController extends Controller
         $userSubjects = $user->subjects;
 
         $userSubjectsArray = explode(',', $userSubjects);
-
         $requestSubjectsArray = explode(',', $request['subjects']);
 
         $intersects = array_intersect($userSubjectsArray, $requestSubjectsArray);
