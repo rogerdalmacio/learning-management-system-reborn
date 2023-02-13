@@ -24,7 +24,22 @@ function ManagerGetCreatedCourse() {
             });
     });
 
-    return <div></div>;
+    return (
+        <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga modi
+            nobis ex velit voluptates. Nisi quo at rem! Nostrum vitae, officiis
+            amet repellendus cupiditate voluptates odio expedita natus inventore
+            vel dolor perferendis perspiciatis voluptatum blanditiis. Aliquam
+            dolor tempore doloribus modi quibusdam officiis nihil eligendi
+            praesentium quaerat perspiciatis saepe sed, libero in repudiandae
+            sint culpa autem rem, nesciunt cum. Quae aliquam veniam, magnam
+            itaque eum vel ipsum amet quis quibusdam possimus, est eos
+            laudantium dolor quia praesentium, minus quaerat totam sapiente eius
+            repellat tenetur hic eveniet omnis. Qui incidunt assumenda inventore
+            tempore hic sunt? Repellendus, cupiditate. Reprehenderit nemo vero
+            laudantium quibusdam.
+        </div>
+    );
 }
 
 export default ManagerGetCreatedCourse;
