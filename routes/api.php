@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CMCourseDeveloper\CMCourseDeveloper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users\UserController;
@@ -110,6 +111,7 @@ Route::group(['prefix' => 'coursedeveloper', 'middleware' => ['auth:sanctum','ab
 Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abilities:CourseManager']], function(){
 
     Route::apiResource('course', CMCourseController::class);
+    Route::apiResource('coursedevelopers', CMCourseDeveloper::class);
 
     Route::post('/singlecoursedevelopersubjecttagging', [SubjectTaggingController::class, 'singleCourseDeveloperSubjectTagging']);
 
