@@ -1,15 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 
 function StudentIndividualSubjectTagging() {
-    const { token } = useAuth();
+    const { token, role } = useAuth();
 
     const [studentId, setStudentId] = useState("");
-    const [studentSubject, setStudentSubject] = useState("");
+    const [studentSubject, setStudentSubject] = useState([]);
     const [error, setError] = useState();
+    const [getSubject, setGetSubject] = useState();
+    const [alreadyExist, setAlreadyExist] = useState();
 
-    console.log(studentSubject);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+
+    useEffect(() => {
+        const GetSubjectsHandler = async () => {
+            if (role === "admin") {
+                await axios
+                    .get(
+                        `${
+                            import.meta.env.VITE_API_BASE_URL
+                        }/api/core/subjects`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json",
+                                Accept: "application/json",
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        setGetSubject(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        };
+        GetSubjectsHandler();
+    }, []);
 
     const StudTagSubjSubmit = () => {
         let toastId;
@@ -25,9 +56,12 @@ function StudentIndividualSubjectTagging() {
         } else {
             setError(false);
 
+            var studentSubjectFinal = studentSubject.join();
+            console.log(studentSubjectFinal);
+
             const item = {
                 id: studentId,
-                subjects: studentSubject,
+                subjects: studentSubjectFinal,
             };
 
             console.log(item);
@@ -81,15 +115,76 @@ function StudentIndividualSubjectTagging() {
         }
     };
 
+    const handleChange = (event) => {
+        setSearchTerm(event.target.value);
+        if (getSubject && getSubject !== undefined) {
+            const matchingCourses = getSubject.filter((course) =>
+                course.course.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setSuggestions(matchingCourses);
+        }
+    };
+
+    const handleFocus = () => {
+        setShowSuggestions(true);
+    };
+
+    const handleBlur = () => {
+        setTimeout(() => {
+            setShowSuggestions(false);
+        }, 150);
+    };
+
+    console.log(alreadyExist);
+    console.log(studentSubject);
+    const getCourseCode = (e) => {
+        if (!studentSubject.includes(e.target.value)) {
+            setStudentSubject([...studentSubject, e.target.value]);
+        } else {
+            toast.error("Subject is already exist on the list");
+        }
+    };
+
+    const deleteByValue = (value) => {
+        setStudentSubject((oldValues) => {
+            return oldValues.filter((item) => item !== value);
+        });
+    };
+
+    const ListOfSubjectHandler = () => {
+        console.log(studentSubject.length === 0);
+        if (studentSubject.length !== 0) {
+            return studentSubject.map((subject, i) => {
+                console.log(subject);
+                return (
+                    <div
+                        key={i}
+                        className="TagSubjectList py-1 ps-2 pe-1 mb-2 border rounded me-2 d-flex align-items-center"
+                    >
+                        <p className="TagSubjectListText mb-0 me-1">
+                            {subject}
+                        </p>
+                        <button
+                            className="btn p-0 border border-0"
+                            onClick={() => deleteByValue(subject)}
+                        >
+                            <i className="bi bi-x fs-5"></i>
+                        </button>
+                    </div>
+                );
+            });
+        }
+    };
+
     return (
         <div>
             <h3 className="mb-4">Student - Individual Subject Tagging</h3>
-            <div className="mb-3">
+            <div className="mb-4">
                 <label
                     htmlFor="studentSubjectTaggingId"
-                    className="form-label fw-semibold fs-6 w-100"
+                    className="form-label fw-semibold fs-6 w-100 mb-3"
                 >
-                    Student ID
+                    <h5 className="mb-0">Student ID</h5>
                 </label>
                 <input
                     type="text"
@@ -102,23 +197,52 @@ function StudentIndividualSubjectTagging() {
                     onChange={(e) => setStudentId(e.target.value)}
                 />
             </div>
-            <div className="mb-3">
+            <div className="mb-4">
+                <div className="TagSubjectSearchContainer">
+                    <label
+                        htmlFor="studentSubjectTaggingId"
+                        className="form-label fw-semibold fs-6 w-100 mb-3"
+                    >
+                        <h5 className="mb-0">Search Subject</h5>
+                    </label>
+                    <input
+                        type="text"
+                        className="inputField input-form form-control px-3 fs-6 fw-normal"
+                        placeholder="Search courses"
+                        value={searchTerm}
+                        onChange={handleChange}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                    />
+                    {showSuggestions && suggestions && (
+                        <ul className="suggestion-list border rounded list-unstyled bg-secondary w-100">
+                            {suggestions.map((suggestion, index) => (
+                                <li key={index} className="suggestion-item">
+                                    <button
+                                        value={suggestion.course_code}
+                                        type="button"
+                                        className="btn border rounded border-0 w-100 d-flex justify-content-start py-2"
+                                        onClick={(e) => getCourseCode(e)}
+                                    >
+                                        {suggestion.course} /{" "}
+                                        {suggestion.course_code}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            </div>
+            <div className="mb-4">
                 <label
                     htmlFor="studentSubjectTaggingSubj"
-                    className="form-label fw-semibold fs-6 w-100"
+                    className="form-label fw-semibold fs-6 w-100 mb-3"
                 >
-                    Subject Code
+                    <h5 className="mb-0">Subject List:</h5>
                 </label>
-                <input
-                    type="text"
-                    className={`inputField input-form form-control px-3 fs-6 fw-normal ${
-                        studentSubject === "" || error
-                            ? "errorInput"
-                            : "noErrorInput"
-                    }`}
-                    id="studentSubjectTaggingSubj"
-                    onChange={(e) => setStudentSubject(e.target.value)}
-                />
+                <div className="TagSubjectListContainer d-flex flex-wrap">
+                    {ListOfSubjectHandler()}
+                </div>
             </div>
             <button
                 className="taggingSubjectButton buttonTemplate sumbit-button btn rounded-2 mt-3"

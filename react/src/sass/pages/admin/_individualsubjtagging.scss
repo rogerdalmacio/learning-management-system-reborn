@@ -1,0 +1,35 @@
+@use "../../abstract/" as *;
+
+.TagSubjectSearchContainer {
+    position: relative;
+}
+
+.search-input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+}
+.suggestion-list {
+    position: absolute;
+}
+
+.suggestion-item {
+    cursor: pointer;
+    background-color: $shady-white;
+    transition: 0.2s ease-in;
+}
+
+.suggestion-item:hover {
+    background-color: $light-gray;
+}
+
+.TagSubjectListContainer {
+}
+
+.TagSubjectList {
+    background-color: #6fc0fd;
+    white-space: nowrap !important;
+}
+.TagSubjectListText {
+    white-space: nowrap !important;
+}
