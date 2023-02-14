@@ -33,6 +33,8 @@ class GradesController extends Controller
                 'Exam' => $student['exam']['score']
             ];
 
+            echo "$data";
+
         }
 
     }
