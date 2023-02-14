@@ -196,6 +196,26 @@ class SubjectTaggingController extends Controller
         $user = Teacher::find($request['id']);
 
         $userSubjects = $user->subjects;
+        
+        //trim subject requests
+
+        $newSubjectRequests = explode(",", $request['subjects']);
+
+        $newSubjectRequestsArray = array_map('trim', $newSubjectRequests);
+
+        $newSubjects = implode(",", $newSubjectRequestsArray);
+
+        if(!$userSubjects) {
+
+            $user->update(['subjects' => $newSubjects]);
+            
+            $response = [
+                'Successfully added' => $request['subjects'],
+            ];
+
+            return response($response, 201);
+
+        }
 
         $userSubjectsArray = explode(',', $userSubjects);
 
@@ -220,7 +240,7 @@ class SubjectTaggingController extends Controller
         $user->update(['subjects' => $newSubjectsString]);
 
         $response = [
-            'Successfully added' => $request['subjects'],
+            'Successfully added' => $newSubjects,
             'New list of subjects' => $newSubjectsArray
         ];
 
