@@ -4,10 +4,11 @@ namespace App\Http\Controllers\CourseManager;
 
 use Illuminate\Http\Request;
 use App\Models\Modules\Course;
+use App\Models\Modules\Module;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Users\CourseDeveloper;
 use App\Http\Requests\CourseManager\CourseRequest;
-use App\Models\Modules\Module;
 
 class CMCourseController extends Controller
 {
@@ -22,14 +23,14 @@ class CMCourseController extends Controller
         $user = Auth::user();
 
         $department = $user->department;
-        
-        $query = Course::with('modules')->where('department', $department)->get();
+
+        $query = Course::with('module')->where('department', $department)->get();
 
         $response = [
             'Course' => $query
         ];
 
-        return response($response, 201);
+        return response($response, 200);
 
     }
 

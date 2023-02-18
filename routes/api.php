@@ -32,6 +32,7 @@ use App\Http\Controllers\CoreFunctions\ListOfSubjectsController;
 use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
+use App\Http\Controllers\CourseManager\CMFilteredCourseList;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,6 +114,7 @@ Route::group(['prefix' => 'coursedeveloper', 'middleware' => ['auth:sanctum','ab
 Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abilities:CourseManager']], function(){
 
     Route::apiResource('course', CMCourseController::class);
+    Route::apiResource('filteredcourselist', CMFilteredCourseList::class);
     Route::apiResource('coursedevelopers', CMCourseDeveloper::class);
 
     Route::post('/singlecoursedevelopersubjecttagging', [SubjectTaggingController::class, 'singleCourseDeveloperSubjectTagging']);
