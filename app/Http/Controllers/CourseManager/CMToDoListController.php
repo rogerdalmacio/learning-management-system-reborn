@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CourseManager\ToDoList;
 use Illuminate\Support\Facades\Request;
 
-class ToDoListController extends Controller
+class CMToDoListController extends Controller
 {
 
     public function taskList() {     

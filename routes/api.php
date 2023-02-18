@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CMCourseDeveloper\CMCourseDeveloper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users\UserController;
@@ -16,6 +15,8 @@ use App\Http\Controllers\Teacher\QuizAttemptController;
 use App\Http\Controllers\Students\SQuizResultController;
 use App\Http\Controllers\Users\ChangePasswordController;
 use App\Http\Controllers\Users\ProfilePictureController;
+use App\Http\Controllers\CourseManager\CMCourseDeveloper;
+use App\Http\Controllers\Teacher\ListOfStudentController;
 use App\Http\Controllers\CourseDeveloper\CDQuizController;
 use App\Http\Controllers\CourseManager\CMCourseController;
 use App\Http\Controllers\CourseDeveloper\CDCourseController;
@@ -27,11 +28,10 @@ use App\Http\Controllers\Students\AutoSaveProgressController;
 use App\Http\Controllers\CoreFunctions\ExamGrantingController;
 use App\Http\Controllers\CourseDeveloper\CDActivityController;
 use App\Http\Controllers\CoreFunctions\AnnouncementsController;
+use App\Http\Controllers\CoreFunctions\ListOfSubjectsController;
 use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
-use App\Http\Controllers\CoreFunctions\ListOfSubjectsController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
-use App\Http\Controllers\Teacher\ListOfStudentController;
 
 /*
 |--------------------------------------------------------------------------

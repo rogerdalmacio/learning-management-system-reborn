@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\CMCourseDeveloper;
+namespace App\Http\Controllers\CourseManager;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,7 +14,7 @@ class CMCourseDeveloper extends Controller
 
         $user = Auth::user();
 
-        $courseDevelopers = CourseDeveloper::where(['depeartment', $user->department])->where(['subjects'], '')->get();
+        $courseDevelopers = CourseDeveloper::where('department', $user->department)->where('subjects', '')->get();
 
         $response = [
             'CourseDevelopers' => $courseDevelopers
