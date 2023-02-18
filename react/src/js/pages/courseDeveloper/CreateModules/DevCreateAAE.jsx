@@ -270,7 +270,7 @@ function DevCreateAAE() {
             textError === true ||
             isCorrectError === true
         ) {
-            toast.error("You must fill out the blank area");
+            toast.error("Please fill out the blank area");
             setError(true);
         } else {
             console.log(AAEquestions);
@@ -324,6 +324,7 @@ function DevCreateAAE() {
                     }
                 )
                 .then((response) => {
+                    console.log(response);
                     if (response.status >= 200 && response.status <= 300) {
                         toast.update(toastId, {
                             render: "Request Successfully",
@@ -539,7 +540,7 @@ function DevCreateAAE() {
                 <div className="d-flex justify-content-end">
                     <p className="my-auto me-3 fst-italic text-danger">
                         {error && error
-                            ? "*Please Fill Out The Blank Area*"
+                            ? "*Please fill out The Blank Area*"
                             : ""}
                     </p>
                     <button

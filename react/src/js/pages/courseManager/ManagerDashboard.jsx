@@ -58,6 +58,13 @@ function ManagerDashboard() {
                             type: toast.TYPE.SUCCESS,
                             autoClose: 2000,
                         });
+                        setSubject({
+                            course: "",
+                            course_code: "",
+                            approval: 0,
+                            department: userInfo.department,
+                            modules: 18,
+                        });
                     } else if (response.data[0] == "already exist") {
                         throw new Error("Course is already exists");
                     } else {

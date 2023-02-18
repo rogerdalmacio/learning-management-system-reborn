@@ -5,12 +5,19 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import SuperAdminLayout from "./layouts/authenticatedLayout/SuperAdminNavigationBar/SuperAdminLayout";
 import SuperDashboard from "../pages/superAdmin/superDashboard";
 import SuperEditProfile from "../pages/superAdmin/SuperEditProfile";
-
+import SuperBulkStudentCreationAccount from "../pages/superAdmin/SuperBulkStudentCreationAccount";
+import SuperBulkTeacherCreationAccount from "../pages/superAdmin/SuperBulkTeacherCreationAccount";
+import SuperCreateAdminAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateAdminAcct";
+import SuperCreateCourseDevAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateCourseDevAcct";
+import SuperCreateStudentAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateStudentAcct";
+import SuperCreateTeacherAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateTeacherAcct";
+import SuperCreateCourseManAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateCourseManAcct";
 // CourseManager
 import CourseManagerLayout from "./layouts/authenticatedLayout/CourseManagerNavigationBar/CourseManagerLayout";
 import ManagerDashboard from "../pages/courseManager/ManagerDashboard";
 import ManagerEditProfile from "../pages/courseManager/ManagerEditProfile";
 import ManagerGetCreatedCourse from "../pages/courseManager/ManagerGetCreatedCourse";
+import ManagerTagSubjToCourseDev from "../pages/courseManager/ManagerTagSubjToCourseDev";
 
 // Admin
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
@@ -175,6 +182,10 @@ function App() {
                         path="/courseManager/course"
                         element={<ManagerGetCreatedCourse />}
                     />
+                    <Route
+                        path="/courseManager/taggingSubjectForCourseDev"
+                        element={<ManagerTagSubjToCourseDev />}
+                    />
                 </Route>
             </Route>
 
@@ -188,6 +199,35 @@ function App() {
                     <Route
                         path="/superAdmin/editprofile"
                         element={<SuperEditProfile />}
+                    />
+                    <Route
+                        path="/superAdmin/studentBulkCreationAccount"
+                        element={<SuperBulkStudentCreationAccount />}
+                    />
+                    <Route
+                        path="/superAdmin/teacherBulkCreationAccount"
+                        element={<SuperBulkTeacherCreationAccount />}
+                    />
+                    
+                    <Route
+                        path="/superAdmin/teacherCreateSingleAccount"
+                        element={<SuperCreateTeacherAcct />}
+                    />
+                    <Route
+                        path="/superAdmin/studentCreateSingleAccount"
+                        element={<SuperCreateStudentAcct />}
+                    />
+                    <Route
+                        path="/superAdmin/adminCreateSingleAccount"
+                        element={<SuperCreateAdminAcct />}
+                    />
+                    <Route
+                        path="/superAdmin/courseDeveloperCreateSingleAccount"
+                        element={<SuperCreateCourseDevAcct />}
+                    />
+                    <Route
+                        path="/superAdmin/courseManagerCreateSingleAccount"
+                        element={<SuperCreateCourseManAcct />}
                     />
                 </Route>
             </Route>

@@ -89,7 +89,7 @@ function DevCreateExam() {
             textError === true ||
             isCorrectError === true
         ) {
-            toast.error("You must fill out the blank area");
+            toast.error("Please fill out the blank area");
             setError(true);
         } else {
             console.log(AAEquestions);
@@ -356,7 +356,7 @@ function DevCreateExam() {
                 <div className="d-flex justify-content-end">
                     <p className="my-auto me-3 fst-italic text-danger">
                         {error && error
-                            ? "*Please Fill Up The Blank Area*"
+                            ? "*Please Fill Out The Blank Area*"
                             : ""}
                     </p>
                     <button

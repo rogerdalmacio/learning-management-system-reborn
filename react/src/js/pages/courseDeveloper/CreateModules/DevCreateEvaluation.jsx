@@ -295,6 +295,7 @@ function DevCreateEvaluation() {
                     }
                 )
                 .then((response) => {
+                    console.log(response);
                     if (response.status >= 200 && response.status <= 300) {
                         toast.update(toastId, {
                             render: "Request Successfully",
@@ -508,7 +509,7 @@ function DevCreateEvaluation() {
                 <div className="d-flex justify-content-end">
                     <p className="my-auto me-3 fst-italic text-danger">
                         {error && error
-                            ? "*Please Fill Up The Blank Area*"
+                            ? "*Please Fill out The Blank Area*"
                             : ""}
                     </p>
                     <button

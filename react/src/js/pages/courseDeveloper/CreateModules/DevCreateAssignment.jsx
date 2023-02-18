@@ -473,7 +473,7 @@ function DevCreateAssignment() {
                 <div className="d-flex justify-content-end">
                     <p className="my-auto me-3 fst-italic text-danger">
                         {error && error
-                            ? "*Please Fill Up The Blank Area*"
+                            ? "*Please fill out The Blank Area*"
                             : ""}
                     </p>
                     <button

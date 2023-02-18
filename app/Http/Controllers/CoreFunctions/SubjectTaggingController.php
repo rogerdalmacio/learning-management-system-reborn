@@ -71,7 +71,7 @@ class SubjectTaggingController extends Controller
         return response()->json([
             'Subjects Tagged to' => $success,
             'errors' => $errors,
-            'does not exist' => $null,
+            'doesNotExist' => $null,
         ], 201);
 
     }
@@ -129,7 +129,7 @@ class SubjectTaggingController extends Controller
         return response()->json([
             'Subjects Tagged to' => $success,
             'errors' => $errors,
-            'does not exist' => $null,
+            'doesNotExist' => $null,
         ], 201);
 
     }
@@ -255,7 +255,7 @@ class SubjectTaggingController extends Controller
 
         $userSubjects = $user->subjects;
 
-        if($userSubjects->count() > 0) {
+        if($userSubjects) {
 
             $error = [
                 'You can only tag single subject to a Course Developer',

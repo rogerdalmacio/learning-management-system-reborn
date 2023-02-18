@@ -24,12 +24,13 @@ class CreateSingleStudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|unique:students|integer',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'section'  => 'required|integer',
-            'departments'  => 'required|string',
-            'year_level'  => 'required|integer'
+            'id' => 'required|unique:students',
+            'first_name' =>'required',
+            'last_name' => 'required',
+            'year_and_section' => 'required',
+            'major' =>'required',
+            'department' => 'required',
+            'program' => 'required'
         ];
     }   
 }

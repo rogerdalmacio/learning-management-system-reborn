@@ -52,7 +52,7 @@ function TeacherIndividualSubjectTagging() {
             studentSubject == undefined
         ) {
             setError(true);
-            toast.error("you must fill up the blank");
+            toast.error("Please fill out the blank area");
         } else {
             setError(false);
 

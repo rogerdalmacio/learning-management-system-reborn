@@ -4,11 +4,12 @@ import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function AdminTeacherSubjectTagging() {
+function SuperBulkTeacherCreationAccount() {
     const [file, setFile] = useState(null);
     const [submitFile, setSubmitFile] = useState(true);
     const [processing, setProcessing] = useState(false);
-    const [error, setError] = useState();
+    const [getNumAlreadyExist, setGetNumAlreadyExist] = useState();
+
     const { userInfo, token } = useAuth();
 
     const handleFileChange = (e) => {
@@ -25,6 +26,7 @@ function AdminTeacherSubjectTagging() {
         }
     });
 
+    console.log(getNumAlreadyExist);
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -47,7 +49,7 @@ function AdminTeacherSubjectTagging() {
                 .post(
                     `${
                         import.meta.env.VITE_API_BASE_URL
-                    }/api/core/batchteachersubjecttagging`,
+                    }/api/core/batchcreatestudents`,
                     formData,
                     {
                         headers: {
@@ -58,23 +60,41 @@ function AdminTeacherSubjectTagging() {
                     }
                 )
                 .then((response) => {
-                    console.log(response);
-                    if (response.status >= 200 && response.status <= 300) {
-                        if (response.data.doesNotExist.length !== 0) {
-                            toast.update(toastId, {
-                                render: `Account ID does not exist`,
-                                type: toast.TYPE.ERROR,
-                                autoClose: 2000,
-                            });
-                            setError(response.data.doesNotExist.join(", "));
-                        } else {
-                            toast.update(toastId, {
-                                render: "Request Successfully",
-                                type: toast.TYPE.SUCCESS,
-                                autoClose: 2000,
-                            });
-                        }
+                    console.log(response.data.errors);
+                    if (response.data.errors) {
+                        const idString = response.data.errors.map((error) => {
+                            return error.id[0];
+                        });
 
+                        const extractIdNumber = (idString) => {
+                            const idRegex = /^ID\s+(\d+)/;
+                            const match = idRegex.exec(idString);
+                            if (match) {
+                                return parseInt(match[1], 10);
+                            }
+                            return null;
+                        };
+
+                        const idNumbers = idString.map((idString) =>
+                            extractIdNumber(idString)
+                        );
+
+                        toast.update(toastId, {
+                            render: `Account/s already exist`,
+                            type: toast.TYPE.ERROR,
+                            autoClose: 2000,
+                        });
+
+                        setGetNumAlreadyExist(idNumbers.join(", "));
+                    } else if (
+                        response.status >= 200 &&
+                        response.status <= 300
+                    ) {
+                        toast.update(toastId, {
+                            render: "Request Successfully",
+                            type: toast.TYPE.SUCCESS,
+                            autoClose: 2000,
+                        });
                         setSubmitFile(true);
                         setProcessing(false);
                     } else {
@@ -85,20 +105,14 @@ function AdminTeacherSubjectTagging() {
                 })
                 .catch((error) => {
                     console.log(error);
-                    if (error.response.data.error) {
-                        // to access the subject itself you can use this : error.response.data.SubjectAlreadyExists[1]
-                        toast.update(toastId, {
-                            render: error.response.data.error,
-                            type: toast.TYPE.ERROR,
-                            autoClose: 2000,
-                        });
-                    } else {
-                        toast.update(toastId, {
-                            render: `${error.message}`,
-                            type: toast.TYPE.ERROR,
-                            autoClose: 2000,
-                        });
-                    }
+                    toast.update(toastId, {
+                        render: `${error.response.data.error.replace(
+                            /_/g,
+                            " "
+                        )}`,
+                        type: toast.TYPE.ERROR,
+                        autoClose: 2000,
+                    });
                     setProcessing(false);
                     setSubmitFile(false);
                 });
@@ -134,7 +148,7 @@ function AdminTeacherSubjectTagging() {
 
     return (
         <div className="w-100">
-            <h3 className="mb-5">Teacher - Bulk Subject Tagging</h3>
+            <h3 className="mb-4">Student - Mass Creation of Accounts</h3>
             <form
                 className="fileUploadContainer mx-auto w-100"
                 method="post"
@@ -179,26 +193,31 @@ function AdminTeacherSubjectTagging() {
                         </div>
                     </div>
                 )}
-                <div className="d-flex justify-content-end">
-                    <button
-                        className="uploadButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
-                        type="submit"
-                    >
-                        Upload
-                    </button>
-                </div>
-                <div className="d-flex justify-content-center mt-2">
-                    {error !== undefined && (
-                        <p className="text-danger fst-italic fs-6">
-                            * Account ID{" "}
-                            <span className="fw-bold">{error}</span> does not
-                            exist *
-                        </p>
-                    )}
+                <div className="d-block">
+                    <div className="d-flex justify-content-end">
+                        <button
+                            className="uploadButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
+                            type="submit"
+                        >
+                            Upload
+                        </button>
+                    </div>
+
+                    <div className="d-flex justify-content-center mt-2">
+                        {getNumAlreadyExist && (
+                            <p className="text-danger fst-italic fs-6">
+                                * Account ID{" "}
+                                <span className="fw-bold">
+                                    {getNumAlreadyExist}
+                                </span>{" "}
+                                already exist *
+                            </p>
+                        )}
+                    </div>
                 </div>
             </form>
         </div>
     );
 }
 
-export default AdminTeacherSubjectTagging;
+export default SuperBulkTeacherCreationAccount;

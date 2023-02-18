@@ -137,7 +137,7 @@ function Modal({
                                 </div>
                                 <p className="me-3 my-2 fst-italic fs-6 text-danger">
                                     {error && error
-                                        ? "*Please Fill Up The Blank Area*"
+                                        ? "*Please Fill out The Blank Area*"
                                         : ""}
                                 </p>
                             </div>

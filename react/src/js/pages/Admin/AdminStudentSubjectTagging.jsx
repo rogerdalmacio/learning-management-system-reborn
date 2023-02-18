@@ -8,6 +8,7 @@ function AdminStudentSubjectTagging() {
     const [file, setFile] = useState(null);
     const [submitFile, setSubmitFile] = useState(true);
     const [processing, setProcessing] = useState(false);
+    const [error, setError] = useState();
     const { userInfo, token } = useAuth();
 
     const handleFileChange = (e) => {
@@ -57,12 +58,23 @@ function AdminStudentSubjectTagging() {
                     }
                 )
                 .then((response) => {
+                    console.log(response);
                     if (response.status >= 200 && response.status <= 300) {
-                        toast.update(toastId, {
-                            render: "Request Successfully",
-                            type: toast.TYPE.SUCCESS,
-                            autoClose: 2000,
-                        });
+                        if (response.data.doesNotExist.length !== 0) {
+                            toast.update(toastId, {
+                                render: `Account ID does not exist`,
+                                type: toast.TYPE.ERROR,
+                                autoClose: 2000,
+                            });
+                            setError(response.data.doesNotExist.join(", "));
+                        } else {
+                            toast.update(toastId, {
+                                render: "Request Successfully",
+                                type: toast.TYPE.SUCCESS,
+                                autoClose: 2000,
+                            });
+                        }
+
                         setSubmitFile(true);
                         setProcessing(false);
                     } else {
@@ -73,11 +85,20 @@ function AdminStudentSubjectTagging() {
                 })
                 .catch((error) => {
                     console.log(error);
-                    toast.update(toastId, {
-                        render: `${error.message}`,
-                        type: toast.TYPE.ERROR,
-                        autoClose: 2000,
-                    });
+                    if (error.response.data.error) {
+                        // to access the subject itself you can use this : error.response.data.SubjectAlreadyExists[1]
+                        toast.update(toastId, {
+                            render: error.response.data.error,
+                            type: toast.TYPE.ERROR,
+                            autoClose: 2000,
+                        });
+                    } else {
+                        toast.update(toastId, {
+                            render: `${error.message}`,
+                            type: toast.TYPE.ERROR,
+                            autoClose: 2000,
+                        });
+                    }
                     setProcessing(false);
                     setSubmitFile(false);
                 });
@@ -165,6 +186,15 @@ function AdminStudentSubjectTagging() {
                     >
                         Upload
                     </button>
+                </div>
+                <div className="d-flex justify-content-center mt-2">
+                    {error !== undefined && (
+                        <p className="text-danger fst-italic fs-6">
+                            * Account ID{" "}
+                            <span className="fw-bold">{error}</span> does not
+                            exist *
+                        </p>
+                    )}
                 </div>
             </form>
         </div>

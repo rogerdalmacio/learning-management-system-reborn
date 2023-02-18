@@ -59,6 +59,29 @@ function Navbar({ openSidebar }) {
                             <span className="tooltip">Course</span>
                         </li>
                     </Link>
+                    <Link
+                        to="/courseManager/taggingSubjectForCourseDev"
+                        className="text-decoration-none"
+                    >
+                        <li>
+                            <a
+                                className={`${
+                                    pathName ===
+                                    "/courseManager/taggingSubjectForCourseDev"
+                                        ? "activeSideBar"
+                                        : ""
+                                }`}
+                            >
+                                <i className="bx bx-tag-alt"></i>
+                                <span className="links_name">
+                                    Tagging Subj for CourseDev.
+                                </span>
+                            </a>
+                            <span className="tooltip">
+                                Tagging Subj for CourseDev.
+                            </span>
+                        </li>
+                    </Link>
                 </ul>
             </div>
         </Fragment>

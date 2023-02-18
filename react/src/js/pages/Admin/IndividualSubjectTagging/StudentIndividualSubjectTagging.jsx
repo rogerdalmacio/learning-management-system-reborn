@@ -52,7 +52,7 @@ function StudentIndividualSubjectTagging() {
             studentSubject == undefined
         ) {
             setError(true);
-            toast.error("you must fill up the blank");
+            toast.error("Please fill out the blank area");
         } else {
             setError(false);
 
@@ -97,6 +97,7 @@ function StudentIndividualSubjectTagging() {
                     }
                 })
                 .catch((error) => {
+                    console.log(error);
                     if (error.response.data.SubjectAlreadyExists) {
                         // to access the subject itself you can use this : error.response.data.SubjectAlreadyExists[1]
                         toast.update(toastId, {
