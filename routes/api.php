@@ -141,6 +141,7 @@ Route::group(['prefix' => 'superadmin', 'middleware' => ['auth:sanctum','abiliti
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:SuperAdmin']], function(){
 
     Route::post('/batchcreatestudents', [AccountCreationController::class, 'batchCreateStudents']);
+    Route::post('/batchcreateteachers', [AccountCreationController::class, 'batchCreateTeachers']);
     Route::post('/createsinglestudent', [AccountCreationController::class, 'createSingleStudent']);
     Route::post('/createsingleadmin', [AccountCreationController::class, 'createSingleAdmin']);
     Route::post('/createsinglecoursemanager', [AccountCreationController::class, 'createSingleCourseManager']);

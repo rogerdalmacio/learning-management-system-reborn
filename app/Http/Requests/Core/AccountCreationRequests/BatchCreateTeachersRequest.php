@@ -4,7 +4,7 @@ namespace App\Http\Requests\Core\AccountCreationRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BatchCreateStudentRequest extends FormRequest
+class BatchCreateTeachersRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -14,10 +14,12 @@ use App\Models\Users\CourseDeveloper;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleAdminRequest;
 use App\Http\Requests\Core\AccountCreationRequests\BatchCreateStudentRequest;
+use App\Http\Requests\Core\AccountCreationRequests\BatchCreateTeachersRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleStudentRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleTeacherRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleCourseManagerRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleCourseDeveloperRequest;
+use App\Models\Users\Teacher;
 
 class AccountCreationController extends Controller
 {
@@ -30,7 +32,7 @@ class AccountCreationController extends Controller
             $insertStudents = [];
             $errors = [];
 
-            $csv = $request->file('files');
+            $csv = $request->file('file');
             $csv = Reader::createFromPath($csv->getRealPath(), 'r');
             $csv->setHeaderOffset(0);
 
@@ -87,6 +89,7 @@ class AccountCreationController extends Controller
                 $message = [
                     'id.unique' => 'ID :input already exists'
                 ];
+
                 $validator = Validator::make($newstudent, $rules, $message);
 
                 if($validator->fails()){
@@ -102,6 +105,101 @@ class AccountCreationController extends Controller
 
             foreach($chunks as $chunk) {
                 Student::insert($chunk);
+            }
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            return response()->json([
+                'error' => $e->getMessage(),
+                'errors' => $errors
+            ], 500);
+        }
+
+        return response()->json([
+            'account successfully created for' => $success,
+            'errors' => $errors
+        ], 201);
+
+    }
+
+    public function batchCreateTeachers(BatchCreateTeachersRequest $request) {
+
+        try {
+
+            $success = [];
+            $insertTeacher = [];
+            $errors = [];
+
+            $csv = $request->file('file');
+            $csv = Reader::createFromPath($csv->getRealPath(), 'r');
+            $csv->setHeaderOffset(0);
+
+            $rules = [
+                'id' => [
+                    'required',
+                    'unique:teachers'
+                ],
+                'first_name' => [
+                    'required',
+                ],
+                'last_name' => [
+                    'required',
+                ],
+                'department' => [
+                    'required',
+                ],
+                'program' => [
+                    'required',
+                ],
+                'year_and_sections' => [
+                    'required',
+                ]
+            ];
+        
+            foreach ($csv as $teacher) {
+
+                $firstTwoCharactersOfLastName = substr($teacher['last_name'], 0, 2);
+
+                $date = Carbon::now()->format('Y');
+
+                $password = '#' . $firstTwoCharactersOfLastName . $date;
+
+                $email = $teacher['id'] . '@lms.bcpsms.com';
+
+                $newteacher = [
+                    'id' => $teacher['id'],
+                    'first_name' => $teacher['first_name'],
+                    'last_name' => $teacher['last_name'],
+                    'email' => $email,
+                    'password' => Hash::make($password),
+                    'department' => $teacher['department'],
+                    'program' => $teacher['program'],
+                    'year_and_sections' => $teacher['year_and_sections'],
+                    'subjects' => '',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+
+                $message = [
+                    'id.unique' => 'ID :input already exists'
+                ];
+
+                $validator = Validator::make($newteacher, $rules, $message);
+
+                if($validator->fails()){
+                    $errors[] = $validator->errors();
+                } else {
+                    $insertTeacher[] = $newteacher;
+                    $success[] = $newteacher['email'] . ' - ' . $password;
+                }
+
+            }
+
+            $chunks = array_chunk($insertTeacher, 100);
+
+            foreach($chunks as $chunk) {
+                Teacher::insert($chunk);
             }
 
         } catch (\Exception $e) {
