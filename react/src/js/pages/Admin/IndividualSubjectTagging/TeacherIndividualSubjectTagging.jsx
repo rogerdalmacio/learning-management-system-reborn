@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 
-function TeacherIndividualSubjectTagging() {
+function StudentIndividualSubjectTagging() {
     const { token, role } = useAuth();
 
     const [studentId, setStudentId] = useState("");
@@ -10,11 +10,12 @@ function TeacherIndividualSubjectTagging() {
     const [error, setError] = useState();
     const [getSubject, setGetSubject] = useState();
     const [alreadyExist, setAlreadyExist] = useState();
+    const [listSubjectAlreadyExist, setSubjectAlreadyExist] = useState();
 
     const [searchTerm, setSearchTerm] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
-
+    console.log(listSubjectAlreadyExist);
     useEffect(() => {
         const GetSubjectsHandler = async () => {
             if (role === "admin") {
@@ -90,6 +91,10 @@ function TeacherIndividualSubjectTagging() {
                             type: toast.TYPE.SUCCESS,
                             autoClose: 2000,
                         });
+                        setSubjectAlreadyExist(undefined);
+                        setStudentSubject([]);
+                        setSearchTerm("");
+                        setStudentId("");
                     } else {
                         throw new Error(
                             response.status || "Something Went Wrong!"
@@ -97,10 +102,22 @@ function TeacherIndividualSubjectTagging() {
                     }
                 })
                 .catch((error) => {
+                    console.log(error);
                     if (error.response.data.SubjectAlreadyExists) {
                         // to access the subject itself you can use this : error.response.data.SubjectAlreadyExists[1]
+                        setSubjectAlreadyExist(
+                            Object.values(
+                                error.response.data.SubjectAlreadyExists
+                            ).join(", ")
+                        );
                         toast.update(toastId, {
                             render: `Subject is already exist`,
+                            type: toast.TYPE.ERROR,
+                            autoClose: 2000,
+                        });
+                    } else if (error.response.data.message) {
+                        toast.update(toastId, {
+                            render: `${error.response.data.message}`,
                             type: toast.TYPE.ERROR,
                             autoClose: 2000,
                         });
@@ -184,7 +201,7 @@ function TeacherIndividualSubjectTagging() {
                     htmlFor="studentSubjectTaggingId"
                     className="form-label fw-semibold fs-6 w-100 mb-3"
                 >
-                    <h5 className="mb-0">Teacher ID</h5>
+                    <h5 className="mb-0">Student ID</h5>
                 </label>
                 <input
                     type="text"
@@ -193,6 +210,7 @@ function TeacherIndividualSubjectTagging() {
                             ? "errorInput"
                             : "noErrorInput"
                     }`}
+                    value={studentId}
                     id="studentSubjectTaggingId"
                     onChange={(e) => setStudentId(e.target.value)}
                 />
@@ -205,9 +223,10 @@ function TeacherIndividualSubjectTagging() {
                     >
                         <h5 className="mb-0">Search Subject</h5>
                     </label>
+
                     <input
-                        type="text"
-                        className="inputField input-form form-control px-3 fs-6 fw-normal"
+                        type="search"
+                        className="form-control search-box text-dark"
                         placeholder="Search courses"
                         value={searchTerm}
                         onChange={handleChange}
@@ -250,8 +269,19 @@ function TeacherIndividualSubjectTagging() {
             >
                 Submit
             </button>
+            <div className="d-flex justify-content-center mt-2">
+                {listSubjectAlreadyExist !== undefined && (
+                    <p className="text-danger fst-italic fs-6">
+                        * Subject{" "}
+                        <span className="fw-bold">
+                            {listSubjectAlreadyExist}
+                        </span>{" "}
+                        already exist *
+                    </p>
+                )}
+            </div>
         </div>
     );
 }
 
-export default TeacherIndividualSubjectTagging;
+export default StudentIndividualSubjectTagging;

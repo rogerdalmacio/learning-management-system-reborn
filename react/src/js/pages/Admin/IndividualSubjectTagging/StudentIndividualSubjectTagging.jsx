@@ -10,11 +10,12 @@ function StudentIndividualSubjectTagging() {
     const [error, setError] = useState();
     const [getSubject, setGetSubject] = useState();
     const [alreadyExist, setAlreadyExist] = useState();
+    const [listSubjectAlreadyExist, setSubjectAlreadyExist] = useState();
 
     const [searchTerm, setSearchTerm] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
-
+    console.log(listSubjectAlreadyExist);
     useEffect(() => {
         const GetSubjectsHandler = async () => {
             if (role === "admin") {
@@ -90,6 +91,10 @@ function StudentIndividualSubjectTagging() {
                             type: toast.TYPE.SUCCESS,
                             autoClose: 2000,
                         });
+                        setSubjectAlreadyExist(undefined);
+                        setStudentSubject([]);
+                        setSearchTerm("");
+                        setStudentId("");
                     } else {
                         throw new Error(
                             response.status || "Something Went Wrong!"
@@ -100,8 +105,19 @@ function StudentIndividualSubjectTagging() {
                     console.log(error);
                     if (error.response.data.SubjectAlreadyExists) {
                         // to access the subject itself you can use this : error.response.data.SubjectAlreadyExists[1]
+                        setSubjectAlreadyExist(
+                            Object.values(
+                                error.response.data.SubjectAlreadyExists
+                            ).join(", ")
+                        );
                         toast.update(toastId, {
                             render: `Subject is already exist`,
+                            type: toast.TYPE.ERROR,
+                            autoClose: 2000,
+                        });
+                    } else if (error.response.data.message) {
+                        toast.update(toastId, {
+                            render: `${error.response.data.message}`,
                             type: toast.TYPE.ERROR,
                             autoClose: 2000,
                         });
@@ -194,6 +210,7 @@ function StudentIndividualSubjectTagging() {
                             ? "errorInput"
                             : "noErrorInput"
                     }`}
+                    value={studentId}
                     id="studentSubjectTaggingId"
                     onChange={(e) => setStudentId(e.target.value)}
                 />
@@ -206,9 +223,10 @@ function StudentIndividualSubjectTagging() {
                     >
                         <h5 className="mb-0">Search Subject</h5>
                     </label>
+
                     <input
-                        type="text"
-                        className="inputField input-form form-control px-3 fs-6 fw-normal"
+                        type="search"
+                        className="form-control search-box text-dark"
                         placeholder="Search courses"
                         value={searchTerm}
                         onChange={handleChange}
@@ -251,6 +269,17 @@ function StudentIndividualSubjectTagging() {
             >
                 Submit
             </button>
+            <div className="d-flex justify-content-center mt-2">
+                {listSubjectAlreadyExist !== undefined && (
+                    <p className="text-danger fst-italic fs-6">
+                        * Subject{" "}
+                        <span className="fw-bold">
+                            {listSubjectAlreadyExist}
+                        </span>{" "}
+                        already exist *
+                    </p>
+                )}
+            </div>
         </div>
     );
 }

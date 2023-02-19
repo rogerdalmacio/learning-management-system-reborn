@@ -6,6 +6,7 @@ import { Fragment } from "react";
 function Navbar({ openSidebar }) {
     const [openDropdown, setOpenDropdown] = useState(false);
     const [openDropdown2, setOpenDropdown2] = useState(false);
+    const [openDropdown3, setOpenDropdown3] = useState(false);
 
     const pathName = useLocation().pathname;
 
@@ -162,6 +163,65 @@ function Navbar({ openSidebar }) {
                         <span className="tooltip">
                             Individual Subject Tagging
                         </span>
+                    </li>
+                    <li className={`${openDropdown3 ? "showMenu" : ""}`}>
+                        <div
+                            className="iocn-link arrow"
+                            onClick={() => {
+                                setOpenDropdown3((prev) => !prev);
+                            }}
+                        >
+                            <a>
+                                <i className="bx bx-check-square"></i>
+                                <span className="links_name">Grant Exam</span>
+                            </a>
+                            <i className="bx bx-chevron-down arrow"></i>
+                        </div>
+                        <ul className={`sub-menu pe-0`}>
+                            <li className={`${openSidebar ? "" : "d-none"}`}>
+                                <div className="firstChildDropdownContainer dropdown overflow-hidden">
+                                    <div>
+                                        <Link
+                                            to={`/admin/batchgrantexam`}
+                                            className={`overflow-hidden ${
+                                                pathName ===
+                                                "/admin/batchgrantexam"
+                                                    ? "firstNavbarChild"
+                                                    : ""
+                                            }`}
+                                        >
+                                            <p
+                                                className={`mb-0 NavbarCourseTitle `}
+                                            >
+                                                Batch Grant Exam
+                                            </p>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </li>
+                            <li className={`${openSidebar ? "" : "d-none"}`}>
+                                <div className="firstChildDropdownContainer dropdown overflow-hidden">
+                                    <div>
+                                        <Link
+                                            to={`/admin/singleGrantExam`}
+                                            className={`overflow-hidden ${
+                                                pathName ===
+                                                "/admin/singleGrantExam"
+                                                    ? "firstNavbarChild"
+                                                    : ""
+                                            }`}
+                                        >
+                                            <p
+                                                className={`mb-0 NavbarCourseTitle `}
+                                            >
+                                                Single Grant Exam
+                                            </p>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <span className="tooltip">Grant Exam</span>
                     </li>
                 </ul>
             </div>

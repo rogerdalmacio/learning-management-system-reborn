@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function AdminTeacherSubjectTagging() {
+function AdminBatchGrantExam() {
     const [file, setFile] = useState(null);
     const [submitFile, setSubmitFile] = useState(true);
     const [processing, setProcessing] = useState(false);
@@ -47,7 +47,7 @@ function AdminTeacherSubjectTagging() {
                 .post(
                     `${
                         import.meta.env.VITE_API_BASE_URL
-                    }/api/core/batchteachersubjecttagging`,
+                    }/api/core/batchgrantexam`,
                     formData,
                     {
                         headers: {
@@ -62,13 +62,13 @@ function AdminTeacherSubjectTagging() {
                     if (response.status >= 200 && response.status <= 300) {
                         if (response.data.errors.length !== 0) {
                             toast.update(toastId, {
-                                render: `Account ID does not exist`,
+                                render: `Accounts already granted`,
                                 type: toast.TYPE.ERROR,
                                 autoClose: 2000,
                             });
                             const errorId = response.data.errors.map(
                                 (error) => {
-                                    return error.id;
+                                    return error.student_id;
                                 }
                             );
                             console.log(errorId);
@@ -143,7 +143,7 @@ function AdminTeacherSubjectTagging() {
 
     return (
         <div className="w-100">
-            <h3 className="mb-5">Teacher - Bulk Subject Tagging</h3>
+            <h3 className="mb-5">Student - Grant Exam</h3>
             <form
                 className="fileUploadContainer mx-auto w-100"
                 method="post"
@@ -200,8 +200,8 @@ function AdminTeacherSubjectTagging() {
                     {error !== undefined && (
                         <p className="text-danger fst-italic fs-6">
                             * Account ID{" "}
-                            <span className="fw-bold">{error}</span> does not
-                            exist *
+                            <span className="fw-bold">{error}</span> already
+                            granted *
                         </p>
                     )}
                 </div>
@@ -210,4 +210,4 @@ function AdminTeacherSubjectTagging() {
     );
 }
 
-export default AdminTeacherSubjectTagging;
+export default AdminBatchGrantExam;

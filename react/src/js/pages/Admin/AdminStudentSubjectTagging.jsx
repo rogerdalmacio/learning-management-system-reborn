@@ -10,7 +10,7 @@ function AdminStudentSubjectTagging() {
     const [processing, setProcessing] = useState(false);
     const [error, setError] = useState();
     const { userInfo, token } = useAuth();
-
+    console.log(error);
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     };
@@ -60,19 +60,28 @@ function AdminStudentSubjectTagging() {
                 .then((response) => {
                     console.log(response);
                     if (response.status >= 200 && response.status <= 300) {
-                        if (response.data.doesNotExist.length !== 0) {
+                        if (response.data.errors.length !== 0) {
                             toast.update(toastId, {
                                 render: `Account ID does not exist`,
                                 type: toast.TYPE.ERROR,
                                 autoClose: 2000,
                             });
-                            setError(response.data.doesNotExist.join(", "));
+                            const errorId = response.data.errors.map(
+                                (error) => {
+                                    return error.id;
+                                }
+                            );
+                            console.log(errorId);
+                            const errorwithJoin =
+                                Object.values(errorId).join(", ");
+                            setError(errorwithJoin.match(/\d+/g).join(", "));
                         } else {
                             toast.update(toastId, {
                                 render: "Request Successfully",
                                 type: toast.TYPE.SUCCESS,
                                 autoClose: 2000,
                             });
+                            setError(undefined);
                         }
 
                         setSubmitFile(true);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Core\SubjectTaggingRequests;
+namespace App\Http\Requests\Core;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +24,7 @@ class ExamGrantRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|file|mimes:csv|size:25000'
+            'file' => 'required|file|mimes:csv|max:25000'
         ];
     }
 }

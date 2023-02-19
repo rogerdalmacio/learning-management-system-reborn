@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Models\CoreFunctions\ExaminationGrant;
-use App\Http\Requests\Core\SubjectTaggingRequests\ExamGrantRequest;
+use App\Http\Requests\Core\ExamGrantRequest;
 use Illuminate\Http\Request;
 
 class ExamGrantingController extends Controller

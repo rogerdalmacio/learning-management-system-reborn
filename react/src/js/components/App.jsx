@@ -27,6 +27,8 @@ import AdminStudentSubjectTagging from "../pages/Admin/AdminStudentSubjectTaggin
 import AdminTeacherSubjectTagging from "../pages/Admin/AdminTeacherSubjectTagging";
 import StudentIndividualSubjectTagging from "../pages/Admin/IndividualSubjectTagging/StudentIndividualSubjectTagging";
 import TeacherIndividualSubjectTagging from "../pages/Admin/IndividualSubjectTagging/TeacherIndividualSubjectTagging";
+import AdminBatchGrantExam from "../pages/Admin/ExamGranting/AdminBatchGrantExam";
+import AdminSingleGrantExam from "../pages/Admin/ExamGranting/AdminSingleGrantExam";
 
 // Course Developer
 import CourseDevLayout from "./layouts/authenticatedLayout/CourseDeveloperNavifationBar/CourseDevLayout";
@@ -208,7 +210,7 @@ function App() {
                         path="/superAdmin/teacherBulkCreationAccount"
                         element={<SuperBulkTeacherCreationAccount />}
                     />
-                    
+
                     <Route
                         path="/superAdmin/teacherCreateSingleAccount"
                         element={<SuperCreateTeacherAcct />}
@@ -255,6 +257,14 @@ function App() {
                     <Route
                         path="/admin/teacherIndividualSubjectTagging"
                         element={<TeacherIndividualSubjectTagging />}
+                    />
+                    <Route
+                        path="/admin/batchgrantexam"
+                        element={<AdminBatchGrantExam />}
+                    />
+                    <Route
+                        path="/admin/singleGrantExam"
+                        element={<AdminSingleGrantExam />}
                     />
                 </Route>
             </Route>
