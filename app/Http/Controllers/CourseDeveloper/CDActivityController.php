@@ -34,7 +34,7 @@ class CDActivityController extends Controller
 
 
         if($exist->count() > 0){
-            return response(['already exist'], 201);
+            return response(['already exist'], 409);
         }
 
         Activity::create($request->all());

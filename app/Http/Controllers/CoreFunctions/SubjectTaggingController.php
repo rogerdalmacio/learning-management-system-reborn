@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CoreFunctions;
 use League\Csv\Reader;
 use App\Models\Users\Student;
 use App\Models\Users\Teacher;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Users\CourseDeveloper;
@@ -25,7 +26,6 @@ class SubjectTaggingController extends Controller
 
             $success = [];
             $errors = [];
-            $null = [];
 
             $csv = $request->file('file');
             $csv = Reader::createFromPath($csv->getRealPath(), 'r');
@@ -33,31 +33,40 @@ class SubjectTaggingController extends Controller
             
             foreach ($csv as $student) {
 
+
+
                 $rules = [
                     'id' => [
                         'required',
+                        Rule::exists('students', 'id')
                     ],
                     'subjects' => [
                         'required',
                     ]
                 ];
 
-                $validator = Validator::make($student, $rules);
+                $message = [
+                    'id.exists' => 'This student id : :input does not exist'
+                ];
+
+                $validator = Validator::make($student, $rules, $message);
 
                 if($validator->fails()){
+                    
                     $errors[] = $validator->errors();
+                
                 }
 
                 $user = Student::find($student['id']);
 
-                if(!$user) {
-                    $null[] = $student['id'];
-                } else {
+                if($user) {
+                    
                     $success[] = $student['id'];
                     $user->subjects = $student['subjects'];
                     $user->save();
+
                 }
-                
+
             }
 
         } catch (\Exception $e) {
@@ -71,7 +80,6 @@ class SubjectTaggingController extends Controller
         return response()->json([
             'Subjects Tagged to' => $success,
             'errors' => $errors,
-            'doesNotExist' => $null,
         ], 201);
 
     }
@@ -83,7 +91,6 @@ class SubjectTaggingController extends Controller
 
             $success = [];
             $errors = [];
-            $null = [];
 
             $csv = $request->file('file');
             $csv = Reader::createFromPath($csv->getRealPath(), 'r');
@@ -94,13 +101,18 @@ class SubjectTaggingController extends Controller
                 $rules = [
                     'id' => [
                         'required',
+                        Rule::exists('teachers', 'id')
                     ],
                     'subjects' => [
                         'required',
                     ]
                 ];
 
-                $validator = Validator::make($teacher, $rules);
+                $message = [
+                    'id.exists' => 'Teacher id : :input does not exist'
+                ];
+
+                $validator = Validator::make($teacher, $rules, $message);
 
                 if($validator->fails()){
                     $errors[] = $validator->errors();
@@ -108,12 +120,12 @@ class SubjectTaggingController extends Controller
 
                 $user = Teacher::find($teacher['id']);
 
-                if(!$user) {
-                    $null[] = $teacher['id'];
-                } else {
+                if($user) {
+
                     $success[] = $teacher['id'];
                     $user->subjects = $teacher['subjects'];
                     $user->save();
+                    
                 }
                 
             }
@@ -129,7 +141,6 @@ class SubjectTaggingController extends Controller
         return response()->json([
             'Subjects Tagged to' => $success,
             'errors' => $errors,
-            'doesNotExist' => $null,
         ], 201);
 
     }

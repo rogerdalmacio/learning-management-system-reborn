@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Core\SubjectTaggingRequests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SingleCourseDeveloperSubjectTaggingRequest extends FormRequest
@@ -24,7 +25,10 @@ class SingleCourseDeveloperSubjectTaggingRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required',
+            'id' => [
+                'required',
+                Rule::exists('course_developers', 'id')
+            ],
             'subject' => 'required'
         ];
     }

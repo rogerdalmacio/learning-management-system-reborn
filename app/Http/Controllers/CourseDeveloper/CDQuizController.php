@@ -35,7 +35,7 @@ class CDQuizController extends Controller
 
 
         if($exist->count() > 0){
-            return response(['already exist'], 204);
+            return response(['already exist'], 409);
         }
 
         Quiz::create($request->all());

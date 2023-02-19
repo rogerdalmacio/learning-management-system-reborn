@@ -31,7 +31,7 @@ class CDLessonController extends Controller
         $exist = Lesson::where('module_id', $request['module_id'])->get();
 
         if($exist->count() > 0){
-            return response(['already exist'], 204);
+            return response(['already exist'], 409);
         }
 
         Lesson::create($request->all());
