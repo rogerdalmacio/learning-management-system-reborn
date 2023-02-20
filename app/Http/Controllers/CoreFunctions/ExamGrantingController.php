@@ -104,10 +104,11 @@ class ExamGrantingController extends Controller
             return response(['already exist'], 201);
         }
     
-        ExaminationGrant::create([
+        ExaminationGrant::insert([
             'student_id' => $request['student_id'],
             'grant' => $request['grant'],
-            'preliminaries' => $request['preliminaries']
+            'preliminaries' => $request['preliminaries'],
+            'granted_at' => Carbon::now()
         ]);
 
     }
