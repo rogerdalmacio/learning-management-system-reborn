@@ -42,11 +42,13 @@ class SubjectTaggingController extends Controller
                     ],
                     'subjects' => [
                         'required',
+                        'unique:students,subjects'
                     ]
                 ];
 
                 $message = [
-                    'id.exists' => 'This student id : :input does not exist'
+                    'id.exists' => 'This student id : :input does not exist',
+                    'subjects.unique' => 'The subjects :input you are trying to tag already exist'
                 ];
 
                 $validator = Validator::make($student, $rules, $message);
@@ -105,11 +107,13 @@ class SubjectTaggingController extends Controller
                     ],
                     'subjects' => [
                         'required',
+                        'unique:teachers,subjects'
                     ]
                 ];
 
                 $message = [
-                    'id.exists' => 'Teacher id : :input does not exist'
+                    'id.exists' => 'Teacher id : :input does not exist',
+                    'subjects.unique' => 'The subjects :input you are trying to tag already exist'
                 ];
 
                 $validator = Validator::make($teacher, $rules, $message);
