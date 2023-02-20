@@ -10,6 +10,30 @@ use App\Http\Requests\Core\CreateAnnouncementRequest;
 
 class AnnouncementsController extends Controller
 {
+
+    public function activeAnnouncements() {
+
+        $announcements = Announcement::where('status', true)->get();
+
+        $response = [
+            'announcements' => $announcements
+        ];
+
+        return response($response, 200);
+
+    }
+
+    public function inActiceAnnouncements() {
+
+        $announcements = Announcement::where('status', false)->get();
+
+        $response = [
+            'announcements' => $announcements
+        ];
+
+        return response($response, 200);
+        
+    }
     
     public function createAnnouncement(CreateAnnouncementRequest $request) {
 
@@ -54,7 +78,7 @@ class AnnouncementsController extends Controller
         $response = [
             'Announcement Deleted Succesfully: ' => $announcement->title,
         ];
-
+ 
         return response($response, 204);
     }
 
