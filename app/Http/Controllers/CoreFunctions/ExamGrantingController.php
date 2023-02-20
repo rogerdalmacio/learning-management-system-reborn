@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\CoreFunctions\ExaminationGrant;
 use App\Http\Requests\Core\ExamGrantRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ExamGrantingController extends Controller
 {
@@ -44,7 +45,7 @@ class ExamGrantingController extends Controller
                 $grantExists = ExaminationGrant::where('student_id', $grant['student_id'])
                                 ->where('preliminaries', $grant['preliminaries'])->get(); 
 
-                if(!$grantExists === '[]') {
+                if($grantExists->count() > 0) {
                     return response(['already exist'], 201);
                 }
 
@@ -92,7 +93,10 @@ class ExamGrantingController extends Controller
     public function singleExamGrant(Request $request) {
 
         $request->validate([
-            'student_id' => 'required|unique:examination_grants',
+            'student_id' => [
+                'required',
+                Rule::exists('students', 'id')
+        ],
             'grant' => 'required',
             'preliminaries' => 'required',
         ]);
