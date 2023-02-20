@@ -6,7 +6,7 @@ namespace App\Http\Controllers\CoreFunctions;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CoreFunctions\Announcement;
-use App\Http\Requests\Core\SubjectTaggingRequests\CreateAnnouncementRequest;
+use App\Http\Requests\Core\CreateAnnouncementRequest;
 
 class AnnouncementsController extends Controller
 {

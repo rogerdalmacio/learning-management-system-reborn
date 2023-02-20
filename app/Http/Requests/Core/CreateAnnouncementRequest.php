@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Core\SubjectTaggingRequests;
+namespace App\Http\Requests\Core;
 
 use Illuminate\Foundation\Http\FormRequest;
 
