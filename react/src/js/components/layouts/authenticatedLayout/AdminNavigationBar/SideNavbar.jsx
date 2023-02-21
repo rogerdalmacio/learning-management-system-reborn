@@ -38,6 +38,24 @@ function Navbar({ openSidebar }) {
                             <span className="tooltip">Dashboard</span>
                         </li>
                     </Link>
+                    <Link
+                        to="/admin/createAnnouncement"
+                        className="text-decoration-none"
+                    >
+                        <li>
+                            <a
+                                className={`${
+                                    pathName === "/admin/createAnnouncement"
+                                        ? "activeSideBar"
+                                        : ""
+                                }`}
+                            >
+                                <i className="bx bx-grid-alt"></i>
+                                <span className="links_name">Announcement</span>
+                            </a>
+                            <span className="tooltip">Announcement</span>
+                        </li>
+                    </Link>
                     <li className={`${openDropdown ? "showMenu" : ""}`}>
                         <div
                             className="iocn-link arrow"

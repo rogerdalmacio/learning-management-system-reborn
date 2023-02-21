@@ -54,11 +54,19 @@ function AdminSingleGrantExam() {
                 .then((response) => {
                     console.log(response);
                     if (response.status >= 200 && response.status <= 300) {
-                        toast.update(toastId, {
-                            render: "Request Successfully",
-                            type: toast.TYPE.SUCCESS,
-                            autoClose: 2000,
-                        });
+                        if (response.data.length !== 0) {
+                            toast.update(toastId, {
+                                render: `Student ID is ${response.data[0]}`,
+                                type: toast.TYPE.ERROR,
+                                autoClose: 2000,
+                            });
+                        } else {
+                            toast.update(toastId, {
+                                render: "Request Successfully",
+                                type: toast.TYPE.SUCCESS,
+                                autoClose: 2000,
+                            });
+                        }
                     } else {
                         throw new Error(
                             response.status || "Something Went Wrong!"
@@ -67,11 +75,19 @@ function AdminSingleGrantExam() {
                 })
                 .catch((error) => {
                     console.log(error);
-                    toast.update(toastId, {
-                        render: `${error.message}`,
-                        type: toast.TYPE.ERROR,
-                        autoClose: 2000,
-                    });
+                    if (error.response.data.message) {
+                        toast.update(toastId, {
+                            render: `${error.response.data.message}`,
+                            type: toast.TYPE.ERROR,
+                            autoClose: 2000,
+                        });
+                    } else {
+                        toast.update(toastId, {
+                            render: `${error.message}`,
+                            type: toast.TYPE.ERROR,
+                            autoClose: 2000,
+                        });
+                    }
                 });
         }
     };
@@ -87,9 +103,9 @@ function AdminSingleGrantExam() {
                     <h5 className="mb-0">Student ID</h5>
                 </label>
                 <input
-                    type="text"
+                    type="number"
                     className={`inputField input-form form-control px-3 fs-6 fw-normal ${
-                        studentId === "" || error
+                        studentId === "" && error
                             ? "errorInput"
                             : "noErrorInput"
                     }`}

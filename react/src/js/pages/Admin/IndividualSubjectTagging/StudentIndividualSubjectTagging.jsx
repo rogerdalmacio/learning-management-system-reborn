@@ -204,9 +204,9 @@ function StudentIndividualSubjectTagging() {
                     <h5 className="mb-0">Student ID</h5>
                 </label>
                 <input
-                    type="text"
+                    type="number"
                     className={`inputField input-form form-control px-3 fs-6 fw-normal ${
-                        studentId === "" || error
+                        studentId === "" && error
                             ? "errorInput"
                             : "noErrorInput"
                     }`}

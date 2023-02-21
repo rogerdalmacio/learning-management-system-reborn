@@ -25,3 +25,9 @@
     width: 100%;
     max-width: 200px;
 }
+
+.smallButtonTemplateDanger {
+    border-radius: 0.375rem !important;
+    color: $white !important;
+    background-color: $danger-color !important;
+}

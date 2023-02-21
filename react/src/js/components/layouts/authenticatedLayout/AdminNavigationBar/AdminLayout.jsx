@@ -10,6 +10,7 @@ const Layout = () => {
 
     const [openSidebar, setOpenSidebar] = useState(true);
     const [imageExisting, setImageExisting] = useState();
+    const containerStyle = { zIndex: 9999999 }; // set the z-index to 9999
 
     const userImageJpg = `${
         import.meta.env.VITE_API_BASE_URL
@@ -66,6 +67,7 @@ const Layout = () => {
                             <ToastContainer
                                 position="top-right"
                                 autoClose={3000}
+                                toastStyle={containerStyle}
                                 hideProgressBar={false}
                                 newestOnTop={false}
                                 closeOnClick

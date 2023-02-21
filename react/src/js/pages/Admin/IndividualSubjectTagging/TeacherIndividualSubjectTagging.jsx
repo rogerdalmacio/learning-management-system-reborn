@@ -201,12 +201,12 @@ function StudentIndividualSubjectTagging() {
                     htmlFor="studentSubjectTaggingId"
                     className="form-label fw-semibold fs-6 w-100 mb-3"
                 >
-                    <h5 className="mb-0">Student ID</h5>
+                    <h5 className="mb-0">Teacher ID</h5>
                 </label>
                 <input
-                    type="text"
+                    type="number"
                     className={`inputField input-form form-control px-3 fs-6 fw-normal ${
-                        studentId === "" || error
+                        studentId === "" && error
                             ? "errorInput"
                             : "noErrorInput"
                     }`}

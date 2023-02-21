@@ -2,6 +2,7 @@
 
 .modalContentContainer {
     position: absolute;
+    width: 98%;
     top: 0;
     left: 0;
     bottom: 0;
@@ -14,6 +15,7 @@
     opacity: 0 !important;
     transition: all 0.5s ease-in-out !important;
 }
+
 .modalContentContainer.show {
     background-color: rgba(0, 0, 0, 0.5);
     visibility: visible !important;
@@ -22,13 +24,25 @@
 .modalContent {
     position: relative;
     background-color: white;
-    margin: 0px 20px;
     width: 100%;
     max-width: 600px !important;
     opacity: 0 !important;
     transition: all 0.5s ease-in-out !important;
+    margin: 0px 200px !important;
 }
 
 .modalContent.show {
     opacity: 1 !important;
+}
+
+@media screen and (max-width: 960px) {
+    .modalContentContainer {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 570px) {
+    .modalContent {
+        margin: 0px 20px !important;
+    }
 }

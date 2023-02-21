@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,12 +9,14 @@ function AdminStudentSubjectTagging() {
     const [submitFile, setSubmitFile] = useState(true);
     const [processing, setProcessing] = useState(false);
     const [error, setError] = useState();
+    const [errorSubject, setErrorSubject] = useState();
+
     const { userInfo, token } = useAuth();
     console.log(error);
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     };
-
+    console.log(errorSubject);
     useEffect(() => {
         if (file && file.size > 26214400) {
             setSubmitFile(false);
@@ -61,20 +63,47 @@ function AdminStudentSubjectTagging() {
                     console.log(response);
                     if (response.status >= 200 && response.status <= 300) {
                         if (response.data.errors.length !== 0) {
-                            toast.update(toastId, {
-                                render: `Account ID does not exist`,
-                                type: toast.TYPE.ERROR,
-                                autoClose: 2000,
-                            });
                             const errorId = response.data.errors.map(
                                 (error) => {
-                                    return error.id;
+                                    if (error.id !== undefined) {
+                                        return error.id;
+                                    }
+                                }
+                            );
+
+                            const errorSubject = response.data.errors.map(
+                                (error) => {
+                                    if (error.subjects !== undefined) {
+                                        return error.subjects;
+                                    }
                                 }
                             );
                             console.log(errorId);
-                            const errorwithJoin =
-                                Object.values(errorId).join(", ");
-                            setError(errorwithJoin.match(/\d+/g).join(", "));
+                            console.log(errorSubject);
+
+                            if (errorId[0] !== undefined) {
+                                const errorwithJoin =
+                                    Object.values(errorId).join(", ");
+                                setError(
+                                    errorwithJoin.match(/\d+/g).join(", ")
+                                );
+                                setErrorSubject(undefined);
+                                toast.update(toastId, {
+                                    render: `Account ID does not exist`,
+                                    type: toast.TYPE.ERROR,
+                                    autoClose: 2000,
+                                });
+                            } else if (errorSubject[0] !== undefined) {
+                                const errorwithJoinSubj =
+                                    Object.values(errorSubject);
+                                setErrorSubject(errorwithJoinSubj);
+                                setError(undefined);
+                                toast.update(toastId, {
+                                    render: `Subject already exist`,
+                                    type: toast.TYPE.ERROR,
+                                    autoClose: 2000,
+                                });
+                            }
                         } else {
                             toast.update(toastId, {
                                 render: "Request Successfully",
@@ -82,6 +111,7 @@ function AdminStudentSubjectTagging() {
                                 autoClose: 2000,
                             });
                             setError(undefined);
+                            setErrorSubject(undefined);
                         }
 
                         setSubmitFile(true);
@@ -141,6 +171,30 @@ function AdminStudentSubjectTagging() {
         }
     };
 
+    const ErrorHandler = () => {
+        if (error !== undefined) {
+            return (
+                <Fragment>
+                    <p className="text-danger fst-italic fs-6">
+                        * Account ID <span className="fw-bold">{error}</span>{" "}
+                        does not exist *
+                    </p>
+                </Fragment>
+            );
+        } else if (errorSubject !== undefined) {
+            return (
+                <Fragment>
+                    <p className="text-danger fst-italic fs-6">
+                        {" "}
+                        {errorSubject.map((subj) => {
+                            return <span className="d-block">* {subj} *</span>;
+                        })}{" "}
+                    </p>
+                </Fragment>
+            );
+        }
+    };
+
     return (
         <div className="w-100">
             <h3 className="mb-5">Student - Bulk Subject Tagging</h3>
@@ -197,13 +251,7 @@ function AdminStudentSubjectTagging() {
                     </button>
                 </div>
                 <div className="d-flex justify-content-center mt-2">
-                    {error !== undefined && (
-                        <p className="text-danger fst-italic fs-6">
-                            * Account ID{" "}
-                            <span className="fw-bold">{error}</span> does not
-                            exist *
-                        </p>
-                    )}
+                    {ErrorHandler()}
                 </div>
             </form>
         </div>

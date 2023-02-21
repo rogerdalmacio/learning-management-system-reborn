@@ -27,6 +27,7 @@ body {
 /* Scrollbar Properties */
 
 ::-webkit-scrollbar {
+    height: 4px;
     width: 0.5vw;
     background-color: white;
 }

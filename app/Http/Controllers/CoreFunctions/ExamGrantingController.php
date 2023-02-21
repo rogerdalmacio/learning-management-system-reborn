@@ -105,7 +105,7 @@ class ExamGrantingController extends Controller
                         ->where('preliminaries', $request['preliminaries'])->get(); 
 
         if($grantExists->count() > 0) {
-            return response(['already exist'], 201);
+            return response(['already granted'], 201);
         }
     
         ExaminationGrant::insert([

@@ -29,6 +29,7 @@ import StudentIndividualSubjectTagging from "../pages/Admin/IndividualSubjectTag
 import TeacherIndividualSubjectTagging from "../pages/Admin/IndividualSubjectTagging/TeacherIndividualSubjectTagging";
 import AdminBatchGrantExam from "../pages/Admin/ExamGranting/AdminBatchGrantExam";
 import AdminSingleGrantExam from "../pages/Admin/ExamGranting/AdminSingleGrantExam";
+import AdminAnnouncement from "../pages/Admin/AdminAnnouncement";
 
 // Course Developer
 import CourseDevLayout from "./layouts/authenticatedLayout/CourseDeveloperNavifationBar/CourseDevLayout";
@@ -265,6 +266,10 @@ function App() {
                     <Route
                         path="/admin/singleGrantExam"
                         element={<AdminSingleGrantExam />}
+                    />
+                    <Route
+                        path="/admin/createAnnouncement"
+                        element={<AdminAnnouncement />}
                     />
                 </Route>
             </Route>

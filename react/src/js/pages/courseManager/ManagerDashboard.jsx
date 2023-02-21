@@ -32,7 +32,6 @@ function ManagerDashboard() {
         } else {
             const toastId = toast.info("Sending Request...");
             const response = axios
-
                 .post(
                     `${
                         import.meta.env.VITE_API_BASE_URL

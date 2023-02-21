@@ -36,7 +36,6 @@ function AdminEditProfile() {
         setSelectedFile(e.target.files[0]);
     };
 
-
     const ProfilePictureHandler = () => {
         if (imageExisting === true) {
             return (

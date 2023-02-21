@@ -165,7 +165,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::get('/announcements', [AnnouncementsController::class, 'activeAnnouncements']);
     Route::get('/inactiveannouncements', [AnnouncementsController::class, 'inActiveAnnouncements']);
     Route::post('/createannouncement', [AnnouncementsController::class, 'createAnnouncement']);
-    Route::patch('/editannouncement', [AnnouncementsController::class, 'editAnnouncement']);
+    Route::patch('/editannouncement/{id}', [AnnouncementsController::class, 'editAnnouncement']);
     Route::delete('/deleteannouncement', [AnnouncementsController::class, 'deleteAnnouncement']);
 
     Route::post('/batchstudentssubjecttagging', [SubjectTaggingController::class, 'batchStudentsSubjectTagging']);
