@@ -1,36 +1,54 @@
 @use "../abstract/" as *;
 
 .tableRowHeader {
-    background-color: $light-gray;
-    color: $black;
+  background-color: $light-gray;
+  color: $black;
 }
 
 table thead tr th {
-    padding: 10px 15px !important;
-    font-weight: 600 !important;
+  padding: 10px 15px !important;
+  font-weight: 600 !important;
 }
 
 table tbody tr td,
 table tbody tr th {
-    padding: 10px 15px !important;
-    font-weight: 400 !important;
+  padding: 10px 15px !important;
+  font-weight: 400 !important;
 }
 
 .tableBodyColor tr:nth-child(odd) {
-    color: black !important;
-    font-weight: 450;
-    background-color: $white;
+  color: black !important;
+  font-weight: 450;
+  background-color: $white;
 }
 
 .tableBodyColor tr td span {
-    color: $black !important;
+  color: $black !important;
 }
 
 .tableBodyColor tr:nth-child(even) {
-    font-weight: 450;
-    background-color: #e6e6e6;
+  font-weight: 450;
+  background-color: #e6e6e6;
 }
 
 table tbody tr:hover td span {
-    color: $black !important;
+  color: $black !important;
+}
+
+.MaterialReactTable {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.tableInputField {
+  border: 1px solid red !important;
+  overflow: hidden !important;
+  z-index: 1;
+}
+
+.DialogModalTable {
+  z-index: 200 !important;
+}
+
+.myTextField .MuiFormHelperText-root {
+  color: $danger-color;
 }

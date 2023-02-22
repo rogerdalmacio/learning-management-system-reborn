@@ -1,23 +1,23 @@
 import React, {
-    useCallback,
-    useMemo,
-    useState,
-    useEffect,
-    useRef,
+  useCallback,
+  useMemo,
+  useState,
+  useEffect,
+  useRef,
 } from "react";
 import MaterialReactTable from "material-react-table";
 import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    MenuItem,
-    Stack,
-    TextField,
-    Tooltip,
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  MenuItem,
+  Stack,
+  TextField,
+  Tooltip,
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { data, states } from "./makeData";
@@ -25,472 +25,478 @@ import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 
 const AdminAnnouncement = () => {
-    const { role, token } = useAuth();
-    const tableInstanceRef = useRef(null);
+  const { role, token } = useAuth();
+  const tableInstanceRef = useRef(null);
 
-    const [createModalOpen, setCreateModalOpen] = useState(false);
-    const [getAnnouncement, setGetAnnouncement] = useState(data);
-    // updateList is for rerendering again the getList
-    const [updatedList, setUpdatedList] = useState(false);
-    const [tableData, setTableData] = useState(getAnnouncement);
-    const [validationErrors, setValidationErrors] = useState({});
-    console.log(getAnnouncement);
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [getAnnouncement, setGetAnnouncement] = useState(data);
+  // updateList is for rerendering again the getList
+  const [updatedList, setUpdatedList] = useState(false);
+  const [tableData, setTableData] = useState(getAnnouncement);
+  const [validationErrors, setValidationErrors] = useState({});
+  console.log(getAnnouncement);
 
-    useEffect(() => {
-        const GetAnnouncementHandler = async () => {
-            if (role === "admin") {
-                await axios
-                    .get(
-                        `${
-                            import.meta.env.VITE_API_BASE_URL
-                        }/api/core/announcements`,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                "Content-Type": "application/json",
-                                Accept: "application/json",
-                            },
-                        }
-                    )
-                    .then((response) => {
-                        console.log(response);
-                        setGetAnnouncement(response.data.announcements);
-                        setTableData(
-                            response.data.announcements.sort(
-                                (a, b) => b.id - a.id
-                            )
-                        );
-                    });
-            }
-        };
-        GetAnnouncementHandler();
-    }, [updatedList]);
-
-    const handleCreateNewRow = (values) => {
-        const tablesdataito = tableData.push(values);
-
-        setTableData([...tableData]);
+  useEffect(() => {
+    const GetAnnouncementHandler = async () => {
+      if (role === "admin") {
+        await axios
+          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/announcements`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            setGetAnnouncement(response.data.announcements);
+            setTableData(
+              response.data.announcements.sort((a, b) => b.id - a.id)
+            );
+          });
+      }
     };
+    GetAnnouncementHandler();
+  }, [updatedList]);
 
-    console.log(tableData);
-    const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
-        if (tableData !== undefined) {
-            if (!Object.keys(validationErrors).length) {
-                const info = (tableData[row.index] = values);
-                //send/receive api updates here, then refetch or update local table data for re-render
-                let toastId;
+  const handleCreateNewRow = (values) => {
+    const tablesdataito = tableData.push(values);
 
-                if (
-                    info.title == "" ||
-                    info.body == "" ||
-                    info.title == undefined ||
-                    info.body == undefined
-                ) {
-                    toast.error("Please fill out the blank area");
-                } else {
-                    toastId = toast.info("Sending Request...");
-                    const item = {
-                        embed_link: info.embed_link,
-                        title: info.title,
-                        body: info.body,
-                        status: 1,
-                    };
-                    console.log(item);
-                    console.log(info.id);
-                    axios
-                        .patch(
-                            `${
-                                import.meta.env.VITE_API_BASE_URL
-                            }/api/core/editannouncement/${info.id}`,
-                            item,
-                            {
-                                headers: {
-                                    Authorization: `Bearer ${token}`,
-                                    "Content-Type": "application/json",
-                                    Accept: "application/json",
-                                },
-                            }
-                        )
-                        .then((response) => {
-                            console.log(response);
-                            if (
-                                response.status >= 200 &&
-                                response.status <= 300
-                            ) {
-                                // if (response.data.length !== 0) {
-                                //     toast.update(toastId, {
-                                //         render: `Student ID is ${response.data[0]}`,
-                                //         type: toast.TYPE.ERROR,
-                                //         autoClose: 2000,
-                                //     });
-                                // } else {
-                                toast.update(toastId, {
-                                    render: "Request Successfully",
-                                    type: toast.TYPE.SUCCESS,
-                                    autoClose: 2000,
-                                });
-                                // }
-                            } else {
-                                throw new Error(
-                                    response.status || "Something Went Wrong!"
-                                );
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            // if (error.response.data.message) {
-                            //     toast.update(toastId, {
-                            //         render: `${error.response.data.message}`,
-                            //         type: toast.TYPE.ERROR,
-                            //         autoClose: 2000,
-                            //     });
-                            // } else {
-                            toast.update(toastId, {
-                                render: `${error.message}`,
-                                type: toast.TYPE.ERROR,
-                                autoClose: 2000,
-                            });
-                            // }
-                        });
-                }
+    setTableData([...tableData]);
+  };
+
+  console.log(tableData);
+  const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
+    if (tableData !== undefined) {
+      if (!Object.keys(validationErrors).length) {
+        const info = (tableData[row.index] = values);
+        //send/receive api updates here, then refetch or update local table data for re-render
+        let toastId;
+
+        if (
+          info.title == "" ||
+          info.body == "" ||
+          info.status == "" ||
+          info.title == undefined ||
+          info.body == undefined
+        ) {
+          toast.error("Please fill out the blank area");
+        } else {
+          toastId = toast.info("Sending Request...");
+          const item = {
+            embed_link: info.embed_link,
+            title: info.title,
+            body: info.body,
+            status: 1,
+          };
+          console.log(item);
+          console.log(info.id);
+          axios
+            .patch(
+              `${import.meta.env.VITE_API_BASE_URL}/api/core/editannouncement/${
+                info.id
+              }`,
+              item,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                },
+              }
+            )
+            .then((response) => {
+              console.log(response);
+              if (response.status >= 200 && response.status <= 300) {
+                // if (response.data.length !== 0) {
+                //     toast.update(toastId, {
+                //         render: `Student ID is ${response.data[0]}`,
+                //         type: toast.TYPE.ERROR,
+                //         autoClose: 2000,
+                //     });
+                // } else {
+                toast.update(toastId, {
+                  render: "Request Successfully",
+                  type: toast.TYPE.SUCCESS,
+                  autoClose: 2000,
+                });
+                // }
                 setTableData([...tableData]);
                 exitEditingMode(); //required to exit editing mode and close modal
-            }
+              } else {
+                throw new Error(response.status || "Something Went Wrong!");
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+              // if (error.response.data.message) {
+              //     toast.update(toastId, {
+              //         render: `${error.response.data.message}`,
+              //         type: toast.TYPE.ERROR,
+              //         autoClose: 2000,
+              //     });
+              // } else {
+              toast.update(toastId, {
+                render: `${error.message}`,
+                type: toast.TYPE.ERROR,
+                autoClose: 2000,
+              });
+              // }
+            });
         }
-    };
+      }
+    }
+  };
 
-    const handleCancelRowEdits = () => {
-        setValidationErrors({});
-    };
+  const handleCancelRowEdits = () => {
+    setValidationErrors({});
+  };
 
-    const handleDeleteRow = useCallback((row) => {
-        if (!confirm(`Are you sure you want to delete ${row.getValue("id")}`)) {
-            return;
+  const handleDeleteRow = (row) => {
+    if (!confirm(`Are you sure you want to delete ${row.getValue("id")}`)) {
+      return;
+    }
+    let toastId;
+    axios
+      .delete(
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }/api/core/deleteannouncement/${row.getValue("id")}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
         }
-        //send api delete request here, then refetch or update local table data for re-render
-        tableData.splice(row.index, 1);
-        setTableData([...tableData]);
-    }, []);
+      )
+      .then((response) => {
+        toast.success("Successfully Deleted");
+        setUpdatedList(!updatedList);
+      });
 
-    // const getCommonEditTextFieldProps = useCallback(
-    //     (cell) => {
-    //         return {
-    //             error: !!validationErrors[cell.id],
-    //             helperText: validationErrors[cell.id],
-    //             onBlur: (event) => {
-    //                 const isValid =
-    //                     cell.column.id === "email"
-    //                         ? validateEmail(event.target.value)
-    //                         : cell.column.id === "age"
-    //                         ? validateAge(event.target.value)
-    //                         : validateRequired(event.target.value);
-    //                 if (!isValid) {
-    //                     //set validation error for cell if invalid
-    //                     setValidationErrors({
-    //                         ...validationErrors,
-    //                         [cell.id]: `${cell.column.columnDef.header} is required`,
-    //                     });
-    //                 } else {
-    //                     //remove validation error for cell if valid
-    //                     delete validationErrors[cell.id];
-    //                     setValidationErrors({
-    //                         ...validationErrors,
-    //                     });
-    //                 }
-    //             },
-    //         };
-    //     },
-    //     [validationErrors]
-    // );
+    //send api delete request here, then refetch or update local table data for re-render
+  };
 
-    const columns = useMemo(
-        () => [
-            {
-                accessorKey: "id",
-                header: "ID",
-                enableColumnOrdering: false,
-                enableEditing: false, //disable editing on this column
-                enableSorting: false,
-                size: 80,
-            },
-            {
-                accessorKey: "title",
-                header: "Title",
-                size: 140,
-                // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                //     ...getCommonEditTextFieldProps(cell),
-                // }),
-            },
-            {
-                accessorKey: "status",
-                header: "Status",
-                size: 140,
-                // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                //     ...getCommonEditTextFieldProps(cell),
-                // }),
-            },
-            {
-                accessorKey: "body",
-                header: "Body",
-                size: 140,
-                muiTableBodyCellEditTextFieldProps: {
-                    variant: "outlined",
-                    size: "medium",
-                    disabled: true,
-                },
-                // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                //     ...getCommonEditTextFieldProps(cell),
-                // }),
-            },
-            {
-                accessorKey: "embed_link",
-                header: "Embed Link",
-                // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                //     ...getCommonEditTextFieldProps(cell),
-                // }),
-            },
-            {
-                accessorKey: "created_at",
-                header: "Created At",
-                size: 80,
-                enableEditing: false,
-                // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                //     ...getCommonEditTextFieldProps(cell),
-                // }),
-            },
-            {
-                accessorKey: "updated_at",
-                header: "Updated At",
-                size: 80,
-                enableEditing: false,
-                // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                //     ...getCommonEditTextFieldProps(cell),
-                // }),
-            },
-        ]
-        // [getCommonEditTextFieldProps]
-    );
+  // const getCommonEditTextFieldProps = useCallback(
+  //     (cell) => {
+  //         return {
+  //             error: !!validationErrors[cell.id],
+  //             helperText: validationErrors[cell.id],
+  //             onBlur: (event) => {
+  //                 const isValid =
+  //                     cell.column.id === "email"
+  //                         ? validateEmail(event.target.value)
+  //                         : cell.column.id === "age"
+  //                         ? validateAge(event.target.value)
+  //                         : validateRequired(event.target.value);
+  //                 if (!isValid) {
+  //                     //set validation error for cell if invalid
+  //                     setValidationErrors({
+  //                         ...validationErrors,
+  //                         [cell.id]: `${cell.column.columnDef.header} is required`,
+  //                     });
+  //                 } else {
+  //                     //remove validation error for cell if valid
+  //                     delete validationErrors[cell.id];
+  //                     setValidationErrors({
+  //                         ...validationErrors,
+  //                     });
+  //                 }
+  //             },
+  //         };
+  //     },
+  //     [validationErrors]
+  // );
 
-    return (
-        <div className="MaterialUiTable">
-            <MaterialReactTable
-                displayColumnDefOptions={{
-                    "mrt-row-actions": {
-                        muiTableHeadCellProps: {
-                            align: "center",
-                        },
-                        size: 120,
-                    },
-                }}
-                sortDescFirst
-                columns={columns}
-                data={tableData}
-                editingMode="modal" //default
-                enableColumnOrdering
-                enableEditing
-                onEditingRowSave={handleSaveRowEdits}
-                onEditingRowCancel={handleCancelRowEdits}
-                renderRowActions={({ row, table }) => (
-                    <Box sx={{ display: "flex", gap: "1rem" }}>
-                        <Tooltip arrow placement="left" title="Edit">
-                            <IconButton
-                                onClick={() => table.setEditingRow(row)}
-                            >
-                                <Edit />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip arrow placement="right" title="Delete">
-                            <IconButton
-                                color="error"
-                                onClick={() => handleDeleteRow(row)}
-                            >
-                                <Delete />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                )}
-                renderTopToolbarCustomActions={() => (
-                    <Button
-                        color="secondary"
-                        onClick={() => setCreateModalOpen(true)}
-                        variant="contained"
-                    >
-                        Create Announcement
-                    </Button>
-                )}
-            />
-            <CreateNewAccountModal
-                columns={columns}
-                open={createModalOpen}
-                onClose={() => setCreateModalOpen(false)}
-                onSubmit={handleCreateNewRow}
-                setUpdatedList={setUpdatedList}
-                updatedList={updatedList}
-            />
-        </div>
-    );
+  const columns = useMemo(
+    () => [
+      {
+        accessorKey: "id",
+        header: "ID",
+        enableColumnOrdering: false,
+        enableEditing: false, //disable editing on this column
+        enableSorting: false,
+        size: 80,
+      },
+      {
+        accessorKey: "title",
+        color: "secondary",
+        header: "Title",
+        size: 140,
+        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+        //     ...getCommonEditTextFieldProps(cell),
+        // }),
+      },
+      {
+        accessorKey: "status",
+        header: "Status",
+        size: 140,
+        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+        //     ...getCommonEditTextFieldProps(cell),
+        // }),
+      },
+      {
+        accessorKey: "body",
+        header: "Body",
+        size: 140,
+        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+        //     ...getCommonEditTextFieldProps(cell),
+        // }),
+      },
+      {
+        accessorKey: "embed_link",
+        header: "Embed Link",
+        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+        //     ...getCommonEditTextFieldProps(cell),
+        // }),
+      },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        size: 80,
+        enableEditing: false,
+        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+        //     ...getCommonEditTextFieldProps(cell),
+        // }),
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Updated At",
+        size: 80,
+        enableEditing: false,
+        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+        //     ...getCommonEditTextFieldProps(cell),
+        // }),
+      },
+    ]
+    // [getCommonEditTextFieldProps]
+  );
+
+  return (
+    <div className="MaterialUiTable">
+      <MaterialReactTable
+        className="MaterialReactTable"
+        displayColumnDefOptions={{
+          "mrt-row-actions": {
+            muiTableHeadCellProps: {
+              align: "center",
+            },
+            size: 120,
+          },
+        }}
+        sortDescFirst
+        columns={columns}
+        data={tableData}
+        editingMode="modal" //default
+        enableColumnOrdering
+        enableEditing
+        onEditingRowSave={handleSaveRowEdits}
+        onEditingRowCancel={handleCancelRowEdits}
+        renderRowActions={({ row, table }) => (
+          <Box sx={{ display: "flex", gap: "1rem" }}>
+            <Tooltip arrow placement="left" title="Edit">
+              <IconButton onClick={() => table.setEditingRow(row)}>
+                <Edit />
+              </IconButton>
+            </Tooltip>
+            <Tooltip arrow placement="right" title="Delete">
+              <IconButton color="error" onClick={() => handleDeleteRow(row)}>
+                <Delete />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
+        renderTopToolbarCustomActions={() => (
+          <Button
+            color="secondary"
+            onClick={() => setCreateModalOpen(true)}
+            variant="contained"
+          >
+            Create Announcement
+          </Button>
+        )}
+      />
+      <CreateNewAccountModal
+        columns={columns}
+        open={createModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+        onSubmit={handleCreateNewRow}
+        setUpdatedList={setUpdatedList}
+        updatedList={updatedList}
+      />
+    </div>
+  );
 };
 
 //example of creating a mui dialog modal for creating new rows
 export const CreateNewAccountModal = ({
-    open,
-    columns,
-    onClose,
-    onSubmit,
-    setUpdatedList,
-    updatedList,
+  open,
+  columns,
+  onClose,
+  onSubmit,
+  setUpdatedList,
+  updatedList,
 }) => {
-    const [values, setValues] = useState(() =>
-        columns.reduce((acc, column) => {
-            acc[column.accessorKey ?? ""] = "";
-            return acc;
-        }, {})
-    );
-    console.log(values);
+  const [values, setValues] = useState(() =>
+    columns.reduce((acc, column) => {
+      acc[column.accessorKey ?? ""] = "";
+      return acc;
+    }, {})
+  );
+  const [hasError, setHasError] = useState(false);
 
-    const { role, token } = useAuth();
-    const handleSubmit = () => {
-        //put your validation logic here
-        onSubmit(values);
-        let toastId;
+  const { role, token } = useAuth();
+  const handleSubmit = () => {
+    //put your validation logic here
 
-        if (
-            values == null ||
-            values.title == "" ||
-            values.body == "" ||
-            values.embed_link == "" ||
-            values.title == null ||
-            values.body == null ||
-            values.embed_link == null ||
-            values.title == undefined ||
-            values.body == undefined
-        ) {
-            toast.error("Please fill out the blank area");
-        } else {
-            toastId = toast.info("Sending Request...");
-            console.log(values);
-            const item = {
-                embed_link: values.embed_link,
-                title: values.title,
-                body: values.body,
-                status: 1,
-            };
-            console.log(item);
+    let toastId;
 
-            axios
-                .post(
-                    `${
-                        import.meta.env.VITE_API_BASE_URL
-                    }/api/core/createannouncement`,
-                    item,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json",
-                            Accept: "application/json",
-                        },
-                    }
-                )
-                .then((response) => {
-                    console.log(response);
-                    if (response.status >= 200 && response.status <= 300) {
-                        // if (response.data.length !== 0) {
-                        //     toast.update(toastId, {
-                        //         render: `Student ID is ${response.data[0]}`,
-                        //         type: toast.TYPE.ERROR,
-                        //         autoClose: 2000,
-                        //     });
-                        // } else {
-                        toast.update(toastId, {
-                            render: "Request Successfully",
-                            type: toast.TYPE.SUCCESS,
-                            autoClose: 2000,
-                        });
-                        setUpdatedList(!updatedList);
-                        onClose();
-                        // }]
-                        setValues(null);
-                    } else {
-                        throw new Error(
-                            response.status || "Something Went Wrong!"
-                        );
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                    // if (error.response.data.message) {
-                    //     toast.update(toastId, {
-                    //         render: `${error.response.data.message}`,
-                    //         type: toast.TYPE.ERROR,
-                    //         autoClose: 2000,
-                    //     });
-                    // } else {
-                    toast.update(toastId, {
-                        render: `${error.message}`,
-                        type: toast.TYPE.ERROR,
-                        autoClose: 2000,
-                    });
-                    // }
-                });
-        }
-    };
+    if (
+      values == null ||
+      values.title == "" ||
+      values.body == "" ||
+      values.embed_link == "" ||
+      values.title == null ||
+      values.body == null ||
+      values.embed_link == null ||
+      values.title == undefined ||
+      values.body == undefined
+    ) {
+      setHasError(true);
+      toast.error("Please fill out the blank area");
+    } else {
+      onSubmit(values);
+      setHasError(false);
 
-    return (
-        <Dialog open={open}>
-            <DialogTitle textAlign="center">
-                Create New Announcement
-            </DialogTitle>
-            <DialogContent>
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <Stack
-                        sx={{
-                            width: "100%",
-                            minWidth: {
-                                xs: "300px",
-                                sm: "360px",
-                                md: "400px",
-                            },
-                            gap: "1.5rem",
-                        }}
-                    >
-                        {columns.map((column) => (
-                            <TextField
-                                rows={column.accessorKey == "body" ? 5 : 1}
-                                disabled={
-                                    column.accessorKey == "id" ||
-                                    column.accessorKey == "created_at" ||
-                                    column.accessorKey == "updated_at" ||
-                                    column.accessorKey == "status"
-                                        ? true
-                                        : false
-                                }
-                                multiline
-                                key={column.accessorKey}
-                                label={column.header}
-                                name={column.accessorKey}
-                                onChange={(e) =>
-                                    setValues({
-                                        ...values,
-                                        [e.target.name]: e.target.value,
-                                    })
-                                }
-                            />
-                        ))}
-                    </Stack>
-                </form>
-            </DialogContent>
-            <DialogActions sx={{ p: "1.25rem" }}>
-                <Button onClick={onClose}>Cancel</Button>
-                <Button
-                    color="secondary"
-                    onClick={handleSubmit}
-                    variant="contained"
-                >
-                    Submit
-                </Button>
-            </DialogActions>
-        </Dialog>
-    );
+      toastId = toast.info("Sending Request...");
+      console.log(values);
+      const item = {
+        embed_link: values.embed_link,
+        title: values.title,
+        body: values.body,
+        status: 1,
+      };
+      console.log(item);
+
+      axios
+        .post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/core/createannouncement`,
+          item,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status >= 200 && response.status <= 300) {
+            // if (response.data.length !== 0) {
+            //     toast.update(toastId, {
+            //         render: `Student ID is ${response.data[0]}`,
+            //         type: toast.TYPE.ERROR,
+            //         autoClose: 2000,
+            //     });
+            // } else {
+            toast.update(toastId, {
+              render: "Request Successfully",
+              type: toast.TYPE.SUCCESS,
+              autoClose: 2000,
+            });
+            setUpdatedList(!updatedList);
+            onClose();
+            // }]
+            setValues(null);
+          } else {
+            throw new Error(response.status || "Something Went Wrong!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          // if (error.response.data.message) {
+          //     toast.update(toastId, {
+          //         render: `${error.response.data.message}`,
+          //         type: toast.TYPE.ERROR,
+          //         autoClose: 2000,
+          //     });
+          // } else {
+          toast.update(toastId, {
+            render: `${error.message}`,
+            type: toast.TYPE.ERROR,
+            autoClose: 2000,
+          });
+          // }
+        });
+    }
+  };
+
+  return (
+    <Dialog open={open} className="DialogModalTable">
+      <DialogTitle textAlign="center">Create New Announcement</DialogTitle>
+      <DialogContent>
+        <form onSubmit={(e) => e.preventDefault()}>
+          <Stack
+            sx={{
+              width: "100%",
+              minWidth: {
+                xs: "300px",
+                sm: "360px",
+                md: "400px",
+              },
+              gap: "1.5rem",
+            }}
+          >
+            {columns.map((column) => (
+              <TextField
+                className="myTextField"
+                helperText={
+                  (hasError &&
+                    values.title == "" &&
+                    column.accessorKey == "title") ||
+                  (hasError &&
+                    values.body == "" &&
+                    column.accessorKey == "body") ||
+                  (hasError &&
+                    values.embed_link == "" &&
+                    column.accessorKey == "embed_link")
+                    ? "This field is required"
+                    : ""
+                }
+                rows={column.accessorKey == "body" ? 5 : 1}
+                disabled={
+                  column.accessorKey == "id" ||
+                  column.accessorKey == "created_at" ||
+                  column.accessorKey == "updated_at" ||
+                  column.accessorKey == "status"
+                    ? true
+                    : false
+                }
+                multiline
+                key={column.accessorKey}
+                label={column.header}
+                name={column.accessorKey}
+                onChange={(e) =>
+                  setValues({
+                    ...values,
+                    [e.target.name]: e.target.value,
+                  })
+                }
+              />
+            ))}
+          </Stack>
+        </form>
+      </DialogContent>
+      <DialogActions sx={{ p: "1.25rem" }}>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button color="secondary" onClick={handleSubmit} variant="contained">
+          Submit
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 };
 
 // const validateRequired = (value) => !!value.length;
