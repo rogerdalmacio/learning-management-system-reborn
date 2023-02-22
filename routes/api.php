@@ -31,6 +31,7 @@ use App\Http\Controllers\CoreFunctions\AnnouncementsController;
 use App\Http\Controllers\CoreFunctions\ListOfSubjectsController;
 use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
+use App\Http\Controllers\CoreFunctions\ListOfUsersController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
 use App\Http\Controllers\CourseManager\CMFilteredCourseList;
 
@@ -176,6 +177,10 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::post('/singleteachersubjecttagging', [SubjectTaggingController::class, 'singleTeacherSubjectTagging']);
     Route::delete('/deletestudentsubject', [SubjectTaggingController::class, 'deleteStudentSubject']);
     Route::delete('/deleteteachersubject', [SubjectTaggingController::class, 'deleteTeacherSubject']);
+
+    //listOfUsers
+    Route::get('/students', [ListOfUsersController::class, 'students']);
+    Route::get('/teachers', [ListOfUsersController::class, 'teachers']);
 
 });
 
