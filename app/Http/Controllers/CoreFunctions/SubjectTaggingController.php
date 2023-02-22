@@ -293,24 +293,16 @@ class SubjectTaggingController extends Controller
 
     }
 
-    public function deleteStudentSubject($id, Request $request) {
+    public function editStudentSubject($id, Request $request) {
 
         $request->validate([
-            'subject' => 'string|required'
+            'subjects' => 'string|required'
         ]);
 
         $student = Student::find($id);
 
-        $studentSubjects = explode(",", $student->subjects);
-
-        $deleteSubject = explode(",", $request['subject']);
-
-        $newStudentSubjectArray = array_diff($studentSubjects, $deleteSubject);
-
-        $newStudentSubjectString = implode(",", $newStudentSubjectArray);
-
         $student->update([
-            'subjects' => $newStudentSubjectString
+            'subjects' => $request['subjects']
         ]);
 
         $response = [
@@ -321,24 +313,16 @@ class SubjectTaggingController extends Controller
     
     }
 
-    public function deleteTeacherSubject($id, Request $request){
+    public function editTeacherSubject($id, Request $request){
 
         $request->validate([
-            'subject' => 'string|required'
+            'subjects' => 'string|required'
         ]);
 
         $teacher = Teacher::find($id);
 
-        $studentSubjects = explode(",", $teacher->subjects);
-
-        $deleteSubject = explode(",", $request['subject']);
-
-        $newStudentSubjectArray = array_diff($studentSubjects, $deleteSubject);
-
-        $newStudentSubjectString = implode(",", $newStudentSubjectArray);
-
         $teacher->update([
-            'subjects' => $newStudentSubjectString
+            'subjects' => $request['subjects']
         ]);
 
         $response = [

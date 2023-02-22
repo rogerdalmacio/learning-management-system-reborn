@@ -175,8 +175,8 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::post('/batchteachersubjecttagging', [SubjectTaggingController::class, 'batchTeacherSubjectTagging']);
     Route::post('/singlestudentsubjecttagging', [SubjectTaggingController::class, 'singleStudentSubjectTagging']);
     Route::post('/singleteachersubjecttagging', [SubjectTaggingController::class, 'singleTeacherSubjectTagging']);
-    Route::delete('/deletestudentsubject', [SubjectTaggingController::class, 'deleteStudentSubject']);
-    Route::delete('/deleteteachersubject', [SubjectTaggingController::class, 'deleteTeacherSubject']);
+    Route::patch('/editstudentsubject/{id}', [SubjectTaggingController::class, 'editStudentSubject']);
+    Route::patch('/editteachersubject/{id}', [SubjectTaggingController::class, 'editTeacherSubject']);
 
     //listOfUsers
     Route::get('/students', [ListOfUsersController::class, 'students']);
