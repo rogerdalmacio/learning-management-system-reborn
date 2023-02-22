@@ -156,6 +156,8 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::apiResource('tagsubject', SubjectTaggingController::class);
     Route::apiResource('subjects', ListOfSubjectsController::class);
 
+    Route::get('/grantees', [ExamGrantingController::class, 'listOfGrantees']);
+    Route::delete('/dropgrant/{id}', [ExamGrantingController::class, 'deleteGrant']);
     Route::post('/batchgrantexam', [ExamGrantingController::class, 'batchExamGrant']);
     Route::post('/singlegrantexam', [ExamGrantingController::class, 'singleExamGrant']);
     
@@ -172,6 +174,8 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::post('/batchteachersubjecttagging', [SubjectTaggingController::class, 'batchTeacherSubjectTagging']);
     Route::post('/singlestudentsubjecttagging', [SubjectTaggingController::class, 'singleStudentSubjectTagging']);
     Route::post('/singleteachersubjecttagging', [SubjectTaggingController::class, 'singleTeacherSubjectTagging']);
+    Route::delete('/deletestudentsubject', [SubjectTaggingController::class, 'deleteStudentSubject']);
+    Route::delete('/deleteteachersubject', [SubjectTaggingController::class, 'deleteTeacherSubject']);
 
 });
 

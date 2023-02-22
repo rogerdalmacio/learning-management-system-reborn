@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CoreFunctions;
 
 use League\Csv\Reader;
+use Illuminate\Http\Request;
 use App\Models\Users\Student;
 use App\Models\Users\Teacher;
 use Illuminate\Validation\Rule;
@@ -287,6 +288,62 @@ class SubjectTaggingController extends Controller
 
         $user->subjects = $request['subject'];
         $user->save();
+
+        return response($response, 201);
+
+    }
+
+    public function deleteStudentSubject($id, Request $request) {
+
+        $request->validate([
+            'subject' => 'string|required'
+        ]);
+
+        $student = Student::find($id);
+
+        $studentSubjects = explode(",", $student->subjects);
+
+        $deleteSubject = explode(",", $request['subject']);
+
+        $newStudentSubjectArray = array_diff($studentSubjects, $deleteSubject);
+
+        $newStudentSubjectString = implode(",", $newStudentSubjectArray);
+
+        $student->update([
+            'subjects' => $newStudentSubjectString
+        ]);
+
+        $response = [
+            'new subjects list' => $student->subjects
+        ];
+
+        return response($response, 201);
+    
+    }
+
+    public function deleteTeacherSubject($id, Request $request){
+
+        $request->validate([
+            'subject' => 'string|required'
+        ]);
+
+        $teacher = Teacher::find($id);
+
+        $studentSubjects = explode(",", $teacher->subjects);
+
+        $deleteSubject = explode(",", $request['subject']);
+
+        $newStudentSubjectArray = array_diff($studentSubjects, $deleteSubject);
+
+        $newStudentSubjectString = implode(",", $newStudentSubjectArray);
+
+        $teacher->update([
+            'subjects' => $newStudentSubjectString
+        ]);
+
+        $response = [
+            'new subjects list' => $teacher->subjects
+        ];
 
         return response($response, 201);
 

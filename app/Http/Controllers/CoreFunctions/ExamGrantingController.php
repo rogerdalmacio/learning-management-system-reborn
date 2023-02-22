@@ -9,11 +9,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Models\CoreFunctions\ExaminationGrant;
 use App\Http\Requests\Core\ExamGrantRequest;
+use App\Models\Users\Student;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class ExamGrantingController extends Controller
 {
+
+    public function listOfGrantees() {
+
+        $students = Student::with('grant')->get();
+
+        $response = [
+            'students' => $students
+        ];
+
+        return response($response, 200);
+
+    }
     
     public function batchExamGrant(ExamGrantRequest $request){
         
@@ -114,6 +127,21 @@ class ExamGrantingController extends Controller
             'preliminaries' => $request['preliminaries'],
             'granted_at' => Carbon::now()
         ]);
+
+    }
+
+
+    public function deleteGrant($id) {
+
+        $grant = ExaminationGrant::find($id);
+
+        $grant->delete();
+
+        $response = [
+            'Grant dropped'
+        ];
+
+        return response($response, 202);
 
     }
 
