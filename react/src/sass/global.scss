@@ -10,62 +10,64 @@ h5,
 p,
 a,
 li {
-    font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
 
 body {
-    background-color: $bg-color !important;
+  background-color: $bg-color !important;
 }
 
 /* Scrollbar Properties */
-
+.my-toast-container {
+  z-index: 9999 !important;
+}
 ::-webkit-scrollbar {
-    height: 4px;
-    width: 0.5vw;
-    background-color: white;
+  height: 4px;
+  width: 0.5vw;
+  background-color: white;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #3ca2f0;
-    border-radius: 2px;
+  background: #3ca2f0;
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-track {
-    background: $shady-white;
+  background: $shady-white;
 }
 
 /* Logo properties */
 
 .topBarLogo .logo-details {
-    height: 60px;
-    display: flex;
-    align-items: center;
-    position: relative;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .topBarLogo .logo-details .icon {
-    transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .topBarLogo .logo-details .logo_name {
-    color: #1b84d6 !important;
-    font-size: 20px;
-    font-weight: 600;
+  color: #1b84d6 !important;
+  font-size: 20px;
+  font-weight: 600;
 
-    transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 /* Line Break - span */
 
 .lineBreak {
-    border-bottom: 2px solid $shady-white;
-    display: block;
-    margin: auto;
+  border-bottom: 2px solid $shady-white;
+  display: block;
+  margin: auto;
 }

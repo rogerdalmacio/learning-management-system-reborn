@@ -240,6 +240,7 @@ const AdminAnnouncement = () => {
         accessorKey: "body",
         header: "Body",
         size: 140,
+
         // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
         //     ...getCommonEditTextFieldProps(cell),
         // }),

@@ -1,37 +1,38 @@
 @use "../../abstract/" as *;
 
 .TagSubjectSearchContainer {
-    position: relative;
+  position: relative;
 }
 
 .search-input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
 }
 .suggestion-list {
-    margin-top: 5px;
-    position: absolute;
+  margin-top: 5px;
+  position: absolute;
+  z-index: 2000;
 }
 
 .suggestion-item {
-    cursor: pointer;
-    background-color: $shady-white;
-    transition: 0.2s ease-in;
-    border-bottom: 1px solid $white;
+  cursor: pointer;
+  background-color: $shady-white;
+  transition: 0.2s ease-in;
+  border-bottom: 1px solid $white;
 }
 
 .suggestion-item:hover {
-    background-color: $light-gray;
+  background-color: $light-gray;
 }
 
 .TagSubjectListContainer {
 }
 
 .TagSubjectList {
-    background-color: #6fc0fd;
-    white-space: nowrap !important;
+  background-color: #6fc0fd;
+  white-space: nowrap !important;
 }
 .TagSubjectListText {
-    white-space: nowrap !important;
+  white-space: nowrap !important;
 }
