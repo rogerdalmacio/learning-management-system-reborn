@@ -143,6 +143,6 @@ class UserController extends Controller
             'message' => 'Logged out'
         ];
         
-        return response($response, 201);
+        return response($response, 200);
     }
 }

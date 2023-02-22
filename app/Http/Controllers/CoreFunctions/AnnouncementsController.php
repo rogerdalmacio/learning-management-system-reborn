@@ -57,9 +57,11 @@ class AnnouncementsController extends Controller
             'embed_link' => 'sometimes',
         ]);
 
+        $data = $request->only(['title', 'body', 'status', 'embed_link']);
+
         $announcement = Announcement::find($id);
 
-        $announcement->update([$request->all()]);
+        $announcement->update($data);
 
         $response = [
             'Announcement Edited Succesfully: ' => $announcement,
