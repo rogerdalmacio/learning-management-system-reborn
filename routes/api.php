@@ -31,6 +31,7 @@ use App\Http\Controllers\CoreFunctions\AnnouncementsController;
 use App\Http\Controllers\CoreFunctions\ListOfSubjectsController;
 use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
+use App\Http\Controllers\CoreFunctions\AccountManageController;
 use App\Http\Controllers\CoreFunctions\ListOfUsersController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
 use App\Http\Controllers\CourseManager\CMFilteredCourseList;
@@ -163,7 +164,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::post('/singlegrantexam', [ExamGrantingController::class, 'singleExamGrant']);
     
 
-    Route::post('/batchmoduleupdatestatus', [ModuleStatusUpdateController::class, 'editModuleStatus']);
+    Route::patch('/batchmoduleupdatestatus/{id}', [ModuleStatusUpdateController::class, 'editModuleStatus']);
 
     Route::get('/announcements', [AnnouncementsController::class, 'activeAnnouncements']);
     Route::get('/inactiveannouncements', [AnnouncementsController::class, 'inActiveAnnouncements']);
@@ -181,6 +182,10 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     //listOfUsers
     Route::get('/students', [ListOfUsersController::class, 'students']);
     Route::get('/teachers', [ListOfUsersController::class, 'teachers']);
+
+    //AccountManage
+    Route::patch('/editstudent/{id}', [AccountManageController::class, 'editStudent']);
+    Route::patch('/editteacher/{id}', [AccountManageController::class, 'editTeacher']);
 
 });
 

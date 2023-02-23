@@ -8,17 +8,20 @@ use Illuminate\Http\Request;
 
 class ModuleStatusUpdateController extends Controller
 {
-    public function editModuleStatus(Request $request) {
+    public function editModuleStatus($id, Request $request) {
 
         $request->validate([
-            'week' => 'required',
             'status' => 'required'
         ]);
 
         // $modulesArr = [];
-        $modules = Module::where('week', $request['week'])->get();
+        $modules = Module::where('week', $id)->get();
 
-        $modules->update(['status' => $request['status']]);
+        foreach($modules as $module) {
+            $module->update([
+                'status' => $request['status']
+            ]);
+        }
 
         // foreach($modules as $module) {
 
