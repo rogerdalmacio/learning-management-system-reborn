@@ -149,6 +149,14 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
     Route::post('/createsinglecoursemanager', [AccountCreationController::class, 'createSingleCourseManager']);
     Route::post('/createsinglecoursedeveloper', [AccountCreationController::class, 'createSingleCourseDeveloper']);
     Route::post('/createsingleteacher', [AccountCreationController::class, 'createSingleTeacher']);
+
+    //listOfUsers
+    Route::get('/students', [ListOfUsersController::class, 'students']);
+    Route::get('/teachers', [ListOfUsersController::class, 'teachers']);
+
+    //AccountManage
+    Route::patch('/editstudent/{id}', [AccountManageController::class, 'editStudent']);
+    Route::patch('/editteacher/{id}', [AccountManageController::class, 'editTeacher']);
     
 });
 
@@ -164,6 +172,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::post('/singlegrantexam', [ExamGrantingController::class, 'singleExamGrant']);
     
     Route::patch('/batchmoduleupdatestatus/{id}', [ModuleStatusUpdateController::class, 'editModuleStatus']);
+    Route::get('/modules', [ModuleStatusUpdateController::class, 'listOfModules']);
 
     Route::get('/announcements', [AnnouncementsController::class, 'activeAnnouncements']);
     Route::get('/inactiveannouncements', [AnnouncementsController::class, 'inActiveAnnouncements']);
@@ -177,14 +186,6 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::post('/singleteachersubjecttagging', [SubjectTaggingController::class, 'singleTeacherSubjectTagging']);
     Route::patch('/editstudentsubject/{id}', [SubjectTaggingController::class, 'editStudentSubject']);
     Route::patch('/editteachersubject/{id}', [SubjectTaggingController::class, 'editTeacherSubject']);
-
-    //listOfUsers
-    Route::get('/students', [ListOfUsersController::class, 'students']);
-    Route::get('/teachers', [ListOfUsersController::class, 'teachers']);
-
-    //AccountManage
-    Route::patch('/editstudent/{id}', [AccountManageController::class, 'editStudent']);
-    Route::patch('/editteacher/{id}', [AccountManageController::class, 'editTeacher']);
 
 });
 

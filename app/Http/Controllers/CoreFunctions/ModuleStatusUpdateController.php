@@ -2,12 +2,31 @@
 
 namespace App\Http\Controllers\CoreFunctions;
 
-use App\Http\Controllers\Controller;
-use App\Models\Modules\Module;
 use Illuminate\Http\Request;
+use App\Models\Modules\Module;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ModuleStatusUpdateController extends Controller
 {
+
+    public function listOfModules() {
+
+        $modules = Module::select('week', 'status')
+                    ->whereIn('week', ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24'])
+                    ->distinct('week')
+                    ->skip(0)
+                    ->take(24)
+                    ->get();
+
+        $response = [
+            'list of modules' => $modules
+        ];
+
+        return response($response, 200);
+
+    }
+
     public function editModuleStatus($id, Request $request) {
 
         $request->validate([
