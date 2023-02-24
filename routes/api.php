@@ -127,16 +127,8 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
     Route::post('/approvetask', [CMToDoListController::class, 'approveTask']);
     Route::delete('/deletetask', [CMToDoListController::class, 'deleteTask']);
 
-});
+    Route::get('/students', [ListOfUsersController::class, 'students']);
 
-//admin route
-Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum','abilities:Admin']], function(){
-        
-});
-
-//super admin route
-Route::group(['prefix' => 'superadmin', 'middleware' => ['auth:sanctum','abilities:SuperAdmin']], function(){
-        
 });
 
 //SuperAdmin Core

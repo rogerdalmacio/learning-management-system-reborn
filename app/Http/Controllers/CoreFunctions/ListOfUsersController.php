@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class ListOfUsersController extends Controller
 {
+    
     public function students() {
 
         $students = Student::all();
