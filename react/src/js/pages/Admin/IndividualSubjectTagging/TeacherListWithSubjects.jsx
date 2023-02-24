@@ -142,6 +142,37 @@ const TeacherListWithSubjects = ({ updatedList, setUpdatedList }) => {
     setValidationErrors({});
   };
 
+  const getCommonEditTextFieldProps = useCallback(
+    (cell) => {
+      return {
+        error: !!validationErrors[cell.id],
+        helperText: validationErrors[cell.id],
+        onBlur: (event) => {
+          const isValid =
+            cell.column.id === "email"
+              ? validateEmail(event.target.value)
+              : cell.column.id === "age"
+              ? validateAge(event.target.value)
+              : validateRequired(event.target.value);
+          if (!isValid) {
+            //set validation error for cell if invalid
+            setValidationErrors({
+              ...validationErrors,
+              [cell.id]: `${cell.column.columnDef.header} is required`,
+            });
+          } else {
+            //remove validation error for cell if valid
+            delete validationErrors[cell.id];
+            setValidationErrors({
+              ...validationErrors,
+            });
+          }
+        },
+      };
+    },
+    [validationErrors]
+  );
+
   const columns = useMemo(() => [
     {
       accessorKey: "id",
@@ -174,9 +205,9 @@ const TeacherListWithSubjects = ({ updatedList, setUpdatedList }) => {
       enableEditing: true, //disable editing on this column
       enableSorting: false,
       size: 80,
-      editComponent: (props) => (
-        <TextField {...props} multiline rows={5} /> //change the number of rows here
-      ),
+      muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+        ...getCommonEditTextFieldProps(cell),
+      }),
     },
     {
       accessorKey: "year_and_sections",
@@ -229,5 +260,7 @@ const TeacherListWithSubjects = ({ updatedList, setUpdatedList }) => {
     </div>
   );
 };
+
+const validateRequired = (value) => !!value.length;
 
 export default TeacherListWithSubjects;

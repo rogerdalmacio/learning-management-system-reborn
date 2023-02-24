@@ -33,10 +33,6 @@ body {
 }
 
 /* Scrollbar Properties */
-.my-toast-container {
-  z-index: 9999 !important;
-}
-
 ::-webkit-scrollbar {
   height: 4px;
   width: 0.5vw;

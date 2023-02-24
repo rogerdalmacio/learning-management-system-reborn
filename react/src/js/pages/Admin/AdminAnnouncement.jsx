@@ -178,36 +178,36 @@ const AdminAnnouncement = () => {
     //send api delete request here, then refetch or update local table data for re-render
   };
 
-  // const getCommonEditTextFieldProps = useCallback(
-  //     (cell) => {
-  //         return {
-  //             error: !!validationErrors[cell.id],
-  //             helperText: validationErrors[cell.id],
-  //             onBlur: (event) => {
-  //                 const isValid =
-  //                     cell.column.id === "email"
-  //                         ? validateEmail(event.target.value)
-  //                         : cell.column.id === "age"
-  //                         ? validateAge(event.target.value)
-  //                         : validateRequired(event.target.value);
-  //                 if (!isValid) {
-  //                     //set validation error for cell if invalid
-  //                     setValidationErrors({
-  //                         ...validationErrors,
-  //                         [cell.id]: `${cell.column.columnDef.header} is required`,
-  //                     });
-  //                 } else {
-  //                     //remove validation error for cell if valid
-  //                     delete validationErrors[cell.id];
-  //                     setValidationErrors({
-  //                         ...validationErrors,
-  //                     });
-  //                 }
-  //             },
-  //         };
-  //     },
-  //     [validationErrors]
-  // );
+  const getCommonEditTextFieldProps = useCallback(
+    (cell) => {
+      return {
+        error: !!validationErrors[cell.id],
+        helperText: validationErrors[cell.id],
+        onBlur: (event) => {
+          const isValid =
+            cell.column.id === "email"
+              ? validateEmail(event.target.value)
+              : cell.column.id === "age"
+              ? validateAge(event.target.value)
+              : validateRequired(event.target.value);
+          if (!isValid) {
+            //set validation error for cell if invalid
+            setValidationErrors({
+              ...validationErrors,
+              [cell.id]: `${cell.column.columnDef.header} is required`,
+            });
+          } else {
+            //remove validation error for cell if valid
+            delete validationErrors[cell.id];
+            setValidationErrors({
+              ...validationErrors,
+            });
+          }
+        },
+      };
+    },
+    [validationErrors]
+  );
 
   const columns = useMemo(
     () => [
@@ -224,33 +224,33 @@ const AdminAnnouncement = () => {
         color: "secondary",
         header: "Title",
         size: 140,
-        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-        //     ...getCommonEditTextFieldProps(cell),
-        // }),
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...getCommonEditTextFieldProps(cell),
+        }),
       },
       {
         accessorKey: "status",
         header: "Status",
         size: 140,
-        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-        //     ...getCommonEditTextFieldProps(cell),
-        // }),
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...getCommonEditTextFieldProps(cell),
+        }),
       },
       {
         accessorKey: "body",
         header: "Body",
         size: 140,
 
-        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-        //     ...getCommonEditTextFieldProps(cell),
-        // }),
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...getCommonEditTextFieldProps(cell),
+        }),
       },
       {
         accessorKey: "embed_link",
         header: "Embed Link",
-        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-        //     ...getCommonEditTextFieldProps(cell),
-        // }),
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...getCommonEditTextFieldProps(cell),
+        }),
       },
       {
         accessorKey: "created_at",
@@ -500,7 +500,7 @@ export const CreateNewAccountModal = ({
   );
 };
 
-// const validateRequired = (value) => !!value.length;
+const validateRequired = (value) => !!value.length;
 // const validateEmail = (email) =>
 //     !!email.length &&
 //     email

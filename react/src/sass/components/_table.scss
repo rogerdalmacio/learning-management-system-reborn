@@ -52,3 +52,17 @@ table tbody tr:hover td span {
 .myTextField .MuiFormHelperText-root {
   color: $danger-color;
 }
+
+.MuiModal-root {
+  z-index: 100 !important; /* set your desired z-index value */
+}
+.my-toast-container {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  z-index: 200 !important;
+}
+.toastify-style {
+  position: static;
+  z-index: 9999 !important;
+}

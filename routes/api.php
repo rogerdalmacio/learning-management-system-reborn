@@ -163,7 +163,6 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::post('/batchgrantexam', [ExamGrantingController::class, 'batchExamGrant']);
     Route::post('/singlegrantexam', [ExamGrantingController::class, 'singleExamGrant']);
     
-
     Route::patch('/batchmoduleupdatestatus/{id}', [ModuleStatusUpdateController::class, 'editModuleStatus']);
 
     Route::get('/announcements', [AnnouncementsController::class, 'activeAnnouncements']);
