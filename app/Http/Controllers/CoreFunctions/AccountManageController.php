@@ -16,13 +16,13 @@ class AccountManageController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'year_and_section' => 'required|string',
-            'major' => 'required|string',
+            'major' => 'sometimes',
             'department' => 'required|string',
             'program' => 'required|string'
         ]);
         
         $student = Student::find($id);
-
+    
         $student->update([
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
@@ -31,7 +31,7 @@ class AccountManageController extends Controller
             'department' => $request['department'],
             'program' => $request['program']
         ]);
-
+        
         return response(['Successfully edited'], 201);
 
     }

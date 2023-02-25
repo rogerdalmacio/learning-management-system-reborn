@@ -20,7 +20,7 @@ class ModuleStatusUpdateController extends Controller
                     ->get();
 
         $response = [
-            'list of modules' => $modules
+            'modules' => $modules
         ];
 
         return response($response, 200);

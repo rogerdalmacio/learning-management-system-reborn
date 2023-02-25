@@ -28,7 +28,7 @@ class CreateSingleStudentRequest extends FormRequest
             'first_name' =>'required',
             'last_name' => 'required',
             'year_and_section' => 'required',
-            'major' =>'required',
+            'major' =>'sometimes',
             'department' => 'required',
             'program' => 'required'
         ];

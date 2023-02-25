@@ -410,7 +410,11 @@ export const CreateNewAccountModal = ({
             setUpdatedList(!updatedList);
             onClose();
             // }]
-            setValues(null);
+            setValues({
+              embed_link: "",
+              title: "",
+              body: "",
+            });
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
