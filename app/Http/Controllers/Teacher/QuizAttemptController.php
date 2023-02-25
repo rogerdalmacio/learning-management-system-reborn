@@ -2,28 +2,26 @@
 
 namespace App\Http\Controllers\Teacher;
 
-use App\Http\Controllers\Controller;
-use App\Models\Students\QuizResult;
-use App\Models\Users\Student;
 use Illuminate\Http\Request;
+use App\Models\Users\Student;
+use App\Models\Students\QuizResult;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 
 class QuizAttemptController extends Controller
 {
     
-    public function deleteAttempt(Request $request) {
+    public function deleteAttempt($id) {
 
-        $request->validate([
-            'student_id' => 'required',
-            'quiz_id' => 'required',
-            'quiz_type' => 'required'
-        ]);
+        $quizresult = QuizResult::find($id);
 
-        $attempt = QuizResult::where('student_id', $request['student_id'])
-                    ->where('quiz_id', $request['quiz_id'])
-                    ->where('quiz_type', $request['quiz_type'])
-                    ->get();
+        $quizresult->delete();
 
-        $attempt->delete();
+        if(file_exists('public/quiz/' . $quizresult->type . '/' .$quizresult->student_id . $quizresult->quiz_type . $quizresult->id . '.jpg')) {
+
+            File::delete($quizresult->student_id . $quizresult->quiz_type . $quizresult->id . '.jpg');
+
+        }
         
         $response = [
             'Attempt deleted successfully'

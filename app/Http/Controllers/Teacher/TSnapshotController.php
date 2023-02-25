@@ -4,21 +4,48 @@ namespace App\Http\Controllers\Teacher;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Modules\Quiz;
 use Illuminate\Support\Facades\File;
 
 class TSnapshotController extends Controller
 {
 
-    public function checkSnapshot(Request $request) {
+    public function checkSnapshot($id, Request $request) {
 
         $request->validate([
-            'filename' => 'required'
+            'user_id' => 'required|int',
         ]);
 
-        $deleteFile = File::delete($request['filename']);
+        $quiz = Quiz::find($id);
+
+        $quiz->update([
+            'snapshot' => true
+        ]);
+
+        File::delete($request['user_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $response = [
-            'Success' => $deleteFile
+            'Snapshot accepted'
+        ];
+
+        return response($response, 204);
+
+    }
+
+    public function rejectSnapshot($id, Request $request) {
+
+        $request->validate([
+            'user_id' => 'required|int',
+        ]);
+
+        $quiz = Quiz::find($id);
+
+        File::delete($request['user_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+
+        $quiz->delete();
+
+        $response = [
+            'Snapshot rejected'
         ];
 
         return response($response, 204);

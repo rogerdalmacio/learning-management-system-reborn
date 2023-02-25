@@ -347,7 +347,7 @@ class AccountCreationController extends Controller
 
         $email = 'teacher' . $request['id'] . '@lms.bcpsms.com';
 
-        $teacher = CourseDeveloper::insert([
+        $teacher = Teacher::insert([
             'id' => $request['id'],
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
@@ -355,7 +355,7 @@ class AccountCreationController extends Controller
             'password' => $password,
             'department' => $request['department'],
             'program' => $request['program'],
-            'year_and_section' => '',
+            'year_and_sections' => '',
             'subjects' => '',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
