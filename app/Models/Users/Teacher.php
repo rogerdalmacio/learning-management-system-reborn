@@ -18,16 +18,19 @@ class Teacher extends Model
      * @var array<int, string>
      */
     
+    protected $table = 'teachers';
+
     protected $guard = 'Teacher';
 
     protected $fillable = [
+        'id',
         'first_name',
         'last_name',
         'email',
         'password',
         'department',
         'program',
-        'year_and_section',
+        'year_and_sections',
         'subjects',
     ];
 

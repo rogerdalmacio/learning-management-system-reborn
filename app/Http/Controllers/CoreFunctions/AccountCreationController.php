@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use League\Csv\Reader;
 use App\Models\Users\Admin;
 use App\Models\Users\Student;
+use App\Models\Users\Teacher;
 use App\Models\Users\CourseManager;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -19,7 +20,6 @@ use App\Http\Requests\Core\AccountCreationRequests\CreateSingleStudentRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleTeacherRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleCourseManagerRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleCourseDeveloperRequest;
-use App\Models\Users\Teacher;
 
 class AccountCreationController extends Controller
 {

@@ -90,7 +90,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
 
     Route::post('/computegrade', [GradesController::class, 'computeGrades']);
 
-    Route::post('/listofstudents', [ListOfStudentController::class, 'listOfStudents']);
+    Route::get('/listofstudents', [ListOfStudentController::class, 'listOfStudents']);
 
     Route::patch('/checksnapshot/{id}', [TSnapshotController::class, 'checkSnapshot']);
 

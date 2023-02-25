@@ -24,10 +24,11 @@ class CreateSingleTeacherRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|unique:teacher|integer',
+            'id' => 'required|unique:teachers|integer',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'department' => 'required|string',
+            'program' => 'required|string'
         ];
     }
 }

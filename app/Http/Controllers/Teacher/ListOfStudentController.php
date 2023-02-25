@@ -5,25 +5,21 @@ namespace App\Http\Controllers\Teacher;
 use Illuminate\Http\Request;
 use App\Models\Users\Student;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ListOfStudentController extends Controller
 {
     
-    public function listOfStudents(Request $request) {
+    public function listOfStudents() {
 
-        $request->validate([
-            'year_and_section' => 'required',
-            'department' => 'required',
-            'program' => 'required',
-            'major' => 'required'
-        ]);
+        $user = Auth::user();
 
         $students = $students = Student::with('activityresult','quizresult')
-                    ->where('year_and_section', $request['year_and_section'])
-                    ->where('department', $request['department'])
-                    ->where('program', $request['program'])
-                    ->where('major', $request['major'])
-                    ->orderBy('last_name')
+                    ->where('year_and_section', $user->year_and_sections)
+                    ->where('department', $user->department)
+                    ->where('program', $user->program)
+                    ->where('major', $user->major)
+                    ->orderBy('year_and_section')
                     ->get();
 
         $response = [
