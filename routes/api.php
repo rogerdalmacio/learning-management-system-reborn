@@ -35,6 +35,7 @@ use App\Http\Controllers\CoreFunctions\AccountManageController;
 use App\Http\Controllers\CoreFunctions\ListOfUsersController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
 use App\Http\Controllers\CourseManager\CMFilteredCourseList;
+use App\Http\Controllers\Teacher\TSnapshotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,8 +91,12 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
     Route::post('/computegrade', [GradesController::class, 'computeGrades']);
 
     Route::post('/listofstudents', [ListOfStudentController::class, 'listOfStudents']);
+
+    Route::patch('/checksnapshot/{id}', [TSnapshotController::class, 'checkSnapshot']);
+
+    Route::delete('/rejectsnapshot/{id}', [TSnapshotController::class, 'rejectSnapshot']);
     
-    Route::delete('/deletequizattempt', [QuizAttemptController::class, 'deleteAttempt']);
+    Route::delete('/deletequizattempt/{id}', [QuizAttemptController::class, 'deleteAttempt']);
 
     Route::apiResource('course', TCourseController::class);
 
