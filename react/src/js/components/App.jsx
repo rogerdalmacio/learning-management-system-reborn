@@ -18,6 +18,7 @@ import ManagerDashboard from "../pages/courseManager/ManagerDashboard";
 import ManagerEditProfile from "../pages/courseManager/ManagerEditProfile";
 import ManagerGetCreatedCourse from "../pages/courseManager/ManagerGetCreatedCourse";
 import ManagerTagSubjToCourseDev from "../pages/courseManager/ManagerTagSubjToCourseDev";
+import ManagerGetStudents from "../pages/courseManager/ManagerGetStudents";
 
 // Admin
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
@@ -177,6 +178,10 @@ function App() {
           <Route
             path="/courseManager/taggingSubjectForCourseDev"
             element={<ManagerTagSubjToCourseDev />}
+          />
+          <Route
+            path="/courseManager/listOfStudents"
+            element={<ManagerGetStudents />}
           />
         </Route>
       </Route>

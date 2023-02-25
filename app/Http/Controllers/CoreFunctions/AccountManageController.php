@@ -42,7 +42,6 @@ class AccountManageController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'year_and_sections' => 'required|string',
-            'major' => 'required|string',
             'department' => 'required|string',
             'program' => 'required|string'
         ]);
@@ -53,7 +52,6 @@ class AccountManageController extends Controller
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
             'year_and_sections' => $request['year_and_section'],
-            'major' => $request['major'],
             'department' => $request['department'],
             'program' => $request['program']
         ]);

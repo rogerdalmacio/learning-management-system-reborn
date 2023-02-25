@@ -87,7 +87,7 @@ const SuperCreateStudentAcct = () => {
           let majorValue;
 
           if (info.major === "") {
-            majorValue = null;
+            majorValue = "";
           } else {
             majorValue = info.major;
           }
@@ -198,12 +198,7 @@ const SuperCreateStudentAcct = () => {
         error: !!validationErrors[cell.id],
         helperText: validationErrors[cell.id],
         onBlur: (event) => {
-          const isValid =
-            cell.column.id === "email"
-              ? validateEmail(event.target.value)
-              : cell.column.id === "age"
-              ? validateAge(event.target.value)
-              : validateRequired(event.target.value);
+          const isValid = validateRequired(event.target.value);
           if (!isValid) {
             //set validation error for cell if invalid
             setValidationErrors({
@@ -229,10 +224,22 @@ const SuperCreateStudentAcct = () => {
         accessorKey: "id",
         header: "Student ID",
         enableColumnOrdering: false,
-        type: "number",
         enableEditing: false, //disable editing on this column
-
+        type: "number",
         size: 80,
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...getCommonEditTextFieldProps(cell),
+          inputProps: {
+            type: "number",
+            onKeyPress: (event) => {
+              const keyCode = event.which || event.keyCode;
+              const keyValue = String.fromCharCode(keyCode);
+              if (/[^0-9]/.test(keyValue)) {
+                event.preventDefault();
+              }
+            },
+          },
+        }),
       },
       {
         accessorKey: "email",
@@ -296,9 +303,9 @@ const SuperCreateStudentAcct = () => {
       {
         accessorKey: "major",
         header: "Major",
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...getCommonEditTextFieldProps(cell),
-        }),
+        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+        //   ...getCommonEditTextFieldProps(cell),
+        // }),
       },
       {
         accessorKey: "created_at",
@@ -337,15 +344,10 @@ const SuperCreateStudentAcct = () => {
         onEditingRowSave={handleSaveRowEdits}
         onEditingRowCancel={handleCancelRowEdits}
         renderRowActions={({ row, table }) => (
-          <Box sx={{ display: "flex", gap: "1rem" }}>
+          <Box sx={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
             <Tooltip arrow placement="left" title="Edit">
               <IconButton onClick={() => table.setEditingRow(row)}>
                 <Edit />
-              </IconButton>
-            </Tooltip>
-            <Tooltip arrow placement="right" title="Delete">
-              <IconButton color="error" onClick={() => handleDeleteRow(row)}>
-                <Delete />
               </IconButton>
             </Tooltip>
           </Box>
@@ -583,6 +585,7 @@ export const CreateNewAccountModal = ({
 };
 
 const validateRequired = (value) => !!value.length;
+const validateMajor = (major) => major.length;
 // const validateEmail = (email) =>
 //     !!email.length &&
 //     email

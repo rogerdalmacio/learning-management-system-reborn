@@ -15,6 +15,7 @@
         "@mui/material": "^5.11.10",
         "bootstrap-icons": "^1.10.2",
         "boxicons": "^2.1.4",
+        "export-to-csv": "^0.2.1",
         "immer": "^9.0.16",
         "material-react-table": "^1.8.0",
         "react": "^17.0.2",
