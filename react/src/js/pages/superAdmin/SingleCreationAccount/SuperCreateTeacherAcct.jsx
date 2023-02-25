@@ -71,12 +71,10 @@ const SuperCreateTeacherAcct = () => {
         const info = (tableData[row.index] = values);
         //send/receive api updates here, then refetch or update local table data for re-render
         let toastId;
-        console.log(info.major);
+        console.log(info.id);
         if (
-          info.id == "" ||
           info.first_name == "" ||
           info.last_name == "" ||
-          info.year_and_sections == "" ||
           info.program == "" ||
           info.department == ""
         ) {
@@ -88,18 +86,18 @@ const SuperCreateTeacherAcct = () => {
             id: info.id,
             first_name: info.first_name,
             last_name: info.last_name,
-            year_and_sections: info.year_and_sections,
             program: info.program,
             department: info.department,
+            year_and_sections: "sdfsdf",
           };
           console.log(item);
           console.log(info.id);
 
           axios
             .patch(
-              `${
-                import.meta.env.VITE_API_BASE_URL
-              }/api/core/editstudent/23423423423`,
+              `${import.meta.env.VITE_API_BASE_URL}/api/core/editteacher/${
+                info.id
+              }`,
               item,
               {
                 headers: {
@@ -234,6 +232,8 @@ const SuperCreateTeacherAcct = () => {
         accessorKey: "year_and_sections",
         header: "Year and Section",
         size: 140,
+        enableEditing: false, //disable editing on this column
+
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...getCommonEditTextFieldProps(cell),
           inputProps: {
@@ -362,12 +362,11 @@ export const CreateNewAccountModal = ({
       values.first_name == "" ||
       values.last_name == "" ||
       values.department == "" ||
-      values.year_and_sections == "" ||
       values.program == ""
     ) {
       setHasError(true);
       toast.error("Please fill out the blank area");
-    } else if (isNaN(values.id) || isNaN(values.year_and_sections)) {
+    } else if (isNaN(values.id)) {
       setHasErrorNumber(true);
     } else {
       onSubmit(values);
@@ -388,9 +387,8 @@ export const CreateNewAccountModal = ({
         first_name: values.first_name,
         last_name: values.last_name,
         department: values.department,
-        year_and_sections: values.year_and_sections,
         program: values.program,
-        major: majorValue,
+        year_and_sections: "",
       };
 
       toastId = toast.info("Sending Request...");
@@ -429,7 +427,6 @@ export const CreateNewAccountModal = ({
               first_name: "",
               last_name: "",
               department: "",
-              year_and_sections: "",
               program: "",
             });
           } else {
@@ -470,15 +467,10 @@ export const CreateNewAccountModal = ({
         (hasError &&
           values.department == "" &&
           column.accessorKey == "department") ||
-        (hasError && values.program == "" && column.accessorKey == "program") ||
-        (hasError &&
-          values.year_and_sections == "" &&
-          column.accessorKey == "year_and_sections")
+        (hasError && values.program == "" && column.accessorKey == "program")
       ) {
         return "This field is required";
       } else if (hasErrorNumber && column.accessorKey == "id") {
-        return "This field must be Number";
-      } else if (hasErrorNumber && column.accessorKey == "year_and_sections") {
         return "This field must be Number";
       } else {
         return <span></span>;
@@ -511,7 +503,8 @@ export const CreateNewAccountModal = ({
                 disabled={
                   column.accessorKey == "created_at" ||
                   column.accessorKey == "updated_at" ||
-                  column.accessorKey == "email"
+                  column.accessorKey == "email" ||
+                  column.accessorKey == "year_and_sections"
                     ? true
                     : false
                 }

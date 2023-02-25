@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
 function TeachDashboard() {
-    return (
-        <div>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nihil
-            asperiores laudantium pariatur? Qui quo autem aspernatur unde
-            consectetur vero nam sapiente vel, veniam libero, officia pariatur
-            velit distinctio. Quo placeat minima, deserunt quam iusto veritatis!
-            Natus expedita illo qui. Corporis laudantium impedit deserunt natus
-            veritatis placeat suscipit consectetur quas optio quibusdam saepe
-            molestiae tenetur dolor ratione pariatur sed nisi nobis, mollitia
-            unde repellendus. Illo placeat enim minus, omnis tempora voluptates
-            rerum eveniet ratione odio non ea aliquam laudantium in dolores
-            possimus nemo doloribus, sit reprehenderit. Accusantium
-            necessitatibus esse iste, eum nihil excepturi libero quasi, aliquid
-            saepe nisi nam iusto suscipit.
-        </div>
-    );
+  const { token, role } = useAuth();
+
+  const [info, setInfo] = useState();
+  console.log(info);
+  useEffect(() => {
+    const GetAnnouncementHandler = async () => {
+      if (role === "teacher") {
+        await axios
+          .get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/teacher/listofstudents`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            setInfo(response.data.students.sort((a, b) => b.id - a.id));
+          });
+      }
+    };
+    GetAnnouncementHandler();
+  }, []);
+  return <div></div>;
 }
 
 export default TeachDashboard;

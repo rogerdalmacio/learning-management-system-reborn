@@ -21,7 +21,7 @@ function Navbar({ openSidebar }) {
             <input type="text" placeholder="Search..." />
             <span className="tooltip">Search</span>
           </li>
-          <Link to="/admin/home" className="text-decoration-none">
+          {/* <Link to="/admin/home" className="text-decoration-none">
             <li>
               <span
                 className={`a ${
@@ -33,7 +33,7 @@ function Navbar({ openSidebar }) {
               </span>
               <span className="tooltip">Dashboard</span>
             </li>
-          </Link>
+          </Link> */}
           <Link to="/admin/createAnnouncement" className="text-decoration-none">
             <li>
               <span

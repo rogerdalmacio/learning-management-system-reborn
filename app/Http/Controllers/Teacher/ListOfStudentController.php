@@ -15,10 +15,10 @@ class ListOfStudentController extends Controller
         $user = Auth::user();
 
         $students = $students = Student::with('activityresult','quizresult')
-                    ->where('year_and_section', $user->year_and_sections)
+                    ->whereIn('year_and_section', explode(",", $user->year_and_sections))
                     ->where('department', $user->department)
                     ->where('program', $user->program)
-                    ->where('major', $user->major)
+                    // ->where('major', $user->major)
                     ->orderBy('year_and_section')
                     ->get();
 

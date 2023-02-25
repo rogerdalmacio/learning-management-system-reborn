@@ -107,7 +107,7 @@ function AdminWeekGrant() {
       return Object.keys(isToggled).map((week, i) => {
         const weekNumber = week.match(/\d+/)[0];
         return (
-          <div className="d-flex align-items-center mb-3" key={i}>
+          <div className="d-block d-sm-flex align-items-center mb-3" key={i}>
             <label className="fs-4 fw-semibold me-3">Week {weekNumber}</label>
             <div
               className={`switch-button ${

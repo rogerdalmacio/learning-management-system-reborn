@@ -41,7 +41,7 @@ class AccountManageController extends Controller
         $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'year_and_sections' => 'required|string',
+            'year_and_sections' => 'sometimes',
             'department' => 'required|string',
             'program' => 'required|string'
         ]);
@@ -51,7 +51,7 @@ class AccountManageController extends Controller
         $teacher->update([
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
-            'year_and_sections' => $request['year_and_section'],
+            'year_and_sections' => $request['year_and_sections'],
             'department' => $request['department'],
             'program' => $request['program']
         ]);

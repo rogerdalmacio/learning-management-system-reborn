@@ -28,7 +28,8 @@ class CreateSingleTeacherRequest extends FormRequest
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'department' => 'required|string',
-            'program' => 'required|string'
+            'program' => 'required|string',
+            'year_and_sections' => 'sometimes'
         ];
     }
 }
