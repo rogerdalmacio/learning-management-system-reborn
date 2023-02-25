@@ -13,7 +13,7 @@ class AccountManageController extends Controller
     public function editStudent($id, Request $request) {
 
         $request->validate([
-            'id' => 'required,int',
+            'id' => 'required|int',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'year_and_section' => 'required|string',
