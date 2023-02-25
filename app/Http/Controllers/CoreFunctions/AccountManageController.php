@@ -13,7 +13,6 @@ class AccountManageController extends Controller
     public function editStudent($id, Request $request) {
 
         $request->validate([
-            'id' => 'required|int',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'year_and_section' => 'required|string',
@@ -25,7 +24,6 @@ class AccountManageController extends Controller
         $student = Student::find($id);
     
         $student->update([
-            'id' => $request['id'],
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
             'year_and_section' => $request['year_and_section'],
