@@ -23,21 +23,21 @@ function Navbar({ openSidebar }) {
           </li>
           <Link to="/admin/home" className="text-decoration-none">
             <li>
-              <a
-                className={`${
+              <span
+                className={`a ${
                   pathName === "/admin/home" ? "activeSideBar" : ""
                 }`}
               >
                 <i className="bx bx-grid-alt"></i>
                 <span className="links_name">Dashboard</span>
-              </a>
+              </span>
               <span className="tooltip">Dashboard</span>
             </li>
           </Link>
           <Link to="/admin/createAnnouncement" className="text-decoration-none">
             <li>
-              <a
-                className={`${
+              <span
+                className={`a ${
                   pathName === "/admin/createAnnouncement"
                     ? "activeSideBar"
                     : ""
@@ -45,20 +45,20 @@ function Navbar({ openSidebar }) {
               >
                 <i className="bx bxs-note"></i>
                 <span className="links_name">Announcement</span>
-              </a>
+              </span>
               <span className="tooltip">Announcement</span>
             </li>
           </Link>
           <Link to="/admin/weekGrant" className="text-decoration-none">
             <li>
-              <a
-                className={`${
+              <span
+                className={`a ${
                   pathName === "/admin/weekGrant" ? "activeSideBar" : ""
                 }`}
               >
                 <i className="bx bxs-calendar-week"></i>
                 <span className="links_name">Week Grant</span>
-              </a>
+              </span>
               <span className="tooltip">Week Grant</span>
             </li>
           </Link>

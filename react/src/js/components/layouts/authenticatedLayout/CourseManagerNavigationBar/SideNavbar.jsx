@@ -7,6 +7,12 @@ function Navbar({ openSidebar }) {
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const pathName = useLocation().pathname;
+  console.warn = function (message) {
+    if (/(Invalid .*|validateDOMNesting)/.test(message)) {
+      return;
+    }
+    originalWarn(message);
+  };
 
   console.log(pathName);
 
@@ -26,8 +32,8 @@ function Navbar({ openSidebar }) {
             className="text-decoration-none"
           >
             <li>
-              <a
-                className={`${
+              <span
+                className={`a ${
                   pathName === "/courseManager/listOfStudents"
                     ? "activeSideBar"
                     : ""
@@ -35,7 +41,7 @@ function Navbar({ openSidebar }) {
               >
                 <i className="bx bx-grid-alt"></i>
                 <span className="links_name">List of Students</span>
-              </a>
+              </span>
               <span className="tooltip">List of Students</span>
             </li>
           </Link>
@@ -45,8 +51,8 @@ function Navbar({ openSidebar }) {
             className="text-decoration-none"
           >
             <li>
-              <a
-                className={`${
+              <span
+                className={`a ${
                   pathName === "/courseManager/taggingSubjectForCourseDev"
                     ? "activeSideBar"
                     : ""
@@ -54,20 +60,20 @@ function Navbar({ openSidebar }) {
               >
                 <i className="bx bx-tag-alt"></i>
                 <span className="links_name">Tagging Subj for CourseDev.</span>
-              </a>
+              </span>
               <span className="tooltip">Tagging Subj for CourseDev.</span>
             </li>
           </Link>
           <Link to="/courseManager/course" className="text-decoration-none">
             <li>
-              <a
-                className={`${
+              <span
+                className={`a ${
                   pathName === "/courseManager/course" ? "activeSideBar" : ""
                 }`}
               >
                 <i className="bx bx-palette"></i>
                 <span className="links_name">Course</span>
-              </a>
+              </span>
               <span className="tooltip">Course</span>
             </li>
           </Link>

@@ -246,7 +246,14 @@
   background: #fff;
   color: #11101d;
 }
+// .sidebar li .a .links_name {
+//   color: #11101d;
+// }
+.sidebar.close li .a .links_name {
+  display: none;
+}
 .sidebar li a,
+.sidebar li .a,
 .sidebar li div {
   display: flex;
   height: 100%;
@@ -259,9 +266,10 @@
 }
 
 // active Navbar
-.sidebar li a:hover {
+.sidebar li a:hover,
+.sidebar li .a:hover {
   background: #fff;
-  color: #11101d;
+  color: #11101d !important;
 }
 
 .activeSideBar {
@@ -280,15 +288,19 @@
 }
 
 .sidebar li .iocn-link a:hover i,
-.sidebar li .iocn-link a:hover .links_name {
-  color: #11101d;
+.sidebar li .iocn-link a:hover .links_name,
+.sidebar li .iocn-link .a:hover i,
+.sidebar li .iocn-link .a:hover .links_name {
+  color: #11101d !important;
 }
 /* dropdown link */
-.sidebar li div a:hover {
+.sidebar li div a:hover,
+.sidebar li div .a:hover {
   background: #07177a;
 }
 
 .sidebar li a .links_name,
+.sidebar li .a .links_name,
 .sidebar li div .links_name {
   color: #fff;
   font-size: 15px;
@@ -298,7 +310,8 @@
   pointer-events: none;
   transition: 0.4s;
 }
-.sidebar.open li a .links_name {
+.sidebar.open li a .links_name,
+.sidebar.open li .a .links_name {
   opacity: 1;
   pointer-events: auto;
 }
@@ -319,7 +332,8 @@
   cursor: pointer;
 }
 // active Navbar
-.sidebar li a:hover {
+.sidebar li a:hover,
+.sidebar li .a:hover {
   background: #fff !important;
   color: #11101d;
 }
@@ -372,7 +386,8 @@
   transform: rotate(-180deg) !important;
 }
 
-.sidebar .nav-list li .sub-menu a {
+.sidebar .nav-list li .sub-menu a,
+.sidebar .nav-list li .sub-menu .a {
   color: #fff;
   font-size: 13px;
   white-space: nowrap;
@@ -381,7 +396,8 @@
   transition: all 0.3s ease;
 }
 
-.sidebar .nav-list li .sub-menu a:hover {
+.sidebar .nav-list li .sub-menu a:hover,
+.sidebar .nav-list li .sub-menu .a:hover {
   color: #11101d;
   opacity: 1;
 }
@@ -478,7 +494,9 @@
 }
 
 .sidebar li a:hover .links_name,
-.sidebar li a:hover i {
+.sidebar li a:hover i,
+.sidebar li .a:hover .links_name,
+.sidebar li .a:hover i {
   transition: all 0.5s ease;
   color: #11101d;
 }

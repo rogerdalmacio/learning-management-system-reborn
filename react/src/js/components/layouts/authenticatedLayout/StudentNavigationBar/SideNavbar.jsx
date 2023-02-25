@@ -6,185 +6,170 @@ import useStudentContext from "../../../../hooks/Student/useStudentContext";
 import { useParams } from "react-router-dom";
 
 function Navbar({ openSidebar }) {
-    const { courses } = useStudentContext();
+  const { courses } = useStudentContext();
 
-    const [openDropdown, setOpenDropdown] = useState(false);
-    const [openChildOneDropdown, setOpenChildOneDropdown] = useState(false);
-    const [openChildTwoDropdown, setOpenChildTwoDropdown] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const [openChildOneDropdown, setOpenChildOneDropdown] = useState(false);
+  const [openChildTwoDropdown, setOpenChildTwoDropdown] = useState(false);
 
-    const pathName = useLocation().pathname;
-    const firstFourUrls = pathName.split("/").slice(0, 5);
-    const getfirstFourUrls = firstFourUrls.join("/");
-    console.log(getfirstFourUrls);
+  const pathName = useLocation().pathname;
+  const firstFourUrls = pathName.split("/").slice(0, 5);
+  const getfirstFourUrls = firstFourUrls.join("/");
+  console.log(getfirstFourUrls);
 
-    console.log(pathName);
+  console.log(pathName);
 
-    // Course Title
-    const pathname = window.location.pathname;
-    const pathArray = pathname.split("/");
-    const courseTitle = pathArray[2];
-    const getTitleForvalidation = courseTitle.replace(/%20/g, " ");
-    console.log(getTitleForvalidation);
+  // Course Title
+  const pathname = window.location.pathname;
+  const pathArray = pathname.split("/");
+  const courseTitle = pathArray[2];
+  const getTitleForvalidation = courseTitle.replace(/%20/g, " ");
+  console.log(getTitleForvalidation);
 
-    const AvailableCourseNavbar = () => {
-        if (courses) {
-            return courses.map((courses, i) => {
-                const ModuleWeekHandler = () => {
-                    return courses.module
-                        .slice()
-                        .sort((a, b) => {
-                            return a.id.split("-")[1] - b.id.split("-")[1];
-                        })
-                        .map((week, i) => {
-                            return (
-                                <li key={i}>
-                                    <Link
-                                        to={`/student/${courses.course}/modules/week${week.week}`}
-                                        className={` ${
-                                            getfirstFourUrls ===
-                                            `/student/${courseTitle}/modules/week${week.week}`
-                                                ? "firstNavbarChild"
-                                                : ""
-                                        }`}
-                                    >
-                                        <p
-                                            className={`mb-0 ${
-                                                getfirstFourUrls ===
-                                                `/student/${courseTitle}/modules/week${week.week}`
-                                                    ? "firstNavbarChild"
-                                                    : ""
-                                            }`}
-                                        >
-                                            WEEK {week.week}
-                                        </p>
-                                    </Link>
-                                </li>
-                            );
-                        });
-                };
-                console.log(i);
-
-                return (
-                    <ul className={`sub-menu pe-0`} key={i}>
-                        <li className={`${openSidebar ? "" : "d-none"}`}>
-                            <div className="firstChildDropdownContainer dropdown overflow-hidden">
-                                <div
-                                    className={`d-flex firstChildDropdown ${
-                                        openChildOneDropdown ? "dumyShow" : ""
-                                    }`}
-                                    onClick={() => {
-                                        setOpenChildOneDropdown(
-                                            (prev) => !prev
-                                        );
-                                    }}
-                                >
-                                    <Link
-                                        to={`/student/${courses.course}/modules`}
-                                        className={`overflow-hidden ${
-                                            pathName ===
-                                                `/student/${courseTitle}/modules` &&
-                                            courses.course ==
-                                                getTitleForvalidation
-                                                ? "firstNavbarChild"
-                                                : ""
-                                        }`}
-                                    >
-                                        <p
-                                            className={`mb-0 NavbarCourseTitle ${
-                                                pathName ===
-                                                    `/student/${courseTitle}/modules` &&
-                                                courses.course ==
-                                                    getTitleForvalidation
-                                                    ? "firstNavbarChild"
-                                                    : ""
-                                            }`}
-                                        >
-                                            {courses.course}
-                                        </p>
-                                    </Link>
-                                    <i
-                                        className={`bx bx-chevron-down ${
-                                            courses.course ==
-                                            getTitleForvalidation
-                                                ? "arrow"
-                                                : ""
-                                        }`}
-                                    ></i>
-                                </div>
-                                <ul
-                                    className={`dropdownChildMenu dropdown-menu border-0 p-0 ps-3 ${
-                                        openChildOneDropdown &&
-                                        courses.course == getTitleForvalidation
-                                            ? "show"
-                                            : ""
-                                    }`}
-                                >
-                                    {ModuleWeekHandler()}
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                );
+  const AvailableCourseNavbar = () => {
+    if (courses) {
+      return courses.map((courses, i) => {
+        const ModuleWeekHandler = () => {
+          return courses.module
+            .slice()
+            .sort((a, b) => {
+              return a.id.split("-")[1] - b.id.split("-")[1];
+            })
+            .map((week, i) => {
+              return (
+                <li key={i}>
+                  <Link
+                    to={`/student/${courses.course}/modules/week${week.week}`}
+                    className={` ${
+                      getfirstFourUrls ===
+                      `/student/${courseTitle}/modules/week${week.week}`
+                        ? "firstNavbarChild"
+                        : ""
+                    }`}
+                  >
+                    <p
+                      className={`mb-0 ${
+                        getfirstFourUrls ===
+                        `/student/${courseTitle}/modules/week${week.week}`
+                          ? "firstNavbarChild"
+                          : ""
+                      }`}
+                    >
+                      WEEK {week.week}
+                    </p>
+                  </Link>
+                </li>
+              );
             });
-        }
-    };
+        };
+        console.log(i);
 
-    return (
-        <Fragment>
-            <div
-                className={`sidebar rounded shadow ${
-                    openSidebar ? "open" : "close"
-                }`}
-            >
-                <ul className="nav-list p-0 m-0">
-                    <li className="d-block d-lg-none">
-                        <i className="bx bx-search"></i>
-                        <input type="text" placeholder="Search..." />
-                        <span className="tooltip">Search</span>
-                    </li>
-                    <Link to="/student/home" className="text-decoration-none">
-                        <li>
-                            <a
-                                className={`${
-                                    pathName === "/student/home"
-                                        ? "activeSideBar"
-                                        : ""
-                                }`}
-                            >
-                                <i className="bx bx-grid-alt"></i>
-                                <span className="links_name">Dashboard</span>
-                            </a>
-                            <span className="tooltip">Dashboard</span>
-                        </li>
-                    </Link>
-                    <li className={` ${openDropdown ? "showMenu" : ""}`}>
-                        <div
-                            className="iocn-link"
-                            onClick={() => {
-                                setOpenDropdown((prev) => !prev);
-                            }}
-                        >
-                            <Link to="/student/subjects">
-                                <a
-                                    className={`${
-                                        pathName === "/student/subjects"
-                                            ? "activeSideBar"
-                                            : ""
-                                    }`}
-                                >
-                                    <i className="bx bx-message-square-error"></i>
-                                    <span className="links_name">Course</span>
-                                </a>
-                            </Link>
-                            <i className="bx bx-chevron-down arrow"></i>
-                        </div>
-                        <span className="tooltip">Course</span>
-                        {AvailableCourseNavbar()}
-                    </li>
+        return (
+          <ul className={`sub-menu pe-0`} key={i}>
+            <li className={`${openSidebar ? "" : "d-none"}`}>
+              <div className="firstChildDropdownContainer dropdown overflow-hidden">
+                <div
+                  className={`d-flex firstChildDropdown ${
+                    openChildOneDropdown ? "dumyShow" : ""
+                  }`}
+                  onClick={() => {
+                    setOpenChildOneDropdown((prev) => !prev);
+                  }}
+                >
+                  <Link
+                    to={`/student/${courses.course}/modules`}
+                    className={`overflow-hidden ${
+                      pathName === `/student/${courseTitle}/modules` &&
+                      courses.course == getTitleForvalidation
+                        ? "firstNavbarChild"
+                        : ""
+                    }`}
+                  >
+                    <p
+                      className={`mb-0 NavbarCourseTitle ${
+                        pathName === `/student/${courseTitle}/modules` &&
+                        courses.course == getTitleForvalidation
+                          ? "firstNavbarChild"
+                          : ""
+                      }`}
+                    >
+                      {courses.course}
+                    </p>
+                  </Link>
+                  <i
+                    className={`bx bx-chevron-down ${
+                      courses.course == getTitleForvalidation ? "arrow" : ""
+                    }`}
+                  ></i>
+                </div>
+                <ul
+                  className={`dropdownChildMenu dropdown-menu border-0 p-0 ps-3 ${
+                    openChildOneDropdown &&
+                    courses.course == getTitleForvalidation
+                      ? "show"
+                      : ""
+                  }`}
+                >
+                  {ModuleWeekHandler()}
                 </ul>
+              </div>
+            </li>
+          </ul>
+        );
+      });
+    }
+  };
+
+  return (
+    <Fragment>
+      <div
+        className={`sidebar rounded shadow ${openSidebar ? "open" : "close"}`}
+      >
+        <ul className="nav-list p-0 m-0">
+          <li className="d-block d-lg-none">
+            <i className="bx bx-search"></i>
+            <input type="text" placeholder="Search..." />
+            <span className="tooltip">Search</span>
+          </li>
+          <Link to="/student/home" className="text-decoration-none">
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/student/home" ? "activeSideBar" : ""
+                }`}
+              >
+                <i className="bx bx-grid-alt"></i>
+                <span className="links_name">Dashboard</span>
+              </span>
+              <span className="tooltip">Dashboard</span>
+            </li>
+          </Link>
+          <li className={` ${openDropdown ? "showMenu" : ""}`}>
+            <div
+              className="iocn-link"
+              onClick={() => {
+                setOpenDropdown((prev) => !prev);
+              }}
+            >
+              <Link to="/student/subjects">
+                <span
+                  className={`a ${
+                    pathName === "/student/subjects" ? "activeSideBar" : ""
+                  }`}
+                >
+                  <i className="bx bx-message-square-error"></i>
+                  <span className="links_name">Course</span>
+                </span>
+              </Link>
+              <i className="bx bx-chevron-down arrow"></i>
             </div>
-        </Fragment>
-    );
+            <span className="tooltip">Course</span>
+            {AvailableCourseNavbar()}
+          </li>
+        </ul>
+      </div>
+    </Fragment>
+  );
 }
 
 export default Navbar;
