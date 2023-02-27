@@ -36,6 +36,16 @@ class SActivityResultController extends Controller
 
         $userId = $user->id;
 
+        $exists = ActivityResult::where('student_id', $user->id)
+                                ->where('activity_id', $request['activity_id'])
+                                ->get();
+
+        if($exists->count > 0) {
+
+            return response(['Already Exists'], 404);
+
+        }
+
         $extension = $request->file('file')->getClientOriginalExtension();
 
         $newFileName = $userId . $activityType . $activitiyId . '.' . $extension;
