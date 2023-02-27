@@ -27,9 +27,24 @@ function Navbar({ openSidebar }) {
                 }`}
               >
                 <i className="bx bx-grid-alt"></i>
-                <span className="links_name">Dashboard</span>
+                <span className="links_name">Quiz Results</span>
               </span>
-              <span className="tooltip">Dashboard</span>
+              <span className="tooltip">Quiz Results</span>
+            </li>
+          </Link>
+          <Link to="/teacher/validatesnapshot" className="text-decoration-none">
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/teacher/validatesnapshot"
+                    ? "activeSideBar"
+                    : ""
+                }`}
+              >
+                <i className="bx bx-grid-alt"></i>
+                <span className="links_name">Validate Snapshot</span>
+              </span>
+              <span className="tooltip">Validate Snapshot</span>
             </li>
           </Link>
         </ul>

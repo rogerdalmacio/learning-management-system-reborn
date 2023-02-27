@@ -14,6 +14,7 @@ class ActivityResult extends Model
         'student_id',
         'activity_id',
         'module_id',
+        'activity_type',
         'terms',
         'attempt',
         'score'

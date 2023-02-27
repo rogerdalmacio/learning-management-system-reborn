@@ -111,8 +111,8 @@ const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
     decimalSeparator: ".",
     showLabels: true,
     useBom: true,
-    useKeysAsHeaders: false,
-    headers: columns.map((c) => c.header),
+    useKeysAsHeaders: true,
+    // headers: columns.map((c) => c.header),
   };
 
   const csvExporter = new ExportToCsv(csvOptions);

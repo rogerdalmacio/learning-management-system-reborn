@@ -73,6 +73,7 @@ import StudEditProfile from "../pages/student/StudEditProfile";
 import StudAvailableSubjects from "../pages/student/AvailableCourse/StudAvailableSubjects";
 import StudAvailableModules from "../pages/student/AvailableCourse/StudAvailableModules";
 import StudAvailableContent from "../pages/student/AvailableCourse/StudAvailableContent";
+import TeachValidateSnapshot from "../pages/Teacher/TeachValidateSnapshot";
 
 // Others
 import Login from "./authentication/Login";
@@ -160,6 +161,10 @@ function App() {
         <Route element={<TeacherLayout />}>
           <Route path="/teacher/home" element={<TeachDashboard />} />
           <Route path="/teacher/editprofile" element={<TeachEditProfile />} />
+          <Route
+            path="/teacher/validatesnapshot"
+            element={<TeachValidateSnapshot />}
+          />
         </Route>
       </Route>
 

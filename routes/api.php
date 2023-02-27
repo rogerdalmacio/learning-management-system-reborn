@@ -160,6 +160,9 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
 //Admin Core
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Admin']], function(){
     
+    Route::get('/students', [ListOfUsersController::class, 'students']);
+    Route::get('/teachers', [ListOfUsersController::class, 'teachers']);
+    
     Route::apiResource('tagsubject', SubjectTaggingController::class);
     Route::apiResource('subjects', ListOfSubjectsController::class);
 

@@ -24,10 +24,11 @@ class ActivityResultRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|mimetypes:docx,pdf|max:5000',
+            'file' => 'required|mimes:docx,pdf|max:5000',
             'student_id' => 'required|integer',
             'activity_id' => 'required|string',
             'module_id'  => 'required|string',
+            'activity_type'  => 'required|string',
             'terms'  => 'required',
             'attempt'  => 'required',
             'score'  => 'required|nullable'
