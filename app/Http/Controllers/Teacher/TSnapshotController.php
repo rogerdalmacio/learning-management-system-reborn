@@ -14,12 +14,13 @@ class TSnapshotController extends Controller
 
         $request->validate([
             'user_id' => 'required|int',
+
         ]);
 
         $quiz = Quiz::find($id);
 
         $quiz->update([
-            'snapshot' => true
+            'attempt' => 'recorded'
         ]);
 
         File::delete($request['user_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
