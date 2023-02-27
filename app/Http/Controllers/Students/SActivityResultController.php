@@ -48,7 +48,14 @@ class SActivityResultController extends Controller
             $newFileName
         );
         
-        $activityResult = Activity::create($request->all());
+        $activityResult = Activity::create([
+            'student_id' => $user->id,
+            'activity_id' => $request['activity_id'],
+            'module_id' => $request['module_id'],
+            'terms' => $request['terms'],
+            'attempt' => $request['attempt'],
+            'score' => null
+        ]);
 
         $response = [
             'Activity Result' => $activityResult,

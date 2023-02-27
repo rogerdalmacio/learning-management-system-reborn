@@ -20,8 +20,9 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('activity_id')->index();
             $table->string('module_id')->index();
+            $table->string('activity_type');
             $table->string('terms');
-            $table->string('attempt');
+            $table->boolean('attempt');
             $table->string('score')->nullable();
             $table->timestamps();
         });
