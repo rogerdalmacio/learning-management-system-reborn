@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Students;
 use Illuminate\Http\Request;
-use App\Models\Modules\Activity;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Students\ActivityResult;
@@ -48,7 +47,7 @@ class SActivityResultController extends Controller
             $newFileName
         );
         
-        $activityResult = Activity::create([
+        $activityResult = ActivityResult::create([
             'student_id' => $user->id,
             'activity_id' => $request['activity_id'],
             'module_id' => $request['module_id'],
