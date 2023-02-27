@@ -40,7 +40,7 @@ class SActivityResultController extends Controller
                                 ->where('activity_id', $request['activity_id'])
                                 ->get();
 
-        if($exists->count > 0) {
+        if($exists->count() > 0) {
 
             return response(['Already Exists'], 404);
 
