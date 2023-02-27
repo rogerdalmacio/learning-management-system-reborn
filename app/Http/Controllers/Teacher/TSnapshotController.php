@@ -24,10 +24,11 @@ class TSnapshotController extends Controller
             'attempt' => 'recorded'
         ]);
 
-        Storage::delete('quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+        $directory =  Storage::delete('quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $response = [
-            'Snapshot accepted'
+            'Snapshot accepted',
+            $directory
         ];
 
         return response($response, 204);
