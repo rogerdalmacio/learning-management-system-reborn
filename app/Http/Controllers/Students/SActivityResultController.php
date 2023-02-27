@@ -27,7 +27,6 @@ class SActivityResultController extends Controller
      */
     public function store(ActivityResultRequest $request)
     {
-
         $user = Auth::user();
 
         $activityType = $request['activity_type'];

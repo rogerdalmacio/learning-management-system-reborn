@@ -66,10 +66,10 @@ const SuperCreateTeacherAcct = () => {
                   year_and_section,
                 }) => {
                   const snapshot = quizresult.find(
-                    ({ snapshot }) => snapshot === 1
+                    ({ snapshot, id }) => snapshot === 1
                   );
                   const weekNo =
-                    Number(snapshot?.module_id?.match(/\d+/)?.[0]) || null;
+                    Number(snapshot?.module_id?.match(/\d+/)[0]) || null;
                   const snapshotValue = snapshot
                     ? `${snapshot.student_id}${snapshot.quiz_type}${snapshot.quiz_id}`
                     : "0";
@@ -82,6 +82,7 @@ const SuperCreateTeacherAcct = () => {
                     program,
                     snapshot: snapshotValue,
                     weekNo,
+                    quizresultId: snapshot.id,
                   };
                 }
               );
@@ -147,11 +148,17 @@ const SuperCreateTeacherAcct = () => {
       {
         accessorKey: "program",
         header: "Course",
-        size: 140,
+        size: 80,
 
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...getCommonEditTextFieldProps(cell),
         }),
+      },
+      {
+        accessorKey: "quizresultId",
+        header: "Quiz Id",
+        size: 140,
+        enableEditing: false, //disable editing on this column
       },
     ]
     // [getCommonEditTextFieldProps]
@@ -176,6 +183,7 @@ const SuperCreateTeacherAcct = () => {
         }
       )
       .then((response) => {
+        console.log(response);
         toast.success("Successfully Deleted");
         setUpdatedList(!updatedList);
       });
@@ -184,15 +192,23 @@ const SuperCreateTeacherAcct = () => {
   };
 
   const handleApprovedRow = (row) => {
-    if (!confirm(`Are you sure you want to delete ${row.getValue("id")}`)) {
+    if (
+      !confirm(
+        `Are you sure you want to delete ${row.getValue("quizresultId")}`
+      )
+    ) {
       return;
     }
     let toastId;
+    let item = {
+      student_id: row.getValue("id"),
+    };
     axios
-      .delete(
+      .patch(
         `${
           import.meta.env.VITE_API_BASE_URL
-        }/api/core/deleteannouncement/${row.getValue("id")}`,
+        }/api/teacher/checksnapshot/${row.getValue("quizresultId")}`,
+        item,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -202,7 +218,8 @@ const SuperCreateTeacherAcct = () => {
         }
       )
       .then((response) => {
-        toast.success("Successfully Deleted");
+        console.log(response);
+        toast.success("Approved");
         setUpdatedList(!updatedList);
       });
 

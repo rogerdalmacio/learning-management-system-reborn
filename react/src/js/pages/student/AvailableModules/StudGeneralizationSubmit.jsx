@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
 
-function StudPrelimActivitySubmit({ content }) {
+function StudGeneralizationSubmit({ content }) {
   const [file, setFile] = useState(null);
   const [submitFile, setSubmitFile] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -169,7 +169,7 @@ function StudPrelimActivitySubmit({ content }) {
 
   return (
     <div className="w-100">
-      <h4 className="mb-4">Submit Preliminary Activity</h4>
+      <h4 className="mb-4">Submit Generalization</h4>
       <form
         className="fileUploadContainer mx-auto w-100"
         method="post"
@@ -227,4 +227,4 @@ function StudPrelimActivitySubmit({ content }) {
   );
 }
 
-export default StudPrelimActivitySubmit;
+export default StudGeneralizationSubmit;

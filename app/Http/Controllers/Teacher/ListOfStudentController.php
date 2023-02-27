@@ -15,11 +15,7 @@ class ListOfStudentController extends Controller
         $user = Auth::user();
 
         $students = $students = Student::with('activityresult','quizresult')
-<<<<<<< Updated upstream
                     ->whereIn('year_and_section', explode(",", $user->year_and_sections))
-=======
-                    ->whereIn('year_and_section', $user->year_and_sections)
->>>>>>> Stashed changes
                     ->where('department', $user->department)
                     ->where('program', $user->program)
                     // ->where('major', $user->major)
