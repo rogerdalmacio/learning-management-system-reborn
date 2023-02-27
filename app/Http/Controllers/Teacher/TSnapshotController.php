@@ -24,7 +24,7 @@ class TSnapshotController extends Controller
             'attempt' => 'recorded'
         ]);
 
-        File::delete($request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+        File::delete('storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $response = [
             'Snapshot accepted'
@@ -42,7 +42,7 @@ class TSnapshotController extends Controller
 
         $quiz = QuizResult::find($id);
 
-        File::delete($request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+        File::delete('storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $quiz->delete();
 
