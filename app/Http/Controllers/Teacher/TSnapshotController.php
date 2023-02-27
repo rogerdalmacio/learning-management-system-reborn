@@ -13,7 +13,7 @@ class TSnapshotController extends Controller
     public function checkSnapshot($id, Request $request) {
 
         $request->validate([
-            'user_id' => 'required|int',
+            'student_id' => 'required|int',
 
         ]);
 
@@ -23,7 +23,7 @@ class TSnapshotController extends Controller
             'attempt' => 'recorded'
         ]);
 
-        File::delete($request['user_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+        File::delete($request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $response = [
             'Snapshot accepted'
@@ -36,12 +36,12 @@ class TSnapshotController extends Controller
     public function rejectSnapshot($id, Request $request) {
 
         $request->validate([
-            'user_id' => 'required|int',
+            'student_id' => 'required|int',
         ]);
 
         $quiz = Quiz::find($id);
 
-        File::delete($request['user_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+        File::delete($request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $quiz->delete();
 
