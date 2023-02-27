@@ -52,6 +52,7 @@ class SActivityResultController extends Controller
             'student_id' => $user->id,
             'activity_id' => $request['activity_id'],
             'module_id' => $request['module_id'],
+            'activity_type' => $request['activity_type'],
             'terms' => $request['terms'],
             'attempt' => $request['attempt'],
             'score' => null
