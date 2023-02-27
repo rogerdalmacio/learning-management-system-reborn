@@ -64,17 +64,17 @@ function Navbar({ openSidebar }) {
               <span className="tooltip">Tagging Subj for CourseDev.</span>
             </li>
           </Link>
-          <Link to="/courseManager/course" className="text-decoration-none">
+          <Link to="/courseManager/home" className="text-decoration-none">
             <li>
               <span
                 className={`a ${
-                  pathName === "/courseManager/course" ? "activeSideBar" : ""
+                  pathName === "/courseManager/home" ? "activeSideBar" : ""
                 }`}
               >
                 <i className="bx bx-palette"></i>
-                <span className="links_name">Course</span>
+                <span className="links_name">Create Course</span>
               </span>
-              <span className="tooltip">Course</span>
+              <span className="tooltip">Create Course</span>
             </li>
           </Link>
         </ul>
