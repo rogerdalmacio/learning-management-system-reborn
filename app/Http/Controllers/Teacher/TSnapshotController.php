@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Teacher;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Modules\Quiz;
+use Illuminate\Http\Request;
 use App\Models\Students\QuizResult;
-use Illuminate\Support\Facades\File;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class TSnapshotController extends Controller
 {
@@ -24,7 +24,7 @@ class TSnapshotController extends Controller
             'attempt' => 'recorded'
         ]);
 
-        File::delete('storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+        Storage::delete('public/storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $response = [
             'Snapshot accepted'
@@ -42,7 +42,7 @@ class TSnapshotController extends Controller
 
         $quiz = QuizResult::find($id);
 
-        File::delete('storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+        Storage::delete('public/storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $quiz->delete();
 
