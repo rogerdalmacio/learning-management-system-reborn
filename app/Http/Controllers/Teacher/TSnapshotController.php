@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Teacher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Quiz;
+use App\Models\Students\QuizResult;
 use Illuminate\Support\Facades\File;
 
 class TSnapshotController extends Controller
@@ -17,7 +18,7 @@ class TSnapshotController extends Controller
 
         ]);
 
-        $quiz = Quiz::find($id);
+        $quiz = QuizResult::find($id);
 
         $quiz->update([
             'attempt' => 'recorded'
@@ -39,7 +40,7 @@ class TSnapshotController extends Controller
             'student_id' => 'required|int',
         ]);
 
-        $quiz = Quiz::find($id);
+        $quiz = QuizResult::find($id);
 
         File::delete($request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
