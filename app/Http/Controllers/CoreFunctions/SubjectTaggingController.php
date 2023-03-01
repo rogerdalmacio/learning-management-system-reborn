@@ -270,24 +270,73 @@ class SubjectTaggingController extends Controller
         $user = CourseDeveloper::find($request['id']);
 
         $userSubjects = $user->subjects;
+        
+        //trim subject requests
 
-        if($userSubjects) {
+        $newSubjectRequests = explode(",", $request['subjects']);
 
-            $error = [
-                'You can only tag single subject to a Course Developer',
-                'not successfull' => $request['subject']
+        $newSubjectRequestsArray = array_map('trim', $newSubjectRequests);
+
+        $newSubjects = implode(",", $newSubjectRequestsArray);
+
+        if(!$userSubjects) {
+
+            $user->update(['subjects' => $newSubjects]);
+            
+            $response = [
+                'Successfully added' => $request['subjects'],
             ];
 
-            return response($error, 409);
+            return response($response, 201);
 
         }
 
+        $userSubjectsArray = explode(',', $userSubjects);
+
+        $requestSubjectsArray = explode(',', $request['subjects']);
+
+        $intersects = array_intersect($userSubjectsArray, $requestSubjectsArray);
+
+        if(count($intersects) > 0) {
+            
+            $response = [
+                'SubjectAlreadyExists' => $intersects
+            ];
+
+            return response($response, 409);
+
+        }
+
+        $newSubjectsArray = array_merge($userSubjectsArray, $requestSubjectsArray);
+
+        $newSubjectsString = implode(",", $newSubjectsArray);
+
+        $user->update(['subjects' => $newSubjectsString]);
+
         $response = [
-            'Subject Tagged Successfully' => $request['subject']
+            'Successfully added' => $newSubjects,
+            'New list of subjects' => $newSubjectsArray
         ];
 
-        $user->subjects = $request['subject'];
-        $user->save();
+        return response($response, 201);
+
+    }
+
+    public function editCourseDeveloperSubject($id, Request $request) {
+
+        $request->validate([
+            'subjects' => 'string|required'
+        ]);
+
+        $coursedeveloper = CourseDeveloper::find($id);
+
+        $coursedeveloper->update([
+            'subjects' => $request['subjects']
+        ]);
+
+        $response = [
+            'new subjects list' => $coursedeveloper->subjects
+        ];
 
         return response($response, 201);
 

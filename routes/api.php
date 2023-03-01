@@ -148,8 +148,8 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
     Route::post('/createsingleteacher', [AccountCreationController::class, 'createSingleTeacher']);
 
     //listOfUsers
-    Route::get('/students', [ListOfUsersController::class, 'students']);
-    Route::get('/teachers', [ListOfUsersController::class, 'teachers']);
+    Route::get('/superadmin/students', [ListOfUsersController::class, 'students']);
+    Route::get('/superadmin/teachers', [ListOfUsersController::class, 'teachers']);
 
     //AccountManage
     Route::patch('/editstudent/{id}', [AccountManageController::class, 'editStudent']);
@@ -160,8 +160,8 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
 //Admin Core
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Admin']], function(){
     
-    Route::get('/students', [ListOfUsersController::class, 'students']);
-    Route::get('/teachers', [ListOfUsersController::class, 'teachers']);
+    Route::get('/admin/students', [ListOfUsersController::class, 'students']);
+    Route::get('/admin/teachers', [ListOfUsersController::class, 'teachers']);
     
     Route::apiResource('tagsubject', SubjectTaggingController::class);
     Route::apiResource('subjects', ListOfSubjectsController::class);
@@ -184,6 +184,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::post('/batchteachersubjecttagging', [SubjectTaggingController::class, 'batchTeacherSubjectTagging']);
     Route::post('/singlestudentsubjecttagging', [SubjectTaggingController::class, 'singleStudentSubjectTagging']);
     Route::post('/singleteachersubjecttagging', [SubjectTaggingController::class, 'singleTeacherSubjectTagging']);
+    Route::patch('/editcoursedevelopersubject/{id}', [SubjectTaggingController::class, 'editCourseDeveloperSubject']);
     Route::patch('/editstudentsubject/{id}', [SubjectTaggingController::class, 'editStudentSubject']);
     Route::patch('/editteachersubject/{id}', [SubjectTaggingController::class, 'editTeacherSubject']);
 

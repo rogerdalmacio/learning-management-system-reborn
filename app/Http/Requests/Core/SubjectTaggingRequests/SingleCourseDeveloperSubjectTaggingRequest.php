@@ -29,7 +29,7 @@ class SingleCourseDeveloperSubjectTaggingRequest extends FormRequest
                 'required',
                 Rule::exists('course_developers', 'id')
             ],
-            'subject' => 'required'
+            'subjects' => 'required'
         ];
     }
 }
