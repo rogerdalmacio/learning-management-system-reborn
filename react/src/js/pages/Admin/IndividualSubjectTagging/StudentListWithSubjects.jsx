@@ -39,7 +39,7 @@ const ListOfStudentWithSubjects = ({ updatedList, setUpdatedList }) => {
     const GetAnnouncementHandler = async () => {
       if (role === "admin") {
         await axios
-          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/students`, {
+          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/admin/students`, {
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",

@@ -90,7 +90,7 @@ function ManagerTagSubjToCourseDev() {
 
       const tagCourseDev = {
         id: getCourseDevId,
-        subject: getSubjectCode,
+        subjects: getSubjectCode,
       };
       console.log(tagCourseDev);
 

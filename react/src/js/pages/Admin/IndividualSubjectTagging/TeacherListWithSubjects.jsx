@@ -39,7 +39,7 @@ const TeacherListWithSubjects = ({ updatedList, setUpdatedList }) => {
     const GetAnnouncementHandler = async () => {
       if (role === "admin") {
         await axios
-          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/teachers`, {
+          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/admin/teachers`, {
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",

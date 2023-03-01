@@ -41,13 +41,16 @@ const SuperCreateStudentAcct = () => {
     const GetAnnouncementHandler = async () => {
       if (role === "SuperAdmin") {
         await axios
-          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/students`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          })
+          .get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/core/superadmin/students`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
           .then((response) => {
             console.log(response);
             setGetAnnouncement(response.data.students);
@@ -501,7 +504,6 @@ export const CreateNewAccountModal = ({
   };
 
   const HelperHandler = (column) => {
-    console.log(column);
     if (values !== undefined && values !== null) {
       if (
         (hasError && values.id == "" && column.accessorKey == "id") ||

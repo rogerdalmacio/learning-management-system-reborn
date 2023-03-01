@@ -170,7 +170,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::delete('/dropgrant/{id}', [ExamGrantingController::class, 'deleteGrant']);
     Route::post('/batchgrantexam', [ExamGrantingController::class, 'batchExamGrant']);
     Route::post('/singlegrantexam', [ExamGrantingController::class, 'singleExamGrant']);
-    
+
     Route::patch('/batchmoduleupdatestatus/{id}', [ModuleStatusUpdateController::class, 'editModuleStatus']);
     Route::get('/modules', [ModuleStatusUpdateController::class, 'listOfModules']);
 

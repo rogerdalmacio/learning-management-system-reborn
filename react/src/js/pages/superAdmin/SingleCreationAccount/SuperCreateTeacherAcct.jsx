@@ -41,13 +41,16 @@ const SuperCreateTeacherAcct = () => {
     const GetAnnouncementHandler = async () => {
       if (role === "SuperAdmin") {
         await axios
-          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/teachers`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          })
+          .get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/core/superadmin/teachers`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
           .then((response) => {
             console.log(response);
             setGetAnnouncement(response.data.teachers);
