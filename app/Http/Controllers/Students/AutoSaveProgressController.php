@@ -95,7 +95,7 @@ class AutoSaveProgressController extends Controller
         $response = [
             'quiz_id' => $autoSavedProgress->quiz_id,
             'request' => $returnanswer,
-            'logs' => $ $quizresult1->logs
+            'logs' => $quizresult1->logs
         ];
 
         return response($response, 200);
