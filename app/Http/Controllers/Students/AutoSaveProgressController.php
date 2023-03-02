@@ -90,7 +90,7 @@ class AutoSaveProgressController extends Controller
 
         $returnanswer = explode("|", $autoSavedProgress['answers']);
 
-        $quizresult1 = QuizResult::find($autoSavedProgress->quizresult_id);
+        $quizresult1 = QuizResult::find($autoSavedProgress->quiz_result_id);
 
         $response = [
             'quiz_id' => $autoSavedProgress->quiz_id,
