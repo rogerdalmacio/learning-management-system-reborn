@@ -90,9 +90,12 @@ class AutoSaveProgressController extends Controller
 
         $returnanswer = explode("|", $autoSavedProgress['answers']);
 
+        $quizresult1 = QuizResult::find($autoSavedProgress->quizresult_id);
+
         $response = [
             'quiz_id' => $autoSavedProgress->quiz_id,
             'request' => $returnanswer,
+            'logs' => $ $quizresult1->logs
         ];
 
         return response($response, 200);
@@ -109,10 +112,11 @@ class AutoSaveProgressController extends Controller
     {
 
         $autoSave = AutoSaveProgress::where('quiz_result_id', $request['quiz_result_id'])->first();
+        $quizresult = QuizResult::find($request['quiz_result_id']);
 
         $autoSave->update([
             'answers' => $request['answers'],
-            'logs' => $request['logs'],
+            'logs' => $quizresult->logs ? $quizresult->logs . ',' . $request['logs'] : $request['logs'],
             'snapshot' => $request['snapshot'],
         ]);
 
