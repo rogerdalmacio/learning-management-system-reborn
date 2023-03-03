@@ -102,6 +102,21 @@ class AutoSaveProgressController extends Controller
         
     }
 
+
+    public function fetchLogs() {
+
+        $user = Auth::user();
+
+        $autoSavedProgress = AutoSaveProgress::find($user->id);
+
+        $response = [
+            'logs' => $autoSavedProgress->logs
+        ];
+
+        return response($response, 200);
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

@@ -70,6 +70,7 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
     // auto save feature
     Route::post('/autosave', [AutoSaveProgressController::class, 'saveProgress']);
     Route::get('/fetchautosave', [AutoSaveProgressController::class, 'fetchProgress']);
+    Route::get('/fetchlogs', [AutoSaveProgressController::class, 'fetchLogs']);
 
     Route::apiResource('courses', SCourseController::class);
     Route::apiResource('lesson', SLessonController::class);
