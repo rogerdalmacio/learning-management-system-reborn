@@ -24,37 +24,22 @@ import { data, states } from "../makeData";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 
-const ListOfStudentWithSubjects = ({ updatedList, setUpdatedList }) => {
+const ListOfStudentWithSubjects = ({
+  updatedList,
+  setUpdatedList,
+  tableData,
+  setTableData,
+  getAnnouncement,
+  setGetAnnouncement,
+}) => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [getAnnouncement, setGetAnnouncement] = useState(data);
   // updateList is for rerendering again the getList
   const [hasError, setHasError] = useState(false);
-  const [tableData, setTableData] = useState(getAnnouncement);
   const [validationErrors, setValidationErrors] = useState({});
   console.log(tableData);
-  useEffect(() => {
-    const GetAnnouncementHandler = async () => {
-      if (role === "admin") {
-        await axios
-          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/admin/students`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          })
-          .then((response) => {
-            console.log(response.data.students);
-            setGetAnnouncement(response.data.students);
-            setTableData(response.data.students);
-          });
-      }
-    };
-    GetAnnouncementHandler();
-  }, [updatedList]);
 
   const handleCreateNewRow = (values) => {
     const tablesdataito = tableData.push(values);

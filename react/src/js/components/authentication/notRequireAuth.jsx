@@ -12,13 +12,13 @@ const NotRequireAuth = () => {
     } else if (role === "teacher") {
       return <Navigate to="teacher/home" replace />;
     } else if (role === "admin") {
-      return <Navigate to="admin/createAnnouncement" replace />;
+      return <Navigate to="admin/home" replace />;
     } else if (role === "courseDeveloper") {
       return <Navigate to="developer/availableCourse" replace />;
     } else if (role === "CourseManager") {
       return <Navigate to="courseManager/listOfStudents" replace />;
     } else if (role === "SuperAdmin") {
-      return <Navigate to="superAdmin/studentBulkCreationAccount" replace />;
+      return <Navigate to="superAdmin/home" replace />;
     } else {
       return <Outlet />;
     }

@@ -23,8 +23,8 @@ function StudQuizAAE() {
   const [getAnswer, setGetAnswer] = useState();
 
   const [altTabCount, setAltTabCount] = useState(0);
-  const buttonRef = useRef(null);
-
+  const [getLogs, setGetLogs] = useState();
+  const [logChange, setLogChange] = useState(false);
   // const location = useLocation();
   // console.log(location.pathname);
   // const currentLocation = location.pathname;
@@ -49,23 +49,57 @@ function StudQuizAAE() {
   const weekForModule = weekMod.match(/\d+/)[0];
   const contentType = pathArray[5];
   console.log(contentType);
-
+  console.log(quizResultId);
   const [closeCount, setCloseCount] = useState(0);
   console.log(closeCount);
 
   // Count if window.close()
+  // useEffect(() => {
+  //   const handleClose = async () => {
+  //     setCurrentQuestionIndex(currentQuestionIndex + 1);
+  //   };
+
+  //   window.addEventListener("beforeunload", handleClose);
+
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleClose);
+  //   };
+  // }, []);
+
+  console.log(getLogs);
+  // getting the logs in autosave
   useEffect(() => {
-    const handleClose = () => {
-      setCloseCount((prevCloseCount) => prevCloseCount + 1);
-      localStorage.setItem("closeCount", closeCount + 2);
+    const fetchLogs = async () => {
+      if (role === "student") {
+        await axios
+          .get(`${import.meta.env.VITE_API_BASE_URL}/api/student/fetchlogs`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          })
+          .then((response) => {
+            console.log(response.data.logs);
+            setGetLogs(parseInt(response.data.logs.split(",")[1]));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     };
 
-    window.addEventListener("beforeunload", handleClose);
+    fetchLogs();
+  }, [logChange]);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleClose);
-    };
-  }, []);
+  //Submit every logs
+  useEffect(() => {
+    if (altTabCount === 0) {
+      return null;
+    } else {
+      handleNext();
+    }
+  }, [altTabCount]);
   // Count if blurr or AFK or alt+tab
   useEffect(() => {
     const logsHandler = () => {
@@ -88,6 +122,7 @@ function StudQuizAAE() {
     console.log("clicked key: ", e.key);
   };
 
+  //Check if logs exceed to 3
   useEffect(() => {
     const AltTabCountHandler = () => {
       if (altTabCount >= 3) {
@@ -96,7 +131,7 @@ function StudQuizAAE() {
     };
 
     AltTabCountHandler();
-  }, [altTabCount, buttonRef]);
+  }, []);
 
   // Implementing Auto Save Progress
   useEffect(() => {
@@ -221,8 +256,12 @@ function StudQuizAAE() {
 
   // Next and Previous Button
   const handleNext = async () => {
+    // console.log(getLogs);
+    // console.log(getLogs + logCount);
     setCurrentQuestionIndex(currentQuestionIndex + 1);
+
     const logCount = JSON.stringify(altTabCount);
+
     const item = {
       student_id: userInfo.id,
       quiz_result_id: quizResultId[0].id,
@@ -246,6 +285,7 @@ function StudQuizAAE() {
       })
       .then((response) => {
         console.log(response);
+        setLogChange(!logChange);
         if (response.status >= 200 && response.status <= 300) {
         } else {
           throw new Error(response.status || "Something Went Wrong!");
@@ -361,7 +401,6 @@ function StudQuizAAE() {
     if (currentQuestionIndex == 9) {
       return (
         <button
-          ref={buttonRef}
           onClick={SubmitQuizHandler}
           className="smallButtonTemplate text-right sumbit-button btn px-4 px-sm-5"
         >

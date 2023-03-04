@@ -23,6 +23,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import { data, states } from "./makeData";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
+import Loading from "../../components/layouts/Loading";
 
 const AdminAnnouncement = () => {
   const { role, token } = useAuth();
@@ -34,7 +35,6 @@ const AdminAnnouncement = () => {
   const [updatedList, setUpdatedList] = useState(false);
   const [tableData, setTableData] = useState(getAnnouncement);
   const [validationErrors, setValidationErrors] = useState({});
-  console.log(getAnnouncement);
 
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
@@ -65,7 +65,6 @@ const AdminAnnouncement = () => {
     setTableData([...tableData]);
   };
 
-  console.log(tableData);
   const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
     if (tableData !== undefined) {
       if (!Object.keys(validationErrors).length) {
@@ -274,60 +273,64 @@ const AdminAnnouncement = () => {
     // [getCommonEditTextFieldProps]
   );
 
-  return (
-    <div className="MaterialUiTable">
-      <MaterialReactTable
-        className="MaterialReactTable"
-        displayColumnDefOptions={{
-          "mrt-row-actions": {
-            muiTableHeadCellProps: {
-              align: "center",
+  if (tableData[0].id == "...") {
+    return <Loading />;
+  } else {
+    return (
+      <div className="MaterialUiTable">
+        <MaterialReactTable
+          className="MaterialReactTable"
+          displayColumnDefOptions={{
+            "mrt-row-actions": {
+              muiTableHeadCellProps: {
+                align: "center",
+              },
+              size: 120,
             },
-            size: 120,
-          },
-        }}
-        sortDescFirst
-        columns={columns}
-        data={tableData}
-        editingMode="modal" //default
-        enableColumnOrdering
-        enableEditing
-        onEditingRowSave={handleSaveRowEdits}
-        onEditingRowCancel={handleCancelRowEdits}
-        renderRowActions={({ row, table }) => (
-          <Box sx={{ display: "flex", gap: "1rem" }}>
-            <Tooltip arrow placement="left" title="Edit">
-              <IconButton onClick={() => table.setEditingRow(row)}>
-                <Edit />
-              </IconButton>
-            </Tooltip>
-            <Tooltip arrow placement="right" title="Delete">
-              <IconButton color="error" onClick={() => handleDeleteRow(row)}>
-                <Delete />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-        renderTopToolbarCustomActions={() => (
-          <Button
-            color="secondary"
-            onClick={() => setCreateModalOpen(true)}
-            variant="contained"
-          >
-            Create Announcement
-          </Button>
-        )}
-      />
-      <CreateNewAccountModal
-        columns={columns}
-        open={createModalOpen}
-        onClose={() => setCreateModalOpen(false)}
-        onSubmit={handleCreateNewRow}
-        setUpdatedList={setUpdatedList}
-        updatedList={updatedList}
-      />
-    </div>
-  );
+          }}
+          sortDescFirst
+          columns={columns}
+          data={tableData}
+          editingMode="modal" //default
+          enableColumnOrdering
+          enableEditing
+          onEditingRowSave={handleSaveRowEdits}
+          onEditingRowCancel={handleCancelRowEdits}
+          renderRowActions={({ row, table }) => (
+            <Box sx={{ display: "flex", gap: "1rem" }}>
+              <Tooltip arrow placement="left" title="Edit">
+                <IconButton onClick={() => table.setEditingRow(row)}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+              <Tooltip arrow placement="right" title="Delete">
+                <IconButton color="error" onClick={() => handleDeleteRow(row)}>
+                  <Delete />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
+          renderTopToolbarCustomActions={() => (
+            <Button
+              color="secondary"
+              onClick={() => setCreateModalOpen(true)}
+              variant="contained"
+            >
+              Create Announcement
+            </Button>
+          )}
+        />
+        <CreateNewAccountModal
+          columns={columns}
+          open={createModalOpen}
+          onClose={() => setCreateModalOpen(false)}
+          onSubmit={handleCreateNewRow}
+          setUpdatedList={setUpdatedList}
+          updatedList={updatedList}
+        />
+      </div>
+    );
+  }
 };
 
 //example of creating a mui dialog modal for creating new rows

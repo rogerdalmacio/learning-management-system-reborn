@@ -23,7 +23,7 @@ import ManagerGetStudents from "../pages/courseManager/ManagerGetStudents";
 // Admin
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
 import AdminEditProfile from "../pages/Admin/AdminEditProfile";
-import AdminDashboard from "../pages/Admin/AdminDashboard";
+import AdminDashboard from "../pages/Admin/AdminDashboard/AdminDashboard";
 import AdminStudentSubjectTagging from "../pages/Admin/AdminStudentSubjectTagging";
 import AdminTeacherSubjectTagging from "../pages/Admin/AdminTeacherSubjectTagging";
 import StudentIndividualSubjectTagging from "../pages/Admin/IndividualSubjectTagging/StudentIndividualSubjectTagging";

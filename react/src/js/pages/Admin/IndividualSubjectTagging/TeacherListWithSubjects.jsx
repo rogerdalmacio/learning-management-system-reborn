@@ -20,41 +20,26 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import { data, states } from "../makeData";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 
-const TeacherListWithSubjects = ({ updatedList, setUpdatedList }) => {
+const TeacherListWithSubjects = ({
+  updatedList,
+  setUpdatedList,
+  tableData,
+  setTableData,
+  getAnnouncement,
+  setGetAnnouncement,
+}) => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [getAnnouncement, setGetAnnouncement] = useState(data);
   // updateList is for rerendering again the getList
   const [hasError, setHasError] = useState(false);
-  const [tableData, setTableData] = useState(getAnnouncement);
   const [validationErrors, setValidationErrors] = useState({});
+
   console.log(tableData);
-  useEffect(() => {
-    const GetAnnouncementHandler = async () => {
-      if (role === "admin") {
-        await axios
-          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/admin/teachers`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          })
-          .then((response) => {
-            console.log(response.data.teachers);
-            setGetAnnouncement(response.data.teachers);
-            setTableData(response.data.teachers);
-          });
-      }
-    };
-    GetAnnouncementHandler();
-  }, [updatedList]);
 
   const handleCreateNewRow = (values) => {
     const tablesdataito = tableData.push(values);
@@ -176,7 +161,7 @@ const TeacherListWithSubjects = ({ updatedList, setUpdatedList }) => {
   const columns = useMemo(() => [
     {
       accessorKey: "id",
-      header: "Student ID",
+      header: "Teacher ID",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,

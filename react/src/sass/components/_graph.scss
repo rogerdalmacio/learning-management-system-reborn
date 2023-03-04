@@ -1,0 +1,32 @@
+@use "../abstract/" as *;
+
+.pieGraphContainer {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.barGraphContainer {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.pieGraph {
+  position: static;
+  background-color: #ffffff;
+  padding: 15px 5px;
+  border-radius: 8px;
+}
+
+.barGraph {
+  position: static;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 8px;
+}

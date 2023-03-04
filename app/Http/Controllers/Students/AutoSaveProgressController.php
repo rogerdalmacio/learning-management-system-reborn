@@ -107,7 +107,7 @@ class AutoSaveProgressController extends Controller
 
         $user = Auth::user();
 
-        $autoSavedProgress = AutoSaveProgress::find($user->id);
+        $autoSavedProgress = AutoSaveProgress::where('student_id', $user->id)->first();
 
         $response = [
             'logs' => $autoSavedProgress->logs
