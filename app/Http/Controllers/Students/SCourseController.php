@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Students;
 
 use Illuminate\Http\Request;
+use App\Models\Modules\Course;
+use App\Models\Modules\Module;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Modules\Course;
 
 class SCourseController extends Controller
 {
@@ -23,12 +24,11 @@ class SCourseController extends Controller
 
         $subjectsarray = explode (",", $subjects);
 
-        $courses = Course::with('module')->whereIn('course_code', $subjectsarray)
-                            ->where('department', $user->department)
-                            ->whereHas('module', function ($query) {
-                                $query->where('status', true);
-                            })
-                            ->get();
+        $courses =  Module::with(['course' => function ($query) use ($user, $subjectsarray) {
+                        $query->whereIn('course_code', $subjectsarray)
+                            ->where('department', $user->department);
+                    }])->where('status', true)
+                        ->get();
 
         $response = [
             'subjects' => $courses
