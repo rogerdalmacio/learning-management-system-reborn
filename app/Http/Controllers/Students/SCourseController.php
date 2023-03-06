@@ -25,6 +25,9 @@ class SCourseController extends Controller
 
         $courses = Course::with('module')->whereIn('course_code', $subjectsarray)
                             ->where('department', $user->department)
+                            ->whereHas('module', function ($query) {
+                                $query->where('status', true);
+                            })
                             ->get();
 
         $response = [
