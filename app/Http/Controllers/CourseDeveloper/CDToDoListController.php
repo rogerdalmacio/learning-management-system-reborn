@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CourseDeveloper;
 
 use App\Http\Controllers\Controller;
+use App\Models\CourseManager\ContentValidation;
 use App\Models\CourseManager\ToDoList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,26 +11,19 @@ use Illuminate\Support\Facades\Auth;
 class CDToDoListController extends Controller
 {
 
-    public function taskList() {
+    public function submitTodo($id) {
 
-        $user = Auth::user();
+        $content_validate = ContentValidation::find($id);
 
-        $toDoList = ToDoList::where('course_developer_id', $user->id);
+        $content_validate->update([
+            'submitted' => true
+        ]);
 
         $response = [
-            'To do list' => $toDoList,
+            'message' => 'To do submitted'
         ];
 
-        return response($response, 201);
-
-    }
-
-    
-
-    // patch header
-    public function submitTask(Request $request, $id) {
-        
-        $toDoList = ToDoList::find($id);
+        return response($response, 204);
 
     }
 

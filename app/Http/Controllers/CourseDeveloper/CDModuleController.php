@@ -49,17 +49,33 @@ class CDModuleController extends Controller
 
     }
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(Request $request, $id)
-    // {
-    //     //
-    // }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+
+        $request->validate([
+            'title' => 'required|string'
+        ]);
+        
+        $module = Module::find($id);
+
+        $module->update([
+            'title' => $request['title']
+        ]);
+
+        $response = [
+            'title' => $request['title']
+        ];
+
+        return response($response, 201);
+
+    }
 
     // /**
     //  * Remove the specified resource from storage.

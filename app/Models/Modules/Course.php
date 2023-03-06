@@ -2,6 +2,7 @@
 
 namespace App\Models\Modules;
 
+use App\Models\CourseManager\ContentValidation;
 use App\Models\Modules\Module;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +21,17 @@ class Course extends Model
 
     public function module(){
         return $this->hasMany(Module::class);
+    }
+
+    public function contentvalidation(){
+        return $this->hasManyThrough(
+            ContentValidation::class, 
+            Module::class,
+            'course_id',
+            'module_id',
+            'id',
+            'id'
+        );
     }
 
     public function lesson(){

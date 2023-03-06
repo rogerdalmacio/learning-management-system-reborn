@@ -2,64 +2,74 @@
 
 namespace App\Http\Controllers\CourseManager;
 
+use App\Models\Modules\Course;
 use App\Http\Controllers\Controller;
-use App\Models\CourseManager\ToDoList;
 use Illuminate\Support\Facades\Request;
+use App\Models\CourseManager\ContentValidation;
+use App\Models\Modules\Module;
 
 class CMToDoListController extends Controller
 {
 
-    public function taskList() {     
+    public function createTodo(Request $request) {
 
-        $toDoList = ToDoList::all();
-        
+        $request->validate([
+            'module_id' => 'required|string' ,
+            'status' => 'required|string',
+            'comments' => 'required|string',
+            'deadline' => 'required|string'
+        ]);
+
+        ContentValidation::create([
+            'module_id' => $request['module_id'],
+            'status' => $request['status'],
+            'comments' => $request['comments'],
+            'deadline' => $request['deadline'],
+            'submitted' => false
+        ]);
+
         $response = [
-            'To do list' => $toDoList 
+            'message' => 'To do successfully sent'
         ];
 
         return response($response, 201);
 
     }
-    
-    public function createTask(Request $request) {   
 
-        ToDoList::create($request->all());
+    public function moduleApproval($id) {
 
-        $response = [
-            'task succesfully created: ' => $request['title']
-        ];
+        $module = Module::find($id);
 
-        return response($response, 201);
-    }
+        $module->update([
+            'approval' => ! $module->approval
+        ]);
 
-    //patch header
-    public function editTask(Request $request, $id) {
-
-        $todolist = ToDoList::find($id);
-
-        $todolist->update();
-        
-    }
-
-    public function approveTask(Request $request, $id) {
-        
-        $todolist = ToDoList::find($id);
-
-        $todolist->update();
-
-    }
-
-    public function deleteTask($id) {
-        
-        $todolist = ToDoList::find($id);
-
-        $todolist->delete();
+        $message = $module->approval ? 'Module approved' : 'Module approval reset';
 
         $response = [
-            'Succesfully deleted' => $todolist
+            'message' => $message
         ];
 
-        return response($response, 200);
+        return response($response, 204);
+
+    }
+
+    public function toggleCourseApproval($id){
+
+        $course = Course::find($id);
+
+        $course->update([
+            'approval' => ! $course->approval
+        ]);
+
+        $message = $course->approval ? 'Course approved' : 'Course approval reset';
+
+        $response = [
+            'message' => $message
+        ];
+
+        return response($response, 204);
+
     }
 
 }

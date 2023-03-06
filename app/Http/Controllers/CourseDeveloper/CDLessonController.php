@@ -72,15 +72,13 @@ class CDLessonController extends Controller
     {
 
         $request->validate([
-            'module_id' => 'sometimes',
-            'preliminaries' => 'sometimes',
             'title' => 'sometimes',
             'embed_links' => 'sometimes',
         ]);
         
         $lesson = Lesson::find($id);
 
-        $lesson->update([$request->all()]);
+        $lesson->update($request->all());
 
         $response = [
             'Lesson updated' => $lesson

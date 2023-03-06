@@ -34,6 +34,7 @@ use App\Http\Controllers\CoreFunctions\AccountCreationController;
 use App\Http\Controllers\CoreFunctions\AccountManageController;
 use App\Http\Controllers\CoreFunctions\ListOfUsersController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
+use App\Http\Controllers\CourseDeveloper\CDToDoListController;
 use App\Http\Controllers\CourseManager\CMFilteredCourseList;
 use App\Http\Controllers\Teacher\TSnapshotController;
 
@@ -116,6 +117,8 @@ Route::group(['prefix' => 'coursedeveloper', 'middleware' => ['auth:sanctum','ab
 
     Route::apiResource('activity', CDActivityController::class);
 
+    Route::patch('/submittodo/{id}', [CDToDoListController::class, 'submitTodo']);
+
 });
 
 //course manager route
@@ -127,15 +130,27 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
 
     Route::post('/singlecoursedevelopersubjecttagging', [SubjectTaggingController::class, 'singleCourseDeveloperSubjectTagging']);
 
-    Route::post('/createtask', [CMToDoListController::class, 'createtask']);
-    Route::post('/taslist', [CMToDoListController::class, 'taskList']);
-    Route::patch('/edittask', [CMToDoListController::class, 'editTask']);
-    Route::post('/approvetask', [CMToDoListController::class, 'approveTask']);
-    Route::delete('/deletetask', [CMToDoListController::class, 'deleteTask']);
+    Route::post('/createtodo', [CMToDoListController::class, 'createTodo']);
+    Route::patch('/moduleapprove/{id}', [CMToDoListController::class, 'moduleApproval']);
+    Route::patch('/courseapprove/{id}', [CMToDoListController::class, 'toggleCourseApproval']);
 
     Route::get('/students', [ListOfUsersController::class, 'students']);
 
 });
+
+
+//
+Route::group(['prefix' => 'content', 'middleware' => ['auth:sanctum','abilities:CourseManager,Admin']], function(){
+
+    Route::apiResource('courses', SCourseController::class);
+    Route::apiResource('lesson', SLessonController::class);
+    Route::apiResource('activity', SActivityController::class);
+    Route::apiResource('quiz', SQuizController::class);
+    Route::apiResource('module', SModulesController::class);
+
+});
+
+
 
 //SuperAdmin Core
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:SuperAdmin']], function(){

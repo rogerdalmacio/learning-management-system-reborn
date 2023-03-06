@@ -76,16 +76,13 @@ class CDActivityController extends Controller
     {
 
         $request->validate([
-            'title' => 'required',
-            'embed_link' => 'required' 
+            'title' => 'sometimes',
+            'embed_links' => 'sometimes', 
         ]);
 
         $activity = Activity::find($id);
 
-        $activity->update([
-            'title' => $request['title'],
-            'embed_links' => $request['embed_link']
-        ]);
+        $activity->update($request->all());
         
         $response = [
             'Activity successfully updated' => $activity

@@ -81,13 +81,11 @@ class CDQuizController extends Controller
             'questions' => 'sometimes',
             'answers'  => 'sometimes',
             'options'  => 'sometimes',
-            'preliminaries' => 'sometimes',
-            'quiz_type' => 'sometimes',
         ]);
         
         $quiz = Quiz::find($id);
 
-        $quiz->update([$request->all()]);
+        $quiz->update($request->all());
 
         $response = [
             'Quiz Successfully updated' => $quiz

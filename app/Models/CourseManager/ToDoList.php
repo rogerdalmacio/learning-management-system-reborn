@@ -21,4 +21,5 @@ class ToDoList extends Model
     public function coursedeveloper(){
         return $this->belongsTo(CourseDeveloper::class);
     }
+    
 }
