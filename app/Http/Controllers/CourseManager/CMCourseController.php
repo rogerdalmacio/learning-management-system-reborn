@@ -43,6 +43,10 @@ class CMCourseController extends Controller
     public function store(CourseRequest $request)
     {
 
+        DB::beginTransaction();
+
+        try {
+
         $exist = Course::where('course', $request['course'])
                 ->where('department', $request['department'])
                 ->get();
@@ -82,7 +86,18 @@ class CMCourseController extends Controller
             'Modules created' => $moduleCreated
         ];
 
+        DB::commit();
         return response($response, 201);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $response = [
+                'errors' => $e
+            ];
+            
+            return response($response, 404);
+        }
 
     }
 

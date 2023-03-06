@@ -23,7 +23,10 @@ class SCourseController extends Controller
 
         $subjectsarray = explode (",", $subjects);
 
-        $courses = Course::with('module')->whereIn('course_code', $subjectsarray)->where('department', $user->department)->get();
+        $courses = Course::with('module')->whereIn('course_code', $subjectsarray)
+                            ->where('department', $user->department)
+                            ->where('status', true)
+                            ->get();
 
         $response = [
             'subjects' => $courses
