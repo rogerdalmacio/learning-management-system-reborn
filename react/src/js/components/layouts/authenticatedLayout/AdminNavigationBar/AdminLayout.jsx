@@ -11,6 +11,20 @@ const Layout = () => {
   const [openSidebar, setOpenSidebar] = useState(true);
   const [imageExisting, setImageExisting] = useState();
 
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth <= 960) {
+        console.log(window.innerWidth <= 960);
+
+        setOpenSidebar(false);
+      } else {
+        setOpenSidebar(true);
+      }
+    }
+
+    handleResize();
+  }, []);
+
   const userImageJpg = `${
     import.meta.env.VITE_API_BASE_URL
   }/storage/Admin/Admin${userInfo.id}.jpg`;

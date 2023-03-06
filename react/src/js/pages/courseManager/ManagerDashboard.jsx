@@ -24,6 +24,7 @@ import { data, states } from "../Admin/makeData";
 import useAuth from "../../hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
 import { isNumber } from "lodash";
+import Loading from "../../components/layouts/Loading";
 
 const ManagerDashboard = () => {
   const { role, token } = useAuth();
@@ -292,46 +293,50 @@ const ManagerDashboard = () => {
     // [getCommonEditTextFieldProps]
   );
 
-  return (
-    <div className="MaterialUiTable">
-      <MaterialReactTable
-        className="MaterialReactTable"
-        displayColumnDefOptions={{
-          "mrt-row-actions": {
-            muiTableHeadCellProps: {
-              align: "center",
+  if (tableData[0].id == "...") {
+    return <Loading />;
+  } else {
+    return (
+      <div className="MaterialUiTable">
+        <MaterialReactTable
+          className="MaterialReactTable"
+          displayColumnDefOptions={{
+            "mrt-row-actions": {
+              muiTableHeadCellProps: {
+                align: "center",
+              },
+              size: 120,
             },
-            size: 120,
-          },
-        }}
-        sortDescFirst
-        columns={columns}
-        data={tableData}
-        editingMode="modal" //default
-        enableColumnOrdering
-        // onEditingRowSave={handleSaveRowEdits}
-        // onEditingRowCancel={handleCancelRowEdits}
-        renderTopToolbarCustomActions={() => (
-          <Button
-            color="secondary"
-            onClick={() => setCreateModalOpen(true)}
-            variant="contained"
-          >
-            Create Subject +
-          </Button>
-        )}
-      />
+          }}
+          sortDescFirst
+          columns={columns}
+          data={tableData}
+          editingMode="modal" //default
+          enableColumnOrdering
+          // onEditingRowSave={handleSaveRowEdits}
+          // onEditingRowCancel={handleCancelRowEdits}
+          renderTopToolbarCustomActions={() => (
+            <Button
+              color="secondary"
+              onClick={() => setCreateModalOpen(true)}
+              variant="contained"
+            >
+              Create Subject +
+            </Button>
+          )}
+        />
 
-      <CreateNewAccountModal
-        columns={columns}
-        open={createModalOpen}
-        onClose={() => setCreateModalOpen(false)}
-        onSubmit={handleCreateNewRow}
-        setUpdatedList={setUpdatedList}
-        updatedList={updatedList}
-      />
-    </div>
-  );
+        <CreateNewAccountModal
+          columns={columns}
+          open={createModalOpen}
+          onClose={() => setCreateModalOpen(false)}
+          onSubmit={handleCreateNewRow}
+          setUpdatedList={setUpdatedList}
+          updatedList={updatedList}
+        />
+      </div>
+    );
+  }
 };
 
 //example of creating a mui dialog modal for creating new rows

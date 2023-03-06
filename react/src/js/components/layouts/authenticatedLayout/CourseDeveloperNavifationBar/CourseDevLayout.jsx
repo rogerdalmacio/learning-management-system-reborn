@@ -6,88 +6,95 @@ import { ToastContainer, toast } from "react-toastify";
 import useAuth from "../../../../hooks/useAuth";
 
 const Layout = () => {
-    const { userInfo } = useAuth();
+  const { userInfo } = useAuth();
 
-    const [openSidebar, setOpenSidebar] = useState(true);
-    const [imageExisting, setImageExisting] = useState();
+  const [openSidebar, setOpenSidebar] = useState(true);
+  const [imageExisting, setImageExisting] = useState();
 
-    const userImageJpg = `${
-        import.meta.env.VITE_API_BASE_URL
-    }/storage/CourseDeveloper/CourseDeveloper${userInfo.id}.jpg`;
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth <= 960) {
+        console.log(window.innerWidth <= 960);
 
-    // CHECK IF IMAGE EXISTS
-    useEffect(() => {
-        function checkIfImageExists(url, callback) {
-            const img = new Image();
-            img.src = url;
+        setOpenSidebar(false);
+      } else {
+        setOpenSidebar(true);
+      }
+    }
 
-            if (img.complete) {
-                callback(true);
-            } else {
-                img.onload = () => {
-                    callback(true);
-                };
+    handleResize();
+  }, []);
 
-                img.onerror = () => {
-                    callback(false);
-                };
-            }
-        }
+  const userImageJpg = `${
+    import.meta.env.VITE_API_BASE_URL
+  }/storage/CourseDeveloper/CourseDeveloper${userInfo.id}.jpg`;
 
-        // USAGE
-        checkIfImageExists(userImageJpg, (exists) => {
-            if (exists) {
-                setImageExisting(true);
-            } else {
-                setImageExisting(false);
-            }
-        });
+  // CHECK IF IMAGE EXISTS
+  useEffect(() => {
+    function checkIfImageExists(url, callback) {
+      const img = new Image();
+      img.src = url;
+
+      if (img.complete) {
+        callback(true);
+      } else {
+        img.onload = () => {
+          callback(true);
+        };
+
+        img.onerror = () => {
+          callback(false);
+        };
+      }
+    }
+
+    // USAGE
+    checkIfImageExists(userImageJpg, (exists) => {
+      if (exists) {
+        setImageExisting(true);
+      } else {
+        setImageExisting(false);
+      }
     });
+  });
 
-    return (
-        <main>
-            <div className="container-lg container-xl container-xxl" id="app">
-                <ul className="topbar m-0 list-unstyled">
-                    <TopNavbar
-                        openSidebar={openSidebar}
-                        setOpenSidebar={setOpenSidebar}
-                        imageExisting={imageExisting}
-                        userImagePng={userImageJpg}
-                    />
-                </ul>
-                <div
-                    className="px-0 d-xl-flex position-relative d-flex"
-                    id="app"
-                >
-                    <SideNavbar openSidebar={openSidebar} />
+  return (
+    <main>
+      <div className="container-lg container-xl container-xxl" id="app">
+        <ul className="topbar m-0 list-unstyled">
+          <TopNavbar
+            openSidebar={openSidebar}
+            setOpenSidebar={setOpenSidebar}
+            imageExisting={imageExisting}
+            userImagePng={userImageJpg}
+          />
+        </ul>
+        <div className="px-0 d-xl-flex position-relative d-flex" id="app">
+          <SideNavbar openSidebar={openSidebar} />
 
-                    <main className="home-section mx-3 bg-light rounded shadow w-100">
-                        <div className="p-3 p-sm-5 w-100">
-                            <ToastContainer
-                                position="top-right"
-                                autoClose={3000}
-                                hideProgressBar={false}
-                                newestOnTop={false}
-                                closeOnClick
-                                rtl={false}
-                                pauseOnFocusLoss
-                                draggable
-                                pauseOnHover
-                                theme="light"
-                            />
-                            <Outlet
-                                context={[
-                                    userImageJpg,
-                                    imageExisting,
-                                    setImageExisting,
-                                ]}
-                            />
-                        </div>
-                    </main>
-                </div>
+          <main className="home-section mx-3 bg-light rounded shadow w-100">
+            <div className="p-3 p-sm-5 w-100">
+              <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+              />
+              <Outlet
+                context={[userImageJpg, imageExisting, setImageExisting]}
+              />
             </div>
-        </main>
-    );
+          </main>
+        </div>
+      </div>
+    </main>
+  );
 };
 
 export default Layout;

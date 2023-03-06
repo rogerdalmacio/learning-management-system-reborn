@@ -30,3 +30,14 @@
   background-color: #ffffff;
   border-radius: 8px;
 }
+
+@media screen and (max-width: 576px) {
+  .barGraphContainer {
+    display: block;
+    overflow-x: scroll !important;
+  }
+
+  .barGraph {
+    min-width: 500px;
+  }
+}

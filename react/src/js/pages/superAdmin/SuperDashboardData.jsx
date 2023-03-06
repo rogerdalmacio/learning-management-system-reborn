@@ -13,7 +13,7 @@ const SuperDashboard = ({ data /* see data tab */ }) => (
   <ResponsivePie
     data={data}
     colors={{ scheme: "paired" }}
-    margin={{ top: 0, right: 40, bottom: 120, left: 40 }}
+    margin={{ top: 20, right: 40, bottom: 120, left: 40 }}
     innerRadius={0.4}
     startAngle={0}
     theme={{

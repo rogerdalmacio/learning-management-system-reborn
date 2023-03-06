@@ -96,7 +96,7 @@ function AdminDashboard() {
         getTeachers !== undefined &&
         getProgram !== undefined ? (
           <div className="row g-2">
-            <div className="col-4 pieGraphContainer position-relative">
+            <div className="col-12 col-md-4 pieGraphContainer position-relative">
               <div
                 className="pieGraph"
                 style={{ height: "500px", width: "100%" }}
@@ -105,7 +105,7 @@ function AdminDashboard() {
                 <SuperDashboardData data={data} />
               </div>
             </div>
-            <div className="col-8 barGraphContainer position-relative">
+            <div className="col-12 col-md-8 barGraphContainer position-relative">
               <div
                 className="barGraph"
                 style={{ height: "500px", width: "100%" }}

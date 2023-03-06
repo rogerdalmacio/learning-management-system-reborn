@@ -176,8 +176,8 @@ function FileUpload() {
         {getStudents !== undefined &&
         getTeachers !== undefined &&
         getProgram !== undefined ? (
-          <div className="row g-2">
-            <div className="col-4 pieGraphContainer position-relative">
+          <div className="row g-2 allGraphContainer w-100">
+            <div className="col-12 col-md-4 pieGraphContainer position-relative">
               <div
                 className="pieGraph"
                 style={{ height: "400px", width: "100%" }}
@@ -186,7 +186,7 @@ function FileUpload() {
                 <SuperDashboardData data={data} />
               </div>
             </div>
-            <div className="col-8 barGraphContainer position-relative">
+            <div className="col-12 col-md-8 barGraphContainer ">
               <div
                 className="barGraph"
                 style={{ height: "400px", width: "100%" }}
