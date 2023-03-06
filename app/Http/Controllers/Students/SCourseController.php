@@ -25,7 +25,6 @@ class SCourseController extends Controller
 
         $courses = Course::with('module')->whereIn('course_code', $subjectsarray)
                             ->where('department', $user->department)
-                            ->where('module.status', true)
                             ->get();
 
         $response = [
