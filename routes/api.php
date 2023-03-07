@@ -34,6 +34,7 @@ use App\Http\Controllers\CoreFunctions\AccountCreationController;
 use App\Http\Controllers\CoreFunctions\AccountManageController;
 use App\Http\Controllers\CoreFunctions\ListOfUsersController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
+use App\Http\Controllers\CoreFunctions\PasswordResetController;
 use App\Http\Controllers\CourseDeveloper\CDToDoListController;
 use App\Http\Controllers\CourseManager\CMFilteredCourseList;
 use App\Http\Controllers\Teacher\TSnapshotController;
@@ -139,7 +140,7 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
 });
 
 
-//
+//content routes
 Route::group(['prefix' => 'content', 'middleware' => ['auth:sanctum','abilities:CourseManager,Admin']], function(){
 
     Route::apiResource('courses', SCourseController::class);
@@ -163,21 +164,16 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
     Route::post('/createsinglecoursedeveloper', [AccountCreationController::class, 'createSingleCourseDeveloper']);
     Route::post('/createsingleteacher', [AccountCreationController::class, 'createSingleTeacher']);
 
-    //listOfUsers
-    Route::get('/superadmin/students', [ListOfUsersController::class, 'students']);
-    Route::get('/superadmin/teachers', [ListOfUsersController::class, 'teachers']);
-
     //AccountManage
     Route::patch('/editstudent/{id}', [AccountManageController::class, 'editStudent']);
     Route::patch('/editteacher/{id}', [AccountManageController::class, 'editTeacher']);
+
+    Route::patch('/resetpassword/{id}', [PasswordResetController::class, 'passwordReset']);
     
 });
 
 //Admin Core
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Admin']], function(){
-    
-    Route::get('/admin/students', [ListOfUsersController::class, 'students']);
-    Route::get('/admin/teachers', [ListOfUsersController::class, 'teachers']);
     
     Route::apiResource('tagsubject', SubjectTaggingController::class);
     Route::apiResource('subjects', ListOfSubjectsController::class);
@@ -203,6 +199,16 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::patch('/editcoursedevelopersubject/{id}', [SubjectTaggingController::class, 'editCourseDeveloperSubject']);
     Route::patch('/editstudentsubject/{id}', [SubjectTaggingController::class, 'editStudentSubject']);
     Route::patch('/editteachersubject/{id}', [SubjectTaggingController::class, 'editTeacherSubject']);
+
+});
+
+Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'abilities:Admin,SuperAdmin']], function(){
+
+    //listOfUsers
+    Route::get('/students', [ListOfUsersController::class, 'students']);
+    Route::get('/teachers', [ListOfUsersController::class, 'teachers']);
+    Route::get('/coursemanagers', [ListOfUsersController::class, 'coursemanager']);
+    Route::get('/coursedevelopers', [ListOfUsersController::class, 'coursedeveloper']);
 
 });
 
