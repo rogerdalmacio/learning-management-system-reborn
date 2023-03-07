@@ -4,7 +4,9 @@ namespace App\Http\Controllers\CourseDeveloper;
 
 use Illuminate\Http\Request;
 use App\Models\Modules\Activity;
+use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CourseDeveloper\ActivityRequest;
 
 class CDActivityController extends Controller
@@ -37,11 +39,17 @@ class CDActivityController extends Controller
             return response(['already exist'], 409);
         }
 
-        Activity::create($request->all());
+        $activity = Activity::create($request->all());
 
         $response = [
             'Successfuly created' => $request['module_id'],
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Created activity for module' .  $activity->module_id . '-' . $activity->activity_type
+        ]);
 
         return response($response, 201);
     }
@@ -87,6 +95,13 @@ class CDActivityController extends Controller
         $response = [
             'Activity successfully updated' => $activity
         ];
+
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Editted activity for module' .  $activity->module_id . '-' . $activity->activity_type
+        ]);
 
         return response($response, 201); 
 

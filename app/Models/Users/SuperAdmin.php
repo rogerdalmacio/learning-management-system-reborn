@@ -3,8 +3,9 @@
 namespace App\Models\Users;
 
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Foundation\Auth\User as Model;
+use App\Models\CoreFunctions\Logs;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SuperAdmin extends Model
@@ -36,6 +37,10 @@ class SuperAdmin extends Model
 
     public function usertype(){
         return 'SuperAdmin';
+    }
+
+    public function logs() {
+        return $this->hasMany(Logs::class);
     }
 
    public function getAuthPassword()

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\CoreFunctions;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Users\Student;
 use App\Models\Users\Teacher;
-use Illuminate\Http\Request;
+use App\Models\CoreFunctions\Logs;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class AccountManageController extends Controller
 {
@@ -31,6 +33,12 @@ class AccountManageController extends Controller
             'department' => $request['department'],
             'program' => $request['program']
         ]);
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'editted student information'
+        ]);
         
         return response(['Successfully edited'], 201);
 
@@ -54,6 +62,12 @@ class AccountManageController extends Controller
             'year_and_sections' => $request['year_and_sections'],
             'department' => $request['department'],
             'program' => $request['program']
+        ]);
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'editted teacher information'
         ]);
 
         return response(['Successfully edited'], 201);

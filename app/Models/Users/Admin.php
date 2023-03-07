@@ -3,6 +3,7 @@
 namespace App\Models\Users;
 
 use App\Models\CoreFunctions\Announcement;
+use App\Models\CoreFunctions\Logs;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Model;
 use Illuminate\Notifications\Notifiable;
@@ -57,6 +58,10 @@ class Admin extends Model
 
         return $this->password;
 
+    }
+
+    public function logs() {
+        return $this->hasMany(Logs::class);
     }
 
     public function announcement() {

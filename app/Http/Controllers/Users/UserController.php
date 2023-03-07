@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Users;
 
 use App\Models\Users\Admin;
+use Illuminate\Http\Request;
 use App\Models\Users\Student;
 use App\Models\Users\Teacher;
-use Illuminate\Http\Request;
+use App\Models\Users\SuperAdmin;
+use App\Models\CoreFunctions\Logs;
 use App\Models\Users\CourseManager;
 use App\Http\Controllers\Controller;
-use App\Models\Users\CourseDeveloper;
-use App\Models\Users\SuperAdmin;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Users\CourseDeveloper;
 
 class UserController extends Controller
 {
@@ -55,6 +56,12 @@ class UserController extends Controller
                 'token' => $token,
                 'type' => 'teacher'
             ];
+
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'user_type' => Auth::user()->usertype(),
+                'activity_log' => 'Logged in'
+            ]);
                     
             return response($response, 201);
 
@@ -74,6 +81,12 @@ class UserController extends Controller
                 'type' => 'CourseManager',
             ];
 
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'user_type' => Auth::user()->usertype(),
+                'activity_log' => 'Logged in'
+            ]);
+
             return response($response, 201);
 
         } elseif($request->type == 'CourseDeveloper') {
@@ -91,6 +104,12 @@ class UserController extends Controller
                 'token' => $token,
                 'type' => 'courseDeveloper'
             ];
+
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'user_type' => Auth::user()->usertype(),
+                'activity_log' => 'Logged in'
+            ]);
 
             return response($response, 201);
 
@@ -110,6 +129,12 @@ class UserController extends Controller
                 'type' => 'admin'
             ];
 
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'user_type' => Auth::user()->usertype(),
+                'activity_log' => 'Logged in'
+            ]);
+
             return response($response, 201);
 
         } elseif($request->type == 'SuperAdmin') {
@@ -128,6 +153,12 @@ class UserController extends Controller
                 'type' => 'SuperAdmin'
             ];
 
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'user_type' => Auth::user()->usertype(),
+                'activity_log' => 'Logged in'
+            ]);
+
             return response($response, 201);
 
         } else {
@@ -136,6 +167,12 @@ class UserController extends Controller
     }
 
     public function logout(Request $request){
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Logged out'
+        ]);
 
         $request->user()->currentAccessToken()->delete();
         

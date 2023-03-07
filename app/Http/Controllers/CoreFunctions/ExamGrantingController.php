@@ -4,14 +4,16 @@ namespace App\Http\Controllers\CoreFunctions;
 
 use Carbon\Carbon;
 use League\Csv\Reader;
+use Illuminate\Http\Request;
+use App\Models\Users\Student;
+use Illuminate\Validation\Rule;
+use App\Models\CoreFunctions\Logs;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Models\CoreFunctions\ExaminationGrant;
 use App\Http\Requests\Core\ExamGrantRequest;
-use App\Models\Users\Student;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use App\Models\CoreFunctions\ExaminationGrant;
 
 class ExamGrantingController extends Controller
 {
@@ -96,6 +98,12 @@ class ExamGrantingController extends Controller
             ], 500);
         }
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'granted students for examination'
+        ]);
+
         return response()->json([   
             'Exam granted for' => $success,
             'errors' => $errors
@@ -108,8 +116,7 @@ class ExamGrantingController extends Controller
         $request->validate([
             'student_id' => [
                 'required',
-                Rule::exists('students', 'id')
-        ],
+                Rule::exists('students', 'id')],
             'grant' => 'required',
             'preliminaries' => 'required',
         ]);
@@ -128,6 +135,14 @@ class ExamGrantingController extends Controller
             'granted_at' => Carbon::now()
         ]);
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'granted student for examination'
+        ]);
+
+        return response('granted successfully', 204);
+
     }
 
 
@@ -140,6 +155,12 @@ class ExamGrantingController extends Controller
         $response = [
             'Grant dropped'
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'revoked examination grant for a student'
+        ]);
 
         return response($response, 202);
 

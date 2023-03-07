@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Models\Modules\Quiz;
 use Illuminate\Http\Request;
+use App\Models\CoreFunctions\Logs;
 use App\Models\Students\QuizResult;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -32,6 +34,13 @@ class TSnapshotController extends Controller
             $directory
         ];
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Snapshot accepted for quiz - ' . $quiz->quiz_id
+        ]);
+
+
         return response($response, 204);
 
     }
@@ -51,6 +60,12 @@ class TSnapshotController extends Controller
         $response = [
             'Snapshot rejected'
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Snapshot rejected for quiz - ' . $quiz->quiz_id
+        ]);
 
         return response($response, 204);
 

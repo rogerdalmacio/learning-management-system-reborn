@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\CourseManager;
 
 use App\Models\Modules\Course;
+use App\Models\Modules\Module;
+use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use App\Models\CourseManager\ContentValidation;
-use App\Models\Modules\Module;
 
 class CMToDoListController extends Controller
 {
@@ -20,7 +22,7 @@ class CMToDoListController extends Controller
             'deadline' => 'required|string'
         ]);
 
-        ContentValidation::create([
+        $contentvalidation = ContentValidation::create([
             'module_id' => $request['module_id'],
             'status' => $request['status'],
             'comments' => $request['comments'],
@@ -31,6 +33,12 @@ class CMToDoListController extends Controller
         $response = [
             'message' => 'To do successfully sent'
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Created to do for ' . $contentvalidation->module_id
+        ]);
 
         return response($response, 201);
 
@@ -50,6 +58,13 @@ class CMToDoListController extends Controller
             'message' => $message
         ];
 
+        
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Approved module' . $module->id
+        ]);
+
         return response($response, 204);
 
     }
@@ -67,6 +82,12 @@ class CMToDoListController extends Controller
         $response = [
             'message' => $message
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => $message
+        ]);
 
         return response($response, 204);
 

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\CoreFunctions;
 
 
 use Illuminate\Http\Request;
+use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\CoreFunctions\Announcement;
 use App\Http\Requests\Core\CreateAnnouncementRequest;
 
@@ -44,6 +46,12 @@ class AnnouncementsController extends Controller
         ];
 
         return response($response, 201);
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'created announcement'
+        ]);
         
     }
 
@@ -66,6 +74,12 @@ class AnnouncementsController extends Controller
         $response = [
             'Announcement Edited Succesfully: ' => $announcement,
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'editted announcement'
+        ]);
         
         return response($response, 201);
 
@@ -80,6 +94,12 @@ class AnnouncementsController extends Controller
         $response = [
             'Announcement Deleted Succesfully: ' => $announcement->title,
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'deleted announcement'
+        ]);
  
         return response($response, 204);
     }

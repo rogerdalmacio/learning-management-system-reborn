@@ -2,10 +2,11 @@
 
 namespace App\Models\Users;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Model;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\CoreFunctions\Logs;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Teacher extends Model
@@ -61,6 +62,10 @@ class Teacher extends Model
     public function getAuthPassword()
     {
         return $this->password;
+    }
+
+    public function logs() {
+        return $this->hasMany(Logs::class);
     }
 
     public function students() {

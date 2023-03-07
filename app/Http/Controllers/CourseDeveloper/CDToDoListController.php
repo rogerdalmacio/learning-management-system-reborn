@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\CourseDeveloper;
 
+use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
-use App\Models\CourseManager\ContentValidation;
-use App\Models\CourseManager\ToDoList;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CourseManager\ContentValidation;
 
 class CDToDoListController extends Controller
 {
@@ -22,6 +21,12 @@ class CDToDoListController extends Controller
         $response = [
             'message' => 'To do submitted'
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Submitted to do for content validation - ' . $content_validate->id
+        ]);
 
         return response($response, 204);
 

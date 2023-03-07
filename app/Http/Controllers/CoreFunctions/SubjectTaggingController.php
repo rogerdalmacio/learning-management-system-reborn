@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Users\Student;
 use App\Models\Users\Teacher;
 use Illuminate\Validation\Rule;
+use App\Models\CoreFunctions\Logs;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Users\CourseDeveloper;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Core\SubjectTaggingRequests\BatchTeacherSubjectTaggingRequest;
@@ -80,6 +82,12 @@ class SubjectTaggingController extends Controller
             ], 500);
         }
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Batch tagged students on their subjects'
+        ]);
+
         return response()->json([
             'Subjects Tagged to' => $success,
             'errors' => $errors,
@@ -143,6 +151,12 @@ class SubjectTaggingController extends Controller
             ], 500);
         }
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Batch tagged teachers on their subjects'
+        ]);
+
         return response()->json([
             'Subjects Tagged to' => $success,
             'errors' => $errors,
@@ -203,6 +217,12 @@ class SubjectTaggingController extends Controller
             'New list of subjects' => $newSubjectsArray
         ];
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Tagged student on his/her subjects'
+        ]);
+
         return response($response, 201);
 
     }
@@ -259,6 +279,12 @@ class SubjectTaggingController extends Controller
             'Successfully added' => $newSubjects,
             'New list of subjects' => $newSubjectsArray
         ];
+        
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Tagged teacher on his/her subjects'
+        ]);
 
         return response($response, 201);
 
@@ -318,6 +344,12 @@ class SubjectTaggingController extends Controller
             'New list of subjects' => $newSubjectsArray
         ];
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Tagged course developer on his/her subjects'
+        ]);
+
         return response($response, 201);
 
     }
@@ -337,6 +369,12 @@ class SubjectTaggingController extends Controller
         $response = [
             'new subjects list' => $coursedeveloper->subjects
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Editted course developer subjects'
+        ]);
 
         return response($response, 201);
 
@@ -358,6 +396,12 @@ class SubjectTaggingController extends Controller
             'new subjects list' => $student->subjects
         ];
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Editted student subjects'
+        ]);
+
         return response($response, 201);
     
     }
@@ -377,6 +421,12 @@ class SubjectTaggingController extends Controller
         $response = [
             'new subjects list' => $teacher->subjects
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Editted teacher subjects'
+        ]);
 
         return response($response, 201);
 

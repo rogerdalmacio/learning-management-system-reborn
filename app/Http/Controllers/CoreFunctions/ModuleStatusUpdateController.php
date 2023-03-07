@@ -58,6 +58,12 @@ class ModuleStatusUpdateController extends Controller
             'Module status updated: ' => $modules,
         ];
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Editted module status'
+        ]);
+
         return response($response, 201);
 
     }   

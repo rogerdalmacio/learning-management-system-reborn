@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 
 use Spatie\Glide\GlideImage;
+use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -46,12 +47,17 @@ class ProfilePictureController extends Controller
             $newFileLocation,
             $newFileName
         );
-
-        
+  
         $response = [
             'profile picture:' => $newFileName,
             'path' => $path
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Updated profile picture'
+        ]);
 
         return response($response, 201);
 

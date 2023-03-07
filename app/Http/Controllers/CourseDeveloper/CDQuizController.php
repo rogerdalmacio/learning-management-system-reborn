@@ -4,7 +4,9 @@ namespace App\Http\Controllers\CourseDeveloper;
 
 use App\Models\Modules\Quiz;
 use Illuminate\Http\Request;
+use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CourseDeveloper\QuizRequest;
 
 class CDQuizController extends Controller
@@ -38,11 +40,17 @@ class CDQuizController extends Controller
             return response(['already exist'], 409);
         }
 
-        Quiz::create($request->all());
+        $quiz = Quiz::create($request->all());
 
         $response = [
             'Successfuly created' => $request['module_id'],
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Created quiz for module' .  $quiz->module_id . '-' . $quiz->quiz_type
+        ]);
 
         return response($response, 201);
         
@@ -90,6 +98,12 @@ class CDQuizController extends Controller
         $response = [
             'Quiz Successfully updated' => $quiz
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Editted quiz for module' .  $quiz->module_id . '-' . $quiz->quiz_type
+        ]);
 
         return response($response, 201);
 

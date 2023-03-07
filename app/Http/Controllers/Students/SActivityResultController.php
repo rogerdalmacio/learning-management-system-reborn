@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Students;
 use Illuminate\Http\Request;
+use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Students\ActivityResult;
@@ -70,6 +71,12 @@ class SActivityResultController extends Controller
             'Activity Result' => $activityResult,
             'file path' => $path
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Submitted activity - ' . $activityResult->activity_id
+        ]);
 
         return response($response, 201);
         

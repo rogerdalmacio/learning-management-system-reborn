@@ -87,6 +87,12 @@ class CMCourseController extends Controller
             'Modules created' => $moduleCreated
         ];
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Created ' . $course->course
+        ]);
+
         DB::commit();
         return response($response, 201);
 
@@ -138,6 +144,12 @@ class CMCourseController extends Controller
         $response = [
             'Course updated' => $course
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Editted ' . $course->course
+        ]);
 
         return response($response, 204);
 

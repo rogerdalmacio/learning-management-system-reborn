@@ -4,6 +4,7 @@ namespace App\Models\Users;
 
 use App\Models\Students\Grade;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\CoreFunctions\Logs;
 use App\Models\Students\QuizResult;
 use App\Models\Students\ActivityResult;
 use Illuminate\Notifications\Notifiable;
@@ -62,6 +63,10 @@ class Student extends Model
     public function getAuthPassword()
     {
         return $this->password;
+    }
+
+    public function logs() {
+        return $this->hasMany(Logs::class);
     }
 
     public function grade(){

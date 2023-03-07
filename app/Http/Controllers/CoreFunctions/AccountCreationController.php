@@ -6,9 +6,12 @@ use Carbon\Carbon;
 use League\Csv\Reader;
 use App\Models\Users\Admin;
 use App\Models\Users\Student;
+use App\Models\Users\Teacher;
+use App\Models\CoreFunctions\Logs;
 use App\Models\Users\CourseManager;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Users\CourseDeveloper;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +22,6 @@ use App\Http\Requests\Core\AccountCreationRequests\CreateSingleStudentRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleTeacherRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleCourseManagerRequest;
 use App\Http\Requests\Core\AccountCreationRequests\CreateSingleCourseDeveloperRequest;
-use App\Models\Users\Teacher;
 
 class AccountCreationController extends Controller
 {
@@ -116,6 +118,12 @@ class AccountCreationController extends Controller
             ], 500);
         }
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'batch created students account'
+        ]);
+
         return response()->json([
             'account successfully created for' => $success,
             'errors' => $errors
@@ -211,6 +219,12 @@ class AccountCreationController extends Controller
             ], 500);
         }
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'batch created teacher account'
+        ]);
+
         return response()->json([
             'account successfully created for' => $success,
             'errors' => $errors
@@ -247,6 +261,12 @@ class AccountCreationController extends Controller
             'Account Succesfully Created' => $student
         ];
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'created student account'
+        ]);
+
         return response($response, 201);
     }
 
@@ -273,6 +293,12 @@ class AccountCreationController extends Controller
         $response = [
             'Account Succesfully Created' => $admin
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'created admin account'
+        ]);
 
         return response($response, 201);
 
@@ -303,6 +329,12 @@ class AccountCreationController extends Controller
             'Account Succesfully Created' => $course_manager
         ];
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'created course manager account'
+        ]);
+
         return response($response, 201);
 
     }
@@ -332,6 +364,12 @@ class AccountCreationController extends Controller
         $response = [
             'Account Succesfully Created' => $course_developer
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'created course developer account'
+        ]);
 
         return response($response, 201);
 
@@ -364,6 +402,12 @@ class AccountCreationController extends Controller
         $response = [
             'Account Succesfully Created' => $teacher
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'created teacher account'
+        ]);
 
         return response($response, 201);
 

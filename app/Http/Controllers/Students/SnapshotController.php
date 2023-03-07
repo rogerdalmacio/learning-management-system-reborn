@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Students;
 
 use Illuminate\Http\Request;
+use App\Models\CoreFunctions\Logs;
 use App\Models\Students\QuizResult;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +49,12 @@ class SnapshotController extends Controller
             'Quiz result updated' => $quizresult,
             'Snapshot' => $path
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'snapshot captured on quiz = ' . $quizresult->quiz_id . ' on module ' . $quizresult->module_Id
+        ]);
 
         return response($response, 201);
 

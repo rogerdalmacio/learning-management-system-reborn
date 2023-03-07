@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Students;
 use Carbon\Carbon;
 use App\Models\Modules\Quiz;
 use Illuminate\Http\Request;
+use App\Models\CoreFunctions\Logs;
 use App\Models\Students\QuizResult;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Student\QuizResultRequest;
 use App\Models\Students\AutoSaveProgress;
+use App\Http\Requests\Student\QuizResultRequest;
 
 class SQuizResultController extends Controller
 {
@@ -190,6 +191,12 @@ class SQuizResultController extends Controller
         $response = [
             'Quiz Result' => $quizresult,
         ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Quiz submitted on quiz = ' . $quizresult->quiz_id . ' on module ' . $quizresult->module_Id
+        ]);
 
         return response($response, 201);
 

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Users;
 
+use App\Models\Users\Admin;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Users\ChangePasswordRequest;
 use App\Models\Users\Student;
 use App\Models\Users\Teacher;
-use App\Models\Users\CourseDeveloper;
-use App\Models\Users\CourseManager;
-use App\Models\Users\Admin;
 use App\Models\Users\SuperAdmin;
+use App\Models\CoreFunctions\Logs;
+use App\Models\Users\CourseManager;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Users\CourseDeveloper;
+use App\Http\Requests\Users\ChangePasswordRequest;
 
 class ChangePasswordController extends Controller
 {
@@ -30,8 +31,16 @@ class ChangePasswordController extends Controller
             'Password Updated Successfully'
         ];
 
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Changed password'
+        ]);
+
         return response($response, 201);
 
     }
+
+    
 
 }
