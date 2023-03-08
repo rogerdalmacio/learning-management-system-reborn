@@ -39,6 +39,12 @@ class UserController extends Controller
                 'type' => 'student',
             ];
 
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'user_type' => Auth::user()->usertype(),
+                'activity_log' => 'Logged in'
+            ]);
+
             return response($response, 201)->cookie('sanctum', $token, 1440);
 
         } elseif ($request->type == 'Teacher') {
@@ -58,8 +64,8 @@ class UserController extends Controller
             ];
 
             Logs::create([
-                'user_id' => Auth::user()->id,
-                'user_type' => Auth::user()->usertype(),
+                'user_id' => Auth::guard('Teacher')->user()->id,
+                'user_type' => Auth::guard('Teacher')->user()->usertype(),
                 'activity_log' => 'Logged in'
             ]);
                     
@@ -82,8 +88,8 @@ class UserController extends Controller
             ];
 
             Logs::create([
-                'user_id' => Auth::user()->id,
-                'user_type' => Auth::user()->usertype(),
+                'user_id' => Auth::guard('CourseManager')->user()->id,
+                'user_type' => Auth::guard('CourseManager')->user()->usertype(),
                 'activity_log' => 'Logged in'
             ]);
 
@@ -106,8 +112,8 @@ class UserController extends Controller
             ];
 
             Logs::create([
-                'user_id' => Auth::user()->id,
-                'user_type' => Auth::user()->usertype(),
+                'user_id' => Auth::guard('CourseDeveloper')->user()->id,
+                'user_type' => Auth::guard('CourseDeveloper')->user()->usertype(),
                 'activity_log' => 'Logged in'
             ]);
 
@@ -130,8 +136,8 @@ class UserController extends Controller
             ];
 
             Logs::create([
-                'user_id' => Auth::user()->id,
-                'user_type' => Auth::user()->usertype(),
+                'user_id' => Auth::guard('Admin')->user()->id,
+                'user_type' => Auth::guard('Admin')->user()->usertype(),
                 'activity_log' => 'Logged in'
             ]);
 
@@ -154,8 +160,8 @@ class UserController extends Controller
             ];
 
             Logs::create([
-                'user_id' => Auth::user()->id,
-                'user_type' => Auth::user()->usertype(),
+                'user_id' => Auth::guard('SuperAdmin')->user()->id,
+                'user_type' => Auth::guard('SuperAdmin')->user()->usertype(),
                 'activity_log' => 'Logged in'
             ]);
 
