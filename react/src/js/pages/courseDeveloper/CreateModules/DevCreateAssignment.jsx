@@ -3,14 +3,28 @@ import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCours
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
 
 function DevCreateAssignment() {
   // States
+  const {
+    quizid,
+    quiz,
+    courses,
+    setWeekQuiz,
+    setQuizId,
+    setUpdatedList,
+    updateList,
+    officialQuiz,
+  } = useCourseDevContext();
   const { course } = useGetAvailableCourse();
   const { token } = useAuth();
 
   const [moduleId, setModuleId] = useState();
   const [term, setTerm] = useState();
+  const [getQuizId, setGetQuizId] = useState();
+  const [listChange, setListChange] = useState(false);
+  const [hasContent, setHasContent] = useState(false);
 
   const [AssignQuestions, setAssignQuestions] = useState([
     {
@@ -183,7 +197,10 @@ function DevCreateAssignment() {
   const pathArray = pathname.split("/");
   const courseBase = pathArray[2];
   const courseTitle = courseBase.replace(/%20/g, " ");
-  console.log(courseTitle);
+  const weekMod = pathArray[4];
+  const currentWeek = weekMod.replace("week", "Week ");
+  const weekForModule = weekMod.match(/\d+/)[0];
+  const contentType = pathArray[5];
 
   // WEEK number
   const weekNumber = id.match(/\d+/)[0];
@@ -202,6 +219,81 @@ function DevCreateAssignment() {
       });
     }
   });
+
+  useEffect(() => {
+    if (courses) {
+      courses.map((course) => {
+        if (course.course == courseTitle) {
+          course.module.map((mod) => {
+            if (mod.week == weekForModule) {
+              setWeekQuiz(mod.id);
+            }
+          });
+        }
+      });
+    }
+
+    // this will check if quizId is available
+  });
+
+  useEffect(() => {
+    if (quiz) {
+      const act = quiz.quiz
+        .filter((qui) => qui.quiz_type == contentType)
+        .map((content) => {
+          console.log(content);
+          const part = content.module_id.split("-");
+          console.log(part[1] == weekForModule);
+          if (part[1] == weekForModule) {
+            setUpdatedList(!updateList);
+            setGetQuizId(content.id);
+            setQuizId(content.id);
+          } else {
+            setUpdatedList(!updateList);
+            setQuizId(undefined);
+          }
+        });
+    }
+    console.log(quiz);
+  }, [quiz]);
+
+  useEffect(() => {
+    console.log(officialQuiz);
+
+    const fetchContent = () => {
+      if (officialQuiz !== undefined) {
+        const ModuleId = officialQuiz.Quiz[0].module_id.split("-");
+        if (ModuleId[1] == weekForModule) {
+          setHasContent(true);
+          const data = {
+            answers: officialQuiz.Quiz[0].answers,
+            questions: officialQuiz.Quiz[0].questions,
+            options: officialQuiz.Quiz[0].options,
+          };
+          const answers = data.answers.split("|");
+          const options = data.options.split("|");
+          const questions = data.questions.split("|");
+
+          const AssignQuestions = questions.map((question, index) => {
+            const optionOneIsCorrect = answers[index] === "optionOne";
+            const optionTwoIsCorrect = answers[index] === "optionTwo";
+            return {
+              id: `question${index + 1}`,
+              question: question,
+              options: [
+                { id: "optionOne", isCorrect: optionOneIsCorrect },
+                { id: "optionTwo", isCorrect: optionTwoIsCorrect },
+              ],
+            };
+          });
+          setAssignQuestions(AssignQuestions);
+          setListChange(!listChange);
+        }
+      }
+    };
+    fetchContent();
+  }, [officialQuiz]);
+  console.log(AssignQuestions);
 
   // Term
   useEffect(() => {
@@ -261,6 +353,95 @@ function DevCreateAssignment() {
       await axios
         .post(
           `${import.meta.env.VITE_API_BASE_URL}/api/coursedeveloper/quiz`,
+          activity,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status >= 200 && response.status <= 300) {
+            toast.update(toastId, {
+              render: "Request Successfully",
+              type: toast.TYPE.SUCCESS,
+              autoClose: 2000,
+            });
+          } else {
+            throw new Error(response.status || "Something Went Wrong!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.data.length !== 0) {
+            toast.update(toastId, {
+              render: `${error.response.data[0]}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          } else {
+            toast.update(toastId, {
+              render: `${error.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          }
+        });
+    }
+  };
+
+  const EditQuizHandler = async () => {
+    let toastId;
+
+    if (questionError === true || isCorrectError === true) {
+      console.log("ERROR");
+      toast.error("You must fill out the blank area");
+      setError(true);
+    } else {
+      console.log(AssignQuestions);
+      setError(false);
+
+      // Questions
+      const questions = AssignQuestions.reduce(
+        (acc, curr) => `${acc}|${curr.question}`,
+        ""
+      ).slice(1);
+      console.log(questions);
+
+      // Options
+      const options = AssignQuestions.map((question) => {
+        return question.options.map((option) => option.id).join("|");
+      }).join("|");
+      console.log(options);
+
+      // Correct Answer
+      const correctAnswers = AssignQuestions.map((question) => {
+        const correctOption = question.options.find(
+          (option) => option.isCorrect === true
+        );
+        return correctOption.id;
+      }).join("|");
+      console.log(correctAnswers);
+
+      let activity = {
+        module_id: moduleId,
+        quiz_type: "assignment",
+        preliminaries: term,
+        questions: questions,
+        answers: correctAnswers,
+        options: options,
+      };
+
+      toastId = toast.info("Sending Request...");
+
+      await axios
+        .patch(
+          `${
+            import.meta.env.VITE_API_BASE_URL
+          }/api/coursedeveloper/quiz/${getQuizId}`,
           activity,
           {
             headers: {
@@ -383,6 +564,7 @@ function DevCreateAssignment() {
                   : ""
               }`}
               type="text"
+              value={AssignQuestions[index].question}
               name={questionNumber}
               required
               onChange={(e) => {
@@ -437,6 +619,8 @@ function DevCreateAssignment() {
               className={`form-check-input me-2 ms-1 `}
               type="radio"
               name={radioNumber}
+              value={AssignQuestions[index].options[i].isCorrect}
+              checked={AssignQuestions[index].options[i].isCorrect === true}
               data-option={questionNumber}
               data-radio={choice.id}
               id={questionNumber + choice.rightAnswerNo}
@@ -467,9 +651,9 @@ function DevCreateAssignment() {
           <button
             type="button"
             className="btn btn-primary btn-lg"
-            onClick={SubmitQuizHandler}
+            onClick={hasContent ? EditQuizHandler : SubmitQuizHandler}
           >
-            Submit
+            {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}
           </button>
         </div>
       </div>

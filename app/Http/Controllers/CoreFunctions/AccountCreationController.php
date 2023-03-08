@@ -125,7 +125,7 @@ class AccountCreationController extends Controller
         ]);
 
         return response()->json([
-            'account successfully created for' => $success,
+            'accountSuccessfullyCreatedFor' => $success,
             'errors' => $errors
         ], 201);
 
@@ -226,7 +226,7 @@ class AccountCreationController extends Controller
         ]);
 
         return response()->json([
-            'account successfully created for' => $success,
+            'accountSuccessfullyCreatedFor' => $success,
             'errors' => $errors
         ], 201);
 

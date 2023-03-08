@@ -5,6 +5,7 @@ import useAuth from "../../../hooks/useAuth";
 import DevCreateExamState from "./DevCreateExamState/DevCreateExamOptionsState";
 import numberOfQuestions from "./DevCreateExamState/DevCreateExamQuestionState";
 import { toast } from "react-toastify";
+import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
 
 function DevCreateExam() {
   const { id } = useParams();
@@ -18,8 +19,23 @@ function DevCreateExam() {
   console.log(ExamNewWord); // Output: "Preliminary Examination"
 
   // States
+  const {
+    quizid,
+    quiz,
+    courses,
+    setWeekQuiz,
+    setQuizId,
+    setUpdatedList,
+    updateList,
+    officialQuiz,
+  } = useCourseDevContext();
+
   const [moduleId, setModuleId] = useState();
   const [term, setTerm] = useState();
+  const [getQuizId, setGetQuizId] = useState();
+  const [listChange, setListChange] = useState(false);
+  const [hasContent, setHasContent] = useState(false);
+
   const [AAEquestions, setAAEQuestions] = useState(DevCreateExamState);
   const [error, setError] = useState(false);
 
@@ -40,12 +56,107 @@ function DevCreateExam() {
 
   // Course Title
   const pathname = window.location.pathname;
-
   const pathArray = pathname.split("/");
   const courseBase = pathArray[2];
-
   const courseTitle = courseBase.replace(/%20/g, " ");
+  const weekMod = pathArray[4];
+  const currentWeek = weekMod.replace("week", "Week ");
+  const weekForModule = weekMod.match(/\d+/)[0];
+  const contentType = pathArray[5];
 
+  useEffect(() => {
+    if (course) {
+      return course.map((item) => {
+        if (item.course == courseTitle) {
+          item.module.map((mod) => {
+            if (mod.week == weekNumber) {
+              setModuleId(mod.id);
+            }
+          });
+        }
+      });
+    }
+  });
+
+  useEffect(() => {
+    if (courses) {
+      courses.map((course) => {
+        if (course.course == courseTitle) {
+          course.module.map((mod) => {
+            if (mod.week == weekForModule) {
+              setWeekQuiz(mod.id);
+            }
+          });
+        }
+      });
+    }
+
+    // this will check if quizId is available
+  });
+
+  useEffect(() => {
+    if (quiz) {
+      const act = quiz.quiz
+        .filter((qui) => qui.quiz_type == contentType)
+        .map((content) => {
+          console.log(content);
+          const part = content.module_id.split("-");
+          console.log(part[1] == weekForModule);
+          if (part[1] == weekForModule) {
+            setUpdatedList(!updateList);
+            setGetQuizId(content.id);
+            setQuizId(content.id);
+          } else {
+            setUpdatedList(!updateList);
+            setQuizId(undefined);
+          }
+        });
+    }
+    console.log(quiz);
+  }, [quiz]);
+
+  useEffect(() => {
+    console.log(officialQuiz);
+
+    const fetchContent = () => {
+      if (officialQuiz !== undefined) {
+        const ModuleId = officialQuiz.Quiz[0].module_id.split("-");
+        if (ModuleId[1] == weekForModule) {
+          setHasContent(true);
+          const initialState = {
+            answers: officialQuiz.Quiz[0].answers,
+            questions: officialQuiz.Quiz[0].questions,
+            options: officialQuiz.Quiz[0].options,
+          };
+          const questionsArray = initialState.questions.split("|");
+          const optionsArray = initialState.options.split("|");
+
+          const AAEquestions = questionsArray.map((question, index) => {
+            const optionsStartIndex = index * 4;
+            const optionsEndIndex = optionsStartIndex + 4;
+            const questionOptions = optionsArray.slice(
+              optionsStartIndex,
+              optionsEndIndex
+            );
+            const questionObject = {
+              id: `question${index + 1}`,
+              question,
+              options: questionOptions.map((option, optionIndex) => ({
+                id: `option${optionIndex + 1}`,
+                text: option,
+                isCorrect: option === initialState.answers.split("|")[index],
+              })),
+            };
+            return questionObject;
+          });
+          setAAEQuestions(AAEquestions);
+          setListChange(!listChange);
+        }
+      }
+    };
+    fetchContent();
+  }, [officialQuiz]);
+  console.log(AAEquestions);
   // WEEK number
   const pathname1 = window.location.pathname;
 
@@ -169,6 +280,101 @@ function DevCreateExam() {
     }
   };
 
+  // Edit Button
+  const EditQuizHandler = async () => {
+    let toastId;
+
+    if (
+      questionError === true ||
+      textError === true ||
+      isCorrectError === true
+    ) {
+      toast.error("Please fill out the blank area");
+      setError(true);
+    } else {
+      console.log(AAEquestions);
+      setError(false);
+
+      // Questions
+      const questions = AAEquestions.reduce(
+        (acc, curr) => `${acc}|${curr.question}`,
+        ""
+      ).slice(1);
+      console.log(questions);
+
+      // Options
+      const options = AAEquestions.map((question) => {
+        return question.options.map((option) => option.text).join("|");
+      }).join("|");
+      console.log(options);
+
+      // Correct Answer
+      const correctAnswers = AAEquestions.map((question) => {
+        const correctOption = question.options.find(
+          (option) => option.isCorrect === true
+        );
+        return correctOption.text;
+      }).join("|");
+      console.log(correctAnswers);
+
+      let activity = {
+        module_id: moduleId,
+        quiz_type: id,
+        preliminaries: term,
+        questions: questions,
+        answers: correctAnswers,
+        options: options,
+      };
+
+      console.log(activity);
+
+      toastId = toast.info("Sending Request...");
+
+      await axios
+        .patch(
+          `${
+            import.meta.env.VITE_API_BASE_URL
+          }/api/coursedeveloper/quiz/${getQuizId}`,
+          activity,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status >= 200 && response.status <= 300) {
+            toast.update(toastId, {
+              render: "Request Successfully",
+              type: toast.TYPE.SUCCESS,
+              autoClose: 2000,
+            });
+          } else {
+            throw new Error(response.status || "Something Went Wrong!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.data.length !== 0) {
+            toast.update(toastId, {
+              render: `${error.response.data[0]}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          } else {
+            toast.update(toastId, {
+              render: `${error.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          }
+        });
+    }
+  };
+
   const setQuestionHandler = (e) => {
     const { name, value } = e.target;
 
@@ -263,6 +469,7 @@ function DevCreateExam() {
                   : ""
               }`}
               type="text"
+              value={AAEquestions[index].question}
               name={questionNumber}
               required
               onChange={(e) => {
@@ -291,6 +498,7 @@ function DevCreateExam() {
               <input
                 type="text"
                 name={choice.id}
+                value={AAEquestions[index].options[i].text}
                 className={`InputChoices form-control ${
                   error &&
                   textError &&
@@ -314,6 +522,8 @@ function DevCreateExam() {
                   className={`form-check-input me-1 ms-0 mt-0`}
                   type="radio"
                   name={radioNumber}
+                  value={AAEquestions[index].options[i].isCorrect}
+                  checked={AAEquestions[index].options[i].isCorrect === true}
                   data-option={questionNumber}
                   data-radio={choice.id}
                   id={questionNumber + choice.rightAnswerNo}
@@ -346,9 +556,9 @@ function DevCreateExam() {
           <button
             type="button"
             className="btn btn-primary btn-lg"
-            onClick={SubmitQuizHandler}
+            onClick={hasContent ? EditQuizHandler : SubmitQuizHandler}
           >
-            Submit
+            {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}
           </button>
         </div>
       </div>

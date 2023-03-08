@@ -4,12 +4,17 @@ import useAuth from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
-
+import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
+import Loading from "../../../components/layouts/Loading";
 function DevCreateLesson() {
-  const [item, setItem] = useState();
+  const { courses, setWeekLesson, lesson } = useCourseDevContext();
+
+  const [item, setItem] = useState("");
   const [moduleId, setModuleId] = useState();
   const [term, setTerm] = useState();
   const [error, setError] = useState(false);
+  const [hasContent, setHasContent] = useState(false);
+  const [lessonId, setLessonId] = useState();
 
   const { course } = useGetAvailableCourse();
   const { token } = useAuth();
@@ -18,17 +23,46 @@ function DevCreateLesson() {
 
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
-
+  console.log(courses);
   // Course Title
   const courseBase = pathArray[2];
   const courseTitle = courseBase.replace(/%20/g, " ");
-  console.log(courseTitle);
+  const weekMod = pathArray[4];
+  const currentWeek = weekMod.replace("week", "Week ");
+  const weekForModule = weekMod.match(/\d+/)[0];
+  const contentType = pathArray[5];
+  console.log(contentType);
 
-  console.log(course);
+  useEffect(() => {
+    if (courses) {
+      courses.map((course) => {
+        if (course.course == courseTitle) {
+          course.module.map((mod) => {
+            if (mod.week == weekForModule) {
+              setWeekLesson(mod.week);
+            }
+          });
+        }
+      });
+    }
+  });
+
+  useEffect(() => {
+    console.log(lesson);
+    if (lesson !== undefined && lesson.length !== 0) {
+      console.log(lesson);
+      if (lesson[0].title == "lesson") {
+        setHasContent(true);
+        setLessonId(lesson[0].id);
+        setItem(lesson[0].embed_links);
+      }
+    } else {
+      setItem("");
+    }
+  }, [lesson]);
 
   // Get module id
   const weekNumber = id.match(/\d+/)[0];
-  console.log(weekNumber);
 
   console.log(item);
 
@@ -123,10 +157,78 @@ function DevCreateLesson() {
     }
   };
 
+  const EditActivityHandler = async (e) => {
+    e.preventDefault();
+    console.log(lessonId);
+    let toastId;
+
+    if (item === 0 || item === "" || item === undefined) {
+      toast.error("Please Insert a link");
+    } else if (item && !item.includes("https://docs.google.com")) {
+      toast.error("The Link is not Valid");
+    } else {
+      let activity = {
+        module_id: moduleId,
+        title: "lesson",
+        preliminaries: term,
+        embed_links: item,
+      };
+
+      toastId = toast.info("Sending Request...");
+
+      console.log(activity);
+      await axios
+        .patch(
+          `${
+            import.meta.env.VITE_API_BASE_URL
+          }/api/coursedeveloper/lesson/${lessonId}`,
+          activity,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status >= 200 && response.status <= 300) {
+            toast.update(toastId, {
+              render: "Request Successfully",
+              type: toast.TYPE.SUCCESS,
+              autoClose: 2000,
+            });
+          } else {
+            throw new Error(response.status || "Something Went Wrong!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.data.length !== 0) {
+            toast.update(toastId, {
+              render: `${error.response.data[0]}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          } else {
+            toast.update(toastId, {
+              render: `${error.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          }
+        });
+    }
+  };
+
   return (
     <div className="DevModuleContentContainer">
       <h4 className="mb-4">Lesson</h4>
-      <form onSubmit={SubmitActivityHandler} className="ms-3">
+      <form
+        onSubmit={hasContent ? EditActivityHandler : SubmitActivityHandler}
+        className="ms-3"
+      >
         <label htmlFor="insertItem">
           <h5 className="mb-3">Insert Google Docs Here:</h5>
           <p>
@@ -142,6 +244,7 @@ function DevCreateLesson() {
             item === "" || error ? "errorInput" : "noErrorInput"
           }`}
           id="insertItem"
+          value={item}
           onChange={(e) => {
             setItem(e.target.value);
           }}
@@ -157,7 +260,7 @@ function DevCreateLesson() {
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div className="d-flex justify-content-end">
               <button className=" buttonTemplate text-right sumbit-button btn px-5">
-                Submit
+                {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}
               </button>
             </div>
           </div>

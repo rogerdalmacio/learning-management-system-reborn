@@ -4,41 +4,39 @@ import useAuth from "../../hooks/useAuth";
 const GetAvailableCourseContext = createContext({});
 
 export const GetAvailableCourseProvider = ({ children }) => {
-    const { token, role } = useAuth();
+  const { token, role } = useAuth();
 
-    const [course, setCourse] = useState();
+  const [course, setCourse] = useState();
 
-    console.log(course);
+  console.log(course);
 
-    useEffect(() => {
-        const renderCourse = async () => {
-            if (role === "courseDeveloper") {
-                axios
-                    .get(
-                        `${
-                            import.meta.env.VITE_API_BASE_URL
-                        }/api/coursedeveloper/course`,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                "Content-Type": "application/json",
-                                Accept: "application/json",
-                            },
-                        }
-                    )
-                    .then((response) => {
-                        setCourse(response.data.course);
-                    });
+  useEffect(() => {
+    const renderCourse = async () => {
+      if (role === "courseDeveloper") {
+        axios
+          .get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/coursedeveloper/course`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
             }
-        };
-        renderCourse();
-    }, []);
+          )
+          .then((response) => {
+            setCourse(response.data.course);
+          });
+      }
+    };
+    renderCourse();
+  }, []);
 
-    return (
-        <GetAvailableCourseContext.Provider value={{ course }}>
-            {children}
-        </GetAvailableCourseContext.Provider>
-    );
+  return (
+    <GetAvailableCourseContext.Provider value={{ course }}>
+      {children}
+    </GetAvailableCourseContext.Provider>
+  );
 };
 
 export default GetAvailableCourseContext;

@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 
-const StudentContext = createContext({});
+const CourseDevContext = createContext({});
 
-export const StudContextProvider = ({ children }) => {
+export const CourseDevContextProvider = ({ children }) => {
   const { token, role } = useAuth();
 
   const [courses, setCourses] = useState();
@@ -17,6 +17,7 @@ export const StudContextProvider = ({ children }) => {
   const [weekQuiz, setWeekQuiz] = useState();
   const [quizid, setQuizId] = useState();
   const [quizResultId, setQuizResultId] = useState();
+  const [updateList, setUpdatedList] = useState(false);
 
   // const pathname = window.location.pathname;
   // const pathArray = pathname.split("/");
@@ -26,45 +27,10 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderCourse = async () => {
-      if (role === "student") {
-        await axios
-          .get(`${import.meta.env.VITE_API_BASE_URL}/api/student/courses`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          })
-          .then((response) => {
-            console.log(response.data.subjects);
-            const modulesWithStatus1 = response.data.subjects.map((sub) => {
-              console.log(sub);
-              return {
-                approval: sub.approval,
-                course: sub.course,
-                course_code: sub.course_code,
-                created_at: sub.created_at,
-                department: sub.department,
-                id: sub.id,
-                updated_at: sub.updated_at,
-                module: sub.module.filter((module) => module.status === 1),
-              };
-            });
-
-            setCourses(modulesWithStatus1);
-          });
-      }
-    };
-
-    renderCourse();
-  }, []);
-
-  useEffect(() => {
-    const renderModule = async () => {
-      if (role === "student" && week) {
+      if (role === "courseDeveloper") {
         await axios
           .get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/student/module/${week}`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/coursedeveloper/course`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -74,6 +40,33 @@ export const StudContextProvider = ({ children }) => {
             }
           )
           .then((response) => {
+            console.log(response.data);
+            setCourses(response.data.course);
+          });
+      }
+    };
+
+    renderCourse();
+  }, []);
+
+  useEffect(() => {
+    const renderModule = async () => {
+      if (role === "courseDeveloper" && week) {
+        await axios
+          .get(
+            `${
+              import.meta.env.VITE_API_BASE_URL
+            }/api/coursedeveloper/module/${week}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
             setModule(response.data.Module);
           });
       }
@@ -84,12 +77,13 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderLesson = async () => {
-      if (role === "student" && weekLesson) {
+      console.log(weekLesson);
+      if (role === "courseDeveloper" && weekLesson) {
         await axios
           .get(
             `${
               import.meta.env.VITE_API_BASE_URL
-            }/api/student/lesson/${weekLesson}`,
+            }/api/coursedeveloper/lesson/${weekLesson}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -99,6 +93,7 @@ export const StudContextProvider = ({ children }) => {
             }
           )
           .then((response) => {
+            console.log(response);
             setLesson(response.data.Lesson);
           });
       }
@@ -109,12 +104,13 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderQuiz = async () => {
-      if (role === "student") {
+      if (role === "courseDeveloper" && weekQuiz) {
+        console.log(weekQuiz);
         await axios
           .get(
             `${
               import.meta.env.VITE_API_BASE_URL
-            }/api/student/module/${weekQuiz}`,
+            }/api/coursedeveloper/module/${weekQuiz}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -124,7 +120,7 @@ export const StudContextProvider = ({ children }) => {
             }
           )
           .then((response) => {
-            console.log(response.data.Module);
+            console.log(response.data.Module[0]);
             setQuiz(response.data.Module[0]);
           });
       }
@@ -135,10 +131,13 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderSpecificQuiz = async () => {
-      if (role === "student" && quizid) {
+      console.log(quizid);
+      if (role === "courseDeveloper" && quizid) {
         await axios
           .get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/student/quiz/${quizid}`,
+            `${
+              import.meta.env.VITE_API_BASE_URL
+            }/api/coursedeveloper/quiz/${quizid}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -149,47 +148,56 @@ export const StudContextProvider = ({ children }) => {
           )
           .then((response) => {
             console.log(response);
-            setOfficialQuiz(response.data);
+            if (quizid !== undefined) {
+              setOfficialQuiz(response.data);
+            } else {
+              setOfficialQuiz(undefined);
+            }
           });
       }
     };
 
     renderSpecificQuiz();
-  }, [quizid]);
+  }, [quizid, updateList, quiz]);
+  console.log(quiz);
 
-  useEffect(() => {
-    const renderQuizResult = async () => {
-      if (role === "student" && quizid) {
-        const quiz_id = { quiz_id: quizid };
+  // useEffect(() => {
+  //   const renderQuizResult = async () => {
+  //     if (role === "courseDeveloper" && quizid) {
+  //       const quiz_id = { quiz_id: quizid };
 
-        await axios
-          .post(
-            `${import.meta.env.VITE_API_BASE_URL}/api/student/getquizresultid`,
-            quiz_id,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-            }
-          )
-          .then((response) => {
-            console.log(response);
-            setQuizResultId(response.data[0]);
-          });
-      }
-    };
+  //       await axios
+  //         .post(
+  //           `${
+  //             import.meta.env.VITE_API_BASE_URL
+  //           }/api/coursedeveloper/getquizresultid`,
+  //           quiz_id,
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${token}`,
+  //               "Content-Type": "application/json",
+  //               Accept: "application/json",
+  //             },
+  //           }
+  //         )
+  //         .then((response) => {
+  //           console.log(response);
+  //           setQuizResultId(response.data[0]);
+  //         });
+  //     }
+  //   };
 
-    renderQuizResult();
-  }, [quizid]);
-
+  //   renderQuizResult();
+  // }, [quizid]);
+  console.log(courses);
   return (
-    <StudentContext.Provider
+    <CourseDevContext.Provider
       value={{
         courses,
         setWeek,
         setWeekLesson,
+        updateList,
+        setUpdatedList,
         lesson,
         module,
         activity,
@@ -203,8 +211,8 @@ export const StudContextProvider = ({ children }) => {
       }}
     >
       {children}
-    </StudentContext.Provider>
+    </CourseDevContext.Provider>
   );
 };
 
-export default StudentContext;
+export default CourseDevContext;

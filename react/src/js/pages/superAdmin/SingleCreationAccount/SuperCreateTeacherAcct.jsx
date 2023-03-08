@@ -43,7 +43,7 @@ const SuperCreateTeacherAcct = () => {
       if (role === "SuperAdmin") {
         await axios
           .get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/core/superadmin/teachers`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/listofusers/teachers`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

@@ -3,30 +3,27 @@ import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCours
 import { useParams } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
-import DevCreateAAEedit from "./DevCreatAAEedit";
+import useStudentContext from "../../../hooks/Student/useStudentContext";
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
-
-function DevCreateAAE() {
+function DevCreateAAEedit() {
   // States
+
   const {
     quizid,
     quiz,
     courses,
     setWeekQuiz,
     setQuizId,
-    setUpdatedList,
-    updateList,
+    OfficialQuizCourseDev,
     officialQuiz,
   } = useCourseDevContext();
-
+  const { token, role } = useAuth();
   const { course } = useGetAvailableCourse();
-  const { token } = useAuth();
 
   const [moduleId, setModuleId] = useState();
   const [term, setTerm] = useState();
+  const [content, setContent] = useState();
   const [getQuizId, setGetQuizId] = useState();
-  const [listChange, setListChange] = useState(false);
-  const [hasContent, setHasContent] = useState(false);
 
   const [AAEquestions, setAAEQuestions] = useState([
     {
@@ -135,6 +132,7 @@ function DevCreateAAE() {
   const [questionError, setQuestionError] = useState();
   const [textError, setTextError] = useState();
   const [isCorrectError, setIsCorrectError] = useState();
+  const [getModule, setGetModule] = useState();
 
   const numberOfChoices = [
     { id: "option1", rightAnswerNo: "rightAnswer1", letter: "A" },
@@ -208,6 +206,8 @@ function DevCreateAAE() {
 
   const { id } = useParams();
 
+  console.log(moduleId);
+
   // Course Title
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
@@ -217,6 +217,9 @@ function DevCreateAAE() {
   const currentWeek = weekMod.replace("week", "Week ");
   const weekForModule = weekMod.match(/\d+/)[0];
   const contentType = pathArray[5];
+  console.log(contentType);
+
+  console.log(courses);
 
   useEffect(() => {
     if (course) {
@@ -224,6 +227,7 @@ function DevCreateAAE() {
         if (item.course == courseTitle) {
           item.module.map((mod) => {
             if (mod.week == weekNumber) {
+              console.log(mod);
               setModuleId(mod.id);
             }
           });
@@ -244,92 +248,66 @@ function DevCreateAAE() {
         }
       });
     }
+    console.log(quiz);
+    if (quiz) {
+      const act = quiz.quiz
+        .filter((qui) => qui.quiz_type == contentType)
+        .map((content) => {
+          setGetQuizId(content.id);
+          setQuizId(content.id);
+        });
+    }
 
     // this will check if quizId is available
   });
 
   useEffect(() => {
-    if (quiz) {
-      const act = quiz.quiz
-        .filter((qui) => qui.quiz_type == contentType)
-        .map((content) => {
-          console.log(content);
-          const part = content.module_id.split("-");
-          console.log(part[1] == weekForModule);
-          if (part[1] == weekForModule) {
-            setUpdatedList(!updateList);
-            setGetQuizId(content.id);
-            setQuizId(content.id);
-          } else {
-            setUpdatedList(!updateList);
-            setQuizId(undefined);
-          }
-        });
-    }
-    console.log(quiz);
-  }, [quiz]);
-
-  useEffect(() => {
     console.log(officialQuiz);
+    if (officialQuiz !== undefined) {
+      console.log(officialQuiz.Quiz);
+    }
 
     const fetchContent = () => {
       if (officialQuiz !== undefined) {
-        const ModuleId = officialQuiz.Quiz[0].module_id.split("-");
-        if (
-          ModuleId[1] == weekForModule &&
-          officialQuiz.Quiz[0].quiz_type == "aae"
-        ) {
-          setHasContent(true);
-          const initialState = {
-            answers: officialQuiz.Quiz[0].answers,
-            questions: officialQuiz.Quiz[0].questions,
-            options: officialQuiz.Quiz[0].options,
-          };
-          const questionsArray = initialState.questions.split("|");
-          const optionsArray = initialState.options.split("|");
+        const initialState = {
+          answers: officialQuiz.Quiz[0].answers,
+          questions: officialQuiz.Quiz[0].questions,
+          options: officialQuiz.Quiz[0].options,
+        };
+        console.log(initialState);
+        const questionsArray = initialState.questions.split("|");
+        const optionsArray = initialState.options.split("|");
 
-          const AAEquestions = questionsArray.map((question, index) => {
-            const optionsStartIndex = index * 4;
-            const optionsEndIndex = optionsStartIndex + 4;
-            const questionOptions = optionsArray.slice(
-              optionsStartIndex,
-              optionsEndIndex
-            );
-            const questionObject = {
-              id: `question${index + 1}`,
-              question,
-              options: questionOptions.map((option, optionIndex) => ({
-                id: `option${optionIndex + 1}`,
-                text: option,
-                isCorrect: option === initialState.answers.split("|")[index],
-              })),
-            };
-            return questionObject;
-          });
-          setAAEQuestions(AAEquestions);
-          setListChange(!listChange);
-        }
+        const AAEquestions = questionsArray.map((question, index) => {
+          const optionsStartIndex = index * 4;
+          const optionsEndIndex = optionsStartIndex + 4;
+          const questionOptions = optionsArray.slice(
+            optionsStartIndex,
+            optionsEndIndex
+          );
+          const questionObject = {
+            id: `question${index + 1}`,
+            question,
+            options: questionOptions.map((option, optionIndex) => ({
+              id: `option${optionIndex + 1}`,
+              text: option,
+              isCorrect: option === initialState.answers.split("|")[index],
+            })),
+          };
+          return questionObject;
+        });
+        setAAEQuestions(AAEquestions);
       }
     };
     fetchContent();
   }, [officialQuiz]);
   console.log(AAEquestions);
+
+  console.log(content);
+
   // WEEK number
   const weekNumber = id.match(/\d+/)[0];
-
-  useEffect(() => {
-    if (course) {
-      return course.map((item) => {
-        if (item.course == courseTitle) {
-          item.module.map((mod) => {
-            if (mod.week == weekNumber) {
-              setModuleId(mod.id);
-            }
-          });
-        }
-      });
-    }
-  });
+  console.log(weekNumber);
 
   // Term
   useEffect(() => {
@@ -371,91 +349,6 @@ function DevCreateAAE() {
   //             console.log(response);
   //         });
   // };
-  const SubmitQuizHandler = async () => {
-    let toastId;
-
-    if (
-      questionError === true ||
-      textError === true ||
-      isCorrectError === true
-    ) {
-      toast.error("Please fill out the blank area");
-      setError(true);
-    } else {
-      setError(false);
-
-      // Questions
-      const questions = AAEquestions.reduce(
-        (acc, curr) => `${acc}|${curr.question}`,
-        ""
-      ).slice(1);
-
-      // Options
-      const options = AAEquestions.map((question) => {
-        return question.options.map((option) => option.text).join("|");
-      }).join("|");
-
-      // Correct Answer
-      const correctAnswers = AAEquestions.map((question) => {
-        const correctOption = question.options.find(
-          (option) => option.isCorrect === true
-        );
-        return correctOption.text;
-      }).join("|");
-
-      let activity = {
-        module_id: moduleId,
-        quiz_type: "aae",
-        preliminaries: term,
-        questions: questions,
-        answers: correctAnswers,
-        options: options,
-      };
-
-      toastId = toast.info("Sending Request...");
-
-      await axios
-        .post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/coursedeveloper/quiz`,
-          activity,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          if (response.status >= 200 && response.status <= 300) {
-            toast.update(toastId, {
-              render: "Request Successfully",
-              type: toast.TYPE.SUCCESS,
-              autoClose: 2000,
-            });
-          } else {
-            throw new Error(response.status || "Something Went Wrong!");
-          }
-        })
-        .catch((error) => {
-          if (error.response.data.length !== 0) {
-            toast.update(toastId, {
-              render: `${error.response.data[0]}`,
-              type: toast.TYPE.ERROR,
-              autoClose: 2000,
-            });
-          } else {
-            toast.update(toastId, {
-              render: `${error.message}`,
-              type: toast.TYPE.ERROR,
-              autoClose: 2000,
-            });
-          }
-        });
-    }
-  };
-
-  // Edit Button
   const EditQuizHandler = async () => {
     let toastId;
 
@@ -663,6 +556,7 @@ function DevCreateAAE() {
   // Mapping Options for optimization
   const multipleChoiceHandler = (questionNumber, radioNumber, index) => {
     return numberOfChoices.map((choice, i) => {
+      console.log(AAEquestions[index].options[i].isCorrect);
       return (
         <div className="col-xl-6 mb-3" key={choice.id}>
           <div className="d-flex">
@@ -721,7 +615,6 @@ function DevCreateAAE() {
   // Render it all here
   return (
     <div className="mb-4 w-100">
-      {/* <DevCreateAAEedit /> */}
       <label className="fs-5 fw-semibold">
         Application, Analysis, and Exploration
       </label>
@@ -734,9 +627,9 @@ function DevCreateAAE() {
           <button
             type="button"
             className="btn btn-primary btn-lg"
-            onClick={hasContent ? EditQuizHandler : SubmitQuizHandler}
+            onClick={EditQuizHandler}
           >
-            {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}
+            Submit
           </button>
         </div>
       </div>
@@ -744,4 +637,4 @@ function DevCreateAAE() {
   );
 }
 
-export default DevCreateAAE;
+export default DevCreateAAEedit;

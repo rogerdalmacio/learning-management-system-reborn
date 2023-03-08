@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import SuperDashboardData from "../../superAdmin/SuperDashboardData";
 import SuperDashboardProgram from "../../superAdmin/SuperDashboardProgram";
 import Loading from "../../../components/layouts/Loading";
+import UserActivityLogs from "./UserActivityLogs";
 
 function AdminDashboard() {
   const { role, token } = useAuth();
@@ -24,13 +25,16 @@ function AdminDashboard() {
     const GetAnnouncementHandler = async () => {
       if (role === "admin") {
         await axios
-          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/admin/students`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          })
+          .get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/listofusers/students`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
           .then((response) => {
             console.log(response);
             // id: "elixir",
@@ -67,13 +71,16 @@ function AdminDashboard() {
       }
       if (role === "admin") {
         await axios
-          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/admin/teachers`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          })
+          .get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/listofusers/teachers`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
           .then((response) => {
             console.log(response);
             const teachersData = {
@@ -95,24 +102,27 @@ function AdminDashboard() {
         {getStudents !== undefined &&
         getTeachers !== undefined &&
         getProgram !== undefined ? (
-          <div className="row g-2">
-            <div className="col-12 col-md-4 pieGraphContainer position-relative">
-              <div
-                className="pieGraph"
-                style={{ height: "500px", width: "100%" }}
-              >
-                <h5 className="text-secondary">Number of Users</h5>
-                <SuperDashboardData data={data} />
+          <div>
+            <div className="row g-2">
+              <div className="col-12 col-md-4 pieGraphContainer position-relative">
+                <div
+                  className="pieGraph"
+                  style={{ height: "500px", width: "100%" }}
+                >
+                  <h5 className="text-secondary">Number of Users</h5>
+                  <SuperDashboardData data={data} />
+                </div>
+              </div>
+              <div className="col-12 col-md-8 barGraphContainer position-relative">
+                <div
+                  className="barGraph"
+                  style={{ height: "500px", width: "100%" }}
+                >
+                  <SuperDashboardProgram data={getProgram} />
+                </div>
               </div>
             </div>
-            <div className="col-12 col-md-8 barGraphContainer position-relative">
-              <div
-                className="barGraph"
-                style={{ height: "500px", width: "100%" }}
-              >
-                <SuperDashboardProgram data={getProgram} />
-              </div>
-            </div>
+            <UserActivityLogs />
           </div>
         ) : (
           <Loading />

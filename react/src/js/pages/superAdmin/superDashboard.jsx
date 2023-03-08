@@ -100,7 +100,7 @@ function FileUpload() {
       if (role === "SuperAdmin") {
         await axios
           .get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/core/superadmin/students`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/listofusers/students`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -146,7 +146,7 @@ function FileUpload() {
       if (role === "SuperAdmin") {
         await axios
           .get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/core/superadmin/teachers`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/listofusers/teachers`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

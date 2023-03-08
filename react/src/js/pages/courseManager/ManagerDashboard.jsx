@@ -293,50 +293,46 @@ const ManagerDashboard = () => {
     // [getCommonEditTextFieldProps]
   );
 
-  if (tableData[0].id == "...") {
-    return <Loading />;
-  } else {
-    return (
-      <div className="MaterialUiTable">
-        <MaterialReactTable
-          className="MaterialReactTable"
-          displayColumnDefOptions={{
-            "mrt-row-actions": {
-              muiTableHeadCellProps: {
-                align: "center",
-              },
-              size: 120,
+  return (
+    <div className="MaterialUiTable">
+      <MaterialReactTable
+        className="MaterialReactTable"
+        displayColumnDefOptions={{
+          "mrt-row-actions": {
+            muiTableHeadCellProps: {
+              align: "center",
             },
-          }}
-          sortDescFirst
-          columns={columns}
-          data={tableData}
-          editingMode="modal" //default
-          enableColumnOrdering
-          // onEditingRowSave={handleSaveRowEdits}
-          // onEditingRowCancel={handleCancelRowEdits}
-          renderTopToolbarCustomActions={() => (
-            <Button
-              color="secondary"
-              onClick={() => setCreateModalOpen(true)}
-              variant="contained"
-            >
-              Create Subject +
-            </Button>
-          )}
-        />
+            size: 120,
+          },
+        }}
+        sortDescFirst
+        columns={columns}
+        data={tableData}
+        editingMode="modal" //default
+        enableColumnOrdering
+        // onEditingRowSave={handleSaveRowEdits}
+        // onEditingRowCancel={handleCancelRowEdits}
+        renderTopToolbarCustomActions={() => (
+          <Button
+            color="secondary"
+            onClick={() => setCreateModalOpen(true)}
+            variant="contained"
+          >
+            Create Subject +
+          </Button>
+        )}
+      />
 
-        <CreateNewAccountModal
-          columns={columns}
-          open={createModalOpen}
-          onClose={() => setCreateModalOpen(false)}
-          onSubmit={handleCreateNewRow}
-          setUpdatedList={setUpdatedList}
-          updatedList={updatedList}
-        />
-      </div>
-    );
-  }
+      <CreateNewAccountModal
+        columns={columns}
+        open={createModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+        onSubmit={handleCreateNewRow}
+        setUpdatedList={setUpdatedList}
+        updatedList={updatedList}
+      />
+    </div>
+  );
 };
 
 //example of creating a mui dialog modal for creating new rows
@@ -367,11 +363,14 @@ export const CreateNewAccountModal = ({
       values == null ||
       values.course == "" ||
       values.course_code == "" ||
+      values.module == "" ||
       values.course === 0 ||
       values.course_code === 0
     ) {
       setHasError(true);
       toast.error("Please fill out the blank area");
+    } else if (isNaN(values.module)) {
+      setHasErrorNumber(true);
     } else {
       onSubmit(values);
       setHasError(false);
@@ -384,6 +383,7 @@ export const CreateNewAccountModal = ({
         department: userInfo.department,
         modules: values.module,
       };
+      console.log(subject);
 
       toastId = toast.info("Sending Request...");
       axios
@@ -446,6 +446,8 @@ export const CreateNewAccountModal = ({
         (hasError && values.module == "" && column.accessorKey == "module")
       ) {
         return "This field is required";
+      } else if (hasErrorNumber && column.accessorKey == "module") {
+        return "This field must be Number";
       } else {
         return <span></span>;
       }

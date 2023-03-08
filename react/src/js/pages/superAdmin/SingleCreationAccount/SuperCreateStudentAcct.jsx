@@ -43,7 +43,7 @@ const SuperCreateStudentAcct = () => {
       if (role === "SuperAdmin") {
         await axios
           .get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/core/superadmin/students`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/listofusers/students`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -327,62 +327,56 @@ const SuperCreateStudentAcct = () => {
     // [getCommonEditTextFieldProps]
   );
 
-  if (tableData[0].id == "...") {
-    return <Loading />;
-  } else {
-    return (
-      <div className="MaterialUiTable">
-        <MaterialReactTable
-          className="MaterialReactTable"
-          displayColumnDefOptions={{
-            "mrt-row-actions": {
-              muiTableHeadCellProps: {
-                align: "center",
-              },
-              size: 120,
+  return (
+    <div className="MaterialUiTable">
+      <MaterialReactTable
+        className="MaterialReactTable"
+        displayColumnDefOptions={{
+          "mrt-row-actions": {
+            muiTableHeadCellProps: {
+              align: "center",
             },
-          }}
-          sortDescFirst
-          columns={columns}
-          data={tableData}
-          editingMode="modal" //default
-          enableColumnOrdering
-          enableEditing
-          onEditingRowSave={handleSaveRowEdits}
-          onEditingRowCancel={handleCancelRowEdits}
-          renderRowActions={({ row, table }) => (
-            <Box
-              sx={{ display: "flex", gap: "1rem", justifyContent: "center" }}
-            >
-              <Tooltip arrow placement="left" title="Edit">
-                <IconButton onClick={() => table.setEditingRow(row)}>
-                  <Edit />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          )}
-          renderTopToolbarCustomActions={() => (
-            <Button
-              color="secondary"
-              onClick={() => setCreateModalOpen(true)}
-              variant="contained"
-            >
-              Create Student Account
-            </Button>
-          )}
-        />
+            size: 120,
+          },
+        }}
+        sortDescFirst
+        columns={columns}
+        data={tableData}
+        editingMode="modal" //default
+        enableColumnOrdering
+        enableEditing
+        onEditingRowSave={handleSaveRowEdits}
+        onEditingRowCancel={handleCancelRowEdits}
+        renderRowActions={({ row, table }) => (
+          <Box sx={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+            <Tooltip arrow placement="left" title="Edit">
+              <IconButton onClick={() => table.setEditingRow(row)}>
+                <Edit />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
+        renderTopToolbarCustomActions={() => (
+          <Button
+            color="secondary"
+            onClick={() => setCreateModalOpen(true)}
+            variant="contained"
+          >
+            Create Student Account
+          </Button>
+        )}
+      />
 
-        <CreateNewAccountModal
-          columns={columns}
-          open={createModalOpen}
-          onClose={() => setCreateModalOpen(false)}
-          onSubmit={handleCreateNewRow}
-          setUpdatedList={setUpdatedList}
-          updatedList={updatedList}
-        />
-      </div>
-    );
-  }
+      <CreateNewAccountModal
+        columns={columns}
+        open={createModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+        onSubmit={handleCreateNewRow}
+        setUpdatedList={setUpdatedList}
+        updatedList={updatedList}
+      />
+    </div>
+  );
 };
 
 //example of creating a mui dialog modal for creating new rows

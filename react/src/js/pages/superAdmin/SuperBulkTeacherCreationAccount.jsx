@@ -83,6 +83,14 @@ function SuperBulkTeacherCreationAccount() {
               autoClose: 2000,
             });
 
+            if (response.data.accountSuccessfullyCreatedFor.length !== 0) {
+              toast.update(toastId, {
+                render: `Other account/s successfully made!`,
+                type: toast.TYPE.SUCCESS,
+                autoClose: 2000,
+              });
+            }
+
             setGetNumAlreadyExist(idNumbers.join(", "));
           } else if (response.status >= 200 && response.status <= 300) {
             toast.update(toastId, {

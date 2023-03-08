@@ -4,12 +4,17 @@ import useAuth from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
+import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
 
 function DevCreateGeneralization() {
-  const [item, setItem] = useState();
+  const { courses, setWeek, module } = useCourseDevContext();
+
+  const [item, setItem] = useState("");
   const [moduleId, setModuleId] = useState();
   const [term, setTerm] = useState();
   const [error, setError] = useState(false);
+  const [hasContent, setHasContent] = useState(false);
+  const [activityId, setActivityId] = useState();
 
   const { course } = useGetAvailableCourse();
   const { token } = useAuth();
@@ -22,6 +27,10 @@ function DevCreateGeneralization() {
   // Course Title
   const courseBase = pathArray[2];
   const courseTitle = courseBase.replace(/%20/g, " ");
+  const weekMod = pathArray[4];
+  const currentWeek = weekMod.replace("week", "Week ");
+  const weekForModule = weekMod.match(/\d+/)[0];
+  const contentType = pathArray[5];
   console.log(courseTitle);
 
   console.log(course);
@@ -35,6 +44,39 @@ function DevCreateGeneralization() {
   console.log(moduleId);
 
   console.log(term);
+  useEffect(() => {
+    if (courses) {
+      courses.map((course) => {
+        if (course.course == courseTitle) {
+          course.module.map((mod) => {
+            if (mod.week == weekForModule) {
+              setWeek(mod.id);
+            }
+          });
+        }
+      });
+    }
+  });
+  console.log(moduleId);
+  useEffect(() => {
+    if (module !== undefined && module.length !== 0) {
+      const modulevalue = module[0].activity.filter(
+        (act) => act.title == "generalization" && act.module_id == moduleId
+      );
+      console.log(modulevalue);
+
+      if (modulevalue !== undefined && modulevalue.length !== 0) {
+        console.log(modulevalue);
+        if (modulevalue[0].title == "generalization") {
+          setHasContent(true);
+          setActivityId(modulevalue[0].id);
+          setItem(modulevalue[0].embed_links);
+        } else {
+          setItem("");
+        }
+      }
+    }
+  }, [moduleId, module]);
 
   useEffect(() => {
     if (course) {
@@ -123,10 +165,77 @@ function DevCreateGeneralization() {
     }
   };
 
+  const EditActivityHandler = async (e) => {
+    e.preventDefault();
+
+    let toastId;
+
+    if (item === 0 || item === "" || item === undefined) {
+      toast.error("Please Insert a link");
+    } else if (item && !item.includes("https://docs.google.com")) {
+      toast.error("The Link is not Valid");
+    } else {
+      let activity = {
+        module_id: moduleId,
+        title: "generalization",
+        activity_type: "generalization",
+        preliminaries: term,
+        embed_links: item,
+      };
+
+      toastId = toast.info("Sending Request...");
+
+      await axios
+        .patch(
+          `${
+            import.meta.env.VITE_API_BASE_URL
+          }/api/coursedeveloper/activity/${activityId}`,
+          activity,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          if (response.status >= 200 && response.status <= 300) {
+            toast.update(toastId, {
+              render: "Request Successfully",
+              type: toast.TYPE.SUCCESS,
+              autoClose: 2000,
+            });
+          } else {
+            throw new Error(response.status || "Something Went Wrong!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.data.length !== 0) {
+            toast.update(toastId, {
+              render: `${error.response.data[0]}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          } else {
+            toast.update(toastId, {
+              render: `${error.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          }
+        });
+    }
+  };
+
   return (
     <div className="DevModuleContentContainer">
-      <h4 className="mb-4">Preliminary Activity</h4>
-      <form onSubmit={SubmitActivityHandler} className="ms-3">
+      <h4 className="mb-4">Generalization</h4>
+      <form
+        onSubmit={hasContent ? EditActivityHandler : SubmitActivityHandler}
+        className="ms-3"
+      >
         <label htmlFor="insertItem">
           <h5 className="mb-3">Insert Google Docs Here:</h5>
           <p>
@@ -142,6 +251,7 @@ function DevCreateGeneralization() {
             item === "" || error ? "errorInput" : "noErrorInput"
           }`}
           id="insertItem"
+          value={item}
           onChange={(e) => {
             setItem(e.target.value);
           }}
@@ -157,7 +267,7 @@ function DevCreateGeneralization() {
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div className="d-flex justify-content-end">
               <button className=" buttonTemplate text-right sumbit-button btn px-5">
-                Submit
+                {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}
               </button>
             </div>
           </div>
