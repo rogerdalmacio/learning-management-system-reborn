@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class LogsController extends Controller
 {
     public function logsList() {
+        
 
         $logs = Logs::all();
 

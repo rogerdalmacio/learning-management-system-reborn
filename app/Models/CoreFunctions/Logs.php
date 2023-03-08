@@ -21,28 +21,28 @@ class Logs extends Model
         'activity_log'
     ];
 
-    public function student() {
-        return $this->belongsTo(Student::class);
+    public function Student() {
+        return $this->belongsTo(Student::class, 'user_id', 'id');
     }
 
-    public function teacher() {
-        return $this->belongsTo(Teacher::class);
+    public function Teacher() {
+        return $this->belongsTo(Teacher::class, 'user_id', 'id');
     }
 
-    public function coursedeveloper() {
-        return $this->belongsTo(CourseDeveloper::class);
+    public function CourseDeveloper() {
+        return $this->belongsTo(CourseDeveloper::class, 'user_id', 'id');
     }
 
-    public function coursemanager() {
-        return $this->belongsTo(CourseManager::class);
+    public function CourseManager() {
+        return $this->belongsTo(CourseManager::class, 'user_id', 'id');
     }
 
-    public function admin() {
-        return $this->belongsTo(Admin::class);
+    public function Admin() {
+        return $this->belongsTo(Admin::class, 'user_id', 'id');
     }
 
-    public function superadmin() {
-        return $this->belongsTo(SuperAdmin::class);
+    public function SuperAdmin() {
+        return $this->belongsTo(SuperAdmin::class, 'user_id', 'id');
     }
 
 }

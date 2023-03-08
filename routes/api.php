@@ -33,6 +33,7 @@ use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
 use App\Http\Controllers\CoreFunctions\AccountManageController;
 use App\Http\Controllers\CoreFunctions\ListOfUsersController;
+use App\Http\Controllers\CoreFunctions\LogsController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
 use App\Http\Controllers\CoreFunctions\PasswordResetController;
 use App\Http\Controllers\CourseDeveloper\CDToDoListController;
@@ -209,6 +210,12 @@ Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'abili
     Route::get('/teachers', [ListOfUsersController::class, 'teachers']);
     Route::get('/coursemanagers', [ListOfUsersController::class, 'coursemanager']);
     Route::get('/coursedevelopers', [ListOfUsersController::class, 'coursedeveloper']);
+
+});
+
+Route::group(['prefix' => 'core-shared', 'middleware' => ['auth:sanctum', 'ability:Admin,SuperAdmin']], function(){
+
+    Route::get('/logs', [LogsController::class, 'logsList']);
 
 });
 
