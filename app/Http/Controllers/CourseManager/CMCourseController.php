@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CourseManager;
 use Illuminate\Http\Request;
 use App\Models\Modules\Course;
 use App\Models\Modules\Module;
+use App\Models\CoreFunctions\Logs;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -100,7 +101,7 @@ class CMCourseController extends Controller
             DB::rollback();
 
             $response = [
-                'errors' => $e
+                'errors' => $e,
             ];
             
             return response($response, 404);
