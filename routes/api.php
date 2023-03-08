@@ -202,7 +202,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
 
 });
 
-Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'abilities:Admin,SuperAdmin']], function(){
+Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'ability:Admin,SuperAdmin']], function(){
 
     //listOfUsers
     Route::get('/students', [ListOfUsersController::class, 'students']);
