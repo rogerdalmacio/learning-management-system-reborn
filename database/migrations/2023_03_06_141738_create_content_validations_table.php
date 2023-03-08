@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('content_validations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('module_id')->constrained()->onDelete('cascade');
+            $table->string('module_id')->foreign()->references('id')->on('modules')->onDelete('cascade');
             $table->string('status');
             $table->text('comment');
             $table->timestamp('deadline');
