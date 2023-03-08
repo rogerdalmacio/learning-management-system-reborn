@@ -12,17 +12,74 @@ function AdminDashboard() {
   const { role, token } = useAuth();
   const [getStudents, setGetStudents] = useState();
   const [getTeachers, setGetTeachers] = useState();
+  const [getCourseManagers, setGetCourseManagers] = useState();
+  const [getCourseDev, setGetCourseDev] = useState();
+
   const [getProgram, setGetProgram] = useState();
 
   console.log(getStudents);
   console.log(getTeachers);
+  console.log(getCourseManagers);
   console.log(getProgram);
 
-  const data = [getStudents].concat([getTeachers]);
-  console.log(data);
+  const data1 = [getStudents].concat(getTeachers);
+  const data2 = data1.concat(getCourseManagers);
+  const data = data2.concat(getCourseDev);
 
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
+      if (role === "admin") {
+        await axios
+          .get(
+            `${
+              import.meta.env.VITE_API_BASE_URL
+            }/api/listofusers/coursemanagers`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            const courseManData = {
+              id: "Course Managers",
+              label: "Course Managers",
+              value: response.data.CourseManagers.length,
+              color: "hsl(232, 290%, 25%)",
+            };
+            console.log(courseManData);
+            setGetCourseManagers(courseManData);
+          });
+      }
+      if (role === "admin") {
+        await axios
+          .get(
+            `${
+              import.meta.env.VITE_API_BASE_URL
+            }/api/listofusers/coursedevelopers`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            const courseDevData = {
+              id: "Course Developers",
+              label: "Course Developers",
+              value: response.data.CourseDeveloper.length,
+              color: "hsl(232, 290%, 25%)",
+            };
+            console.log(courseDevData);
+            setGetCourseDev(courseDevData);
+          });
+      }
       if (role === "admin") {
         await axios
           .get(
@@ -89,6 +146,7 @@ function AdminDashboard() {
               value: response.data.teachers.length,
               color: "hsl(232, 89%, 25%)",
             };
+            console.log(teachersData);
             setGetTeachers(teachersData);
           });
       }
@@ -101,10 +159,13 @@ function AdminDashboard() {
       <div className="d-block">
         {getStudents !== undefined &&
         getTeachers !== undefined &&
+        getCourseManagers !== undefined &&
+        getCourseDev !== undefined &&
         getProgram !== undefined ? (
           <div>
+            <UserActivityLogs />
             <div className="row g-2">
-              <div className="col-12 col-md-4 pieGraphContainer position-relative">
+              <div className="col-12 col-md-4  pieGraphContainer position-relative">
                 <div
                   className="pieGraph"
                   style={{ height: "500px", width: "100%" }}
@@ -113,7 +174,7 @@ function AdminDashboard() {
                   <SuperDashboardData data={data} />
                 </div>
               </div>
-              <div className="col-12 col-md-8 barGraphContainer position-relative">
+              <div className="col-12 col-md-8  barGraphContainer position-relative">
                 <div
                   className="barGraph"
                   style={{ height: "500px", width: "100%" }}
@@ -122,7 +183,6 @@ function AdminDashboard() {
                 </div>
               </div>
             </div>
-            <UserActivityLogs />
           </div>
         ) : (
           <Loading />

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CoreFunctions;
 
 use Illuminate\Http\Request;
 use App\Models\Modules\Module;
+use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 

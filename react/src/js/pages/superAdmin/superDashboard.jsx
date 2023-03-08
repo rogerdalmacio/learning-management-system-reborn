@@ -6,11 +6,14 @@ import "react-toastify/dist/ReactToastify.css";
 import SuperDashboardData from "./SuperDashboardData";
 import SuperDashboardProgram from "./SuperDashboardProgram";
 import Loading from "../../components/layouts/Loading";
+import UserActivityLogs from "../Admin/AdminDashboard/UserActivityLogs";
 
 function FileUpload() {
   const { role, token } = useAuth();
   const [getStudents, setGetStudents] = useState();
   const [getTeachers, setGetTeachers] = useState();
+  const [getCourseManagers, setGetCourseManagers] = useState();
+  const [getCourseDev, setGetCourseDev] = useState();
   const [getProgram, setGetProgram] = useState();
 
   console.log(getStudents);
@@ -35,8 +38,9 @@ function FileUpload() {
   //   data = [getStudents].concat([getTeachers]);
   // }
 
-  const data = [getStudents].concat([getTeachers]);
-  console.log(data);
+  const data1 = [getStudents].concat(getTeachers);
+  const data2 = data1.concat(getCourseManagers);
+  const data = data2.concat(getCourseDev);
   // let data;
   // if (getStudents !== undefined && getTeachers !== undefined) {
   //   data = [
@@ -97,6 +101,58 @@ function FileUpload() {
 
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
+      if (role === "SuperAdmin") {
+        await axios
+          .get(
+            `${
+              import.meta.env.VITE_API_BASE_URL
+            }/api/listofusers/coursemanagers`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            const courseManData = {
+              id: "Course Managers",
+              label: "Course Managers",
+              value: response.data.CourseManagers.length,
+              color: "hsl(232, 290%, 25%)",
+            };
+            console.log(courseManData);
+            setGetCourseManagers(courseManData);
+          });
+      }
+      if (role === "SuperAdmin") {
+        await axios
+          .get(
+            `${
+              import.meta.env.VITE_API_BASE_URL
+            }/api/listofusers/coursedevelopers`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            const courseDevData = {
+              id: "Course Developers",
+              label: "Course Developers",
+              value: response.data.CourseDeveloper.length,
+              color: "hsl(232, 290%, 25%)",
+            };
+            console.log(courseDevData);
+            setGetCourseDev(courseDevData);
+          });
+      }
       if (role === "SuperAdmin") {
         await axios
           .get(
@@ -175,23 +231,28 @@ function FileUpload() {
       <div className="d-block">
         {getStudents !== undefined &&
         getTeachers !== undefined &&
+        getCourseManagers !== undefined &&
+        getCourseDev !== undefined &&
         getProgram !== undefined ? (
-          <div className="row g-2 allGraphContainer w-100">
-            <div className="col-12 col-md-4 pieGraphContainer position-relative">
-              <div
-                className="pieGraph"
-                style={{ height: "400px", width: "100%" }}
-              >
-                <h5 className="text-secondary">Number of Users</h5>
-                <SuperDashboardData data={data} />
+          <div>
+            <UserActivityLogs />
+            <div className="row g-2 allGraphContainer w-100">
+              <div className="col-12 col-md-4 pieGraphContainer position-relative">
+                <div
+                  className="pieGraph"
+                  style={{ height: "400px", width: "100%" }}
+                >
+                  <h5 className="text-secondary">Number of Users</h5>
+                  <SuperDashboardData data={data} />
+                </div>
               </div>
-            </div>
-            <div className="col-12 col-md-8 barGraphContainer ">
-              <div
-                className="barGraph"
-                style={{ height: "400px", width: "100%" }}
-              >
-                <SuperDashboardProgram data={getProgram} />
+              <div className="col-12 col-md-8 barGraphContainer ">
+                <div
+                  className="barGraph"
+                  style={{ height: "400px", width: "100%" }}
+                >
+                  <SuperDashboardProgram data={getProgram} />
+                </div>
               </div>
             </div>
           </div>

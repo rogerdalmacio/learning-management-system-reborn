@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('week');
             $table->boolean('status');
-            $table->boolean('approval');
+            $table->boolean('approval')->default(0);
             $table->timestamps();
         });
     }

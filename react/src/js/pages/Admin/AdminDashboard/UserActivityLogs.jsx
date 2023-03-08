@@ -4,29 +4,13 @@ import React, {
   useState,
   useEffect,
   useRef,
+  Fragment,
 } from "react";
 import MaterialReactTable from "material-react-table";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  MenuItem,
-  Stack,
-  TextField,
-  Tooltip,
-} from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
 import { data, states } from "../makeData";
 import useAuth from "../../../hooks/useAuth";
-import { toast } from "react-toastify";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
-const UserActivityLogs = ({ updatedList, setUpdatedList }) => {
+const UserActivityLogs = ({}) => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
 
@@ -39,65 +23,116 @@ const UserActivityLogs = ({ updatedList, setUpdatedList }) => {
   console.log(tableData);
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
-      if (role === "CourseManager") {
+      if (role === "admin" || role === "SuperAdmin") {
         await axios
-          .get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/coursemanager/students`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-            }
-          )
+          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core-shared/logs`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          })
           .then((response) => {
-            console.log(response.data.students);
-            setGetAnnouncement(response.data.students);
+            console.log(response.data);
+            const newArray = response.data.logs.map((log) => {
+              const date = new Date(log.created_at);
+              const options = {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                second: "numeric",
+                timeZoneName: "short",
+                timeZone: "UTC",
+              };
+              const dateString = date.toLocaleString("en-US", options);
+              console.log(dateString);
+              return {
+                user_id: log.user_id,
+                user_type: log.user_type,
+                activity_log: log.activity_log,
+                id: log.id,
+                created_at: dateString,
+              };
+            });
+            console.log(response.data.logs);
+            console.log(newArray);
 
-            const firstNameAndLastName = response.data.students.map(
-              ({ id, first_name, last_name, year_and_section }) => ({
-                first_name,
-                last_name,
-                id,
-                year_and_section,
-              })
-            );
-            setTableData(firstNameAndLastName);
+            setGetAnnouncement(newArray.sort((a, b) => b.id - a.id));
+
+            setTableData(newArray.sort((a, b) => b.id - a.id));
           });
       }
     };
     GetAnnouncementHandler();
-  }, [updatedList]);
-
+  }, [tableData]);
+  // if (value == "Admin") {
+  //   return "blue";
+  // } else if (value == "Teacher") {
+  //   return "red";
+  // } else if (value == "Student") {
+  //   return "purple";
+  // } else if (value == "CourseManager") {
+  //   return "green";
+  // }
   const columns = useMemo(() => [
     {
+      accessorKey: "user_id",
+      header: "User ID",
+      enableColumnOrdering: false,
+      enableEditing: false, //disable editing on this column
+      enableSorting: false,
+      size: 80,
+    },
+    {
+      accessorKey: "user_type",
+      header: "User Type",
+      Cell: ({ renderedCellValue }) => (
+        <strong
+          className={`${
+            renderedCellValue === "Admin"
+              ? "AdminLogColor"
+              : renderedCellValue === "SuperAdmin"
+              ? "SuperAdminLogColor"
+              : renderedCellValue === "Student"
+              ? "StudentLogColor"
+              : renderedCellValue === "Teacher"
+              ? "TeacherLogColor"
+              : renderedCellValue === "CourseManager"
+              ? "ManagerLogColor"
+              : renderedCellValue === "CourseDeveloper"
+              ? "DeveloperLogColor"
+              : ""
+          }`}
+        >
+          {renderedCellValue}
+        </strong>
+      ),
+      enableColumnOrdering: false,
+      enableEditing: false, //disable editing on this column
+      enableSorting: false,
+      size: 80,
+    },
+    {
+      accessorKey: "activity_log",
+      header: "Activity Log",
+      enableColumnOrdering: false,
+      enableEditing: false, //disable editing on this column
+      enableSorting: false,
+      size: 80,
+    },
+    {
       accessorKey: "id",
-      header: "Email",
+      header: "Activity ID",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "first_name",
-      header: "First Name",
-      enableColumnOrdering: false,
-      enableEditing: false, //disable editing on this column
-      enableSorting: false,
-      size: 80,
-    },
-    {
-      accessorKey: "last_name",
-      header: "Last Name",
-      enableColumnOrdering: false,
-      enableEditing: false, //disable editing on this column
-      enableSorting: false,
-      size: 80,
-    },
-    {
-      accessorKey: "year_and_section",
-      header: "Year and Section",
+      accessorKey: "created_at",
+      header: "Created at",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
@@ -105,28 +140,9 @@ const UserActivityLogs = ({ updatedList, setUpdatedList }) => {
     },
   ]);
 
-  const csvOptions = {
-    fieldSeparator: ",",
-    quoteStrings: '"',
-    decimalSeparator: ".",
-    showLabels: true,
-    useBom: true,
-    useKeysAsHeaders: true,
-    // headers: columns.map((c) => c.header),
-  };
-
-  const csvExporter = new ExportToCsv(csvOptions);
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
-
-  const handleExportData = () => {
-    csvExporter.generateCsv(tableData);
-  };
   return (
     <div className="MaterialUiTable">
       <MaterialReactTable
-        enableRowSelection
         className="MaterialReactTable"
         displayColumnDefOptions={{
           "mrt-row-actions": {
@@ -140,51 +156,12 @@ const UserActivityLogs = ({ updatedList, setUpdatedList }) => {
         columns={columns}
         data={tableData}
         enableColumnOrdering
-        renderTopToolbarCustomActions={({ table }) => (
-          <Box
-            sx={{ display: "flex", gap: "1rem", p: "0.5rem", flexWrap: "wrap" }}
-          >
-            <Button
-              color="primary"
-              //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-              onClick={handleExportData}
-              startIcon={<FileDownloadIcon />}
-              variant="contained"
-            >
-              Export All Data
-            </Button>
-            <Button
-              disabled={table.getPrePaginationRowModel().rows.length === 0}
-              //export all rows, including from the next page, (still respects filtering and sorting)
-              onClick={() =>
-                handleExportRows(table.getPrePaginationRowModel().rows)
-              }
-              startIcon={<FileDownloadIcon />}
-              variant="contained"
-            >
-              Export All Rows
-            </Button>
-            <Button
-              disabled={table.getRowModel().rows.length === 0}
-              //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
-              onClick={() => handleExportRows(table.getRowModel().rows)}
-              startIcon={<FileDownloadIcon />}
-              variant="contained"
-            >
-              Export Page Rows
-            </Button>
-            <Button
-              disabled={
-                !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-              }
-              //only export selected rows
-              onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-              startIcon={<FileDownloadIcon />}
-              variant="contained"
-            >
-              Export Selected Rows
-            </Button>
-          </Box>
+        renderTopToolbarCustomActions={() => (
+          <Fragment>
+            <div className="fw-bold d-flex align-items-center py-2">
+              Activity Logs
+            </div>
+          </Fragment>
         )}
       />
     </div>

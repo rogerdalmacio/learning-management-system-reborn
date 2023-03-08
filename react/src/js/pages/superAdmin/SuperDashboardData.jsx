@@ -36,7 +36,7 @@ const SuperDashboard = ({ data /* see data tab */ }) => (
     arcLinkLabelsTextOffset={1}
     arcLinkLabelsStraightLength={11}
     arcLinkLabelsColor={{ from: "color" }}
-    arcLabel={(d) => `${d.id} ${d.value}`}
+    arcLabel={(d) => `${d.value}`}
     arcLabelsSkipAngle={1}
     arcLabelsTextColor={{
       from: "color",
@@ -131,13 +131,13 @@ const SuperDashboard = ({ data /* see data tab */ }) => (
     legends={[
       {
         anchor: "bottom",
-        direction: "row",
+        direction: "column",
         justify: false,
-        translateX: 0,
-        translateY: 41,
+        translateX: -50,
+        translateY: 95,
         itemsSpacing: 0,
         itemWidth: 100,
-        itemHeight: 0,
+        itemHeight: 25,
         itemTextColor: "#999",
         itemDirection: "left-to-right",
         itemOpacity: 1,
