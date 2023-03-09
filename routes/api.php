@@ -142,7 +142,7 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
 
 
 //content routes
-Route::group(['prefix' => 'content', 'middleware' => ['auth:sanctum','abilities:CourseManager,Admin']], function(){
+Route::group(['prefix' => 'content', 'middleware' => ['auth:sanctum','ability:CourseManager,Admin']], function(){
 
     Route::apiResource('courses', SCourseController::class);
     Route::apiResource('lesson', SLessonController::class);

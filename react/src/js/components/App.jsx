@@ -19,6 +19,8 @@ import ManagerEditProfile from "../pages/courseManager/ManagerEditProfile";
 import ManagerGetCreatedCourse from "../pages/courseManager/ManagerGetCreatedCourse";
 import ManagerTagSubjToCourseDev from "../pages/courseManager/ManagerTagSubjToCourseDev";
 import ManagerGetStudents from "../pages/courseManager/ManagerGetStudents";
+import ManagerCreateSyllabus from "../pages/courseManager/ManagerCreateSyllabus";
+import ManagerCreateSyllabusTItle from "../pages/courseManager/ManagerCreateSyllabusTItle";
 
 // Admin
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
@@ -187,6 +189,14 @@ function App() {
           <Route
             path="/courseManager/listOfStudents"
             element={<ManagerGetStudents />}
+          />
+          <Route
+            path="/courseManager/createsyllabus"
+            element={<ManagerCreateSyllabus />}
+          />
+          <Route
+            path="/courseManager/:id/:id/modules"
+            element={<ManagerCreateSyllabusTItle />}
           />
         </Route>
       </Route>

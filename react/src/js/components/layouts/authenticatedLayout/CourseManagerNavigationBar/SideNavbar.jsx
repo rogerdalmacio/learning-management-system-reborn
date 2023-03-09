@@ -77,6 +77,25 @@ function Navbar({ openSidebar }) {
               <span className="tooltip">Create Course</span>
             </li>
           </Link>
+
+          <Link
+            to="/courseManager/createsyllabus"
+            className="text-decoration-none"
+          >
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/courseManager/createsyllabus"
+                    ? "activeSideBar"
+                    : ""
+                }`}
+              >
+                <i className="bx bx-palette"></i>
+                <span className="links_name">Create Syllabus</span>
+              </span>
+              <span className="tooltip">Create Syllabus</span>
+            </li>
+          </Link>
         </ul>
       </div>
     </Fragment>
