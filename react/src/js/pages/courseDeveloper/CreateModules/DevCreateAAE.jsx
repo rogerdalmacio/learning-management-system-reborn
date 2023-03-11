@@ -5,6 +5,7 @@ import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import DevCreateAAEedit from "./DevCreatAAEedit";
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
+import TestComponent from "./TestComponent";
 
 function DevCreateAAE() {
   // States
@@ -28,6 +29,7 @@ function DevCreateAAE() {
   const [listChange, setListChange] = useState(false);
   const [hasContent, setHasContent] = useState(false);
 
+  const [numQuestions, setNumQuestions] = useState(5);
   const [AAEquestions, setAAEQuestions] = useState([
     {
       id: "question1",
@@ -41,86 +43,6 @@ function DevCreateAAE() {
     },
     {
       id: "question2",
-      question: "",
-      options: [
-        { id: "option1", text: "", isCorrect: "" },
-        { id: "option2", text: "", isCorrect: "" },
-        { id: "option3", text: "", isCorrect: "" },
-        { id: "option4", text: "", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question3",
-      question: "",
-      options: [
-        { id: "option1", text: "", isCorrect: "" },
-        { id: "option2", text: "", isCorrect: "" },
-        { id: "option3", text: "", isCorrect: "" },
-        { id: "option4", text: "", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question4",
-      question: "",
-      options: [
-        { id: "option1", text: "", isCorrect: "" },
-        { id: "option2", text: "", isCorrect: "" },
-        { id: "option3", text: "", isCorrect: "" },
-        { id: "option4", text: "", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question5",
-      question: "",
-      options: [
-        { id: "option1", text: "", isCorrect: "" },
-        { id: "option2", text: "", isCorrect: "" },
-        { id: "option3", text: "", isCorrect: "" },
-        { id: "option4", text: "", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question6",
-      question: "",
-      options: [
-        { id: "option1", text: "", isCorrect: "" },
-        { id: "option2", text: "", isCorrect: "" },
-        { id: "option3", text: "", isCorrect: "" },
-        { id: "option4", text: "", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question7",
-      question: "",
-      options: [
-        { id: "option1", text: "", isCorrect: "" },
-        { id: "option2", text: "", isCorrect: "" },
-        { id: "option3", text: "", isCorrect: "" },
-        { id: "option4", text: "", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question8",
-      question: "",
-      options: [
-        { id: "option1", text: "", isCorrect: "" },
-        { id: "option2", text: "", isCorrect: "" },
-        { id: "option3", text: "", isCorrect: "" },
-        { id: "option4", text: "", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question9",
-      question: "",
-      options: [
-        { id: "option1", text: "", isCorrect: "" },
-        { id: "option2", text: "", isCorrect: "" },
-        { id: "option3", text: "", isCorrect: "" },
-        { id: "option4", text: "", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question10",
       question: "",
       options: [
         { id: "option1", text: "", isCorrect: "" },
@@ -143,7 +65,7 @@ function DevCreateAAE() {
     { id: "option4", rightAnswerNo: "rightAnswer4", letter: "D" },
   ];
 
-  const numberOfQuestions = [
+  const [numberOfQuestions, setNumberOfQuestions] = useState([
     {
       id: 0,
       question: "Question 1",
@@ -156,58 +78,49 @@ function DevCreateAAE() {
       questionNumber: "question2",
       radio: "radio2",
     },
-    {
-      id: 2,
-      question: "Question 3",
-      questionNumber: "question3",
-      radio: "radio3",
-    },
-    {
-      id: 3,
-      question: "Question 4",
-      questionNumber: "question4",
-      radio: "radio4",
-    },
-    {
-      id: 4,
-      question: "Question 5",
-      questionNumber: "question5",
-      radio: "radio5",
-    },
-    {
-      id: 5,
-      question: "Question 6",
-      questionNumber: "question6",
-      radio: "radio6",
-    },
-    {
-      id: 6,
-      question: "Question 7",
-      questionNumber: "question7",
-      radio: "radio7",
-    },
-    {
-      id: 7,
-      question: "Question 8",
-      questionNumber: "question8",
-      radio: "radio8",
-    },
-    {
-      id: 8,
-      question: "Question 9",
-      questionNumber: "question9",
-      radio: "radio9",
-    },
-    {
-      id: 9,
-      question: "Question 10",
-      questionNumber: "question10",
-      radio: "radio10",
-    },
-  ];
+  ]);
 
   const { id } = useParams();
 
+  const handleInputChange = (event) => {
+    const { value } = event.target;
+    const newValue = parseInt(value);
+    console.log(newValue);
+
+    setNumQuestions(isNaN(newValue) ? "" : newValue);
+  };
+  console.log(numQuestions);
+  const generateDummyData = () => {
+    if (numQuestions <= 100 && numQuestions >= 1) {
+      const data = [];
+      const NumberOfQuestion = [];
+      for (let i = 1; i <= numQuestions; i++) {
+        const question = {
+          id: `question${i}`,
+          question: "",
+          options: [
+            { id: "option1", text: "", isCorrect: "" },
+            { id: "option2", text: "", isCorrect: "" },
+            { id: "option3", text: "", isCorrect: "" },
+            { id: "option4", text: "", isCorrect: "" },
+          ],
+        };
+        data.push(question);
+
+        const numberOfQuestionForRadio = {
+          question: `Question ${i}`,
+          questionNumber: `question${i}`,
+          radio: `radio${i}`,
+        };
+
+        NumberOfQuestion.push(numberOfQuestionForRadio);
+      }
+      setAAEQuestions(data);
+      setNumberOfQuestions(NumberOfQuestion);
+    } else {
+      toast.error("Please Enter a number between 1-100 only");
+    }
+  };
   // Course Title
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
@@ -306,7 +219,20 @@ function DevCreateAAE() {
             };
             return questionObject;
           });
+
+          const NumberOfQuestion = [];
+          for (let i = 1; i <= AAEquestions.length; i++) {
+            const numberOfQuestionForRadio = {
+              question: `Question ${i}`,
+              questionNumber: `question${i}`,
+              radio: `radio${i}`,
+            };
+
+            NumberOfQuestion.push(numberOfQuestionForRadio);
+          }
           setAAEQuestions(AAEquestions);
+          setNumberOfQuestions(NumberOfQuestion);
+
           setListChange(!listChange);
         }
       }
@@ -617,12 +543,18 @@ function DevCreateAAE() {
 
     let filterIsCorrectAgain = filterIsCorrect.filter((x) => x.length == 0);
 
-    if (filterIsCorrectAgain.length !== 10) {
+    if (filterIsCorrectAgain.length !== AAEquestions.length) {
       setIsCorrectError(true);
     } else {
       setIsCorrectError(false);
     }
   }, [AAEquestions]);
+
+  console.log(questionError);
+  console.log(textError);
+  console.log(isCorrectError);
+  console.log(AAEquestions.length);
+  console.log(numQuestions);
 
   // Mapping Question for optimization
   const numberOfQuestionsHandler = () => {
@@ -717,15 +649,32 @@ function DevCreateAAE() {
       );
     });
   };
-
+  console.log(AAEquestions);
   // Render it all here
   return (
     <div className="mb-4 w-100">
       {/* <DevCreateAAEedit /> */}
+      {/* <TestComponent /> */}
       <label className="fs-5 fw-semibold">
         Application, Analysis, and Exploration
       </label>
       <div className="inputAnalysisContainer sm-shadow py-3 px-0 px-sm-3 px-xl-5">
+        <div className="input-group mb-3">
+          <input
+            className="InputChoices form-control"
+            type="number"
+            value={numQuestions}
+            onChange={handleInputChange}
+          />
+
+          <button
+            type="button"
+            className="btn smallButtonTemplateForInputGroup"
+            onClick={generateDummyData}
+          >
+            Generate
+          </button>
+        </div>
         {numberOfQuestionsHandler()}
         <div className="d-flex justify-content-end">
           <p className="my-auto me-3 fst-italic text-danger">
@@ -733,7 +682,7 @@ function DevCreateAAE() {
           </p>
           <button
             type="button"
-            className="btn btn-primary btn-lg"
+            className="smallButtonTemplate text-right sumbit-button btn px-5"
             onClick={hasContent ? EditQuizHandler : SubmitQuizHandler}
           >
             {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}

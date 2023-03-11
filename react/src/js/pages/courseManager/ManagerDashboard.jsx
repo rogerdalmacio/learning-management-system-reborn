@@ -270,7 +270,7 @@ const ManagerDashboard = () => {
       },
       {
         accessorKey: "module",
-        header: "Module",
+        header: "Number of Module",
         enableColumnOrdering: false,
         enableEditing: false, //disable editing on this column
         enableSorting: false,
@@ -314,6 +314,7 @@ const ManagerDashboard = () => {
         // onEditingRowCancel={handleCancelRowEdits}
         renderTopToolbarCustomActions={() => (
           <Button
+            className="smallButtonTemplate"
             color="secondary"
             onClick={() => setCreateModalOpen(true)}
             variant="contained"
@@ -352,6 +353,7 @@ export const CreateNewAccountModal = ({
   );
   const [hasError, setHasError] = useState(false);
   const [hasErrorNumber, setHasErrorNumber] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { role, token, userInfo } = useAuth();
   console.log(hasErrorNumber);
@@ -372,6 +374,7 @@ export const CreateNewAccountModal = ({
     } else if (isNaN(values.module)) {
       setHasErrorNumber(true);
     } else {
+      setIsLoading(true);
       onSubmit(values);
       setHasError(false);
       setHasErrorNumber(false);
@@ -423,6 +426,7 @@ export const CreateNewAccountModal = ({
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -431,6 +435,7 @@ export const CreateNewAccountModal = ({
             type: toast.TYPE.ERROR,
             autoClose: 2000,
           });
+          setIsLoading(false);
         });
     }
   };
@@ -500,7 +505,13 @@ export const CreateNewAccountModal = ({
       </DialogContent>
       <DialogActions sx={{ p: "1.25rem" }}>
         <Button onClick={onClose}>Cancel</Button>
-        <Button color="secondary" onClick={handleSubmit} variant="contained">
+        <Button
+          className="smallButtonTemplate"
+          disabled={isLoading}
+          color="secondary"
+          onClick={handleSubmit}
+          variant="contained"
+        >
           Submit
         </Button>
       </DialogActions>

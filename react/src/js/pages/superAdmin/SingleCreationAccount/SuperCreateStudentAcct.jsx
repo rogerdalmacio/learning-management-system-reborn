@@ -36,6 +36,8 @@ const SuperCreateStudentAcct = () => {
   const [updatedList, setUpdatedList] = useState(false);
   const [tableData, setTableData] = useState(getAnnouncement);
   const [validationErrors, setValidationErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
   console.log(getAnnouncement);
 
   useEffect(() => {
@@ -86,6 +88,7 @@ const SuperCreateStudentAcct = () => {
         ) {
           toast.error("Please fill out the blank area");
         } else {
+          setIsLoading(true);
           toastId = toast.info("Sending Request...");
 
           let majorValue;
@@ -144,6 +147,7 @@ const SuperCreateStudentAcct = () => {
               } else {
                 throw new Error(response.status || "Something Went Wrong!");
               }
+              setIsLoading(false);
             })
             .catch((error) => {
               console.log(error);
@@ -160,6 +164,7 @@ const SuperCreateStudentAcct = () => {
                 autoClose: 2000,
               });
               // }
+              setIsLoading(false);
             });
         }
       }
@@ -358,6 +363,7 @@ const SuperCreateStudentAcct = () => {
         )}
         renderTopToolbarCustomActions={() => (
           <Button
+            className="smallButtonTemplate"
             color="secondary"
             onClick={() => setCreateModalOpen(true)}
             variant="contained"
@@ -396,6 +402,8 @@ export const CreateNewAccountModal = ({
   );
   const [hasError, setHasError] = useState(false);
   const [hasErrorNumber, setHasErrorNumber] = useState(false);
+  const [idAlreadyTaken, setIdAlreadyTaken] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { role, token } = useAuth();
   console.log(hasErrorNumber);
@@ -417,6 +425,7 @@ export const CreateNewAccountModal = ({
     } else if (isNaN(values.id) || isNaN(values.year_and_section)) {
       setHasErrorNumber(true);
     } else {
+      setIsLoading(true);
       onSubmit(values);
       setHasError(false);
       setHasErrorNumber(false);
@@ -480,9 +489,11 @@ export const CreateNewAccountModal = ({
               program: "",
               major: "",
             });
+            setIdAlreadyTaken(undefined);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -493,6 +504,7 @@ export const CreateNewAccountModal = ({
               type: toast.TYPE.ERROR,
               autoClose: 2000,
             });
+            setIdAlreadyTaken(error.response.data.errors.id[0]);
           } else {
             toast.update(toastId, {
               render: `${error.message}`,
@@ -500,6 +512,7 @@ export const CreateNewAccountModal = ({
               autoClose: 2000,
             });
           }
+          setIsLoading(false);
         });
     }
   };
@@ -527,11 +540,15 @@ export const CreateNewAccountModal = ({
         return "This field must be Number";
       } else if (hasErrorNumber && column.accessorKey == "year_and_section") {
         return "This field must be Number";
+      } else if (idAlreadyTaken !== undefined && column.accessorKey == "id") {
+        return idAlreadyTaken;
       } else {
         return <span></span>;
       }
     }
   };
+
+  console.log(idAlreadyTaken);
   return (
     <Dialog open={open} className="DialogModalTable">
       <DialogTitle textAlign="center">Create Student Account</DialogTitle>
@@ -579,7 +596,13 @@ export const CreateNewAccountModal = ({
       </DialogContent>
       <DialogActions sx={{ p: "1.25rem" }}>
         <Button onClick={onClose}>Cancel</Button>
-        <Button color="secondary" onClick={handleSubmit} variant="contained">
+        <Button
+          className="smallButtonTemplate"
+          disabled={isLoading}
+          color="secondary"
+          onClick={handleSubmit}
+          variant="contained"
+        >
           Submit
         </Button>
       </DialogActions>

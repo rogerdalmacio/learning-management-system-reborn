@@ -22,6 +22,7 @@ function StudentIndividualSubjectTagging() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [getAnnouncement, setGetAnnouncement] = useState(data);
   const [tableData, setTableData] = useState(getAnnouncement);
+  const [isLoading, setIsLoading] = useState(false);
 
   console.log(listSubjectAlreadyExist);
   useEffect(() => {
@@ -82,6 +83,7 @@ function StudentIndividualSubjectTagging() {
       setError(true);
       toast.error("Please fill out the blank area");
     } else {
+      setIsLoading(true);
       setError(false);
 
       var studentSubjectFinal = studentSubject.join();
@@ -126,6 +128,7 @@ function StudentIndividualSubjectTagging() {
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -152,6 +155,7 @@ function StudentIndividualSubjectTagging() {
               autoClose: 2000,
             });
           }
+          setIsLoading(false);
         });
     }
   };
@@ -284,7 +288,8 @@ function StudentIndividualSubjectTagging() {
         </div>
       </div>
       <button
-        className="taggingSubjectButton buttonTemplate sumbit-button btn rounded-2 mt-3"
+        disabled={isLoading}
+        className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
         onClick={StudTagSubjSubmit}
       >
         Submit

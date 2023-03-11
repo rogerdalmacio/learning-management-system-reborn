@@ -555,7 +555,7 @@ function DevCreateExam() {
           </p>
           <button
             type="button"
-            className="btn btn-primary btn-lg"
+            className="buttonTemplate text-right sumbit-button btn px-5"
             onClick={hasContent ? EditQuizHandler : SubmitQuizHandler}
           >
             {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}

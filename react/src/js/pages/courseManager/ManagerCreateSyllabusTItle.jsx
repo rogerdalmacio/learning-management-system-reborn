@@ -94,7 +94,7 @@ function ManagerCreateSyllabusTItle() {
       </div>
       <div className="mb-4">{ContentHandler()}</div>
       <button
-        className="taggingSubjectButton buttonTemplate sumbit-button btn rounded-2 mt-3"
+        className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
         // onClick={SubmitButton}
       >
         Submit

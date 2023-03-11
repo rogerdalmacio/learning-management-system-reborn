@@ -12,6 +12,7 @@ function ManagerTagSubjToCourseDev() {
   const [getCourseDevId, setGetCourseDevId] = useState();
   const [getSubjectCode, setGetSubjectCode] = useState();
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   console.log(getSubject);
   console.log(getCourseDev);
@@ -86,6 +87,7 @@ function ManagerTagSubjToCourseDev() {
       setError(true);
       toast.error("Please fill out the blank area");
     } else {
+      setIsLoading(true);
       toastId = toast.info("Sending Request...");
 
       const tagCourseDev = {
@@ -123,6 +125,7 @@ function ManagerTagSubjToCourseDev() {
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -140,6 +143,7 @@ function ManagerTagSubjToCourseDev() {
               autoClose: 2000,
             });
           }
+          setIsLoading(false);
         });
     }
   };
@@ -230,7 +234,8 @@ function ManagerTagSubjToCourseDev() {
       </div>
 
       <button
-        className="taggingSubjectButton buttonTemplate sumbit-button btn rounded-2 mt-3"
+        disabled={isLoading}
+        className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
         onClick={SubmitHandler}
       >
         Submit

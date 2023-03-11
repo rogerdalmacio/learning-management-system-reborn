@@ -25,7 +25,8 @@ function DevCreateAssignment() {
   const [getQuizId, setGetQuizId] = useState();
   const [listChange, setListChange] = useState(false);
   const [hasContent, setHasContent] = useState(false);
-
+  console.log(course);
+  console.log(courses);
   const [AssignQuestions, setAssignQuestions] = useState([
     {
       id: "question1",
@@ -256,14 +257,16 @@ function DevCreateAssignment() {
     }
     console.log(quiz);
   }, [quiz]);
-
   useEffect(() => {
     console.log(officialQuiz);
 
     const fetchContent = () => {
       if (officialQuiz !== undefined) {
         const ModuleId = officialQuiz.Quiz[0].module_id.split("-");
-        if (ModuleId[1] == weekForModule) {
+        if (
+          ModuleId[1] == weekForModule &&
+          officialQuiz.Quiz[0].quiz_type == "assignment"
+        ) {
           setHasContent(true);
           const data = {
             answers: officialQuiz.Quiz[0].answers,
@@ -547,6 +550,7 @@ function DevCreateAssignment() {
   // Mapping Question for optimization
   const numberOfQuestionsHandler = () => {
     return numberOfQuestions.map((numOfQuestion, index) => {
+      console.log(index);
       // for the dataset
       const questionNumber = numOfQuestion.questionNumber;
       const radioNumber = numOfQuestion.radio;
@@ -639,6 +643,7 @@ function DevCreateAssignment() {
   };
 
   // Render it all here
+
   return (
     <div className="mb-4 w-100">
       <label className="fs-5 fw-semibold">Assignment</label>
@@ -650,7 +655,7 @@ function DevCreateAssignment() {
           </p>
           <button
             type="button"
-            className="btn btn-primary btn-lg"
+            className="buttonTemplate text-right sumbit-button btn px-5"
             onClick={hasContent ? EditQuizHandler : SubmitQuizHandler}
           >
             {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}

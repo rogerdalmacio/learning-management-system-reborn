@@ -2,32 +2,37 @@
 /* Button */
 
 .smallButtonTemplate {
-    border-radius: 0.375rem !important;
-    color: $white !important;
-    background-color: $primary-color !important;
+  border-radius: 0.375rem !important;
+  color: $white !important;
+  background-color: $primary-color !important;
+}
+
+.smallButtonTemplateForInputGroup {
+  color: $white !important;
+  background-color: $primary-color !important;
 }
 
 .cancelSmallButtonTemplate {
-    border-radius: 0.375rem !important;
-    color: $white !important;
-    background-color: $gray !important;
+  border-radius: 0.375rem !important;
+  color: $white !important;
+  background-color: $gray !important;
 }
 
 .buttonTemplate {
-    font-size: 20px !important;
-    border-radius: 0.375rem !important;
-    padding: 9px 0px !important;
-    color: $white !important;
-    background-color: $primary-color !important;
+  font-size: 20px !important;
+  border-radius: 0.375rem !important;
+  padding: 9px 0px !important;
+  color: $white !important;
+  background-color: $primary-color !important;
 }
 
 .taggingSubjectButton {
-    width: 100%;
-    max-width: 200px;
+  width: 100%;
+  max-width: 150px;
 }
 
 .smallButtonTemplateDanger {
-    border-radius: 0.375rem !important;
-    color: $white !important;
-    background-color: $danger-color !important;
+  border-radius: 0.375rem !important;
+  color: $white !important;
+  background-color: $danger-color !important;
 }

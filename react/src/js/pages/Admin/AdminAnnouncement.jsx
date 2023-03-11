@@ -317,6 +317,7 @@ const AdminAnnouncement = () => {
         )}
         renderTopToolbarCustomActions={() => (
           <Button
+            className="smallButtonTemplate"
             color="secondary"
             onClick={() => setCreateModalOpen(true)}
             variant="contained"
@@ -353,7 +354,7 @@ export const CreateNewAccountModal = ({
     }, {})
   );
   const [hasError, setHasError] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const { role, token } = useAuth();
   const handleSubmit = () => {
     //put your validation logic here
@@ -374,6 +375,7 @@ export const CreateNewAccountModal = ({
       setHasError(true);
       toast.error("Please fill out the blank area");
     } else {
+      setIsLoading(true);
       onSubmit(values);
       setHasError(false);
 
@@ -425,6 +427,7 @@ export const CreateNewAccountModal = ({
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -441,6 +444,7 @@ export const CreateNewAccountModal = ({
             autoClose: 2000,
           });
           // }
+          setIsLoading(false);
         });
     }
   };
@@ -503,7 +507,13 @@ export const CreateNewAccountModal = ({
       </DialogContent>
       <DialogActions sx={{ p: "1.25rem" }}>
         <Button onClick={onClose}>Cancel</Button>
-        <Button color="secondary" onClick={handleSubmit} variant="contained">
+        <Button
+          className="smallButtonTemplate"
+          disabled={isLoading}
+          color="secondary"
+          onClick={handleSubmit}
+          variant="contained"
+        >
           Submit
         </Button>
       </DialogActions>

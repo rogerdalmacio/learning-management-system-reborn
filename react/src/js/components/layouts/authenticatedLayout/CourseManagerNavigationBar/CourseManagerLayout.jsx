@@ -24,7 +24,7 @@ const Layout = () => {
 
     handleResize();
   }, []);
-  
+
   const userImageJpg = `${
     import.meta.env.VITE_API_BASE_URL
   }/storage/CourseManager/CourseManager${userInfo.id}.jpg`;
@@ -85,7 +85,7 @@ const Layout = () => {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                theme="light"
+                theme="colored"
               />
               <Outlet
                 context={[userImageJpg, imageExisting, setImageExisting]}

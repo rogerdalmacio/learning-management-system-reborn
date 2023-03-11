@@ -66,7 +66,7 @@ const UserActivityLogs = ({}) => {
       }
     };
     GetAnnouncementHandler();
-  }, [tableData]);
+  }, []);
   // if (value == "Admin") {
   //   return "blue";
   // } else if (value == "Teacher") {

@@ -9,6 +9,7 @@ function SuperBulkTeacherCreationAccount() {
   const [submitFile, setSubmitFile] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [getNumAlreadyExist, setGetNumAlreadyExist] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { userInfo, token } = useAuth();
 
@@ -40,6 +41,8 @@ function SuperBulkTeacherCreationAccount() {
     } else if (file.type !== "text/csv") {
       toast.error("The file must be in a CSV format");
     } else {
+      setIsLoading(true);
+
       const formData = new FormData();
       formData.append("file", file);
 
@@ -103,6 +106,7 @@ function SuperBulkTeacherCreationAccount() {
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -113,6 +117,7 @@ function SuperBulkTeacherCreationAccount() {
           });
           setProcessing(false);
           setSubmitFile(false);
+          setIsLoading(false);
         });
     }
   };
@@ -192,6 +197,7 @@ function SuperBulkTeacherCreationAccount() {
         <div className="d-block">
           <div className="d-flex justify-content-end">
             <button
+              disabled={isLoading}
               className="uploadButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
               type="submit"
             >

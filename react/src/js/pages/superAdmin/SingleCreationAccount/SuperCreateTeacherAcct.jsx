@@ -320,6 +320,7 @@ const SuperCreateTeacherAcct = () => {
           )}
           renderTopToolbarCustomActions={() => (
             <Button
+              className="smallButtonTemplate"
               color="secondary"
               onClick={() => setCreateModalOpen(true)}
               variant="contained"
@@ -359,6 +360,8 @@ export const CreateNewAccountModal = ({
   );
   const [hasError, setHasError] = useState(false);
   const [hasErrorNumber, setHasErrorNumber] = useState(false);
+  const [idAlreadyTaken, setIdAlreadyTaken] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { role, token } = useAuth();
   console.log(hasErrorNumber);
@@ -379,6 +382,7 @@ export const CreateNewAccountModal = ({
     } else if (isNaN(values.id)) {
       setHasErrorNumber(true);
     } else {
+      setIsLoading(true);
       onSubmit(values);
       setHasError(false);
       setHasErrorNumber(false);
@@ -439,9 +443,11 @@ export const CreateNewAccountModal = ({
               department: "",
               program: "",
             });
+            setIdAlreadyTaken(undefined);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -452,6 +458,7 @@ export const CreateNewAccountModal = ({
               type: toast.TYPE.ERROR,
               autoClose: 2000,
             });
+            setIdAlreadyTaken(error.response.data.errors.id[0]);
           } else {
             toast.update(toastId, {
               render: `${error.message}`,
@@ -459,6 +466,7 @@ export const CreateNewAccountModal = ({
               autoClose: 2000,
             });
           }
+          setIsLoading(false);
         });
     }
   };
@@ -482,6 +490,8 @@ export const CreateNewAccountModal = ({
         return "This field is required";
       } else if (hasErrorNumber && column.accessorKey == "id") {
         return "This field must be Number";
+      } else if (idAlreadyTaken !== undefined && column.accessorKey == "id") {
+        return idAlreadyTaken;
       } else {
         return <span></span>;
       }
@@ -535,7 +545,12 @@ export const CreateNewAccountModal = ({
       </DialogContent>
       <DialogActions sx={{ p: "1.25rem" }}>
         <Button onClick={onClose}>Cancel</Button>
-        <Button color="secondary" onClick={handleSubmit} variant="contained">
+        <Button
+          className="smallButtonTemplate"
+          color="secondary"
+          onClick={handleSubmit}
+          variant="contained"
+        >
           Submit
         </Button>
       </DialogActions>

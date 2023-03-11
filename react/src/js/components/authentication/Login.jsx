@@ -12,6 +12,7 @@ function Login() {
   const [type, setType] = useState("Student");
   const [showPassword, setShowPassword] = useState("password");
   let error;
+  const [isLoading, setIsLoading] = useState(false);
 
   const togglePassword = () => {
     if (showPassword === "password") {
@@ -28,6 +29,8 @@ function Login() {
 
   const SubmitHandler = async (e) => {
     e.preventDefault();
+
+    setIsLoading(true);
     let item = { email, password, type };
     const fetchedData = await fetch(
       `${import.meta.env.VITE_API_BASE_URL}/api/login`,
@@ -52,7 +55,7 @@ function Login() {
         JSON.stringify("Email or Password is not matched")
       );
     }
-
+    setIsLoading(false);
     window.location.reload();
   };
 
@@ -214,7 +217,10 @@ function Login() {
               <div className="mb-3">
                 <p className="errorInput">{error && error}</p>
               </div>
-              <button className="buttonTemplate sumbit-button btn rounded-2 w-100 mt-3">
+              <button
+                disabled={isLoading}
+                className="buttonTemplate sumbit-button btn rounded-2 w-100 mt-3"
+              >
                 Log in
               </button>
             </form>

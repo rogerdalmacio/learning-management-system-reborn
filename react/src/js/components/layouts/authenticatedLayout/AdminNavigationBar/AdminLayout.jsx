@@ -83,7 +83,7 @@ const Layout = () => {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                theme="light"
+                theme="colored"
               />
               <Outlet
                 context={[userImageJpg, imageExisting, setImageExisting]}

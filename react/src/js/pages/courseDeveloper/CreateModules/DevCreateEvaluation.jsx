@@ -26,6 +26,8 @@ function DevCreateEvaluation() {
   const [getQuizId, setGetQuizId] = useState();
   const [listChange, setListChange] = useState(false);
   const [hasContent, setHasContent] = useState(false);
+
+  const [numQuestions, setNumQuestions] = useState(5);
   const [AAEquestions, setAAEQuestions] = useState([
     {
       id: "question1",
@@ -219,7 +221,6 @@ function DevCreateEvaluation() {
   const currentWeek = weekMod.replace("week", "Week ");
   const weekForModule = weekMod.match(/\d+/)[0];
   const contentType = pathArray[5];
-
   useEffect(() => {
     if (course) {
       return course.map((item) => {
@@ -712,7 +713,7 @@ function DevCreateEvaluation() {
           </p>
           <button
             type="button"
-            className="btn btn-primary btn-lg"
+            className="buttonTemplate text-right sumbit-button btn px-5"
             onClick={hasContent ? EditQuizHandler : SubmitQuizHandler}
           >
             {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}

@@ -15,6 +15,7 @@ function DevCreateGeneralization() {
   const [error, setError] = useState(false);
   const [hasContent, setHasContent] = useState(false);
   const [activityId, setActivityId] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { course } = useGetAvailableCourse();
   const { token } = useAuth();
@@ -112,6 +113,7 @@ function DevCreateGeneralization() {
     } else if (item && !item.includes("https://docs.google.com")) {
       toast.error("The Link is not Valid");
     } else {
+      setIsLoading(true);
       let activity = {
         module_id: moduleId,
         title: "generalization",
@@ -145,6 +147,7 @@ function DevCreateGeneralization() {
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -161,6 +164,7 @@ function DevCreateGeneralization() {
               autoClose: 2000,
             });
           }
+          setIsLoading(false);
         });
     }
   };
@@ -175,6 +179,8 @@ function DevCreateGeneralization() {
     } else if (item && !item.includes("https://docs.google.com")) {
       toast.error("The Link is not Valid");
     } else {
+      setIsLoading(true);
+
       let activity = {
         module_id: moduleId,
         title: "generalization",
@@ -209,6 +215,7 @@ function DevCreateGeneralization() {
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -225,6 +232,7 @@ function DevCreateGeneralization() {
               autoClose: 2000,
             });
           }
+          setIsLoading(false);
         });
     }
   };
@@ -266,7 +274,10 @@ function DevCreateGeneralization() {
         <div className="row gutters mt-4 ">
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div className="d-flex justify-content-end">
-              <button className=" buttonTemplate text-right sumbit-button btn px-5">
+              <button
+                disabled={isLoading}
+                className="smallButtonTemplate text-right sumbit-button btn px-5"
+              >
                 {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}
               </button>
             </div>
