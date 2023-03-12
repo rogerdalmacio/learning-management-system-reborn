@@ -16,6 +16,8 @@ function DevCreateAssignment() {
     setUpdatedList,
     updateList,
     officialQuiz,
+    hasChange,
+    setHasChange,
   } = useCourseDevContext();
   const { course } = useGetAvailableCourse();
   const { token } = useAuth();
@@ -25,8 +27,8 @@ function DevCreateAssignment() {
   const [getQuizId, setGetQuizId] = useState();
   const [listChange, setListChange] = useState(false);
   const [hasContent, setHasContent] = useState(false);
-  console.log(course);
-  console.log(courses);
+
+  const [numQuestions, setNumQuestions] = useState(5);
   const [AssignQuestions, setAssignQuestions] = useState([
     {
       id: "question1",
@@ -38,70 +40,6 @@ function DevCreateAssignment() {
     },
     {
       id: "question2",
-      question: "",
-      options: [
-        { id: "optionOne", isCorrect: "" },
-        { id: "optionTwo", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question3",
-      question: "",
-      options: [
-        { id: "optionOne", isCorrect: "" },
-        { id: "optionTwo", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question4",
-      question: "",
-      options: [
-        { id: "optionOne", isCorrect: "" },
-        { id: "optionTwo", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question5",
-      question: "",
-      options: [
-        { id: "optionOne", isCorrect: "" },
-        { id: "optionTwo", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question6",
-      question: "",
-      options: [
-        { id: "optionOne", isCorrect: "" },
-        { id: "optionTwo", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question7",
-      question: "",
-      options: [
-        { id: "optionOne", isCorrect: "" },
-        { id: "optionTwo", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question8",
-      question: "",
-      options: [
-        { id: "optionOne", isCorrect: "" },
-        { id: "optionTwo", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question9",
-      question: "",
-      options: [
-        { id: "optionOne", isCorrect: "" },
-        { id: "optionTwo", isCorrect: "" },
-      ],
-    },
-    {
-      id: "question10",
       question: "",
       options: [
         { id: "optionOne", isCorrect: "" },
@@ -124,7 +62,7 @@ function DevCreateAssignment() {
     { id: "optionTwo", rightAnswerNo: "rightAnswer2", letter: "FALSE" },
   ];
 
-  const numberOfQuestions = [
+  const [numberOfQuestions, setNumberOfQuestions] = useState([
     {
       id: 0,
       question: "Question 1",
@@ -137,62 +75,50 @@ function DevCreateAssignment() {
       questionNumber: "question2",
       radio: "radio2",
     },
-    {
-      id: 2,
-      question: "Question 3",
-      questionNumber: "question3",
-      radio: "radio3",
-    },
-    {
-      id: 3,
-      question: "Question 4",
-      questionNumber: "question4",
-      radio: "radio4",
-    },
-    {
-      id: 4,
-      question: "Question 5",
-      questionNumber: "question5",
-      radio: "radio5",
-    },
-    {
-      id: 5,
-      question: "Question 6",
-      questionNumber: "question6",
-      radio: "radio6",
-    },
-    {
-      id: 6,
-      question: "Question 7",
-      questionNumber: "question7",
-      radio: "radio7",
-    },
-    {
-      id: 7,
-      question: "Question 8",
-      questionNumber: "question8",
-      radio: "radio8",
-    },
-    {
-      id: 8,
-      question: "Question 9",
-      questionNumber: "question9",
-      radio: "radio9",
-    },
-    {
-      id: 9,
-      question: "Question 10",
-      questionNumber: "question10",
-      radio: "radio10",
-    },
-  ];
+  ]);
 
   console.log(AssignQuestions);
 
   const { id } = useParams();
 
   console.log(moduleId);
+  const handleInputChange = (event) => {
+    const { value } = event.target;
+    const newValue = parseInt(value);
+    console.log(newValue);
 
+    setNumQuestions(isNaN(newValue) ? "" : newValue);
+  };
+  console.log(numQuestions);
+  const generateDummyData = () => {
+    if (numQuestions <= 100 && numQuestions >= 1) {
+      const data = [];
+      const NumberOfQuestion = [];
+      for (let i = 1; i <= numQuestions; i++) {
+        const question = {
+          id: `question${i}`,
+          question: "",
+          options: [
+            { id: "optionOne", isCorrect: "" },
+            { id: "optionTwo", isCorrect: "" },
+          ],
+        };
+        data.push(question);
+
+        const numberOfQuestionForRadio = {
+          question: `Question ${i}`,
+          questionNumber: `question${i}`,
+          radio: `radio${i}`,
+        };
+
+        NumberOfQuestion.push(numberOfQuestionForRadio);
+      }
+      setAssignQuestions(data);
+      setNumberOfQuestions(NumberOfQuestion);
+    } else {
+      toast.error("Please Enter a number between 1-100 only");
+    }
+  };
   // Course Title
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
@@ -289,7 +215,20 @@ function DevCreateAssignment() {
               ],
             };
           });
+
+          const NumberOfQuestion = [];
+          for (let i = 1; i <= AssignQuestions.length; i++) {
+            const numberOfQuestionForRadio = {
+              question: `Question ${i}`,
+              questionNumber: `question${i}`,
+              radio: `radio${i}`,
+            };
+
+            NumberOfQuestion.push(numberOfQuestionForRadio);
+          }
           setAssignQuestions(AssignQuestions);
+          setNumberOfQuestions(NumberOfQuestion);
+
           setListChange(!listChange);
         }
       }
@@ -373,6 +312,7 @@ function DevCreateAssignment() {
               type: toast.TYPE.SUCCESS,
               autoClose: 2000,
             });
+            setHasChange(!hasChange);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
@@ -462,6 +402,7 @@ function DevCreateAssignment() {
               type: toast.TYPE.SUCCESS,
               autoClose: 2000,
             });
+            setHasChange(!hasChange);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
@@ -530,7 +471,7 @@ function DevCreateAssignment() {
 
     let filterIsCorrectAgain = filterIsCorrect.filter((x) => x.length == 0);
 
-    if (filterIsCorrectAgain.length !== 10) {
+    if (filterIsCorrectAgain.length !== AssignQuestions.length) {
       setIsCorrectError(true);
     } else {
       setIsCorrectError(false);
@@ -648,6 +589,22 @@ function DevCreateAssignment() {
     <div className="mb-4 w-100">
       <label className="fs-5 fw-semibold">Assignment</label>
       <div className="p-3 inputAnalysisContainer">
+        <div className={`input-group mb-3 ${hasContent ? "d-none" : "d-flex"}`}>
+          <input
+            className="InputChoices form-control"
+            type="number"
+            value={numQuestions}
+            onChange={handleInputChange}
+          />
+
+          <button
+            type="button"
+            className="btn smallButtonTemplateForInputGroup"
+            onClick={generateDummyData}
+          >
+            Generate
+          </button>
+        </div>
         {numberOfQuestionsHandler()}
         <div className="d-flex justify-content-end">
           <p className="my-auto me-3 fst-italic text-danger">
@@ -655,7 +612,7 @@ function DevCreateAssignment() {
           </p>
           <button
             type="button"
-            className="buttonTemplate text-right sumbit-button btn px-5"
+            className="smallButtonTemplate text-right sumbit-button btn px-5"
             onClick={hasContent ? EditQuizHandler : SubmitQuizHandler}
           >
             {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}

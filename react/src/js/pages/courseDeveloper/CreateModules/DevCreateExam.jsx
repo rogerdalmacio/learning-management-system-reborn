@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
 import useAuth from "../../../hooks/useAuth";
-import DevCreateExamState from "./DevCreateExamState/DevCreateExamOptionsState";
-import numberOfQuestions from "./DevCreateExamState/DevCreateExamQuestionState";
+// import DevCreateExamState from "./DevCreateExamState/DevCreateExamOptionsState";
+// import numberOfQuestions from "./DevCreateExamState/DevCreateExamQuestionState";
 import { toast } from "react-toastify";
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
 
@@ -28,6 +28,8 @@ function DevCreateExam() {
     setUpdatedList,
     updateList,
     officialQuiz,
+    hasChange,
+    setHasChange,
   } = useCourseDevContext();
 
   const [moduleId, setModuleId] = useState();
@@ -36,7 +38,29 @@ function DevCreateExam() {
   const [listChange, setListChange] = useState(false);
   const [hasContent, setHasContent] = useState(false);
 
-  const [AAEquestions, setAAEQuestions] = useState(DevCreateExamState);
+  const [numQuestions, setNumQuestions] = useState(5);
+  const [AAEquestions, setAAEQuestions] = useState([
+    {
+      id: "question1",
+      question: "",
+      options: [
+        { id: "option1", text: "", isCorrect: "" },
+        { id: "option2", text: "", isCorrect: "" },
+        { id: "option3", text: "", isCorrect: "" },
+        { id: "option4", text: "", isCorrect: "" },
+      ],
+    },
+    {
+      id: "question2",
+      question: "",
+      options: [
+        { id: "option1", text: "", isCorrect: "" },
+        { id: "option2", text: "", isCorrect: "" },
+        { id: "option3", text: "", isCorrect: "" },
+        { id: "option4", text: "", isCorrect: "" },
+      ],
+    },
+  ]);
   const [error, setError] = useState(false);
 
   const [questionError, setQuestionError] = useState();
@@ -49,10 +73,61 @@ function DevCreateExam() {
     { id: "option3", rightAnswerNo: "rightAnswer3", letter: "C" },
     { id: "option4", rightAnswerNo: "rightAnswer4", letter: "D" },
   ];
-
+  const [numberOfQuestions, setNumberOfQuestions] = useState([
+    {
+      id: 0,
+      question: "Question 1",
+      questionNumber: "question1",
+      radio: "radio1",
+    },
+    {
+      id: 1,
+      question: "Question 2",
+      questionNumber: "question2",
+      radio: "radio2",
+    },
+  ]);
   console.log(AAEquestions);
 
-  console.log(id);
+  const handleInputChange = (event) => {
+    const { value } = event.target;
+    const newValue = parseInt(value);
+    console.log(newValue);
+
+    setNumQuestions(isNaN(newValue) ? "" : newValue);
+  };
+  console.log(numQuestions);
+  const generateDummyData = () => {
+    if (numQuestions <= 100 && numQuestions >= 1) {
+      const data = [];
+      const NumberOfQuestion = [];
+      for (let i = 1; i <= numQuestions; i++) {
+        const question = {
+          id: `question${i}`,
+          question: "",
+          options: [
+            { id: "option1", text: "", isCorrect: "" },
+            { id: "option2", text: "", isCorrect: "" },
+            { id: "option3", text: "", isCorrect: "" },
+            { id: "option4", text: "", isCorrect: "" },
+          ],
+        };
+        data.push(question);
+
+        const numberOfQuestionForRadio = {
+          question: `Question ${i}`,
+          questionNumber: `question${i}`,
+          radio: `radio${i}`,
+        };
+
+        NumberOfQuestion.push(numberOfQuestionForRadio);
+      }
+      setAAEQuestions(data);
+      setNumberOfQuestions(NumberOfQuestion);
+    } else {
+      toast.error("Please Enter a number between 1-100 only");
+    }
+  };
 
   // Course Title
   const pathname = window.location.pathname;
@@ -149,7 +224,19 @@ function DevCreateExam() {
             };
             return questionObject;
           });
+          const NumberOfQuestion = [];
+          for (let i = 1; i <= AAEquestions.length; i++) {
+            const numberOfQuestionForRadio = {
+              question: `Question ${i}`,
+              questionNumber: `question${i}`,
+              radio: `radio${i}`,
+            };
+
+            NumberOfQuestion.push(numberOfQuestionForRadio);
+          }
           setAAEQuestions(AAEquestions);
+          setNumberOfQuestions(NumberOfQuestion);
+
           setListChange(!listChange);
         }
       }
@@ -257,6 +344,7 @@ function DevCreateExam() {
               type: toast.TYPE.SUCCESS,
               autoClose: 2000,
             });
+            setHasChange(!hasChange);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
@@ -352,6 +440,7 @@ function DevCreateExam() {
               type: toast.TYPE.SUCCESS,
               autoClose: 2000,
             });
+            setHasChange(!hasChange);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
@@ -442,7 +531,7 @@ function DevCreateExam() {
 
     let filterIsCorrectAgain = filterIsCorrect.filter((x) => x.length == 0);
 
-    if (filterIsCorrectAgain.length !== 50) {
+    if (filterIsCorrectAgain.length !== AAEquestions.length) {
       setIsCorrectError(true);
     } else {
       setIsCorrectError(false);
@@ -548,6 +637,22 @@ function DevCreateExam() {
     <div className="mb-4 w-100">
       <label className="fs-5 fw-semibold">{ExamNewWord}</label>
       <div className="inputAnalysisContainer sm-shadow py-3 px-0 px-sm-3 px-xl-5">
+        <div className={`input-group mb-3 ${hasContent ? "d-none" : "d-flex"}`}>
+          <input
+            className="InputChoices form-control"
+            type="number"
+            value={numQuestions}
+            onChange={handleInputChange}
+          />
+
+          <button
+            type="button"
+            className="btn smallButtonTemplateForInputGroup"
+            onClick={generateDummyData}
+          >
+            Generate
+          </button>
+        </div>
         {numberOfQuestionsHandler()}
         <div className="d-flex justify-content-end">
           <p className="my-auto me-3 fst-italic text-danger">
@@ -555,7 +660,7 @@ function DevCreateExam() {
           </p>
           <button
             type="button"
-            className="buttonTemplate text-right sumbit-button btn px-5"
+            className="smallButtonTemplate text-right sumbit-button btn px-5"
             onClick={hasContent ? EditQuizHandler : SubmitQuizHandler}
           >
             {hasContent ? <span>Submit Changes</span> : <span>Submit</span>}

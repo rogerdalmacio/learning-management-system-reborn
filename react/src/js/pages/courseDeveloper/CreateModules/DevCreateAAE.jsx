@@ -18,6 +18,8 @@ function DevCreateAAE() {
     setUpdatedList,
     updateList,
     officialQuiz,
+    hasChange,
+    setHasChange,
   } = useCourseDevContext();
 
   const { course } = useGetAvailableCourse();
@@ -359,6 +361,7 @@ function DevCreateAAE() {
               type: toast.TYPE.SUCCESS,
               autoClose: 2000,
             });
+            setHasChange(!hasChange);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
@@ -453,6 +456,7 @@ function DevCreateAAE() {
               type: toast.TYPE.SUCCESS,
               autoClose: 2000,
             });
+            setHasChange(!hasChange);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }

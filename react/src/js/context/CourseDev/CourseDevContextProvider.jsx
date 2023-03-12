@@ -128,7 +128,7 @@ export const CourseDevContextProvider = ({ children }) => {
     };
 
     renderQuiz();
-  }, [weekQuiz]);
+  }, [weekQuiz, hasChange]);
 
   useEffect(() => {
     const renderSpecificQuiz = async () => {
@@ -159,7 +159,7 @@ export const CourseDevContextProvider = ({ children }) => {
     };
 
     renderSpecificQuiz();
-  }, [quizid, updateList, quiz]);
+  }, [quizid, updateList, quiz, hasChange]);
   console.log(quiz);
 
   // useEffect(() => {
