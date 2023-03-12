@@ -76,6 +76,7 @@ function StudAAE() {
             }
           )
           .then((response) => {
+            console.log(response);
             if (response.data.request) {
               setGetQuizId(response.data);
               setHasAutoSave(true);

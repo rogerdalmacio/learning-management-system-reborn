@@ -4,8 +4,11 @@ import { useParams } from "react-router-dom";
 import Loading from "../../../components/layouts/Loading";
 
 function StudLesson() {
-  const { courses, setWeekLesson, lesson, module } = useStudentContext();
+  const { courses, setWeekLesson, setWeek, lesson, module } =
+    useStudentContext();
   const [content, setContent] = useState();
+  const [weekNumber, setWeekNumber] = useState();
+  const [areEqual, setAreEqual] = useState(false);
 
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
@@ -17,7 +20,8 @@ function StudLesson() {
   const contentType = pathArray[5];
   console.log(contentType);
 
-  console.log(lesson);
+  console.log(content);
+  console.log(weekNumber);
 
   //getting module_id for modules
   useEffect(() => {
@@ -26,21 +30,32 @@ function StudLesson() {
         if (course.course == courseTitle) {
           course.module.map((mod) => {
             if (mod.week == weekForModule) {
-              setWeekLesson(mod.week);
+              console.log(mod.id);
+              setWeek(mod.id);
+              setWeekNumber(mod.id);
             }
           });
         }
       });
     }
-
-    if (module) {
-      const act = module.lesson
-        .filter((act) => act.title == contentType)
-        .map((content) => {
-          setContent(content);
-        });
-    }
   });
+
+  useEffect(() => {
+    if (module) {
+      console.log(module);
+      console.log(module.id);
+      if (module.id == weekNumber) {
+        setAreEqual(true);
+        const act = module.lesson
+          .filter((act) => act.title == contentType)
+          .map((content) => {
+            setContent(content);
+          });
+      } else {
+        setAreEqual(false);
+      }
+    }
+  }, [module, weekNumber]);
 
   const fetchContent = () => {
     return (
@@ -51,7 +66,7 @@ function StudLesson() {
             Click the link for a greater view of document
           </span>
         </p>
-        <a href={lesson.embed_links} target="_blank">
+        <a href={content.embed_links} target="_blank">
           Open File in New Page
         </a>
       </div>
@@ -71,11 +86,22 @@ function StudLesson() {
         </Fragment>
       );
     } else {
-      return <Loading />;
+      return (
+        <Fragment>
+          <h4 className="mb-3">Lesson for {currentWeek}</h4>
+          <h4 className="d-flex justify-content-center fst-italic text-secondary py-5">
+            No Content has been added yet.
+          </h4>
+        </Fragment>
+      );
     }
   };
 
-  return <div>{AvailableLesson()}</div>;
+  if (areEqual) {
+    return <div>{AvailableLesson()}</div>;
+  } else {
+    return <Loading />;
+  }
 }
 
 export default StudLesson;

@@ -8,6 +8,8 @@ function StudGeneralization() {
   const { courses, setWeek, week, module } = useStudentContext();
 
   const [content, setContent] = useState();
+  const [weekNumber, setWeekNumber] = useState();
+  const [areEqual, setAreEqual] = useState(false);
 
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
@@ -29,20 +31,28 @@ function StudGeneralization() {
           course.module.map((mod) => {
             if (mod.week == weekForModule) {
               setWeek(mod.id);
+              setWeekNumber(mod.id);
             }
           });
         }
       });
     }
-
-    if (module) {
-      const act = module.activity
-        .filter((act) => act.activity_type == contentType)
-        .map((content) => {
-          setContent(content);
-        });
-    }
   });
+
+  useEffect(() => {
+    if (module) {
+      if (module.id == weekNumber) {
+        setAreEqual(true);
+        const act = module.activity
+          .filter((act) => act.activity_type == contentType)
+          .map((content) => {
+            setContent(content);
+          });
+      } else {
+        setAreEqual(false);
+      }
+    }
+  }, [module, weekNumber]);
 
   const fetchContent = () => {
     return (
@@ -76,11 +86,22 @@ function StudGeneralization() {
         </Fragment>
       );
     } else {
-      return <Loading />;
+      return (
+        <Fragment>
+          <h4 className="mb-3">Lesson for {currentWeek}</h4>
+          <h4 className="d-flex justify-content-center fst-italic text-secondary py-5">
+            No Content has been added yet.
+          </h4>
+        </Fragment>
+      );
     }
   };
 
-  return <div>{AvailableActivity()}</div>;
+  if (areEqual) {
+    return <div>{AvailableActivity()}</div>;
+  } else {
+    return <Loading />;
+  }
 }
 
 export default StudGeneralization;
