@@ -7,7 +7,17 @@ import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCours
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
 import Loading from "../../../components/layouts/Loading";
 function DevCreateLesson() {
-  const { courses, setWeekLesson, lesson } = useCourseDevContext();
+  const { token } = useAuth();
+  const {
+    courses,
+    setWeekLesson,
+    setWeek,
+    lesson,
+    module,
+    hasChange,
+    setHasChange,
+  } = useCourseDevContext();
+  const { course } = useGetAvailableCourse();
 
   const [item, setItem] = useState("");
   const [moduleId, setModuleId] = useState();
@@ -16,14 +26,11 @@ function DevCreateLesson() {
   const [hasContent, setHasContent] = useState(false);
   const [lessonId, setLessonId] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const { course } = useGetAvailableCourse();
-  const { token } = useAuth();
 
   const { id } = useParams();
 
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
-  console.log(courses);
   // Course Title
   const courseBase = pathArray[2];
   const courseTitle = courseBase.replace(/%20/g, " ");
@@ -35,11 +42,12 @@ function DevCreateLesson() {
 
   useEffect(() => {
     if (courses) {
+      console.log(courses);
       courses.map((course) => {
         if (course.course == courseTitle) {
           course.module.map((mod) => {
             if (mod.week == weekForModule) {
-              setWeekLesson(mod.week);
+              setWeek(mod.id);
             }
           });
         }
@@ -47,20 +55,40 @@ function DevCreateLesson() {
     }
   });
 
-  useEffect(() => {
-    console.log(lesson);
-    if (lesson !== undefined && lesson.length !== 0) {
-      console.log(lesson);
-      if (lesson[0].title == "lesson") {
-        setHasContent(true);
-        setLessonId(lesson[0].id);
-        setItem(lesson[0].embed_links);
-      }
-    } else {
-      setItem("");
-    }
-  }, [lesson]);
+  // useEffect(() => {
+  //   console.log(lesson);
+  //   if (lesson !== undefined && lesson.length !== 0) {
+  //     console.log(lesson);
+  //     if (lesson[0].title == "lesson") {
+  //       setHasContent(true);
+  //       setLessonId(lesson[0].id);
+  //       setItem(lesson[0].embed_links);
+  //     }
+  //   } else {
+  //     setItem("");
+  //     setHasContent(false);
+  //   }
+  // }, [lesson]);
 
+  useEffect(() => {
+    if (module !== undefined && module.length !== 0) {
+      const modulevalue = module[0].lesson.filter(
+        (less) => less.title == "lesson" && less.module_id == moduleId
+      );
+      console.log(modulevalue);
+
+      if (modulevalue !== undefined && modulevalue.length !== 0) {
+        console.log(modulevalue);
+        if (modulevalue[0].title == "lesson") {
+          setHasContent(true);
+          setLessonId(modulevalue[0].id);
+          setItem(modulevalue[0].embed_links);
+        } else {
+          setItem("");
+        }
+      }
+    }
+  }, [moduleId, module]);
   // Get module id
   const weekNumber = id.match(/\d+/)[0];
 
@@ -135,6 +163,7 @@ function DevCreateLesson() {
               type: toast.TYPE.SUCCESS,
               autoClose: 2000,
             });
+            setHasChange(!hasChange);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
@@ -203,6 +232,7 @@ function DevCreateLesson() {
               type: toast.TYPE.SUCCESS,
               autoClose: 2000,
             });
+            setHasChange(!hasChange);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }

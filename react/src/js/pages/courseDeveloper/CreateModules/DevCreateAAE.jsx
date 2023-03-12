@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import DevCreateAAEedit from "./DevCreatAAEedit";
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
 import TestComponent from "./TestComponent";
-
+import Loading from "../../../components/layouts/Loading";
 function DevCreateAAE() {
   // States
   const {
@@ -27,7 +27,7 @@ function DevCreateAAE() {
   const [term, setTerm] = useState();
   const [getQuizId, setGetQuizId] = useState();
   const [listChange, setListChange] = useState(false);
-  const [hasContent, setHasContent] = useState(false);
+  const [hasContent, setHasContent] = useState();
 
   const [numQuestions, setNumQuestions] = useState(5);
   const [AAEquestions, setAAEQuestions] = useState([
@@ -649,8 +649,9 @@ function DevCreateAAE() {
       );
     });
   };
-  console.log(AAEquestions);
+  console.log(hasContent);
   // Render it all here
+
   return (
     <div className="mb-4 w-100">
       {/* <DevCreateAAEedit /> */}
@@ -659,7 +660,7 @@ function DevCreateAAE() {
         Application, Analysis, and Exploration
       </label>
       <div className="inputAnalysisContainer sm-shadow py-3 px-0 px-sm-3 px-xl-5">
-        <div className="input-group mb-3">
+        <div className={`input-group mb-3 ${hasContent ? "d-none" : "d-flex"}`}>
           <input
             className="InputChoices form-control"
             type="number"

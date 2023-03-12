@@ -18,6 +18,7 @@ export const CourseDevContextProvider = ({ children }) => {
   const [quizid, setQuizId] = useState();
   const [quizResultId, setQuizResultId] = useState();
   const [updateList, setUpdatedList] = useState(false);
+  const [hasChange, setHasChange] = useState(false);
 
   // const pathname = window.location.pathname;
   // const pathArray = pathname.split("/");
@@ -73,7 +74,7 @@ export const CourseDevContextProvider = ({ children }) => {
     };
 
     renderModule();
-  }, [week]);
+  }, [week, hasChange]);
 
   useEffect(() => {
     const renderLesson = async () => {
@@ -208,6 +209,8 @@ export const CourseDevContextProvider = ({ children }) => {
         officialQuiz,
         setQuizResultId,
         quizResultId,
+        hasChange,
+        setHasChange,
       }}
     >
       {children}

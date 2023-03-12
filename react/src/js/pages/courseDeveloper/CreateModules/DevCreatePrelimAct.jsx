@@ -7,7 +7,8 @@ import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCours
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
 
 function DevCreatePrelimAct() {
-  const { courses, setWeek, module } = useCourseDevContext();
+  const { courses, setWeek, module, hasChange, setHasChange } =
+    useCourseDevContext();
 
   const [item, setItem] = useState("");
   const [moduleId, setModuleId] = useState();
@@ -144,6 +145,7 @@ function DevCreatePrelimAct() {
               type: toast.TYPE.SUCCESS,
               autoClose: 2000,
             });
+            setHasChange(!hasChange);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
@@ -211,6 +213,7 @@ function DevCreatePrelimAct() {
               type: toast.TYPE.SUCCESS,
               autoClose: 2000,
             });
+            setHasChange(!hasChange);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
