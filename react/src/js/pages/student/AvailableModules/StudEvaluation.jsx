@@ -150,6 +150,18 @@ function StudAAE() {
     //what if the autosaveprogress is changing
     setHasAutoSaveChange(true);
 
+    let newString = "";
+
+    if (quizInfo !== undefined) {
+      console.log(quizInfo.answers);
+      for (let i = 0; i < quizInfo.answers.split("|").length; i++) {
+        newString += "@$#"; // Concatenate "@$#" to the new string
+        if (i !== quizInfo.answers.split("|").length - 1) {
+          newString += "|"; // Add "|" delimiter except for the last element
+        }
+      }
+    }
+
     const item = {
       student_id: userInfo.id,
       quiz_id: quizid,
@@ -160,7 +172,7 @@ function StudAAE() {
       score: 0,
       logs: "x",
       snapshot: false,
-      answers: "@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#|@$#",
+      answers: newString,
     };
 
     await axios
@@ -183,23 +195,22 @@ function StudAAE() {
       })
       .then(() => {
         if (quizResultId && quizResultId.length !== 0) {
-          const initialAnswer = [
-            "@$#",
-            "@$#",
-            "@$#",
-            "@$#",
-            "@$#",
-            "@$#",
-            "@$#",
-            "@$#",
-            "@$#",
-            "@$#",
-          ];
+          let newString = "";
+
+          if (quizInfo !== undefined) {
+            console.log(quizInfo.answers);
+            for (let i = 0; i < quizInfo.answers.split("|").length; i++) {
+              newString += "@$#"; // Concatenate "@$#" to the new string
+              if (i !== quizInfo.answers.split("|").length - 1) {
+                newString += "|"; // Add "|" delimiter except for the last element
+              }
+            }
+          }
 
           const item2 = {
             student_id: userInfo.id,
             quiz_result_id: quizResultId[0].id,
-            answers: initialAnswer.join("|"),
+            answers: newString,
             snapshot: false,
             start_time: quizResultId[0].start_time,
             end_time: quizResultId[0].end_time,
@@ -240,14 +251,13 @@ function StudAAE() {
   };
 
   const GetScoreHandler = () => {
-    console.log(quizResultId && quizResultId.length === 0);
-
-    if (quizResultId.length !== 0) {
+    if (quizResultId.length !== 0 && quizInfo !== undefined) {
       if (quizResultId && quizResultId[0].attempt !== "finished") {
         return null;
       } else {
-        const percentage = quizResultId[0].score * 10;
-        const percentage2 = quizResultId[0].score * 1;
+        const percentage =
+          quizResultId[0].score * (100 / quizInfo.answers.split("|").length);
+        const percentage2 = quizResultId[0].score;
 
         const date = new Date(quizResultId[0].end_time);
         const options = {
@@ -265,7 +275,9 @@ function StudAAE() {
               <thead className="fw-normal">
                 <tr className="tableRowHeader align-top  fw-normal">
                   <th scope="col-3">State</th>
-                  <th scope="col-3">Marks / 10.00</th>
+                  <th scope="col-3">
+                    Marks / {quizInfo.answers.split("|").length}.00
+                  </th>
                   <th scope="col-3">Grade / 100.00</th>
                 </tr>
               </thead>
@@ -283,12 +295,18 @@ function StudAAE() {
                   </td>
                   <td>
                     <span className="text-secondary">
-                      <QuizResult percentage2={percentage2} />
+                      <QuizResult
+                        percentage2={Math.floor(percentage2)}
+                        percentage2Text={quizInfo.answers.split("|").length}
+                      />
                     </span>
                   </td>
                   <td>
                     <span className="text-secondary">
-                      <QuizResult percentage={percentage} />
+                      <QuizResult
+                        percentage={Math.floor(percentage)}
+                        percentageText={quizInfo.answers.split("|").length}
+                      />
                     </span>
                   </td>
                 </tr>
@@ -316,9 +334,9 @@ function StudAAE() {
     setIsloading2(true);
   });
 
-  console.log(isloading);
+  console.log(quizInfo);
   const Button = () => {
-    if (isloading2 && isloading && hasAttempt) {
+    if (isloading2 && isloading && hasAttempt && quizInfo !== undefined) {
       return (
         <Fragment>
           {hasAttempt && (

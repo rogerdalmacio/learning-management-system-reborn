@@ -61,6 +61,8 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderModule = async () => {
+      console.log(week);
+
       if (role === "student" && week) {
         await axios
           .get(
@@ -109,6 +111,7 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderQuiz = async () => {
+      console.log(weekQuiz);
       if (role === "student") {
         await axios
           .get(
@@ -126,7 +129,7 @@ export const StudContextProvider = ({ children }) => {
           .then((response) => {
             console.log(response);
             console.log(response.data.Module);
-            setQuiz(response.data.Module[0]);
+            setQuiz(response.data.Module);
           });
       }
     };
@@ -176,7 +179,7 @@ export const StudContextProvider = ({ children }) => {
             }
           )
           .then((response) => {
-            console.log(response);
+            console.log(response.data[0]);
             setQuizResultId(response.data[0]);
           });
       }

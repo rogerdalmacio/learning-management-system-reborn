@@ -93,13 +93,13 @@ function StudQuizAAE() {
   }, [logChange]);
 
   //Submit every logs
-  useEffect(() => {
-    if (altTabCount === 0) {
-      return null;
-    } else {
-      handleNext();
-    }
-  }, [altTabCount]);
+  // useEffect(() => {
+  //   if (altTabCount === 0) {
+  //     return null;
+  //   } else {
+  //     handleNext();
+  //   }
+  // }, [altTabCount]);
   // Count if blurr or AFK or alt+tab
   useEffect(() => {
     const logsHandler = () => {
@@ -253,8 +253,9 @@ function StudQuizAAE() {
       </div>
     );
   };
-
+  console.log(quizResultId);
   // Next and Previous Button
+  console.log(getAnswer);
   const handleNext = async () => {
     // console.log(getLogs);
     // console.log(getLogs + logCount);
@@ -396,9 +397,9 @@ function StudQuizAAE() {
         });
       });
   };
-
+  console.log(currentQuestionIndex);
   const LastNumberHandler = () => {
-    if (currentQuestionIndex == 9) {
+    if (currentQuestionIndex == content.length - 1) {
       return (
         <button
           onClick={SubmitQuizHandler}
@@ -460,8 +461,7 @@ function StudQuizAAE() {
                 <div className="col-12 col-md-4 col-lg-3">
                   <div className="QuizContentCont Quizcontainer2 shadow p-3 mb-3">
                     <p>
-                      Question {currentQuestionIndex + 1}
-                      /10
+                      Question {currentQuestionIndex + 1}/{content.length}
                     </p>
                     <div className="QuizNavItemContainer d-flex flex-wrap">
                       {NavigationContent()}
