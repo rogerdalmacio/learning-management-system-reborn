@@ -8,7 +8,6 @@ use App\Models\CoreFunctions\Logs;
 use App\Models\Students\QuizResult;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class TSnapshotController extends Controller
@@ -27,7 +26,7 @@ class TSnapshotController extends Controller
             'attempt' => 'recorded'
         ]);
 
-        $directory =  File::delete('storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+        $directory =  Storage::delete(config('APP_URL') . 'storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $response = [
             'Snapshot accepted',
@@ -53,7 +52,7 @@ class TSnapshotController extends Controller
 
         $quiz = QuizResult::find($id);
 
-        File::delete('storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+        Storage::delete(config('APP_URL') . 'storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $quiz->delete();
 

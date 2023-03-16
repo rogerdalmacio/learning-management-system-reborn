@@ -32,6 +32,7 @@ use App\Http\Controllers\CoreFunctions\ListOfSubjectsController;
 use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
 use App\Http\Controllers\CoreFunctions\AccountManageController;
+use App\Http\Controllers\CoreFunctions\FetchSharedContent;
 use App\Http\Controllers\CoreFunctions\ListOfUsersController;
 use App\Http\Controllers\CoreFunctions\LogsController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
@@ -140,19 +141,16 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
 
 });
 
-
 //content routes
 Route::group(['prefix' => 'content', 'middleware' => ['auth:sanctum','ability:CourseManager,Admin']], function(){
 
-    Route::apiResource('courses', SCourseController::class);
-    Route::apiResource('lesson', SLessonController::class);
-    Route::apiResource('activity', SActivityController::class);
-    Route::apiResource('quiz', SQuizController::class);
-    Route::apiResource('module', SModulesController::class);
+    Route::get('/course', [FetchSharedContent::class, 'courses']);
+    Route::get('/module', [FetchSharedContent::class, 'modules']);
+    Route::get('/activity/{id}', [FetchSharedContent::class, 'activity']);
+    Route::get('/lesson/{id}', [FetchSharedContent::class, 'lesson']);
+    Route::get('/quiz/{id}', [FetchSharedContent::class, 'quiz']);
 
 });
-
-
 
 //SuperAdmin Core
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:SuperAdmin']], function(){

@@ -45,13 +45,13 @@ class AnnouncementsController extends Controller
             'Announcement Succesfully created: ' => $request['title'],
         ];
 
-        return response($response, 201);
-
         Logs::create([
             'user_id' => Auth::user()->id,
             'user_type' => Auth::user()->usertype(),
             'activity_log' => 'created announcement'
         ]);
+
+        return response($response, 201);
         
     }
 

@@ -24,7 +24,7 @@ class CreateAnnouncementRequest extends FormRequest
     public function rules()
     {
         return [
-        'title' => 'required',
+        'title' => 'required|unique:announcements,title',
         'body' => 'required',
         'status' => 'required|boolean',
         'embed_link' => 'sometimes',
