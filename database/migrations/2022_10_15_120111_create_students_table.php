@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('department');
             $table->string('program');
             $table->string('subjects')->nullable();
+            $table->boolean('is_logged_in')->default(0);
             $table->timestamps(); // created and upated the user
             $table->rememberToken();
         });

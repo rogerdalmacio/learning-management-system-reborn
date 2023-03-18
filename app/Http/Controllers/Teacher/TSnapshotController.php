@@ -13,11 +13,10 @@ use Illuminate\Support\Facades\Storage;
 class TSnapshotController extends Controller
 {
 
-    public function checkSnapshot($id, Request $request) {
+    public function checkSnapshot(Request $request, int $id) {
 
         $request->validate([
             'student_id' => 'required|int',
-
         ]);
 
         $quiz = QuizResult::find($id);
@@ -26,7 +25,7 @@ class TSnapshotController extends Controller
             'attempt' => 'recorded'
         ]);
 
-        $directory =  Storage::delete(config('APP_URL') . 'storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+        $directory =  Storage::delete(config('APP_URL') . 'storage/quiz/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $response = [
             'Snapshot accepted',
@@ -40,11 +39,11 @@ class TSnapshotController extends Controller
         ]);
 
 
-        return response($response, 204);
+        return response($response, 200);
 
     }
 
-    public function rejectSnapshot($id, Request $request) {
+    public function rejectSnapshot(Request $request, int $id) {
 
         $request->validate([
             'student_id' => 'required|int',
@@ -52,7 +51,7 @@ class TSnapshotController extends Controller
 
         $quiz = QuizResult::find($id);
 
-        Storage::delete(config('APP_URL') . 'storage/quiz/' . $quiz->quiz_type . '/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
+        Storage::delete(config('APP_URL') . 'storage/quiz/' . $request['student_id'] . $quiz->quiz_type . $quiz->id . '.jpg');
 
         $quiz->delete();
 
@@ -66,7 +65,7 @@ class TSnapshotController extends Controller
             'activity_log' => 'Snapshot rejected for quiz - ' . $quiz->quiz_id
         ]);
 
-        return response($response, 204);
+        return response($response, 200);
 
     }
 

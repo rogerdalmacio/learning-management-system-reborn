@@ -34,6 +34,7 @@ class Student extends Model
         'department',
         'program',
         'subjects',
+        'is_logged_in',
     ];
 
     /**

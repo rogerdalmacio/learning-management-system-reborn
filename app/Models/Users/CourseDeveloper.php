@@ -28,7 +28,8 @@ class CourseDeveloper extends Model
         'email',
         'password',
         'department',
-        'subjects'
+        'subjects',
+        'is_logged_in',
     ];
 
     /**

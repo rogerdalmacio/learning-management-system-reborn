@@ -33,6 +33,7 @@ class Teacher extends Model
         'program',
         'year_and_sections',
         'subjects',
+        'is_logged_in',
     ];
 
     /**

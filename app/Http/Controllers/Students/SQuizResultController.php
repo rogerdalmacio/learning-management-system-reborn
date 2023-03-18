@@ -198,7 +198,7 @@ class SQuizResultController extends Controller
             'activity_log' => 'Quiz submitted on quiz = ' . $quizresult->quiz_id . ' on module ' . $quizresult->module_Id
         ]);
 
-        return response($response, 201);
+        return response($response, 201) ;
 
     }
 

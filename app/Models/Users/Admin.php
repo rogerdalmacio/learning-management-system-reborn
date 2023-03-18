@@ -26,6 +26,7 @@ class Admin extends Model
         'last_name',
         'email',
         'password',
+        'is_logged_in',
     ];
 
     /**

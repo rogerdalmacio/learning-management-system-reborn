@@ -23,160 +23,269 @@ class UserController extends Controller
             'type' => 'required'
         ]);
 
-        if($request->type == 'Student'){
+        switch($request->type) {
 
-            $user = Student::where('email', $request->email)->first();
+            case 'Student' :
 
-            if(!Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-                return response(['Bad Credentials'], 401);
-            }
+                if(!Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+                    return response(['Bad Credentials'], 401);
+                }
 
-            $token = $user->createToken('LMS',['Student'])->plainTextToken;
+                $user = Auth::user();
 
-            $response = [
-                'user' => $user,
-                'token' => $token,
-                'type' => 'student',
-            ];
+                if($user->is_logged_in) {
 
-            Logs::create([
-                'user_id' => Auth::user()->id,
-                'user_type' => Auth::user()->usertype(),
-                'activity_log' => 'Logged in'
-            ]);
+                    $response = [
+                        'message' => 'Your account is already logged in to other device.'
+                    ];
 
-            return response($response, 201)->cookie('sanctum', $token, 1440);
+                    return response($response, 404);
 
-        } elseif ($request->type == 'Teacher') {
+                }
 
-            $user = Teacher::where('email', $request->email)->first();
+                $user->update([
+                    'is_logged_in' => true
+                ]);
 
-            if(!Auth::guard('Teacher')->attempt(['email' => $request->email, 'password' => $request->password])){
-                return response(['Bad Credentials'], 401);
-            }
+                $token = $user->createToken('LMS',['Student'])->plainTextToken;
 
-            $token = $user->createToken('LMS',['Teacher'])->plainTextToken;
+                $response = [
+                    'user' => $user,
+                    'token' => $token,
+                    'type' => 'student',
+                ];
 
-            $response = [
-                'user' => $user,
-                'token' => $token,
-                'type' => 'teacher'
-            ];
+                Logs::create([
+                    'user_id' => $user->id,
+                    'user_type' => $user->usertype(),
+                    'activity_log' => 'Logged in'
+                ]);
 
-            Logs::create([
-                'user_id' => Auth::guard('Teacher')->user()->id,
-                'user_type' => Auth::guard('Teacher')->user()->usertype(),
-                'activity_log' => 'Logged in'
-            ]);
-                    
-            return response($response, 201);
+                return response($response, 201)->cookie('sanctum', $token, 1440);
 
-        } elseif($request->type == 'CourseManager') {
+                break;
 
-            $user = CourseManager::where('email', $request->email)->first();
+            case 'Teacher' :
 
-            if(!Auth::guard('CourseManager')->attempt(['email' => $request->email, 'password' => $request->password])){
-                return response(['Bad Credentials'], 401);
-            }
+                if(!Auth::guard('Teacher')->attempt(['email' => $request->email, 'password' => $request->password])){
+                    return response(['Bad Credentials'], 401);
+                }
 
-            $token = $user->createToken('LMS',['CourseManager'])->plainTextToken;
+                $user = Auth::guard('Teacher')->user();
+                
+                if($user->is_logged_in) {
 
-            $response = [
-                'user' => $user,
-                'token' => $token,
-                'type' => 'CourseManager',
-            ];
+                    $response = [
+                        'message' => 'Your account is already logged in to other device.'
+                    ];
 
-            Logs::create([
-                'user_id' => Auth::guard('CourseManager')->user()->id,
-                'user_type' => Auth::guard('CourseManager')->user()->usertype(),
-                'activity_log' => 'Logged in'
-            ]);
+                    return response($response, 404);
 
-            return response($response, 201);
+                }
 
-        } elseif($request->type == 'CourseDeveloper') {
+                $user->update([
+                    'is_logged_in' => true
+                ]);
 
-            $user = CourseDeveloper::where('email', $request->email)->first();
+                $token = $user->createToken('LMS',['Teacher'])->plainTextToken;
 
-            if(!Auth::guard('CourseDeveloper')->attempt(['email' => $request->email, 'password' => $request->password])){
-                return response(['Bad Credentials'], 401);
-            }
+                $response = [
+                    'user' => $user,
+                    'token' => $token,
+                    'type' => 'teacher'
+                ];
 
-            $token = $user->createToken('LMS',['CourseDeveloper'])->plainTextToken;
+                Logs::create([
+                    'user_id' => $user->id,
+                    'user_type' => $user->usertype(),
+                    'activity_log' => 'Logged in'
+                ]);
 
-            $response = [
-                'user' => $user,
-                'token' => $token,
-                'type' => 'courseDeveloper'
-            ];
+                        
+                return response($response, 201);
 
-            Logs::create([
-                'user_id' => Auth::guard('CourseDeveloper')->user()->id,
-                'user_type' => Auth::guard('CourseDeveloper')->user()->usertype(),
-                'activity_log' => 'Logged in'
-            ]);
+                break;
 
-            return response($response, 201);
+            case 'CourseManager' :
 
-        } elseif($request->type == 'Admin') {
+                if(!Auth::guard('CourseManager')->attempt(['email' => $request->email, 'password' => $request->password])){
+                    return response(['Bad Credentials'], 401);
+                }
 
-            $user = Admin::where('email', $request->email)->first();
+                $user = Auth::guard('CourseManager')->user();
 
-            if(!Auth::guard('Admin')->attempt(['email' => $request->email, 'password' => $request->password])){
-                return response(['Bad Credentials'], 401);
-            }
+                if($user->is_logged_in) {
 
-            $token = $user->createToken('LMS',['Admin'])->plainTextToken;
+                    $response = [
+                        'message' => 'Your account is already logged in to other device.'
+                    ];
 
-            $response = [
-                'user' => $user,
-                'token' => $token,
-                'type' => 'admin'
-            ];
+                    return response($response, 404);
 
-            Logs::create([
-                'user_id' => Auth::guard('Admin')->user()->id,
-                'user_type' => Auth::guard('Admin')->user()->usertype(),
-                'activity_log' => 'Logged in'
-            ]);
+                }
 
-            return response($response, 201);
+                $user->update([
+                    'is_logged_in' => true
+                ]);
 
-        } elseif($request->type == 'SuperAdmin') {
+                $token = $user->createToken('LMS',['CourseManager'])->plainTextToken;
 
-            $user = SuperAdmin::where('email', $request->email)->first();
+                $response = [
+                    'user' => $user,
+                    'token' => $token,
+                    'type' => 'CourseManager',
+                ];
 
-            if(!Auth::guard('SuperAdmin')->attempt(['email' => $request->email, 'password' => $request->password])){
-                return response(['Bad Credentials'], 401);
-            }
+                Logs::create([
+                    'user_id' => $user->id,
+                    'user_type' => $user->usertype(),
+                    'activity_log' => 'Logged in'
+                ]);
 
-            $token = $user->createToken('LMS',['SuperAdmin'])->plainTextToken;
+                return response($response, 201);
 
-            $response = [
-                'user' => $user,
-                'token' => $token,
-                'type' => 'SuperAdmin'
-            ];
+                break;
 
-            Logs::create([
-                'user_id' => Auth::guard('SuperAdmin')->user()->id,
-                'user_type' => Auth::guard('SuperAdmin')->user()->usertype(),
-                'activity_log' => 'Logged in'
-            ]);
+            case 'CourseDeveloper' :
 
-            return response($response, 201);
+                if(!Auth::guard('CourseDeveloper')->attempt(['email' => $request->email, 'password' => $request->password])){
+                    return response(['Bad Credentials'], 401);
+                }
 
-        } else {
-            return response(['Unknown Request'], 400);
+                $user = Auth::guard('CourseDeveloper')->user();
+
+                if($user->is_logged_in) {
+
+                    $response = [
+                        'message' => 'Your account is already logged in to other device.'
+                    ];
+
+                    return response($response, 404);
+
+                }
+
+                $user->update([
+                    'is_logged_in' => true
+                ]);
+
+                $token = $user->createToken('LMS',['CourseDeveloper'])->plainTextToken;
+
+                $response = [
+                    'user' => $user,
+                    'token' => $token,
+                    'type' => 'courseDeveloper'
+                ];
+
+                Logs::create([
+                    'user_id' => $user->id,
+                    'user_type' => $user->usertype(),
+                    'activity_log' => 'Logged in'
+                ]);
+
+                return response($response, 201);
+
+                break;
+
+            case 'Admin' :
+
+                if(!Auth::guard('Admin')->attempt(['email' => $request->email, 'password' => $request->password])){
+                    return response(['Bad Credentials'], 401);
+                }
+
+                $user = Auth::guard('Admin')->user();
+
+                if($user->is_logged_in) {
+
+                    $response = [
+                        'message' => 'Your account is already logged in to other device.'
+                    ];
+
+                    return response($response, 404);
+
+                }
+
+                $user->update([
+                    'is_logged_in' => true
+                ]);
+
+                $token = $user->createToken('LMS',['Admin'])->plainTextToken;
+
+                $response = [
+                    'user' => $user,
+                    'token' => $token,
+                    'type' => 'admin'
+                ];
+
+                Logs::create([
+                    'user_id' => $user->id,
+                    'user_type' => $user->usertype(),
+                    'activity_log' => 'Logged in'
+                ]);
+
+                return response($response, 201);
+
+                break;
+
+            case 'SuperAdmin' :
+
+                if(!Auth::guard('SuperAdmin')->attempt(['email' => $request->email, 'password' => $request->password])){
+                    return response(['Bad Credentials'], 401);
+                }
+
+                $user = Auth::guard('SuperAdmin')->user();
+
+                if($user->is_logged_in) {
+
+                    $response = [
+                        'message' => 'Your account is already logged in to other device.'
+                    ];
+
+                    return response($response, 404);
+
+                }
+
+                $user->update([
+                    'is_logged_in' => true
+                ]);
+
+                $token = $user->createToken('LMS',['SuperAdmin'])->plainTextToken;
+
+                $response = [
+                    'user' => $user,
+                    'token' => $token,
+                    'type' => 'SuperAdmin'
+                ];
+
+                Logs::create([
+                    'user_id' => $user->id,
+                    'user_type' => $user->usertype(),
+                    'activity_log' => 'Logged in'
+                ]);
+
+                return response($response, 201);
+
+                break;
+
+            default :
+
+                return response(['User not found'], 201);
+
+                break;
         }
+
     }
 
     public function logout(Request $request){
 
+        $user = Auth::user();
+
+        $user->update([
+            'is_logged_in' => 0
+        ]);
+
         Logs::create([
-            'user_id' => Auth::user()->id,
-            'user_type' => Auth::user()->usertype(),
+            'user_id' => $user->id,
+            'user_type' => $user->usertype(),
             'activity_log' => 'Logged out'
         ]);
 

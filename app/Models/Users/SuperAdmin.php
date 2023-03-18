@@ -19,6 +19,7 @@ class SuperAdmin extends Model
     'last_name',
     'email',
     'password',
+    'is_logged_in',
    ];
 
    /**

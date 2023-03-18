@@ -19,7 +19,8 @@ class CourseManager extends Model
         'last_name',
         'department',
         'email',
-        'password'
+        'password',
+        'is_logged_in',
     ];
 
     protected $hidden = [

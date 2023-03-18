@@ -34,7 +34,7 @@ class SnapshotController extends Controller
 
         $newFileName = $userId . $quizType . $quizId . '.' . $extension;
 
-        $newFileLocation = 'public/quiz/' . $quizType;
+        $newFileLocation = 'public/quiz';
 
         $path = $request->file('file')->storeAs(
             $newFileLocation,
