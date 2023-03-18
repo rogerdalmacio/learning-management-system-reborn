@@ -33,6 +33,8 @@ function StudPrelimExam() {
   const currentWeek = weekMod.replace("week", "Week ");
   const weekForModule = weekMod.match(/\d+/)[0];
   const contentType = pathArray[5];
+  const [weekNumber, setWeekNumber] = useState();
+
   console.log(contentType);
 
   console.log(hasAutoSave);
@@ -66,6 +68,7 @@ function StudPrelimExam() {
           course.module.map((mod) => {
             if (mod.week == weekForModule) {
               setWeekQuiz(mod.id);
+              setWeekNumber(mod.id);
             }
           });
         }
@@ -377,7 +380,14 @@ function StudPrelimExam() {
   };
 
   const MainContent = () => {
-    if (quizResultId) {
+    if (
+      quizResultId &&
+      quizResultId.length !== 0 &&
+      quizResultId[0].module_id == weekNumber &&
+      isloading2 &&
+      isloading !== undefined &&
+      quizInfo !== undefined
+    ) {
       return (
         <div>
           <h4 className="mb-3">Preliminary Examination {currentWeek}</h4>

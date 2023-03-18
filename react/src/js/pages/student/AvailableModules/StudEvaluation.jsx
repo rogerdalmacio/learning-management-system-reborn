@@ -20,6 +20,7 @@ function StudAAE() {
   // these two isloading is responsible for disabling attempt quiz
   const [isloading, setIsloading] = useState();
   const [isloading2, setIsloading2] = useState(false);
+  const [weekNumber, setWeekNumber] = useState();
 
   const [hasAutoSaveChange, setHasAutoSaveChange] = useState(false);
   const [quizIdAvailable, setQuizIdAvailable] = useState(false);
@@ -35,7 +36,7 @@ function StudAAE() {
   const contentType = pathArray[5];
   console.log(contentType);
 
-  console.log(hasAutoSave);
+  console.log(weekNumber);
 
   useEffect(() => {
     navigator.mediaDevices
@@ -65,6 +66,7 @@ function StudAAE() {
         if (course.course == courseTitle) {
           course.module.map((mod) => {
             if (mod.week == weekForModule) {
+              setWeekNumber(mod.id);
               setWeekQuiz(mod.id);
             }
           });
@@ -333,8 +335,8 @@ function StudAAE() {
     hasAttemptHandler();
     setIsloading2(true);
   });
-
   console.log(quizInfo);
+
   const Button = () => {
     if (isloading2 && isloading && hasAttempt && quizInfo !== undefined) {
       return (
@@ -377,9 +379,17 @@ function StudAAE() {
       );
     }
   };
-  console.log(isloading2);
+  console.log(quizInfo);
   const MainContent = () => {
-    if (quizResultId && isloading2) {
+    if (
+      quizResultId &&
+      // quizResultId.length !== 0 &&
+      // quizResultId[0].module_id == weekNumber &&
+      isloading2 &&
+      isloading !== undefined &&
+      quizInfo !== undefined &&
+      quizInfo.module_id == weekNumber
+    ) {
       return (
         <div>
           <h4 className="mb-3">Evaluation {currentWeek}</h4>
