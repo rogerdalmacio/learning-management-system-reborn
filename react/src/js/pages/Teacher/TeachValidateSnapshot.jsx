@@ -51,10 +51,10 @@ const SuperCreateTeacherAcct = () => {
           )
           .then((response) => {
             const data = response.data.students;
-            console.log(response);
+            console.log(response.data.students);
             const result = data
               .filter(({ quizresult }) =>
-                quizresult.some(({ snapshot }) => snapshot === 1)
+                quizresult.filter(({ snapshot }) => snapshot === 1)
               )
               .map(
                 ({
@@ -90,13 +90,61 @@ const SuperCreateTeacherAcct = () => {
             console.log(result);
 
             console.log(response);
-            setTableData(result.sort((a, b) => b.id - a.id));
+            console.log(data);
+            const result2 = data.map(
+              ({
+                id,
+                first_name,
+                last_name,
+                program,
+                quizresult,
+                year_and_section,
+              }) => {
+                console.log(quizresult);
+                const snapshot = quizresult.filter(
+                  ({ snapshot, quiz_type }) =>
+                    snapshot === 1 && quiz_type == "evaluation"
+                );
+                console.log(snapshot);
+                return snapshot.map((snapshot) => {
+                  const weekNo =
+                    Number(snapshot?.module_id?.match(/\d+/)[0]) || null;
+                  const snapshotValue = snapshot
+                    ? `${snapshot.student_id}${snapshot.quiz_type}${snapshot.quiz_id}`
+                    : "0";
+                  console.log(weekNo);
+                  return {
+                    first_name,
+                    id,
+                    last_name,
+                    year_and_section,
+                    program,
+                    snapshot: snapshotValue,
+                    weekNo,
+                    quizresultId: snapshot.id,
+                  };
+                });
+              }
+            );
+            const arrayOfArrays = [];
+            console.log(result2.length);
+            for (let i = 0; i <= result2.length - 1; i++) {
+              console.log(i);
+              const array = result2[i];
+              console.log(array);
+              arrayOfArrays.push(array);
+            }
+
+            const combinedArray = [].concat(...arrayOfArrays);
+            setTableData(combinedArray.sort((a, b) => b.id - a.id));
+            console.log(result);
+            console.log(result2);
           });
       }
     };
     GetAnnouncementHandler();
   }, [updatedList]);
-
+  console.log(tableData);
   const columns = useMemo(
     () => [
       {
