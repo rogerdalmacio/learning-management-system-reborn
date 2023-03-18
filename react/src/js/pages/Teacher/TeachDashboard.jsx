@@ -63,6 +63,18 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
                   quizresult.assignment == undefined
                     ? ""
                     : quizresult.assignment,
+                prelim_examination:
+                  quizresult.preliminaryexamination == undefined
+                    ? ""
+                    : quizresult.preliminaryexamination,
+                midterm_examination:
+                  quizresult.midtermexamination == undefined
+                    ? ""
+                    : quizresult.midtermexamination,
+                final_examination:
+                  quizresult.finalexamination == undefined
+                    ? ""
+                    : quizresult.finalexamination,
                 weekNo: quizresult.weekNo == undefined ? "" : quizresult.weekNo,
               };
             });
@@ -145,6 +157,30 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
     {
       accessorKey: "assignment",
       header: "Assignment",
+      enableColumnOrdering: true,
+      enableEditing: false, //disable editing on this column
+      enableSorting: true,
+      size: 80,
+    },
+    {
+      accessorKey: "prelim_examination",
+      header: "Preliminary Exam",
+      enableColumnOrdering: true,
+      enableEditing: false, //disable editing on this column
+      enableSorting: true,
+      size: 80,
+    },
+    {
+      accessorKey: "midterm_examination",
+      header: "Midterm Exam",
+      enableColumnOrdering: true,
+      enableEditing: false, //disable editing on this column
+      enableSorting: true,
+      size: 80,
+    },
+    {
+      accessorKey: "final_examination",
+      header: "Final Exam",
       enableColumnOrdering: true,
       enableEditing: false, //disable editing on this column
       enableSorting: true,

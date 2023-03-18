@@ -382,11 +382,12 @@ function StudPrelimExam() {
   const MainContent = () => {
     if (
       quizResultId &&
-      quizResultId.length !== 0 &&
-      quizResultId[0].module_id == weekNumber &&
+      // quizResultId.length !== 0 &&
+      // quizResultId[0].module_id == weekNumber &&
       isloading2 &&
       isloading !== undefined &&
-      quizInfo !== undefined
+      quizInfo !== undefined &&
+      quizInfo.module_id == weekNumber
     ) {
       return (
         <div>

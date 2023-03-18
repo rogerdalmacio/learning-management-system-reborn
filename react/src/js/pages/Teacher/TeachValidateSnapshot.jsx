@@ -217,11 +217,14 @@ const SuperCreateTeacherAcct = () => {
       return;
     }
     let toastId;
+    let item = { student_id: row.getValue("id") };
+    console.log(item);
     axios
       .delete(
         `${
           import.meta.env.VITE_API_BASE_URL
-        }/api/core/deleteannouncement/${row.getValue("id")}`,
+        }/api/teacher/rejectsnapshot/${row.getValue("quizresultId")}`,
+        item,
         {
           headers: {
             Authorization: `Bearer ${token}`,
