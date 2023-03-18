@@ -22,9 +22,19 @@ function StudQuizAAE() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [getAnswer, setGetAnswer] = useState();
 
-  const [altTabCount, setAltTabCount] = useState(0);
   const [getLogs, setGetLogs] = useState();
+  const [altTabCount, setAltTabCount] = useState(
+    getLogs !== undefined ? getLogs : 0
+  );
   const [logChange, setLogChange] = useState(false);
+  console.log(getLogs);
+  const [localstorageValue, setLocalstorageValue] = useState(
+    parseInt(localStorage.getItem("myValue")) || 0
+  );
+
+  useEffect(() => {
+    localStorage.setItem("myValue", localstorageValue);
+  }, [localstorageValue]);
   // const location = useLocation();
   // console.log(location.pathname);
   // const currentLocation = location.pathname;
@@ -53,20 +63,8 @@ function StudQuizAAE() {
   const [closeCount, setCloseCount] = useState(0);
   console.log(closeCount);
 
-  // Count if window.close()
-  // useEffect(() => {
-  //   const handleClose = async () => {
-  //     setCurrentQuestionIndex(currentQuestionIndex + 1);
-  //   };
-
-  //   window.addEventListener("beforeunload", handleClose);
-
-  //   return () => {
-  //     window.removeEventListener("beforeunload", handleClose);
-  //   };
-  // }, []);
-
   console.log(getLogs);
+  console.log(altTabCount);
   // getting the logs in autosave
   useEffect(() => {
     const fetchLogs = async () => {
@@ -90,7 +88,34 @@ function StudQuizAAE() {
     };
 
     fetchLogs();
-  }, [logChange]);
+  }, [logChange, altTabCount]);
+
+  // Count if window.close()
+  useEffect(() => {
+    const handleClose = () => {
+      const logs = localStorage.getItem("count");
+      localStorage.setItem("countofLogs", logs);
+
+      if (!localStorage.getItem("count")) {
+        localStorage.setItem("logs", getLogs);
+      } else {
+        const previousCount = parseInt(localStorage.getItem("logs")) || 0;
+        // Add the current count to the previous count
+        const updatedCount = previousCount + altTabCount;
+        // Store the updated count in localStorage
+        localStorage.setItem("count", updatedCount.toString());
+      }
+
+      // handleNext();
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    };
+
+    window.addEventListener("beforeunload", handleClose);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleClose);
+    };
+  }, []);
 
   //Submit every logs
   // useEffect(() => {
@@ -108,15 +133,44 @@ function StudQuizAAE() {
       });
       window.addEventListener("blur", () => {
         setAltTabCount((altTabCount) => altTabCount + 1);
+        setLocalstorageValue((prevValue) => prevValue + 1);
+
         toast.warning("Please don not press any keys");
       });
     };
     logsHandler();
   }, []);
+  console.log(getLogs);
+  useEffect(() => {
+    if (!localStorage.getItem("logs")) {
+      localStorage.setItem("logs", getLogs);
+    } else {
+      const previousCount = parseInt(localStorage.getItem("logs")) || 0;
+      // Add the current count to the previous count
+      const updatedCount = previousCount + altTabCount;
+      // Store the updated count in localStorage
+      localStorage.setItem("count", updatedCount.toString());
+    }
+  }, [altTabCount]);
+
+  useEffect(() => {
+    function handleStorageChange(e) {
+      if (e.key === "count") {
+        console.log("localStorage count has been updated!");
+        console.log("New count value: " + e.newValue);
+      }
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Access the current value of 'count' from localStorage
+    const currentCount = localStorage.getItem("count");
+    console.log("Current count value: " + currentCount);
+  });
 
   useEffect(() => {
     document.addEventListener("keydown", detectKeyDown, true);
-  }, []);
+  }, [altTabCount]);
 
   const detectKeyDown = (e) => {
     console.log("clicked key: ", e.key);
@@ -256,6 +310,7 @@ function StudQuizAAE() {
   console.log(quizResultId);
   // Next and Previous Button
   console.log(getAnswer);
+
   const handleNext = async () => {
     // console.log(getLogs);
     // console.log(getLogs + logCount);
@@ -346,10 +401,11 @@ function StudQuizAAE() {
 
     const data = getAnswer.join("|");
     console.log(data);
+    const logs = localStorage.getItem("myValue");
 
     const item = {
       answers: data,
-      logs: "x",
+      logs: logs,
       attempt: "finished",
     };
     let toastId;
@@ -378,9 +434,9 @@ function StudQuizAAE() {
             type: toast.TYPE.SUCCESS,
             autoClose: 2000,
           });
-
           localStorage.removeItem("image");
           localStorage.removeItem("ranNumber");
+          localStorage.removeItem("myValue");
           // window.location.href = newPathname;
           window.opener.location.reload();
           window.close();

@@ -50,10 +50,24 @@ function Login() {
       localStorage.setItem("type", JSON.stringify(result.type));
       localStorage.setItem("token", JSON.stringify(result.token));
     } else {
-      localStorage.setItem(
-        "error-info",
-        JSON.stringify("Email or Password is not matched")
-      );
+      console.log(result);
+      // console.log(result.errors.email.length !== 0);
+
+      if (
+        result.message ==
+          "Your account is already logged in to other device." ||
+        result[0] == "Bad Credentials"
+      ) {
+        localStorage.setItem(
+          "error-info",
+          JSON.stringify(result.message || result[0])
+        );
+      } else if (result.errors.email.length !== 0) {
+        localStorage.setItem(
+          "error-info",
+          JSON.stringify("Email and Password is required")
+        );
+      }
     }
     setIsLoading(false);
     window.location.reload();
