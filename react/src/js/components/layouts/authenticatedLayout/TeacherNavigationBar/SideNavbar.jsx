@@ -47,6 +47,21 @@ function Navbar({ openSidebar }) {
               <span className="tooltip">Validate Snapshot</span>
             </li>
           </Link>
+          <Link to="/teacher/resetquizattempt" className="text-decoration-none">
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/teacher/resetquizattempt"
+                    ? "activeSideBar"
+                    : ""
+                }`}
+              >
+                <i className="bx bx-grid-alt"></i>
+                <span className="links_name">Reset Quiz Attempt</span>
+              </span>
+              <span className="tooltip">Reset Quiz Attempt</span>
+            </li>
+          </Link>
         </ul>
       </div>
     </Fragment>

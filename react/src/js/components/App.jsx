@@ -76,6 +76,7 @@ import StudAvailableSubjects from "../pages/student/AvailableCourse/StudAvailabl
 import StudAvailableModules from "../pages/student/AvailableCourse/StudAvailableModules";
 import StudAvailableContent from "../pages/student/AvailableCourse/StudAvailableContent";
 import TeachValidateSnapshot from "../pages/Teacher/TeachValidateSnapshot";
+import TeachReAttemptQuiz from "../pages/Teacher/TeachReAttemptQuiz";
 
 // Others
 import Login from "./authentication/Login";
@@ -166,6 +167,10 @@ function App() {
           <Route
             path="/teacher/validatesnapshot"
             element={<TeachValidateSnapshot />}
+          />
+          <Route
+            path="/teacher/resetquizattempt"
+            element={<TeachReAttemptQuiz />}
           />
         </Route>
       </Route>
