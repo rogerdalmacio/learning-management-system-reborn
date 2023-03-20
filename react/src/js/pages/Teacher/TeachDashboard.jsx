@@ -41,48 +41,79 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
           .then((response) => {
             const data = response.data.students;
 
-            const result = data.map((item) => {
-              const quizresult = item.quizresult.reduce((acc, cur) => {
-                const weekNo = parseInt(cur.module_id.split("-")[1], 10);
-                acc[cur.quiz_type] = cur.score;
-                acc.weekNo = weekNo;
-                return acc;
-              }, {});
-              return {
-                id: item.id,
-                first_name: item.first_name,
-                last_name: item.last_name,
-                year_and_section: item.year_and_section,
-                program: item.program,
-                evaluation:
-                  quizresult.evaluation == undefined
-                    ? ""
-                    : quizresult.evaluation,
-                aae: quizresult.aae == undefined ? "" : quizresult.aae,
-                assignment:
-                  quizresult.assignment == undefined
-                    ? ""
-                    : quizresult.assignment,
-                prelim_examination:
-                  quizresult.preliminaryexamination == undefined
-                    ? ""
-                    : quizresult.preliminaryexamination,
-                midterm_examination:
-                  quizresult.midtermexamination == undefined
-                    ? ""
-                    : quizresult.midtermexamination,
-                final_examination:
-                  quizresult.finalexamination == undefined
-                    ? ""
-                    : quizresult.finalexamination,
-                weekNo: quizresult.weekNo == undefined ? "" : quizresult.weekNo,
-              };
+            const numbers = [
+              1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+            ];
+
+            const result2 = numbers.map((num) => {
+              console.log(num);
+              return data.map((item) => {
+                // const itemz = item.quizresult.filter((quiz) => {
+                //   console.log(quiz.module_id == "MATH00-1");
+                //   return quiz.module_id == "MATH00-1";
+                // });
+
+                const filteredItem = item.quizresult.filter(
+                  (quiz) => quiz.module_id == `MATH00-${num}`
+                );
+
+                return filteredItem.reduce((acc, cur) => {
+                  console.log(cur);
+                  console.log(cur.module_id);
+                  const value = cur.id;
+                  const quizType = cur.quiz_type + "id";
+
+                  const weekNo = parseInt(cur.module_id.split("-")[1], 10);
+                  acc[cur.quiz_type] = cur.score;
+                  acc.weekNo = weekNo;
+                  acc[quizType] = value;
+                  console.log(acc);
+
+                  const resul = {
+                    id: item.id,
+                    first_name: item.first_name,
+                    last_name: item.last_name,
+                    year_and_section: item.year_and_section,
+                    program: item.program,
+                    evaluation:
+                      acc.evaluation == undefined ? "" : acc.evaluation,
+                    aae: acc.aae == undefined ? "" : acc.aae,
+                    assignment:
+                      acc.assignment == undefined ? "" : acc.assignment,
+                    prelim_examination:
+                      acc.preliminaryexamination == undefined
+                        ? ""
+                        : acc.preliminaryexamination,
+                    midterm_examination:
+                      acc.midtermexamination == undefined
+                        ? ""
+                        : acc.midtermexamination,
+                    final_examination:
+                      acc.finalexamination == undefined
+                        ? ""
+                        : acc.finalexamination,
+                    weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
+                  };
+
+                  return resul;
+                }, {});
+              });
             });
+            let finalItem = [];
+            const item = result2.map((item) => {
+              console.log(item);
+              return item.map((ite) => {
+                console.log(ite);
+                finalItem.push(ite);
+                return ite;
+              });
+            });
+            console.log(finalItem);
 
-            console.log(result);
-
-            console.log(response);
-            setTableData(result.sort((a, b) => b.id - a.id));
+            const newArray = finalItem.filter(
+              (object) => Object.keys(object).length !== 0
+            );
+            setTableData(newArray.sort((a, b) => b.id - a.id));
           });
       }
     };

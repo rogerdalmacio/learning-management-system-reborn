@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
-const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
+const TeachReAttemptQuiz = ({}) => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
 
@@ -23,6 +23,7 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
   const [hasError, setHasError] = useState(false);
   const [tableData, setTableData] = useState(getAnnouncement);
   const [validationErrors, setValidationErrors] = useState({});
+  const [updatedList, setUpdatedList] = useState(false);
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
       if (role === "teacher") {
@@ -40,76 +41,6 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
           .then((response) => {
             const data = response.data.students;
             console.log(data);
-
-            const filterResult = data.map((item) => {
-              const itemz = item.quizresult.filter((quiz) => {
-                console.log(quiz.module_id == "MATH00-1");
-                return quiz.module_id == "MATH00-1";
-              });
-
-              return itemz;
-            });
-            console.log(filterResult);
-            console.log(data);
-            const result = data.map((item) => {
-              // const itemz = item.quizresult.filter((quiz) => {
-              //   console.log(quiz.module_id == "MATH00-1");
-              //   return quiz.module_id == "MATH00-1";
-              // });
-              console.log(item);
-              return item.quizresult.reduce((acc, cur) => {
-                console.log(cur.quiz_type);
-                const value = cur.id;
-                const quizType = cur.quiz_type + "id";
-
-                const weekNo = parseInt(cur.module_id.split("-")[1], 10);
-                acc[cur.quiz_type] = cur.score;
-                acc.weekNo = weekNo;
-                acc[quizType] = value;
-                console.log(acc);
-                return {
-                  id: item.id,
-                  first_name: item.first_name,
-                  last_name: item.last_name,
-                  year_and_section: item.year_and_section,
-                  program: item.program,
-                  evaluation: acc.evaluation == undefined ? "" : acc.evaluation,
-                  aae: acc.aae == undefined ? "" : acc.aae,
-                  assignment: acc.assignment == undefined ? "" : acc.assignment,
-                  preliminaryexamination:
-                    acc.preliminaryexamination == undefined
-                      ? ""
-                      : acc.preliminaryexamination,
-                  midtermexamination:
-                    acc.midtermexamination == undefined
-                      ? ""
-                      : acc.midtermexamination,
-                  finalexamination:
-                    acc.finalexamination == undefined
-                      ? ""
-                      : acc.finalexamination,
-                  weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
-                  evaluationid:
-                    acc.evaluationid == undefined ? "" : acc.evaluationid,
-                  aaeid: acc.aaeid == undefined ? "" : acc.aaeid,
-                  assignmentid:
-                    acc.assignmentid == undefined ? "" : acc.assignmentid,
-                  preliminaryexaminationid:
-                    acc.preliminaryexaminationid == undefined
-                      ? ""
-                      : acc.preliminaryexaminationid,
-                  midtermexaminationid:
-                    acc.midtermexaminationid == undefined
-                      ? ""
-                      : acc.midtermexaminationid,
-                  finalexaminationid:
-                    acc.finalexaminationid == undefined
-                      ? ""
-                      : acc.finalexaminationid,
-                  weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
-                };
-              }, {});
-            });
 
             const numbers = [
               1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
@@ -209,6 +140,34 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
     GetAnnouncementHandler();
   }, [updatedList]);
 
+  const handleAction = (quizResultId, studID, quizType) => {
+    if (
+      !confirm(
+        `Are you sure you want to delete studentID: ${studID}'s ${quizType}`
+      )
+    ) {
+      return;
+    }
+    let toastId;
+    axios
+      .delete(
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }/api/teacher/deletequizattempt/${quizResultId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        toast.success("Successfully Deleted");
+        setUpdatedList(!updatedList);
+      });
+  };
+
   const columns = useMemo(() => [
     {
       accessorKey: "id",
@@ -265,16 +224,20 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
-      Cell: ({ row }) => (
+      Cell: ({ row, column }) => (
         <div
           className={`${
             row.original.aae !== "" ? "d-flex align-items-center" : "d-none"
           }`}
         >
+          {console.log(column.id)}
+
           <p className="mb-0 fw-bold me-3">{row.original.aae}</p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() => handleAction(row)}
+            onClick={() =>
+              handleAction(row.original.aaeid, row.original.id, column.id)
+            }
           >
             Delete
           </button>
@@ -288,7 +251,7 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
-      Cell: ({ row }) => (
+      Cell: ({ row, column }) => (
         <div
           className={`${
             row.original.evaluation !== ""
@@ -296,10 +259,18 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
               : "d-none"
           }`}
         >
+          {console.log(column.id)}
+
           <p className="mb-0 fw-bold me-3">{row.original.evaluation}</p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() => handleAction(row)}
+            onClick={() =>
+              handleAction(
+                row.original.evaluationid,
+                row.original.id,
+                column.id
+              )
+            }
           >
             Delete
           </button>
@@ -313,7 +284,7 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
-      Cell: ({ row }) => (
+      Cell: ({ row, column }) => (
         <div
           className={`${
             row.original.assignment !== ""
@@ -321,10 +292,18 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
               : "d-none"
           }`}
         >
+          {console.log(column.id)}
+
           <p className="mb-0 fw-bold me-3">{row.original.assignment}</p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() => handleAction(row)}
+            onClick={() =>
+              handleAction(
+                row.original.assignmentid,
+                row.original.id,
+                column.id
+              )
+            }
           >
             Delete
           </button>
@@ -338,7 +317,7 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
-      Cell: ({ row }) => (
+      Cell: ({ row, column }) => (
         <div
           className={`${
             row.original.prelim_examination !== ""
@@ -349,7 +328,13 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
           <p className="mb-0 fw-bold me-3">{row.original.prelim_examination}</p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() => handleAction(row)}
+            onClick={() =>
+              handleAction(
+                row.original.prelim_examinationid,
+                row.original.id,
+                column.id
+              )
+            }
           >
             Delete
           </button>
@@ -363,7 +348,7 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
-      Cell: ({ row }) => (
+      Cell: ({ row, column }) => (
         <div
           className={`${
             row.original.midterm_examination !== ""
@@ -376,7 +361,13 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
           </p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() => handleAction(row)}
+            onClick={() =>
+              handleAction(
+                row.original.midterm_examinationid,
+                row.original.id,
+                column.id
+              )
+            }
           >
             Delete
           </button>
@@ -390,7 +381,7 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
-      Cell: ({ row }) => (
+      Cell: ({ row, column }) => (
         <div
           className={`${
             row.original.final_examination !== ""
@@ -401,7 +392,13 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
           <p className="mb-0 fw-bold me-3">{row.original.final_examination}</p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() => handleAction(row)}
+            onClick={() =>
+              handleAction(
+                row.original.final_examinationid,
+                row.original.id,
+                column.id
+              )
+            }
           >
             Delete
           </button>
