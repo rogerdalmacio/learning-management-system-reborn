@@ -176,6 +176,9 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
+      Cell: ({ row }) => (
+        <p className="mb-0 fw-bold me-3 fs-6">{row.original.aae}</p>
+      ),
     },
     {
       accessorKey: "evaluation",
@@ -184,6 +187,9 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
+      Cell: ({ row }) => (
+        <p className="mb-0 fw-bold me-3 fs-6">{row.original.evaluation}</p>
+      ),
     },
     {
       accessorKey: "assignment",
@@ -192,6 +198,9 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
+      Cell: ({ row }) => (
+        <p className="mb-0 fw-bold me-3 fs-6">{row.original.assignment}</p>
+      ),
     },
     {
       accessorKey: "prelim_examination",
@@ -200,6 +209,11 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
+      Cell: ({ row }) => (
+        <p className="mb-0 fw-bold me-3 fs-6">
+          {row.original.prelim_examination}
+        </p>
+      ),
     },
     {
       accessorKey: "midterm_examination",
@@ -208,6 +222,11 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
+      Cell: ({ row }) => (
+        <p className="mb-0 fw-bold me-3 fs-6">
+          {row.original.midterm_examination}
+        </p>
+      ),
     },
     {
       accessorKey: "final_examination",
@@ -216,6 +235,11 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
+      Cell: ({ row }) => (
+        <p className="mb-0 fw-bold me-3 fs-6">
+          {row.original.midterm_examination}
+        </p>
+      ),
     },
   ]);
 

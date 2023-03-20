@@ -232,7 +232,7 @@ const TeachReAttemptQuiz = ({}) => {
         >
           {console.log(column.id)}
 
-          <p className="mb-0 fw-bold me-3">{row.original.aae}</p>
+          <p className="mb-0 fw-bold me-3 fs-6">{row.original.aae}</p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
             onClick={() =>
@@ -261,7 +261,7 @@ const TeachReAttemptQuiz = ({}) => {
         >
           {console.log(column.id)}
 
-          <p className="mb-0 fw-bold me-3">{row.original.evaluation}</p>
+          <p className="mb-0 fw-bold me-3 fs-6">{row.original.evaluation}</p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
             onClick={() =>
@@ -294,7 +294,7 @@ const TeachReAttemptQuiz = ({}) => {
         >
           {console.log(column.id)}
 
-          <p className="mb-0 fw-bold me-3">{row.original.assignment}</p>
+          <p className="mb-0 fw-bold me-3 fs-6">{row.original.assignment}</p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
             onClick={() =>
@@ -325,7 +325,9 @@ const TeachReAttemptQuiz = ({}) => {
               : "d-none"
           }`}
         >
-          <p className="mb-0 fw-bold me-3">{row.original.prelim_examination}</p>
+          <p className="mb-0 fw-bold me-3 fs-6">
+            {row.original.prelim_examination}
+          </p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
             onClick={() =>
@@ -356,7 +358,7 @@ const TeachReAttemptQuiz = ({}) => {
               : "d-none"
           }`}
         >
-          <p className="mb-0 fw-bold me-3">
+          <p className="mb-0 fw-bold me-3 fs-6">
             {row.original.midterm_examination}
           </p>
           <button
@@ -389,7 +391,9 @@ const TeachReAttemptQuiz = ({}) => {
               : "d-none"
           }`}
         >
-          <p className="mb-0 fw-bold me-3">{row.original.final_examination}</p>
+          <p className="mb-0 fw-bold me-3 fs-6">
+            {row.original.final_examination}
+          </p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
             onClick={() =>

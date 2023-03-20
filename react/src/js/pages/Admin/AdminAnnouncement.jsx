@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   useRef,
+  Fragment,
 } from "react";
 import MaterialReactTable from "material-react-table";
 import {
@@ -18,6 +19,10 @@ import {
   Stack,
   TextField,
   Tooltip,
+  Typography,
+  List,
+  ListItem,
+  Checkbox,
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { data, states } from "./makeData";
@@ -66,6 +71,7 @@ const AdminAnnouncement = () => {
     };
     GetAnnouncementHandler();
   }, [updatedList]);
+  console.log(tableData);
 
   const handleCreateNewRow = (values) => {
     const tablesdataito = tableData.push(values);
@@ -501,6 +507,31 @@ export const CreateNewAccountModal = ({
                   })
                 }
               />
+            ))}
+            {columns.map((column) => (
+              <Fragment>
+                <Typography
+                  id="sandwich-group"
+                  level="body2"
+                  fontWeight="lg"
+                  mb={1}
+                >
+                  Sandwich Dressings
+                </Typography>
+                <Box role="group" aria-labelledby="sandwich-group">
+                  <List size="sm">
+                    <ListItem>
+                      <Checkbox label="Lettuce" defaultChecked />
+                    </ListItem>
+                    <ListItem>
+                      <Checkbox label="Tomato" />
+                    </ListItem>
+                    <ListItem>
+                      <Checkbox label="Mustard" />
+                    </ListItem>
+                  </List>
+                </Box>
+              </Fragment>
             ))}
           </Stack>
         </form>
