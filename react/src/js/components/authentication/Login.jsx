@@ -4,9 +4,10 @@ import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import axiosClient from "../../axios-client";
 
+axios.defaults.withCredentials = true;
+
 function Login() {
   const { user } = useAuth();
-
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [type, setType] = useState("Student");
@@ -30,47 +31,56 @@ function Login() {
   const SubmitHandler = async (e) => {
     e.preventDefault();
 
+    await axios.get(`${import.meta.env.VITE_API_BASE_URL}/sanctum/csrf-cookie`);
+
     setIsLoading(true);
     let item = { email, password, type };
-    const fetchedData = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/api/login`,
-      {
-        method: "POST",
+    const fetchedData = await axios
+      .post(`${import.meta.env.VITE_API_BASE_URL}/api/login`, item, {
         headers: {
+          // "X-Requested-With": "XMLHttpRequest",
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify(item),
-      }
-    );
+        // withCredentials: true,
+        // body: JSON.stringify(item),
+      })
+      .then((response) => {
+        console.log(response);
+        const result = response.data;
+        if (result.user !== undefined && result.token !== undefined) {
+          localStorage.setItem("user-info", JSON.stringify(result.user));
+          localStorage.setItem("type", JSON.stringify(result.type));
+          localStorage.setItem("token", JSON.stringify(result.token));
+        }
+        setIsLoading(false);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+        const result = error.response.data;
 
-    const result = await fetchedData.json();
-    if (result.user !== undefined && result.token !== undefined) {
-      localStorage.setItem("user-info", JSON.stringify(result.user));
-      localStorage.setItem("type", JSON.stringify(result.type));
-      localStorage.setItem("token", JSON.stringify(result.token));
-    } else {
-      console.log(result);
-      // console.log(result.errors.email.length !== 0);
-
-      if (
-        result.message ==
-          "Your account is already logged in to other device." ||
-        result[0] == "Bad Credentials"
-      ) {
-        localStorage.setItem(
-          "error-info",
-          JSON.stringify(result.message || result[0])
-        );
-      } else if (result.errors.email.length !== 0) {
-        localStorage.setItem(
-          "error-info",
-          JSON.stringify("Email and Password is required")
-        );
-      }
-    }
-    setIsLoading(false);
-    window.location.reload();
+        console.log(result);
+        // console.log(result.errors.email.length !== 0);
+        if (
+          result.message ==
+            "Your account is already logged in to other device." ||
+          result.message == "The password field is required." ||
+          result.message == "The email field is required." ||
+          result[0] == "Bad Credentials"
+        ) {
+          localStorage.setItem(
+            "error-info",
+            JSON.stringify(result.message || result[0])
+          );
+        } else if (result.errors.email.length !== 0) {
+          localStorage.setItem(
+            "error-info",
+            JSON.stringify("Email and Password is required")
+          );
+        }
+        setIsLoading(false);
+      });
   };
 
   return (

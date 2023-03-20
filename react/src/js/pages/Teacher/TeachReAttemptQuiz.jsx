@@ -23,7 +23,6 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
   const [hasError, setHasError] = useState(false);
   const [tableData, setTableData] = useState(getAnnouncement);
   const [validationErrors, setValidationErrors] = useState({});
-  console.log(tableData);
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
       if (role === "teacher") {
@@ -40,49 +39,170 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
           )
           .then((response) => {
             const data = response.data.students;
+            console.log(data);
 
+            const filterResult = data.map((item) => {
+              const itemz = item.quizresult.filter((quiz) => {
+                console.log(quiz.module_id == "MATH00-1");
+                return quiz.module_id == "MATH00-1";
+              });
+
+              return itemz;
+            });
+            console.log(filterResult);
+            console.log(data);
             const result = data.map((item) => {
-              const quizresult = item.quizresult.reduce((acc, cur) => {
+              // const itemz = item.quizresult.filter((quiz) => {
+              //   console.log(quiz.module_id == "MATH00-1");
+              //   return quiz.module_id == "MATH00-1";
+              // });
+              console.log(item);
+              return item.quizresult.reduce((acc, cur) => {
+                console.log(cur.quiz_type);
+                const value = cur.id;
+                const quizType = cur.quiz_type + "id";
+
                 const weekNo = parseInt(cur.module_id.split("-")[1], 10);
                 acc[cur.quiz_type] = cur.score;
                 acc.weekNo = weekNo;
-                return acc;
+                acc[quizType] = value;
+                console.log(acc);
+                return {
+                  id: item.id,
+                  first_name: item.first_name,
+                  last_name: item.last_name,
+                  year_and_section: item.year_and_section,
+                  program: item.program,
+                  evaluation: acc.evaluation == undefined ? "" : acc.evaluation,
+                  aae: acc.aae == undefined ? "" : acc.aae,
+                  assignment: acc.assignment == undefined ? "" : acc.assignment,
+                  preliminaryexamination:
+                    acc.preliminaryexamination == undefined
+                      ? ""
+                      : acc.preliminaryexamination,
+                  midtermexamination:
+                    acc.midtermexamination == undefined
+                      ? ""
+                      : acc.midtermexamination,
+                  finalexamination:
+                    acc.finalexamination == undefined
+                      ? ""
+                      : acc.finalexamination,
+                  weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
+                  evaluationid:
+                    acc.evaluationid == undefined ? "" : acc.evaluationid,
+                  aaeid: acc.aaeid == undefined ? "" : acc.aaeid,
+                  assignmentid:
+                    acc.assignmentid == undefined ? "" : acc.assignmentid,
+                  preliminaryexaminationid:
+                    acc.preliminaryexaminationid == undefined
+                      ? ""
+                      : acc.preliminaryexaminationid,
+                  midtermexaminationid:
+                    acc.midtermexaminationid == undefined
+                      ? ""
+                      : acc.midtermexaminationid,
+                  finalexaminationid:
+                    acc.finalexaminationid == undefined
+                      ? ""
+                      : acc.finalexaminationid,
+                  weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
+                };
               }, {});
-              return {
-                id: item.id,
-                first_name: item.first_name,
-                last_name: item.last_name,
-                year_and_section: item.year_and_section,
-                program: item.program,
-                evaluation:
-                  quizresult.evaluation == undefined
-                    ? ""
-                    : quizresult.evaluation,
-                aae: quizresult.aae == undefined ? "" : quizresult.aae,
-                assignment:
-                  quizresult.assignment == undefined
-                    ? ""
-                    : quizresult.assignment,
-                prelim_examination:
-                  quizresult.preliminaryexamination == undefined
-                    ? ""
-                    : quizresult.preliminaryexamination,
-                midterm_examination:
-                  quizresult.midtermexamination == undefined
-                    ? ""
-                    : quizresult.midtermexamination,
-                final_examination:
-                  quizresult.finalexamination == undefined
-                    ? ""
-                    : quizresult.finalexamination,
-                weekNo: quizresult.weekNo == undefined ? "" : quizresult.weekNo,
-              };
             });
 
-            console.log(result);
+            const numbers = [
+              1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+            ];
 
-            console.log(response);
-            setTableData(result.sort((a, b) => b.id - a.id));
+            const result2 = numbers.map((num) => {
+              console.log(num);
+              return data.map((item) => {
+                // const itemz = item.quizresult.filter((quiz) => {
+                //   console.log(quiz.module_id == "MATH00-1");
+                //   return quiz.module_id == "MATH00-1";
+                // });
+
+                const filteredItem = item.quizresult.filter(
+                  (quiz) => quiz.module_id == `MATH00-${num}`
+                );
+
+                return filteredItem.reduce((acc, cur) => {
+                  console.log(cur);
+                  console.log(cur.module_id);
+                  const value = cur.id;
+                  const quizType = cur.quiz_type + "id";
+
+                  const weekNo = parseInt(cur.module_id.split("-")[1], 10);
+                  acc[cur.quiz_type] = cur.score;
+                  acc.weekNo = weekNo;
+                  acc[quizType] = value;
+                  console.log(acc);
+
+                  const resul = {
+                    id: item.id,
+                    first_name: item.first_name,
+                    last_name: item.last_name,
+                    year_and_section: item.year_and_section,
+                    program: item.program,
+                    evaluation:
+                      acc.evaluation == undefined ? "" : acc.evaluation,
+                    aae: acc.aae == undefined ? "" : acc.aae,
+                    assignment:
+                      acc.assignment == undefined ? "" : acc.assignment,
+                    prelim_examination:
+                      acc.preliminaryexamination == undefined
+                        ? ""
+                        : acc.preliminaryexamination,
+                    midterm_examination:
+                      acc.midtermexamination == undefined
+                        ? ""
+                        : acc.midtermexamination,
+                    final_examination:
+                      acc.finalexamination == undefined
+                        ? ""
+                        : acc.finalexamination,
+                    weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
+                    evaluationid:
+                      acc.evaluationid == undefined ? "" : acc.evaluationid,
+                    aaeid: acc.aaeid == undefined ? "" : acc.aaeid,
+                    assignmentid:
+                      acc.assignmentid == undefined ? "" : acc.assignmentid,
+                    prelim_examinationid:
+                      acc.preliminaryexaminationid == undefined
+                        ? ""
+                        : acc.preliminaryexaminationid,
+                    midterm_examinationid:
+                      acc.midtermexaminationid == undefined
+                        ? ""
+                        : acc.midtermexaminationid,
+                    final_examinationid:
+                      acc.finalexaminationid == undefined
+                        ? ""
+                        : acc.finalexaminationid,
+                    weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
+                  };
+
+                  return resul;
+                }, {});
+              });
+            });
+            let finalItem = [];
+            const item = result2.map((item) => {
+              console.log(item);
+              return item.map((ite) => {
+                console.log(ite);
+                finalItem.push(ite);
+                return ite;
+              });
+            });
+            console.log(finalItem);
+
+            const newArray = finalItem.filter(
+              (object) => Object.keys(object).length !== 0
+            );
+
+            setTableData(newArray.sort((a, b) => b.id - a.id));
           });
       }
     };
@@ -151,7 +271,6 @@ const TeachReAttemptQuiz = ({ updatedList, setUpdatedList }) => {
             row.original.aae !== "" ? "d-flex align-items-center" : "d-none"
           }`}
         >
-          {console.log(row.original)}
           <p className="mb-0 fw-bold me-3">{row.original.aae}</p>
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
