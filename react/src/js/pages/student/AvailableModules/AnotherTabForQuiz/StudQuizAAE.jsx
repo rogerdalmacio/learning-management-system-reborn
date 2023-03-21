@@ -23,32 +23,12 @@ function StudQuizAAE() {
   const [getAnswer, setGetAnswer] = useState();
 
   const [getLogs, setGetLogs] = useState();
-  const [altTabCount, setAltTabCount] = useState(
-    getLogs !== undefined ? getLogs : 0
-  );
+
   const [logChange, setLogChange] = useState(false);
   console.log(getLogs);
   const [localstorageValue, setLocalstorageValue] = useState(
     parseInt(localStorage.getItem("myValue")) || 0
   );
-
-  useEffect(() => {
-    localStorage.setItem("myValue", localstorageValue);
-  }, [localstorageValue]);
-  // const location = useLocation();
-  // console.log(location.pathname);
-  // const currentLocation = location.pathname;
-  // const newPathname = currentLocation.split("/").slice(0, -1).join("/");
-  // console.log(newPathname);
-
-  // useEffect(() => {
-  //     if (getAnswer) {
-  //         const newArray = getAnswer.map((item) =>
-  //             typeof item === "undefined" ? "@$#" : item
-  //         );
-  //         console.log(newArray);
-  //     }
-  // });
 
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
@@ -64,7 +44,6 @@ function StudQuizAAE() {
   console.log(closeCount);
 
   console.log(getLogs);
-  console.log(altTabCount);
   // getting the logs in autosave
   useEffect(() => {
     const fetchLogs = async () => {
@@ -88,26 +67,16 @@ function StudQuizAAE() {
     };
 
     fetchLogs();
-  }, [logChange, altTabCount]);
+  }, [logChange]);
 
-  // Count if window.close()
+  useEffect(() => {
+    localStorage.setItem("myValue", localstorageValue);
+  }, [localstorageValue]);
+
+  // Closing the tab
   useEffect(() => {
     const handleClose = () => {
-      const logs = localStorage.getItem("count");
-      localStorage.setItem("countofLogs", logs);
-
-      if (!localStorage.getItem("count")) {
-        localStorage.setItem("logs", getLogs);
-      } else {
-        const previousCount = parseInt(localStorage.getItem("logs")) || 0;
-        // Add the current count to the previous count
-        const updatedCount = previousCount + altTabCount;
-        // Store the updated count in localStorage
-        localStorage.setItem("count", updatedCount.toString());
-      }
-
-      // handleNext();
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      // setLocalstorageValue((prevValue) => prevValue + 1);
     };
 
     window.addEventListener("beforeunload", handleClose);
@@ -117,14 +86,6 @@ function StudQuizAAE() {
     };
   }, []);
 
-  //Submit every logs
-  // useEffect(() => {
-  //   if (altTabCount === 0) {
-  //     return null;
-  //   } else {
-  //     handleNext();
-  //   }
-  // }, [altTabCount]);
   // Count if blurr or AFK or alt+tab
   useEffect(() => {
     const logsHandler = () => {
@@ -132,7 +93,6 @@ function StudQuizAAE() {
         console.log("not afk");
       });
       window.addEventListener("blur", () => {
-        setAltTabCount((altTabCount) => altTabCount + 1);
         setLocalstorageValue((prevValue) => prevValue + 1);
 
         toast.warning("Please don not press any keys");
@@ -140,19 +100,8 @@ function StudQuizAAE() {
     };
     logsHandler();
   }, []);
-  console.log(getLogs);
-  useEffect(() => {
-    if (!localStorage.getItem("logs")) {
-      localStorage.setItem("logs", getLogs);
-    } else {
-      const previousCount = parseInt(localStorage.getItem("logs")) || 0;
-      // Add the current count to the previous count
-      const updatedCount = previousCount + altTabCount;
-      // Store the updated count in localStorage
-      localStorage.setItem("count", updatedCount.toString());
-    }
-  }, [altTabCount]);
 
+  // Pressing keys
   useEffect(() => {
     function handleStorageChange(e) {
       if (e.key === "count") {
@@ -162,30 +111,25 @@ function StudQuizAAE() {
     }
 
     window.addEventListener("storage", handleStorageChange);
-
-    // Access the current value of 'count' from localStorage
-    const currentCount = localStorage.getItem("count");
-    console.log("Current count value: " + currentCount);
   });
 
   useEffect(() => {
     document.addEventListener("keydown", detectKeyDown, true);
-  }, [altTabCount]);
+  }, []);
 
   const detectKeyDown = (e) => {
     console.log("clicked key: ", e.key);
+    if (e.key === "c" || e.key === "Tab") {
+      e.preventDefault();
+    } else if (
+      e.key == "F12" ||
+      e.key == "Tab" ||
+      e.key == "ps" ||
+      e.key == "c"
+    ) {
+      toast.warning("Don't press any keys");
+    }
   };
-
-  //Check if logs exceed to 3
-  useEffect(() => {
-    const AltTabCountHandler = () => {
-      if (altTabCount >= 3) {
-        // SubmitQuizHandler();
-      }
-    };
-
-    AltTabCountHandler();
-  }, []);
 
   // Implementing Auto Save Progress
   useEffect(() => {
@@ -262,6 +206,11 @@ function StudQuizAAE() {
 
   console.log(content);
 
+  // prevent user from right click
+  function handleContextMenu(event) {
+    event.preventDefault();
+  }
+
   const OptionsContentHandler = () => {
     return content[currentQuestionIndex].options.map((opt, index) => {
       const OptionLetter = ["A", "B", "C", "D"];
@@ -316,7 +265,7 @@ function StudQuizAAE() {
     // console.log(getLogs + logCount);
     setCurrentQuestionIndex(currentQuestionIndex + 1);
 
-    const logCount = JSON.stringify(altTabCount);
+    // const logCount = JSON.stringify(altTabCount);
 
     const item = {
       student_id: userInfo.id,
@@ -325,7 +274,7 @@ function StudQuizAAE() {
       snapshot: false,
       start_time: quizResultId[0].start_time,
       end_time: quizResultId[0].end_time,
-      logs: logCount,
+      logs: "X",
     };
     console.log(getAnswer);
 
@@ -484,7 +433,11 @@ function StudQuizAAE() {
       } else {
         if (content) {
           return (
-            <div className="py-4 px-3 py-sm-5 px-sm-5 position-relative">
+            <div
+              className="py-4 px-3 py-sm-5 px-sm-5 position-relative vh-100"
+              style={{ userSelect: "none" }}
+              onContextMenu={handleContextMenu}
+            >
               <ToastContainer
                 position="top-right"
                 autoClose={3000}
