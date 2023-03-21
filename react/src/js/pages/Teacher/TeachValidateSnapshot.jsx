@@ -291,40 +291,45 @@ const SuperCreateTeacherAcct = () => {
   };
 
   return (
-    <div className="MaterialUiTable">
-      <MaterialReactTable
-        className="MaterialReactTable"
-        displayColumnDefOptions={{
-          "mrt-row-actions": {
-            muiTableHeadCellProps: {
-              align: "center",
+    <div>
+      <h3 className="mb-4">Student - Validate Snapshot</h3>
+      <div className="MaterialUiTable">
+        <MaterialReactTable
+          className="MaterialReactTable"
+          displayColumnDefOptions={{
+            "mrt-row-actions": {
+              muiTableHeadCellProps: {
+                align: "center",
+              },
+              size: 120,
             },
-            size: 120,
-          },
-        }}
-        sortDescFirst
-        columns={columns}
-        data={tableData}
-        enableColumnOrdering
-        enableEditing
-        renderRowActions={({ row, table }) => (
-          <Box sx={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
-            <Tooltip arrow placement="right" title="Reject">
-              <IconButton color="error" onClick={() => handleRejectRow(row)}>
-                <Delete />
-              </IconButton>
-            </Tooltip>
-            <Tooltip arrow placement="right" title="Approve">
-              <IconButton
-                color="success"
-                onClick={() => handleApprovedRow(row)}
-              >
-                <Check />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-      />
+          }}
+          sortDescFirst
+          columns={columns}
+          data={tableData}
+          enableColumnOrdering
+          enableEditing
+          renderRowActions={({ row, table }) => (
+            <Box
+              sx={{ display: "flex", gap: "1rem", justifyContent: "center" }}
+            >
+              <Tooltip arrow placement="right" title="Reject">
+                <IconButton color="error" onClick={() => handleRejectRow(row)}>
+                  <Delete />
+                </IconButton>
+              </Tooltip>
+              <Tooltip arrow placement="right" title="Approve">
+                <IconButton
+                  color="success"
+                  onClick={() => handleApprovedRow(row)}
+                >
+                  <Check />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
+        />
+      </div>
     </div>
   );
 };

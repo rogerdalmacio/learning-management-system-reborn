@@ -239,7 +239,9 @@ function Login() {
                 </div>
               </div>
               <div className="mb-3">
-                <p className="errorInput">{error && error}</p>
+                <p className="errorInput text-danger fst-italic">
+                  {error && error}
+                </p>
               </div>
               <button
                 disabled={isLoading}

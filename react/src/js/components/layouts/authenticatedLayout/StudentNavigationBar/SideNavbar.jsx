@@ -17,8 +17,6 @@ function Navbar({ openSidebar }) {
   const getfirstFourUrls = firstFourUrls.join("/");
   console.log(getfirstFourUrls);
 
-  console.log(pathName);
-
   // Course Title
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
@@ -119,7 +117,6 @@ function Navbar({ openSidebar }) {
       });
     }
   };
-
   return (
     <Fragment>
       <div

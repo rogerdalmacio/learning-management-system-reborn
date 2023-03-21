@@ -18,7 +18,7 @@ class FetchSharedContent extends Controller
     {
         $user = Auth::user();
 
-        if($user->user_type() == 'Admin') {
+        if($user->usertype() == 'Admin') {
             $courses = Course::with('module')->get();
             $response = [
                 'Courses' => $courses

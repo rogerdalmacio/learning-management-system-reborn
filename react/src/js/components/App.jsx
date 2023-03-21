@@ -21,6 +21,9 @@ import ManagerTagSubjToCourseDev from "../pages/courseManager/ManagerTagSubjToCo
 import ManagerGetStudents from "../pages/courseManager/ManagerGetStudents";
 import ManagerCreateSyllabus from "../pages/courseManager/ManagerCreateSyllabus";
 import ManagerCreateSyllabusTItle from "../pages/courseManager/ManagerCreateSyllabusTItle";
+import ManagerAvailableContent from "../pages/courseManager/AvailableCourse/ManagerAvailableContent";
+import ManagerAvailableModules from "../pages/courseManager/AvailableCourse/ManagerAvailableModules";
+import ManagerAvailableSubjects from "../pages/courseManager/AvailableCourse/ManagerAvailableSubjects";
 
 // Admin
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
@@ -202,6 +205,19 @@ function App() {
           <Route
             path="/courseManager/:id/:id/modules"
             element={<ManagerCreateSyllabusTItle />}
+          />
+          {/* courses */}
+          <Route
+            path="/courseManager/subjects"
+            element={<ManagerAvailableSubjects />}
+          />
+          <Route
+            path="/courseManager/:id/modules"
+            element={<ManagerAvailableModules />}
+          />
+          <Route
+            path="/courseManager/:id/modules/:id"
+            element={<ManagerAvailableContent />}
           />
         </Route>
       </Route>

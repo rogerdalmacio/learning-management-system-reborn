@@ -8,20 +8,23 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { GetAvailableCourseProvider } from "./context/CourseDev/GetAvailableCourseProvider";
 import { StudContextProvider } from "./context/Student/StudContextProvider";
 import { CourseDevContextProvider } from "./context/CourseDev/CourseDevContextProvider";
+import { CourseContentProvider } from "./context/CourseContent/CourseContentProvider";
 
 if (document.getElementById("root")) {
   ReactDOM.render(
     <BrowserRouter>
       <AuthProvider>
-        <GetAvailableCourseProvider>
-          <CourseDevContextProvider>
-            <StudContextProvider>
-              <Routes>
-                <Route path="/*" element={<App />} />
-              </Routes>
-            </StudContextProvider>
-          </CourseDevContextProvider>
-        </GetAvailableCourseProvider>
+        <CourseContentProvider>
+          <GetAvailableCourseProvider>
+            <CourseDevContextProvider>
+              <StudContextProvider>
+                <Routes>
+                  <Route path="/*" element={<App />} />
+                </Routes>
+              </StudContextProvider>
+            </CourseDevContextProvider>
+          </GetAvailableCourseProvider>
+        </CourseContentProvider>
       </AuthProvider>
     </BrowserRouter>,
     document.getElementById("root")
