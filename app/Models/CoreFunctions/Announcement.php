@@ -14,7 +14,9 @@ class Announcement extends Model
         'title',
         'body',
         'status',
-        'embed_link'
+        'embed_link',
+        'users',
+        'tags',
     ];
 
     public function admin() {

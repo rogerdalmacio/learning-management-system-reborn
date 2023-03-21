@@ -62,10 +62,12 @@ class AnnouncementsController extends Controller
             'title' => 'sometimes',
             'body' => 'sometimes',
             'status' => 'sometimes|boolean',
+            'tags' => 'sometimes|boolean',
+            'users' => 'sometimes|boolean',
             'embed_link' => 'sometimes',
         ]);
 
-        $data = $request->only(['title', 'body', 'status', 'embed_link']);
+        $data = $request->only(['title', 'body', 'status', 'tags', 'users', 'embed_link']);
 
         $announcement = Announcement::find($id);
 

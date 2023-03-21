@@ -27,6 +27,8 @@ class CreateAnnouncementRequest extends FormRequest
         'title' => 'required|unique:announcements,title',
         'body' => 'required',
         'status' => 'required|boolean',
+        'tags' => 'required|string',
+        'users' => 'required|string',
         'embed_link' => 'sometimes',
         ];
     }

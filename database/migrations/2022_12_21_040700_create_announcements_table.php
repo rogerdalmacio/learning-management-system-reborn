@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('body');
             $table->string('status');
+            $table->string('tags');
+            $table->array('users');
             $table->string('embed_link');
             $table->timestamps();
         });

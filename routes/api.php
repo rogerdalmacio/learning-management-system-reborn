@@ -10,6 +10,8 @@ use App\Http\Controllers\Students\SCourseController;
 use App\Http\Controllers\Students\SLessonController;
 use App\Http\Controllers\Students\SModulesController;
 use App\Http\Controllers\Students\SnapshotController;
+use App\Http\Controllers\Teacher\TSnapshotController;
+use App\Http\Controllers\CoreFunctions\LogsController;
 use App\Http\Controllers\Students\SActivityController;
 use App\Http\Controllers\Teacher\QuizAttemptController;
 use App\Http\Controllers\Students\SQuizResultController;
@@ -17,29 +19,28 @@ use App\Http\Controllers\Users\ChangePasswordController;
 use App\Http\Controllers\Users\ProfilePictureController;
 use App\Http\Controllers\CourseManager\CMCourseDeveloper;
 use App\Http\Controllers\Teacher\ListOfStudentController;
+use App\Http\Controllers\CoreFunctions\FetchSharedContent;
 use App\Http\Controllers\CourseDeveloper\CDQuizController;
 use App\Http\Controllers\CourseManager\CMCourseController;
 use App\Http\Controllers\CourseDeveloper\CDCourseController;
 use App\Http\Controllers\CourseDeveloper\CDLessonController;
 use App\Http\Controllers\CourseDeveloper\CDModuleController;
+use App\Http\Controllers\CourseManager\CMFilteredCourseList;
 use App\Http\Controllers\CourseManager\CMToDoListController;
 use App\Http\Controllers\Students\SActivityResultController;
+use App\Http\Controllers\Users\FetchAnnouncementsController;
+use App\Http\Controllers\CoreFunctions\ListOfUsersController;
 use App\Http\Controllers\Students\AutoSaveProgressController;
 use App\Http\Controllers\CoreFunctions\ExamGrantingController;
 use App\Http\Controllers\CourseDeveloper\CDActivityController;
+use App\Http\Controllers\CourseDeveloper\CDToDoListController;
+use App\Http\Controllers\CoreFunctions\AccountManageController;
 use App\Http\Controllers\CoreFunctions\AnnouncementsController;
+use App\Http\Controllers\CoreFunctions\PasswordResetController;
 use App\Http\Controllers\CoreFunctions\ListOfSubjectsController;
 use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
-use App\Http\Controllers\CoreFunctions\AccountManageController;
-use App\Http\Controllers\CoreFunctions\FetchSharedContent;
-use App\Http\Controllers\CoreFunctions\ListOfUsersController;
-use App\Http\Controllers\CoreFunctions\LogsController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
-use App\Http\Controllers\CoreFunctions\PasswordResetController;
-use App\Http\Controllers\CourseDeveloper\CDToDoListController;
-use App\Http\Controllers\CourseManager\CMFilteredCourseList;
-use App\Http\Controllers\Teacher\TSnapshotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +89,7 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
 
     Route::post('/snapshot', [SnapshotController::class, 'saveSnapshot']);
 
+    Route::get('/announcements', [FetchAnnouncementsController::class, 'students']);
 });
 
 //teachers route
@@ -105,6 +107,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
 
     Route::apiResource('course', TCourseController::class);
 
+    Route::get('/announcements', [FetchAnnouncementsController::class, 'teachers']);
 });
 
 //course developer route
@@ -122,6 +125,7 @@ Route::group(['prefix' => 'coursedeveloper', 'middleware' => ['auth:sanctum','ab
 
     Route::patch('/submittodo/{id}', [CDToDoListController::class, 'submitTodo']);
 
+    Route::get('/announcements', [FetchAnnouncementsController::class, 'courseDevelopers']);
 });
 
 //course manager route
@@ -139,6 +143,7 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
 
     Route::get('/students', [ListOfUsersController::class, 'students']);
 
+    Route::get('/announcements', [FetchAnnouncementsController::class, 'courseManagers']);
 });
 
 //content routes
@@ -168,7 +173,8 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
     Route::patch('/editteacher/{id}', [AccountManageController::class, 'editTeacher']);
 
     Route::patch('/resetpassword/{id}', [PasswordResetController::class, 'passwordReset']);
-    
+   
+    Route::get('/announcements', [FetchAnnouncementsController::class, 'superAdmins']);
 });
 
 //Admin Core
@@ -199,6 +205,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::patch('/editstudentsubject/{id}', [SubjectTaggingController::class, 'editStudentSubject']);
     Route::patch('/editteachersubject/{id}', [SubjectTaggingController::class, 'editTeacherSubject']);
 
+    Route::get('/announcements', [FetchAnnouncementsController::class, 'admins']);
 });
 
 Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'ability:Admin,SuperAdmin']], function(){
@@ -221,7 +228,4 @@ Route::group(['prefix' => 'users', 'middleware' => ['auth:sanctum']], function()
 
     Route::post('/uploadprofilepicture', [ProfilePictureController::class, 'uploadProfilePicture']);
     Route::post('/changepassword', [ChangePasswordController::class, 'changePassword']);
-
-    // Route::get('/fetchprofilepicture/{filename}', [ProfilePictureController::class, 'fetchProfilePicture']);
-
 });

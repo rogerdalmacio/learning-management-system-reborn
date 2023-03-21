@@ -14,9 +14,11 @@ class TCourseController extends Controller
 
         $user = Auth::user();
 
-        $subjectsarray = $user->subjects;
+        // $subjectsarray = $user->subjects;
 
-        $courses = Course::whereIn('course_code', $subjectsarray)->where('department', $user->department)->get();
+        // $courses = Course::whereIn('course_code', $subjectsarray)->where('department', $user->department)->get();
+
+        $courses = Course::where('department', $user->department)->get();
 
         $response = [ 
             'subjects' => $courses 

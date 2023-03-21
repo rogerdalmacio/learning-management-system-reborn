@@ -343,11 +343,11 @@ class SubjectTaggingController extends Controller
             'Successfully added' => $newSubjects,
             'New list of subjects' => $newSubjectsArray
         ];
-
+        
         Logs::create([
             'user_id' => Auth::user()->id,
             'user_type' => Auth::user()->usertype(),
-            'activity_log' => 'Tagged course developer on his/her subjects'
+            'activity_log' => 'Tagged CourseDeveloper on his/her subjects'
         ]);
 
         return response($response, 201);
