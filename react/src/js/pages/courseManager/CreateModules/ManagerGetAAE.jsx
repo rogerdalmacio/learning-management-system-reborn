@@ -133,8 +133,8 @@ function ManagerGetAAE() {
           console.log(content);
           setQuizType(content.quiz_type);
           setQuizWeek(content.module_id.split("-")[1]);
+          console.log(content.module_id.split("-")[1]);
           const part = content.module_id.split("-");
-          console.log(part[1] == weekForModule);
           if (part[1] == weekForModule) {
             setUpdatedList(!updateList);
             setGetQuizId(content.id);
@@ -378,6 +378,7 @@ function ManagerGetAAE() {
         Application, Analysis, and Exploration
       </label>
       {quiz !== undefined &&
+      quiz !== null &&
       quiz.quiz.length !== 0 &&
       quizWeek == weekForModule &&
       quizType == "aae" ? (

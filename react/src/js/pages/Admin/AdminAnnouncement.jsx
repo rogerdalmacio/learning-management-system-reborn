@@ -599,7 +599,7 @@ export const CreateNewAccountModal = ({
                         <Checkbox
                           name="CourseManager"
                           onChange={handleChange}
-                        />
+                        /> 
                       }
                       label="Course Manager"
                     />

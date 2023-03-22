@@ -129,7 +129,10 @@ export const CourseContentProvider = ({ children }) => {
   useEffect(() => {
     const renderSpecificQuiz = async () => {
       console.log(quizid);
-      if (role === "CourseManager" || (role === "admin" && quizid)) {
+      if (
+        role === "CourseManager" ||
+        (role === "admin" && quizid !== undefined)
+      ) {
         await axios
           .get(
             `${import.meta.env.VITE_API_BASE_URL}/api/content/quiz/${quizid}`,
