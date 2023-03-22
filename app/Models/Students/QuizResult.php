@@ -10,6 +10,8 @@ class QuizResult extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_quiz_results';
+
     protected $fillable = [
         'student_id',
         'quiz_id',

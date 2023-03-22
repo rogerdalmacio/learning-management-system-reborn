@@ -10,6 +10,8 @@ class Quiz extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_quizzes';
+
     protected $fillable = [
         'module_id',
         'preliminaries',

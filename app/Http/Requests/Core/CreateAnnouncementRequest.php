@@ -24,7 +24,7 @@ class CreateAnnouncementRequest extends FormRequest
     public function rules()
     {
         return [
-        'title' => 'required|unique:announcements,title',
+        'title' => 'required|unique:lms_announcements,title',
         'body' => 'required',
         'status' => 'required|boolean',
         'tags' => 'required|string',

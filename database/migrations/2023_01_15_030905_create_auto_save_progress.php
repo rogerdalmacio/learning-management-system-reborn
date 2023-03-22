@@ -15,12 +15,8 @@ return new class extends Migration
     {
         Schema::create('auto_save_progress', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')
-                ->constrained()
-                ->onDelete('cascade');
-            $table->foreignId('quiz_result_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->bigInteger('student_id')->unsigned()->onDelete('cascade');
+            $table->bigInteger('quiz_result_id')->unsigned()->onDelete('cascade');
             $table->integer('quiz_id');
             $table->string('answers')->nullable();
             $table->string('logs')->nullable();
@@ -29,6 +25,8 @@ return new class extends Migration
             $table->dateTime('end_time')->nullable();
             $table->timestamps();   
         });
+
+        Schema::rename('auto_save_progress', 'lms_auto_save_progress');
     }
 
     /**

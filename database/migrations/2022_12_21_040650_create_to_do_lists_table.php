@@ -13,19 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('to_do_lists', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('course_developer_id')
-                ->constrained()
-                ->onDelete('cascade');
-            $table->foreignId('course_id')
-                ->unsigned()
-                ->onDelete('cascade');
-            $table->string('title');
-            $table->string('message');
-            $table->string('status');
-            $table->timestamps();
-        });
+        // Schema::create('to_do_lists', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignId('course_developer_id')
+        //         ->constrained()
+        //         ->onDelete('cascade');
+        //     $table->foreignId('course_id')
+        //         ->unsigned()
+        //         ->onDelete('cascade');
+        //     $table->string('title');
+        //     $table->string('message');
+        //     $table->string('status');
+        //     $table->timestamps();
+        // });
+
+        // Schema::rename('to_do_lists', 'lms_to_do_lists');
     }
 
     /**

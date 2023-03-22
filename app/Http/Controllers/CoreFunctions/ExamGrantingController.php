@@ -45,7 +45,7 @@ class ExamGrantingController extends Controller
             $rules = [
                 'student_id' => [
                     'required',
-                    'unique:examination_grants'
+                    'unique:lms_examination_grants'
                 ],
                 'grant' => [
                     'required',
@@ -116,7 +116,7 @@ class ExamGrantingController extends Controller
         $request->validate([
             'student_id' => [
                 'required',
-                Rule::exists('students', 'id')],
+                Rule::exists('lms_students', 'id')],
             'grant' => 'required',
             'preliminaries' => 'required',
         ]);

@@ -10,6 +10,8 @@ class Activity extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_activities';
+
     protected $fillable = [
         'module_id',
         'preliminaries',

@@ -44,6 +44,7 @@ return [
         'Teacher' => [
             'driver' => 'session',
             'provider' => 'teacher',
+            'tokens_table' => 'lms_personal_access_token',
         ],
 
         'CourseDeveloper' => [
@@ -88,6 +89,7 @@ return [
         'student' => [
             'driver' => 'eloquent',
             'model' => App\Models\Users\Student::class,
+            'tokens_table' => 'lms_personal_access_token',
         ],
         'teacher' => [
             'driver' => 'eloquent',

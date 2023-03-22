@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('embed_link');
             $table->timestamps();
         });
+
+        Schema::rename('announcements', 'lms_announcements');
     }   
 
     /**

@@ -28,6 +28,8 @@ return new class extends Migration
             $table->timestamps();
             $table->timestamp('email_verified_at')->nullable();
         });
+
+        Schema::rename('teachers', 'lms_teachers');
     }
 
     /**

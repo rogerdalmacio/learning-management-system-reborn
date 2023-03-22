@@ -24,6 +24,8 @@ return new class extends Migration
             $table->timestamps();
             $table->timestamp('email_verified_at')->nullable();
         });
+
+        Schema::rename('admins', 'lms_admins');
     }
  
     /**

@@ -10,6 +10,8 @@ class ExaminationGrant extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_examination_grants';
+
     protected $fillable = [
         'student_id',
         'grant',

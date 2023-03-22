@@ -10,6 +10,8 @@ class ToDoList extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_to_do_lists';
+
     protected $fillable = [
         'course_developer_id',
         'course_id',

@@ -102,9 +102,9 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
 
     Route::patch('/checksnapshot/{id}', [TSnapshotController::class, 'checkSnapshot']);
 
-    Route::delete('/rejectsnapshot/{id}', [TSnapshotController::class, 'rejectSnapshot']);
+    Route::patch('/rejectsnapshot/{id}', [TSnapshotController::class, 'rejectSnapshot']);
     
-    Route::delete('/deletequizattempt/{id}', [QuizAttemptController::class, 'deleteAttempt']);
+    Route::patch('/deletequizattempt/{id}', [QuizAttemptController::class, 'deleteAttempt']);
 
     Route::apiResource('course', TCourseController::class);
 
@@ -185,7 +185,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::apiResource('subjects', ListOfSubjectsController::class);
 
     Route::get('/grantees', [ExamGrantingController::class, 'listOfGrantees']);
-    Route::delete('/dropgrant/{id}', [ExamGrantingController::class, 'deleteGrant']);
+    Route::patch('/dropgrant/{id}', [ExamGrantingController::class, 'deleteGrant']);
     Route::post('/batchgrantexam', [ExamGrantingController::class, 'batchExamGrant']);
     Route::post('/singlegrantexam', [ExamGrantingController::class, 'singleExamGrant']);
 
@@ -196,7 +196,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::get('/inactiveannouncements', [AnnouncementsController::class, 'inActiveAnnouncements']);
     Route::post('/createannouncement', [AnnouncementsController::class, 'createAnnouncement']);
     Route::patch('/editannouncement/{id}', [AnnouncementsController::class, 'editAnnouncement']);
-    Route::delete('/deleteannouncement/{id}', [AnnouncementsController::class, 'deleteAnnouncement']);
+    Route::patch('/deleteannouncement/{id}', [AnnouncementsController::class, 'deleteAnnouncement']);
 
     Route::post('/batchstudentssubjecttagging', [SubjectTaggingController::class, 'batchStudentsSubjectTagging']);
     Route::post('/batchteachersubjecttagging', [SubjectTaggingController::class, 'batchTeacherSubjectTagging']);

@@ -18,8 +18,8 @@ class Teacher extends Model
      *
      * @var array<int, string>
      */
-    
-    protected $table = 'teachers';
+
+     protected $table = 'lms_teachers';
 
     protected $guard = 'Teacher';
 

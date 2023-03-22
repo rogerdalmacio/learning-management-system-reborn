@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->bigInteger('student_id')->unsigned()->onDelete('cascade');
             $table->string('preliminaries');
             $table->timestamps();
         });
+
+        Schema::rename('grades', 'lms_grades');
     }
 
     /**

@@ -19,6 +19,7 @@ class CourseDeveloper extends Model
      * @var array<int, string>
      */
 
+     protected $table = 'lms_course_developers';
 
     protected $guard = 'CourseDeveloper';
 

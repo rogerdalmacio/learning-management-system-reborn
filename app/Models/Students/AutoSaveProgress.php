@@ -9,6 +9,8 @@ class AutoSaveProgress extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_auto_save_progress';
+
     protected $fillable = [
         'student_id',
         'quiz_result_id',

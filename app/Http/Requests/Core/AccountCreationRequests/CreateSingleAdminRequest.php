@@ -24,7 +24,7 @@ class CreateSingleAdminRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|unique:admin|integer',
+            'id' => 'required|unique:lms_admins|integer',
             'first_name' => 'required|string',
             'last_name'  => 'required|string',
         ];

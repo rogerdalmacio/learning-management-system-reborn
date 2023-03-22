@@ -15,13 +15,15 @@ return new class extends Migration
     {
         Schema::create('content_validations', function (Blueprint $table) {
             $table->id();
-            $table->string('module_id')->foreign()->references('id')->on('modules')->onDelete('cascade');
+            $table->string('module_id')->onDelete('cascade');
             $table->string('status');
             $table->text('comment');
             $table->timestamp('deadline');
             $table->boolean('submitted');
             $table->timestamps();
         });
+
+        Schema::rename('content_validations', 'lms_content_validations');
     }
 
     /**

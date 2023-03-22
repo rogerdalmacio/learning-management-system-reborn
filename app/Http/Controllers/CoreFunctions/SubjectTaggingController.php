@@ -41,11 +41,11 @@ class SubjectTaggingController extends Controller
                 $rules = [
                     'id' => [
                         'required',
-                        Rule::exists('students', 'id')
+                        Rule::exists('lms_students', 'id')
                     ],
                     'subjects' => [
                         'required',
-                        'unique:students,subjects'
+                        'unique:lms_students,subjects'
                     ]
                 ];
 
@@ -112,11 +112,11 @@ class SubjectTaggingController extends Controller
                 $rules = [
                     'id' => [
                         'required',
-                        Rule::exists('teachers', 'id')
+                        Rule::exists('lms_teachers', 'id')
                     ],
                     'subjects' => [
                         'required',
-                        'unique:teachers,subjects'
+                        'unique:lms_teachers,subjects'
                     ]
                 ];
 

@@ -27,7 +27,7 @@ class SingleCourseDeveloperSubjectTaggingRequest extends FormRequest
         return [
             'id' => [
                 'required',
-                Rule::exists('course_developers', 'id')
+                Rule::exists('lms_course_developers', 'id')
             ],
             'subjects' => 'required'
         ];

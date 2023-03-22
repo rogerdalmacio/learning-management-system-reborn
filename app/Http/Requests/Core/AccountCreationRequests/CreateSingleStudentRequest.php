@@ -24,7 +24,7 @@ class CreateSingleStudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|unique:students',
+            'id' => 'required|unique:lms_students',
             'first_name' =>'required',
             'last_name' => 'required',
             'year_and_section' => 'required',

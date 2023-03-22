@@ -24,7 +24,7 @@ class CreateSingleCourseDeveloperRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|unique:course_developer|integer',
+            'id' => 'required|unique:lms_course_developers|integer',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'department' => 'required|string',

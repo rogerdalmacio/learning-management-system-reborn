@@ -10,6 +10,8 @@ class ActivityResult extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_activity_results';
+
     protected $fillable = [
         'student_id',
         'activity_id',

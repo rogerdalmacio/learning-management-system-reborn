@@ -27,7 +27,7 @@ class SingleStudentSubjectTaggingRequest extends FormRequest
         return [
             'id' => [
                 'required',
-                Rule::exists('students', 'id')
+                Rule::exists('lms_students', 'id')
         ],
             'subjects' => 'required',
         ];

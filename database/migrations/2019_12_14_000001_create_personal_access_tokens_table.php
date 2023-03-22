@@ -23,6 +23,8 @@ return new class extends Migration
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
+
+        Schema::rename('personal_access_tokens', 'lms_personal_access_token');
     }
 
     /**

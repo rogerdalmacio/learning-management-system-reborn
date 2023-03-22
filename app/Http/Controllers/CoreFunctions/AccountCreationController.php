@@ -41,7 +41,7 @@ class AccountCreationController extends Controller
             $rules = [
                 'id' => [
                     'required',
-                    'unique:students'
+                    'unique:lms_students'
                 ],
                 'first_name' => [
                     'required',
@@ -146,7 +146,7 @@ class AccountCreationController extends Controller
             $rules = [
                 'id' => [
                     'required',
-                    'unique:teachers'
+                    'unique:lms_teachers'
                 ],
                 'first_name' => [
                     'required',

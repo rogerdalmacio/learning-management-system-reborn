@@ -15,11 +15,9 @@ return new class extends Migration
     {
         Schema::create('quiz_results', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')
-                ->constrained()
-                ->onDelete('cascade');
-            $table->string('quiz_id')->index();
-            $table->string('module_id')->index();
+            $table->bigInteger('student_id')->unsigned()->onDelete('cascade');
+            $table->string('quiz_id');
+            $table->string('module_id');
             $table->string('preliminaries');
             $table->string('quiz_type');
             $table->string('attempt');
@@ -31,6 +29,8 @@ return new class extends Migration
             $table->integer('time_elapsed')->nullable();
             $table->timestamps();
         });
+
+        Schema::rename('quiz_results', 'lms_quiz_results');
     }
 
     /**

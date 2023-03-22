@@ -11,6 +11,8 @@ class Course extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_courses';
+
     protected $fillable = [
         'course',
         'course_code',
@@ -27,8 +29,8 @@ class Course extends Model
         return $this->hasManyThrough(
             ContentValidation::class, 
             Module::class,
-            'course_id',
-            'module_id',
+            'lms_course_id',
+            'lms_module_id',
             'id',
             'id'
         );
@@ -38,8 +40,8 @@ class Course extends Model
         return $this->hasManyThrough(
             Lesson::class, 
             Module::class,
-            'course_id',
-            'module_id',
+            'lms_course_id',
+            'lms_module_id',
             'id',
             'id'
         );
@@ -49,8 +51,8 @@ class Course extends Model
         return $this->hasManyThrough(
             Activity::class, 
             Module::class,
-            'course_id',
-            'module_id',
+            'lms_course_id',
+            'lms_module_id',
             'id',
             'id'
         );
@@ -60,8 +62,8 @@ class Course extends Model
         return $this->hasManyThrough(
             Quiz::class, 
             Module::class,
-            'course_id',
-            'module_id',
+            'lms_course_id',
+            'lms_module_id',
             'id',
             'id'
         );

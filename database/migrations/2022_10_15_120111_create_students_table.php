@@ -30,6 +30,7 @@ return new class extends Migration
             $table->rememberToken();
         });
 
+        Schema::rename('students', 'lms_students');
     }
 
     /**

@@ -12,6 +12,8 @@ class CourseManager extends Model
 {
     use HasFactory, HasApiTokens, Notifiable;
 
+    protected $table = 'lms_course_managers';
+
     protected $guard = 'CourseManager';
 
     protected $fillable = [

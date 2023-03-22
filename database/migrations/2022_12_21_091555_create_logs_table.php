@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('activity_log');
             $table->timestamps();
         });
+
+        Schema::rename('logs', 'lms_logs');
     }
 
     /**

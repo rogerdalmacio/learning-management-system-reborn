@@ -10,6 +10,8 @@ class ContentValidation extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_content_validations';
+
     protected $fillable = [
         'module_id',
         'status',

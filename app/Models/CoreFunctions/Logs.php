@@ -15,6 +15,8 @@ class Logs extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_logs';
+
     protected $fillable = [
         'user_id',
         'user_type',

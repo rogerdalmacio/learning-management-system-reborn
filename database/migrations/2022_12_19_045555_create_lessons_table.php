@@ -15,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
-            $table->string('module_id')->foreign()->references('id')->on('modules')->onDelete('cascade');
+            $table->string('module_id')->onDelete('cascade');
             $table->string('preliminaries');
             $table->string('title');
             $table->string('embed_links');
             $table->timestamps();
         });
+
+        Schema::rename('lessons', 'lms_lessons');
     }
 
     /**

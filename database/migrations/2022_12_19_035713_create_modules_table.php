@@ -16,13 +16,16 @@ return new class extends Migration
     {
         Schema::create('modules', function (Blueprint $table) {
             $table->string('id')->primary()->unique();
-            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->bigInteger('course_id')->unsigned()->onDelete('cascade');
             $table->string('title');
             $table->string('week');
             $table->boolean('status');
             $table->boolean('approval')->default(0);
             $table->timestamps();
         });
+
+        
+        Schema::rename('modules', 'lms_modules');
     }
 
     /**

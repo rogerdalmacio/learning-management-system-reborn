@@ -22,6 +22,8 @@ class Student extends Model
      * @var array<int, string>
      */
 
+     protected $table = 'lms_students';
+
     protected $guard = 'Student';
 
     protected $fillable = [

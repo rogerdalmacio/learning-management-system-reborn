@@ -13,6 +13,8 @@ class Module extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_modules';
+
     protected $fillable = [
         'id',
         'course_id',

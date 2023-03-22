@@ -15,9 +15,7 @@ return new class extends Migration
     {
         Schema::create('activity_results', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->bigInteger('student_id')->unsigned()->onDelete('cascade');
             $table->string('activity_id')->index();
             $table->string('module_id')->index();
             $table->string('activity_type');
@@ -26,6 +24,8 @@ return new class extends Migration
             $table->string('score')->nullable();
             $table->timestamps();
         });
+
+        Schema::rename('activity_results', 'lms_activity_results');
     }
 
     /**

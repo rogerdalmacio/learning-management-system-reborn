@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Lesson extends Model
 {
     use HasFactory;
+    
+    protected $table = 'lms_lessons';
 
     protected $fillable = [
         'module_id',

@@ -12,6 +12,8 @@ class SuperAdmin extends Model
 {
     use HasFactory, HasApiTokens, Notifiable;
 
+    protected $table = 'lms_super_admins';
+
     protected $guard = 'SuperAdmin';
 
    protected $fillable = [

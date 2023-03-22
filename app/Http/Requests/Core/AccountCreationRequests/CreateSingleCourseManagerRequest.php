@@ -24,7 +24,7 @@ class CreateSingleCourseManagerRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|unique:course_manager|integer',
+            'id' => 'required|unique:lms_course_managers|integer',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'department' => 'required|string',

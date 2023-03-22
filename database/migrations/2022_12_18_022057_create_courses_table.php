@@ -21,6 +21,8 @@ return new class extends Migration
             $table->boolean('approval');
             $table->timestamps();
         });
+
+        Schema::rename('courses', 'lms_courses');
     }
 
     /**
