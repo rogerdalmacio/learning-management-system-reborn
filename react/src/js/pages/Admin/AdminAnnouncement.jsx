@@ -566,7 +566,7 @@ export const CreateNewAccountModal = ({
                     <FormControlLabel
                       className="m-0"
                       control={
-                        <Checkbox name="student" onChange={handleChange} />
+                        <Checkbox name="Student" onChange={handleChange} />
                       }
                       label="Student"
                     />
@@ -575,7 +575,7 @@ export const CreateNewAccountModal = ({
                     <FormControlLabel
                       className="m-0"
                       control={
-                        <Checkbox name="teacher" onChange={handleChange} />
+                        <Checkbox name="Teacher" onChange={handleChange} />
                       }
                       label="Teacher"
                     />
@@ -585,7 +585,7 @@ export const CreateNewAccountModal = ({
                       className="m-0"
                       control={
                         <Checkbox
-                          name="courseDeveloper"
+                          name="CourseDeveloper"
                           onChange={handleChange}
                         />
                       }
