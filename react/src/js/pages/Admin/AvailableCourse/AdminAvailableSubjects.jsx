@@ -101,23 +101,26 @@ function AdminAvailableSubjects() {
           <div className="ms-4">
             <div>
               <input
-                type="text"
-                placeholder="Search..."
+                type="search"
+                className="form-control search-box text-dark mb-3"
+                placeholder="Search courses"
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
               />
               {AvailableCourseHandler()}
-              <div className="d-flex">
-                <div className="dropdown">
+              <div className="d-flex justify-content-end align-items-center h-100">
+                <div className="dropdown d-flex">
+                  <p className="mb-0 me-3 paginationLightGray">Rows per Page</p>
+
                   <button
-                    className="btn btn-secondary dropdown-toggle"
+                    className="border-none border-0 bg-light paginationLightGray fw-bold dropdown-toggle"
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     {pageSize}
                   </button>
-                  <ul className="dropdown-menu">
+                  <ul className="dropdown-menu py-0 paginationDropdownMenu">
                     <li>
                       <button
                         value={5}
@@ -142,6 +145,17 @@ function AdminAvailableSubjects() {
                     </li>
                     <li>
                       <button
+                        value={15}
+                        className="dropdown-item"
+                        onClick={() => {
+                          setPageSize(15);
+                        }}
+                      >
+                        15
+                      </button>
+                    </li>
+                    <li>
+                      <button
                         value={20}
                         className="dropdown-item"
                         onClick={() => {
@@ -151,41 +165,115 @@ function AdminAvailableSubjects() {
                         20
                       </button>
                     </li>
+                    <li>
+                      <button
+                        value={25}
+                        className="dropdown-item"
+                        onClick={() => {
+                          setPageSize(25);
+                        }}
+                      >
+                        25
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        value={30}
+                        className="dropdown-item"
+                        onClick={() => {
+                          setPageSize(30);
+                        }}
+                      >
+                        30
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        value={50}
+                        className="dropdown-item"
+                        onClick={() => {
+                          setPageSize(50);
+                        }}
+                      >
+                        50
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        value={100}
+                        className="dropdown-item"
+                        onClick={() => {
+                          setPageSize(100);
+                        }}
+                      >
+                        100
+                      </button>
+                    </li>
                   </ul>
                 </div>
-                {currentColumnCount}
-                <button
-                  disabled={currentPage === 1}
-                  onClick={() => {
-                    setCurrentPage(1);
-                  }}
-                >
-                  First Page
-                </button>
-                <button
-                  disabled={currentPage === 1}
-                  onClick={() => {
-                    setCurrentPage(currentPage - 1);
-                  }}
-                >
-                  Previous
-                </button>
-                <button
-                  disabled={currentPage === totalPages}
-                  onClick={() => {
-                    setCurrentPage(currentPage + 1);
-                  }}
-                >
-                  Next
-                </button>
-                <button
-                  disabled={currentPage === totalPages}
-                  onClick={() => {
-                    setCurrentPage(totalPages);
-                  }}
-                >
-                  Last Page
-                </button>
+                <p className="mb-0 fs-6 mx-4">{currentColumnCount}</p>
+                <div className="">
+                  <button
+                    className={`border-none border-0 bg-light fw-bold `}
+                    disabled={currentPage === 1}
+                    onClick={() => {
+                      setCurrentPage(1);
+                    }}
+                  >
+                    <i
+                      className={`bx bx-chevrons-left pt-1 fs-2 ${
+                        currentPage === 1
+                          ? "paginationGray"
+                          : "paginationLightGray"
+                      }`}
+                    ></i>
+                  </button>
+                  <button
+                    className="border-none border-0 bg-light fw-bold"
+                    disabled={currentPage === 1}
+                    onClick={() => {
+                      setCurrentPage(currentPage - 1);
+                    }}
+                  >
+                    <i
+                      className={`bx bx-chevron-left fs-2 ${
+                        currentPage === 1
+                          ? "paginationGray"
+                          : "paginationLightGray"
+                      }`}
+                    ></i>
+                  </button>
+                  <button
+                    className="border-none border-0 bg-light fw-bold"
+                    disabled={currentPage === totalPages}
+                    onClick={() => {
+                      setCurrentPage(currentPage + 1);
+                    }}
+                  >
+                    <i
+                      className={`bx bx-chevron-right fs-2 ${
+                        currentPage === totalPages
+                          ? "paginationGray"
+                          : "paginationLightGray"
+                      }`}
+                    ></i>
+                  </button>
+                  <button
+                    className="border-none border-0 bg-light fw-bold"
+                    disabled={currentPage === totalPages}
+                    onClick={() => {
+                      setCurrentPage(totalPages);
+                    }}
+                  >
+                    <i
+                      className={`bx bx-chevrons-right fs-2 ${
+                        currentPage === totalPages
+                          ? "paginationGray"
+                          : "paginationLightGray"
+                      }`}
+                    ></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
