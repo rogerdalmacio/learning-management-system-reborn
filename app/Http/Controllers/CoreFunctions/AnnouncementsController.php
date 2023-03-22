@@ -17,7 +17,7 @@ class AnnouncementsController extends Controller
 
         $user = Auth::user();
 
-        if($user->usertype() == 'admin') {
+        if($user->usertype() == 'Admin') {
 
             $data = Announcement::all();
 

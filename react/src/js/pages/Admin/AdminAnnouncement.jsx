@@ -20,6 +20,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  FormControlLabel,
   List,
   ListItem,
   Checkbox,
@@ -56,14 +57,15 @@ const AdminAnnouncement = () => {
             },
           })
           .then((response) => {
-            console.log(response.data.announcements);
+            console.log(response);
+            console.log(response.data.Announcement);
             if (
-              response.data.announcements !== undefined ||
-              response.data.announcements.length !== 0
+              response.data.Announcement !== undefined ||
+              response.data.Announcement.length !== 0
             ) {
-              setGetAnnouncement(response.data.announcements);
+              setGetAnnouncement(response.data.Announcement);
               setTableData(
-                response.data.announcements.sort((a, b) => b.id - a.id)
+                response.data.Announcement.sort((a, b) => b.id - a.id)
               );
             }
           });
@@ -353,6 +355,8 @@ export const CreateNewAccountModal = ({
   setUpdatedList,
   updatedList,
 }) => {
+  const { role, token } = useAuth();
+
   const [values, setValues] = useState(() =>
     columns.reduce((acc, column) => {
       acc[column.accessorKey ?? ""] = "";
@@ -361,7 +365,27 @@ export const CreateNewAccountModal = ({
   );
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { role, token } = useAuth();
+  const [checkedItems, setCheckedItems] = useState([]);
+  console.log(checkedItems);
+  console.log(open);
+
+  // clear the checkItems if the modal is close
+  useEffect(() => {
+    if (open == false) {
+      setCheckedItems([]);
+    }
+  }, [open]);
+
+  const handleChange = (event) => {
+    const { name, checked } = event.target;
+
+    if (checked) {
+      setCheckedItems((prevState) => ({ ...prevState, [name]: checked }));
+    } else {
+      const { [name]: omitted, ...rest } = checkedItems;
+      setCheckedItems(rest);
+    }
+  };
   const handleSubmit = () => {
     //put your validation logic here
 
@@ -376,7 +400,8 @@ export const CreateNewAccountModal = ({
       values.body == null ||
       values.embed_link == null ||
       values.title == undefined ||
-      values.body == undefined
+      values.body == undefined ||
+      checkedItems.length == 0
     ) {
       setHasError(true);
       toast.error("Please fill out the blank area");
@@ -387,10 +412,16 @@ export const CreateNewAccountModal = ({
 
       toastId = toast.info("Sending Request...");
       console.log(values);
+      const listOfUsers = Object.keys(checkedItems).filter(
+        (key) => checkedItems[key]
+      );
+      console.log(JSON.stringify(listOfUsers));
       const item = {
         embed_link: values.embed_link,
         title: values.title,
         body: values.body,
+        tags: "announcement",
+        users: JSON.stringify(listOfUsers),
         status: 1,
       };
       console.log(item);
@@ -508,31 +539,83 @@ export const CreateNewAccountModal = ({
                 }
               />
             ))}
-            {columns.map((column) => (
-              <Fragment>
-                <Typography
-                  id="sandwich-group"
-                  level="body2"
-                  fontWeight="lg"
-                  mb={1}
+
+            <div>
+              <Typography
+                id="sandwich-group"
+                level="body2"
+                fontWeight="lg"
+                mb={0}
+              >
+                <span className="d-block fw-semibold text-secondary">
+                  List of Users
+                </span>
+                <span
+                  className={`fieldRequiredCheckBoxAnnouncement ${
+                    hasError && checkedItems.length == 0 ? "d-block" : "d-none"
+                  }`}
                 >
-                  Sandwich Dressings
-                </Typography>
-                <Box role="group" aria-labelledby="sandwich-group">
-                  <List size="sm">
-                    <ListItem>
-                      <Checkbox label="Lettuce" defaultChecked />
-                    </ListItem>
-                    <ListItem>
-                      <Checkbox label="Tomato" />
-                    </ListItem>
-                    <ListItem>
-                      <Checkbox label="Mustard" />
-                    </ListItem>
-                  </List>
-                </Box>
-              </Fragment>
-            ))}
+                  {hasError && checkedItems.length == 0
+                    ? "This field is required"
+                    : ""}
+                </span>
+              </Typography>
+              <Box role="group" aria-labelledby="sandwich-group">
+                <List size="sm">
+                  <ListItem className="p-0">
+                    <FormControlLabel
+                      className="m-0"
+                      control={
+                        <Checkbox name="student" onChange={handleChange} />
+                      }
+                      label="Student"
+                    />
+                  </ListItem>
+                  <ListItem className="p-0">
+                    <FormControlLabel
+                      className="m-0"
+                      control={
+                        <Checkbox name="teacher" onChange={handleChange} />
+                      }
+                      label="Teacher"
+                    />
+                  </ListItem>
+                  <ListItem className="p-0">
+                    <FormControlLabel
+                      className="m-0"
+                      control={
+                        <Checkbox
+                          name="courseDeveloper"
+                          onChange={handleChange}
+                        />
+                      }
+                      label="Course Developer"
+                    />
+                  </ListItem>
+                  <ListItem className="p-0">
+                    <FormControlLabel
+                      className="m-0"
+                      control={
+                        <Checkbox
+                          name="CourseManager"
+                          onChange={handleChange}
+                        />
+                      }
+                      label="Course Manager"
+                    />
+                  </ListItem>
+                </List>
+              </Box>
+              <p className="fw-semibold text-secondary">Checked Users:</p>
+              <ul class="list-group list-group-flush">
+                {Object.keys(checkedItems).map((item) => (
+                  <li class="list-group-item" key={item}>
+                    {console.log(item)}
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </Stack>
         </form>
       </DialogContent>
