@@ -150,7 +150,7 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
 Route::group(['prefix' => 'content', 'middleware' => ['auth:sanctum','ability:CourseManager,Admin']], function(){
 
     Route::get('/course', [FetchSharedContent::class, 'courses']);
-    Route::get('/module', [FetchSharedContent::class, 'modules']);
+    Route::get('/module/{id}', [FetchSharedContent::class, 'modules']);
     Route::get('/activity/{id}', [FetchSharedContent::class, 'activity']);
     Route::get('/lesson/{id}', [FetchSharedContent::class, 'lesson']);
     Route::get('/quiz/{id}', [FetchSharedContent::class, 'quiz']);

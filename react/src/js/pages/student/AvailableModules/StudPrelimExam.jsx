@@ -23,6 +23,8 @@ function StudPrelimExam() {
 
   const [hasAutoSaveChange, setHasAutoSaveChange] = useState(false);
   const [quizIdAvailable, setQuizIdAvailable] = useState(false);
+  const [weekNumber, setWeekNumber] = useState();
+
   const [isHiatus, setIsHiatus] = useState();
 
   const pathname = window.location.pathname;
@@ -33,11 +35,16 @@ function StudPrelimExam() {
   const currentWeek = weekMod.replace("week", "Week ");
   const weekForModule = weekMod.match(/\d+/)[0];
   const contentType = pathArray[5];
-  const [weekNumber, setWeekNumber] = useState();
-
   console.log(contentType);
+  let ExamTitle;
 
-  console.log(hasAutoSave);
+  if (contentType == "preliminaryexamination") {
+    ExamTitle = "Preliminary Examination";
+  } else if (contentType == "midtermexamination") {
+    ExamTitle = "Midterm Examination";
+  } else {
+    ExamTitle = "Final Examination";
+  }
 
   useEffect(() => {
     navigator.mediaDevices
@@ -145,7 +152,7 @@ function StudPrelimExam() {
   // attempt quiz
   const AttemptQuizHandler = async () => {
     window.open(
-      `${window.location.origin}/student/${courseBase}/modules/${weekMod}/preliminaryexamination/quiz`,
+      `${window.location.origin}/student/${courseBase}/modules/${weekMod}/${contentType}/quiz`,
       "_blank"
       // `toolbar=0,location=0,menubar=0,resizable=no,height=${10000},width=${10000},top=0,left=0,fullscreen=yes`
     );
@@ -391,7 +398,9 @@ function StudPrelimExam() {
     ) {
       return (
         <div>
-          <h4 className="mb-3">Preliminary Examination {currentWeek}</h4>
+          <h4 className="mb-3">
+            {ExamTitle} {currentWeek}
+          </h4>
 
           <div className="d-flex justify-content-center">
             <div className="d-block text-center">

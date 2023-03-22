@@ -1,17 +1,23 @@
-import React, { Fragment, useEffect, useState } from "react";
-import useStudentContext from "../../../hooks/Student/useStudentContext";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import useAuth from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
+import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent";
+import { Fragment } from "react";
 import Loading from "../../../components/layouts/Loading";
+function AdminGetLesson() {
+  const { courses, setWeek, module } = CourseContentProvider();
+  const { course } = useGetAvailableCourse();
 
-function StudLesson() {
-  const { courses, setWeekLesson, setWeek, lesson, module } =
-    useStudentContext();
   const [content, setContent] = useState();
   const [weekNumber, setWeekNumber] = useState();
   const [areEqual, setAreEqual] = useState(false);
 
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
+  // Course Title
   const courseBase = pathArray[2];
   const courseTitle = courseBase.replace(/%20/g, " ");
   const weekMod = pathArray[4];
@@ -19,18 +25,15 @@ function StudLesson() {
   const weekForModule = weekMod.match(/\d+/)[0];
   const contentType = pathArray[5];
   console.log(contentType);
-
-  console.log(content);
-  console.log(weekNumber);
-
-  //getting module_id for modules
+  // Get module id
+  // const weekNumber = id.match(/\d+/)[0];
   useEffect(() => {
     if (courses) {
+      console.log(courses);
       courses.map((course) => {
         if (course.course == courseTitle) {
           course.module.map((mod) => {
             if (mod.week == weekForModule) {
-              console.log(mod.id);
               setWeek(mod.id);
               setWeekNumber(mod.id);
             }
@@ -39,9 +42,8 @@ function StudLesson() {
       });
     }
   });
-
+  console.log(module);
   useEffect(() => {
-    console.log(module);
     if (module) {
       console.log(module);
       console.log(module.id);
@@ -50,6 +52,7 @@ function StudLesson() {
         const act = module.lesson
           .filter((act) => act.title == contentType)
           .map((content) => {
+            console.log(content);
             setContent(content);
           });
       } else {
@@ -73,7 +76,6 @@ function StudLesson() {
       </div>
     );
   };
-
   const AvailableLesson = () => {
     if (content) {
       return (
@@ -105,4 +107,4 @@ function StudLesson() {
   }
 }
 
-export default StudLesson;
+export default AdminGetLesson;

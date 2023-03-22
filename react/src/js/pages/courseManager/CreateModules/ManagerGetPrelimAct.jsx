@@ -1,15 +1,16 @@
 import React, { Fragment, useEffect, useState } from "react";
-import useStudentContext from "../../../hooks/Student/useStudentContext";
 import { useParams } from "react-router-dom";
 import Loading from "../../../components/layouts/Loading";
+import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent";
 
-function StudLesson() {
-  const { courses, setWeekLesson, setWeek, lesson, module } =
-    useStudentContext();
+function ManagerGetPrelimAct() {
+  const { courses, setWeek, week, module } = CourseContentProvider();
+
   const [content, setContent] = useState();
   const [weekNumber, setWeekNumber] = useState();
   const [areEqual, setAreEqual] = useState(false);
 
+  console.log(content);
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
   const courseBase = pathArray[2];
@@ -21,7 +22,6 @@ function StudLesson() {
   console.log(contentType);
 
   console.log(content);
-  console.log(weekNumber);
 
   //getting module_id for modules
   useEffect(() => {
@@ -30,7 +30,6 @@ function StudLesson() {
         if (course.course == courseTitle) {
           course.module.map((mod) => {
             if (mod.week == weekForModule) {
-              console.log(mod.id);
               setWeek(mod.id);
               setWeekNumber(mod.id);
             }
@@ -43,12 +42,10 @@ function StudLesson() {
   useEffect(() => {
     console.log(module);
     if (module) {
-      console.log(module);
-      console.log(module.id);
       if (module.id == weekNumber) {
         setAreEqual(true);
-        const act = module.lesson
-          .filter((act) => act.title == contentType)
+        const act = module.activity
+          .filter((act) => act.activity_type == contentType)
           .map((content) => {
             setContent(content);
           });
@@ -74,16 +71,17 @@ function StudLesson() {
     );
   };
 
-  const AvailableLesson = () => {
+  const AvailableActivity = () => {
     if (content) {
       return (
         <Fragment>
-          <h4 className="mb-3">Lesson for {currentWeek}</h4>
+          <h4 className="mb-3">Preliminary Activity for {currentWeek}</h4>{" "}
           {fetchContent()}
           <iframe
             className="createModuleIframe"
             src={`${content.embed_links}?embedded=true`}
           ></iframe>
+          <div></div>
         </Fragment>
       );
     } else {
@@ -99,10 +97,10 @@ function StudLesson() {
   };
 
   if (areEqual) {
-    return <div>{AvailableLesson()}</div>;
+    return <div>{AvailableActivity()}</div>;
   } else {
     return <Loading />;
   }
 }
 
-export default StudLesson;
+export default ManagerGetPrelimAct;

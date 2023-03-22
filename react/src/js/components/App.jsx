@@ -12,6 +12,7 @@ import SuperCreateCourseDevAcct from "../pages/superAdmin/SingleCreationAccount/
 import SuperCreateStudentAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateStudentAcct";
 import SuperCreateTeacherAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateTeacherAcct";
 import SuperCreateCourseManAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateCourseManAcct";
+
 // CourseManager
 import CourseManagerLayout from "./layouts/authenticatedLayout/CourseManagerNavigationBar/CourseManagerLayout";
 import ManagerDashboard from "../pages/courseManager/ManagerDashboard";
@@ -24,6 +25,13 @@ import ManagerCreateSyllabusTItle from "../pages/courseManager/ManagerCreateSyll
 import ManagerAvailableContent from "../pages/courseManager/AvailableCourse/ManagerAvailableContent";
 import ManagerAvailableModules from "../pages/courseManager/AvailableCourse/ManagerAvailableModules";
 import ManagerAvailableSubjects from "../pages/courseManager/AvailableCourse/ManagerAvailableSubjects";
+import ManagerGetAAE from "../pages/courseManager/CreateModules/ManagerGetAAE";
+import ManagerGetAssignment from "../pages/courseManager/CreateModules/ManagerGetAssignment";
+import ManagerGetEvaluation from "../pages/courseManager/CreateModules/ManagetGetEvaluation";
+import ManagerGetExam from "../pages/courseManager/CreateModules/ManagerGetExam";
+import ManagerGetLesson from "../pages/courseManager/CreateModules/ManagerGetLesson";
+import ManagerGetPrelimAct from "../pages/courseManager/CreateModules/ManagerGetPrelimAct";
+import ManagerGetGeneralization from "../pages/courseManager/CreateModules/ManagerGetGeneralization";
 
 // Admin
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
@@ -37,6 +45,16 @@ import AdminBatchGrantExam from "../pages/Admin/ExamGranting/AdminBatchGrantExam
 import AdminSingleGrantExam from "../pages/Admin/ExamGranting/AdminSingleGrantExam";
 import AdminAnnouncement from "../pages/Admin/AdminAnnouncement";
 import AdminWeekGrant from "../pages/Admin/AdminWeekGrant";
+import AdminAvailableContent from "../pages/Admin/AvailableCourse/AdminAvailableContent";
+import AdminAvailableModules from "../pages/Admin/AvailableCourse/AdminAvailableModules";
+import AdminAvailableSubjects from "../pages/Admin/AvailableCourse/AdminAvailableSubjects";
+import AdminGetAAE from "../pages/Admin/CreateModules/AdminGetAAE";
+import AdminGetAssignment from "../pages/Admin/CreateModules/AdminGetAssignment";
+import AdminGetEvaluation from "../pages/Admin/CreateModules/AdminGetEvaluation";
+import AdminGetExam from "../pages/Admin/CreateModules/AdminGetExam";
+import AdminGetGeneralization from "../pages/Admin/CreateModules/AdminGetGeneralization";
+import AdminGetLesson from "../pages/Admin/CreateModules/AdminGetLesson";
+import AdminGetPrelimAct from "../pages/Admin/CreateModules/AdminGetPrelimAct";
 
 // Course Developer
 import CourseDevLayout from "./layouts/authenticatedLayout/CourseDeveloperNavifationBar/CourseDevLayout";
@@ -116,7 +134,7 @@ function App() {
           element={<StudQuizAssignment />}
         />
         <Route
-          path="/student/:id/modules/:id/preliminaryexamination/quiz"
+          path="/student/:id/modules/:id/:id/quiz"
           element={<StudQuizPrelimExam />}
         />
         <Route element={<StudentLayout />}>
@@ -156,7 +174,7 @@ function App() {
             element={<StudAssignment />}
           />
           <Route
-            path="/student/:id/modules/:id/preliminaryexamination"
+            path="/student/:id/modules/:id/:id"
             element={<StudPrelimExam />}
           />
         </Route>
@@ -218,6 +236,35 @@ function App() {
           <Route
             path="/courseManager/:id/modules/:id"
             element={<ManagerAvailableContent />}
+          />
+          {/* modules */}
+          <Route
+            path="/courseManager/:id/modules/:id/aae"
+            element={<ManagerGetAAE />}
+          />
+          <Route
+            path="/courseManager/:id/modules/:id/assignment"
+            element={<ManagerGetAssignment />}
+          />
+          <Route
+            path="/courseManager/:id/modules/:id/evaluation"
+            element={<ManagerGetEvaluation />}
+          />
+          <Route
+            path="/courseManager/:id/modules/:id/:id"
+            element={<ManagerGetExam />}
+          />
+          <Route
+            path="/courseManager/:id/modules/:id/lesson"
+            element={<ManagerGetLesson />}
+          />
+          <Route
+            path="/courseManager/:id/modules/:id/preliminaryactivity"
+            element={<ManagerGetPrelimAct />}
+          />
+          <Route
+            path="/courseManager/:id/modules/:id/generalization"
+            element={<ManagerGetGeneralization />}
           />
         </Route>
       </Route>
@@ -296,6 +343,39 @@ function App() {
             element={<AdminAnnouncement />}
           />
           <Route path="/admin/weekGrant" element={<AdminWeekGrant />} />
+          {/* courses */}
+          <Route path="/admin/subjects" element={<AdminAvailableSubjects />} />
+          <Route
+            path="/admin/:id/modules"
+            element={<AdminAvailableModules />}
+          />
+          <Route
+            path="/admin/:id/modules/:id"
+            element={<AdminAvailableContent />}
+          />
+          {/* modules */}
+          <Route path="/admin/:id/modules/:id/aae" element={<AdminGetAAE />} />
+          <Route
+            path="/admin/:id/modules/:id/assignment"
+            element={<AdminGetAssignment />}
+          />
+          <Route
+            path="/admin/:id/modules/:id/evaluation"
+            element={<AdminGetEvaluation />}
+          />
+          <Route path="/admin/:id/modules/:id/:id" element={<AdminGetExam />} />
+          <Route
+            path="/admin/:id/modules/:id/lesson"
+            element={<AdminGetLesson />}
+          />
+          <Route
+            path="/admin/:id/modules/:id/preliminaryactivity"
+            element={<AdminGetPrelimAct />}
+          />
+          <Route
+            path="/admin/:id/modules/:id/generalization"
+            element={<AdminGetGeneralization />}
+          />
         </Route>
       </Route>
 

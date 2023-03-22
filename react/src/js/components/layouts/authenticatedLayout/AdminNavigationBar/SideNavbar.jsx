@@ -34,6 +34,19 @@ function Navbar({ openSidebar }) {
               <span className="tooltip">Dashboard</span>
             </li>
           </Link>
+          <Link to="/admin/subjects" className="text-decoration-none">
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/admin/subjects" ? "activeSideBar" : ""
+                }`}
+              >
+                <i className="bx bxs-pie-chart-alt-2"></i>
+                <span className="links_name">Courses</span>
+              </span>
+              <span className="tooltip">Courses</span>
+            </li>
+          </Link>
           <Link to="/admin/createAnnouncement" className="text-decoration-none">
             <li>
               <span

@@ -38,7 +38,7 @@ class FetchSharedContent extends Controller
         return response()->json($response, 200);
     }
 
-    public function modules(int $id)
+    public function modules(string $id)
     {
         $module = Module::with('activity','lesson','quiz')
                 ->find($id);

@@ -28,7 +28,7 @@ export const CourseContentProvider = ({ children }) => {
 
   useEffect(() => {
     const renderCourse = async () => {
-      if (role === "CourseManager") {
+      if (role === "CourseManager" || role === "admin") {
         await axios
           .get(`${import.meta.env.VITE_API_BASE_URL}/api/content/course`, {
             headers: {
@@ -38,8 +38,7 @@ export const CourseContentProvider = ({ children }) => {
             },
           })
           .then((response) => {
-            console.log(response);
-            console.log(response.data);
+            console.log(response.data.Courses);
             setCourses(response.data.Courses);
           });
       }
@@ -50,7 +49,7 @@ export const CourseContentProvider = ({ children }) => {
 
   useEffect(() => {
     const renderModule = async () => {
-      if (role === "CourseManager" && week) {
+      if (role === "CourseManager" || (role === "admin" && week)) {
         await axios
           .get(
             `${import.meta.env.VITE_API_BASE_URL}/api/content/module/${week}`,
@@ -64,7 +63,7 @@ export const CourseContentProvider = ({ children }) => {
           )
           .then((response) => {
             console.log(response);
-            setModule(response.data.Module);
+            setModule(response.data.Modules);
           });
       }
     };
@@ -75,12 +74,12 @@ export const CourseContentProvider = ({ children }) => {
   useEffect(() => {
     const renderLesson = async () => {
       console.log(weekLesson);
-      if (role === "CourseManager" && weekLesson) {
+      if (role === "CourseManager" || (role === "admin" && weekLesson)) {
         await axios
           .get(
             `${
               import.meta.env.VITE_API_BASE_URL
-            }/api/coursedeveloper/lesson/${weekLesson}`,
+            }/api/content/lesson/${weekLesson}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -101,13 +100,13 @@ export const CourseContentProvider = ({ children }) => {
 
   useEffect(() => {
     const renderQuiz = async () => {
-      if (role === "courseDeveloper" && weekQuiz) {
+      if (role === "CourseManager" || (role === "admin" && weekQuiz)) {
         console.log(weekQuiz);
         await axios
           .get(
             `${
               import.meta.env.VITE_API_BASE_URL
-            }/api/coursedeveloper/module/${weekQuiz}`,
+            }/api/content/module/${weekQuiz}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -117,8 +116,9 @@ export const CourseContentProvider = ({ children }) => {
             }
           )
           .then((response) => {
-            console.log(response.data.Module[0]);
-            setQuiz(response.data.Module[0]);
+            console.log(response.data.Modules);
+            // console.log(response.data.Module[0]);
+            setQuiz(response.data.Modules);
           });
       }
     };
@@ -129,12 +129,10 @@ export const CourseContentProvider = ({ children }) => {
   useEffect(() => {
     const renderSpecificQuiz = async () => {
       console.log(quizid);
-      if (role === "courseDeveloper" && quizid) {
+      if (role === "CourseManager" || (role === "admin" && quizid)) {
         await axios
           .get(
-            `${
-              import.meta.env.VITE_API_BASE_URL
-            }/api/coursedeveloper/quiz/${quizid}`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/content/quiz/${quizid}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -144,8 +142,9 @@ export const CourseContentProvider = ({ children }) => {
             }
           )
           .then((response) => {
-            console.log(response);
             if (quizid !== undefined) {
+              // console.log([response.data]);
+
               setOfficialQuiz(response.data);
             } else {
               setOfficialQuiz(undefined);

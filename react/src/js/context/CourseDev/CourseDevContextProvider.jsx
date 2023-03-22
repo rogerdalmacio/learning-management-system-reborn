@@ -122,6 +122,7 @@ export const CourseDevContextProvider = ({ children }) => {
           )
           .then((response) => {
             console.log(response.data.Module[0]);
+            console.log(response.data.Module[0]);
             setQuiz(response.data.Module[0]);
           });
       }
@@ -148,7 +149,7 @@ export const CourseDevContextProvider = ({ children }) => {
             }
           )
           .then((response) => {
-            console.log(response);
+            console.log(response.data);
             if (quizid !== undefined) {
               setOfficialQuiz(response.data);
             } else {
