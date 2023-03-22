@@ -355,6 +355,7 @@ function ManagetGetAssignment() {
     <div className="mb-4 w-100">
       <label className="fs-5 fw-semibold">Assignment</label>
       {quiz !== undefined &&
+      quiz !== null &&
       quiz.quiz.length !== 0 &&
       quizWeek == weekForModule &&
       quizType == "assignment" ? (

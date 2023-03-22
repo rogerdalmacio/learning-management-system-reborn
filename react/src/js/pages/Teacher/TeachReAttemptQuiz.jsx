@@ -150,7 +150,7 @@ const TeachReAttemptQuiz = ({}) => {
     }
     let toastId;
     axios
-      .delete(
+      .patch(
         `${
           import.meta.env.VITE_API_BASE_URL
         }/api/teacher/deletequizattempt/${quizResultId}`,

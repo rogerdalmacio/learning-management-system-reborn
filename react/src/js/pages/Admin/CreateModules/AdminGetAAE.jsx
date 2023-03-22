@@ -378,6 +378,7 @@ function AdminGetAAE() {
         Application, Analysis, and Exploration
       </label>
       {quiz !== undefined &&
+      quiz !== null &&
       quiz.quiz.length !== 0 &&
       quizWeek == weekForModule &&
       quizType == "aae" ? (

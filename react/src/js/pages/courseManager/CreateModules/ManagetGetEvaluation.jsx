@@ -370,12 +370,12 @@ function ManagerGetEvaluation() {
       );
     });
   };
-  console.log(quiz !== undefined && quiz.quiz[0].quiz_type);
   // Render it all here
   return (
     <div className="mb-4 w-100">
       <label className="fs-5 fw-semibold">Evaluation</label>
       {quiz !== undefined &&
+      quiz !== null &&
       quiz.quiz.length !== 0 &&
       quizWeek == weekForModule &&
       quizType == "evaluation" ? (

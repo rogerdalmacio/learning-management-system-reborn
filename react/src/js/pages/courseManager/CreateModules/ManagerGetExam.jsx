@@ -381,6 +381,7 @@ function ManagerGetExam() {
       <label className="fs-5 fw-semibold">{ExamNewWord}</label>
 
       {quiz !== undefined &&
+      quiz !== null &&
       quiz.quiz.length !== 0 &&
       quizWeek == weekForModule &&
       quizType == `${contentType}` ? (

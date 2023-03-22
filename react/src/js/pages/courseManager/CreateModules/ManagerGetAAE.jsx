@@ -379,6 +379,7 @@ function ManagerGetAAE() {
       </label>
       {quiz !== undefined &&
       quiz !== null &&
+      quiz !== null &&
       quiz.quiz.length !== 0 &&
       quizWeek == weekForModule &&
       quizType == "aae" ? (
