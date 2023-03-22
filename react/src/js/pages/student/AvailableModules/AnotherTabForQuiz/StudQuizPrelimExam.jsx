@@ -357,7 +357,7 @@ function StudQuizEvaluation() {
                       onClick={handlePrevious}
                       disabled={currentQuestionIndex === 0}
                     >
-                      <i class="bi bi-arrow-left-short"></i> Prev
+                      <i className="bi bi-arrow-left-short"></i> Prev
                     </button>
                     {LastNumberHandler()}
                   </div>

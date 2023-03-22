@@ -156,8 +156,8 @@ function StudPrelimActivitySubmit({ content }) {
   const FileStateIcon = () => {
     if (processing && processing) {
       return (
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden fs-2">Loading...</span>
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden fs-2">Loading...</span>
         </div>
       );
     } else if (submitFile) {

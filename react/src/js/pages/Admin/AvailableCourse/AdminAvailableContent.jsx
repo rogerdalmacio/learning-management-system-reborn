@@ -131,8 +131,8 @@ function AdminAvailableContent() {
       return (
         <Fragment>
           <h3>{courseTitle}</h3>
-          <h4 className="ms-3 my-4">{newWeek}</h4>
-          <div className="ms-3">{ContentCheckHandler()}</div>
+          <h4 className="ms-sm-3 my-4">{newWeek}</h4>
+          <div className="ms-sm-3">{ContentCheckHandler()}</div>
         </Fragment>
       );
     } else {

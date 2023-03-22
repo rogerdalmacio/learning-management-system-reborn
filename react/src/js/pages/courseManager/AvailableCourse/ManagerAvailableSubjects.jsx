@@ -57,7 +57,7 @@ function ManagerAvailableSubjects() {
       return (
         <Fragment>
           <h2>Subject/s</h2>
-          <div className="ms-4">{AvailableCourseHandler()}</div>
+          <div className="ms-sm-4">{AvailableCourseHandler()}</div>
         </Fragment>
       );
     } else {

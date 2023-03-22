@@ -98,7 +98,7 @@ function AdminAvailableSubjects() {
       return (
         <Fragment>
           <h2>Subject/s</h2>
-          <div className="ms-4">
+          <div className="ms-sm-4">
             <div>
               <input
                 type="search"
@@ -110,169 +110,176 @@ function AdminAvailableSubjects() {
               {AvailableCourseHandler()}
               <div className="d-flex justify-content-end align-items-center h-100">
                 <div className="dropdown d-flex">
-                  <p className="mb-0 me-3 paginationLightGray">Rows per Page</p>
-
-                  <button
-                    className="border-none border-0 bg-light paginationLightGray fw-bold dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    {pageSize}
-                  </button>
-                  <ul className="dropdown-menu py-0 paginationDropdownMenu">
-                    <li>
-                      <button
-                        value={5}
-                        className="dropdown-item"
-                        onClick={() => {
-                          setPageSize(5);
-                        }}
-                      >
-                        5
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        value={10}
-                        className="dropdown-item"
-                        onClick={() => {
-                          setPageSize(10);
-                        }}
-                      >
-                        10
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        value={15}
-                        className="dropdown-item"
-                        onClick={() => {
-                          setPageSize(15);
-                        }}
-                      >
-                        15
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        value={20}
-                        className="dropdown-item"
-                        onClick={() => {
-                          setPageSize(20);
-                        }}
-                      >
-                        20
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        value={25}
-                        className="dropdown-item"
-                        onClick={() => {
-                          setPageSize(25);
-                        }}
-                      >
-                        25
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        value={30}
-                        className="dropdown-item"
-                        onClick={() => {
-                          setPageSize(30);
-                        }}
-                      >
-                        30
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        value={50}
-                        className="dropdown-item"
-                        onClick={() => {
-                          setPageSize(50);
-                        }}
-                      >
-                        50
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        value={100}
-                        className="dropdown-item"
-                        onClick={() => {
-                          setPageSize(100);
-                        }}
-                      >
-                        100
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-                <p className="mb-0 fs-6 mx-4">{currentColumnCount}</p>
-                <div className="">
-                  <button
-                    className={`border-none border-0 bg-light fw-bold `}
-                    disabled={currentPage === 1}
-                    onClick={() => {
-                      setCurrentPage(1);
-                    }}
-                  >
-                    <i
-                      className={`bx bx-chevrons-left pt-1 fs-2 ${
-                        currentPage === 1
-                          ? "paginationGray"
-                          : "paginationLightGray"
-                      }`}
-                    ></i>
-                  </button>
-                  <button
-                    className="border-none border-0 bg-light fw-bold"
-                    disabled={currentPage === 1}
-                    onClick={() => {
-                      setCurrentPage(currentPage - 1);
-                    }}
-                  >
-                    <i
-                      className={`bx bx-chevron-left fs-2 ${
-                        currentPage === 1
-                          ? "paginationGray"
-                          : "paginationLightGray"
-                      }`}
-                    ></i>
-                  </button>
-                  <button
-                    className="border-none border-0 bg-light fw-bold"
-                    disabled={currentPage === totalPages}
-                    onClick={() => {
-                      setCurrentPage(currentPage + 1);
-                    }}
-                  >
-                    <i
-                      className={`bx bx-chevron-right fs-2 ${
-                        currentPage === totalPages
-                          ? "paginationGray"
-                          : "paginationLightGray"
-                      }`}
-                    ></i>
-                  </button>
-                  <button
-                    className="border-none border-0 bg-light fw-bold"
-                    disabled={currentPage === totalPages}
-                    onClick={() => {
-                      setCurrentPage(totalPages);
-                    }}
-                  >
-                    <i
-                      className={`bx bx-chevrons-right fs-2 ${
-                        currentPage === totalPages
-                          ? "paginationGray"
-                          : "paginationLightGray"
-                      }`}
-                    ></i>
-                  </button>
+                  <div className="d-flex align-items-center">
+                    <p className="mb-0 me-3 paginationLightGray">
+                      Rows per Page
+                    </p>
+                    <button
+                      className="border-none border-0 bg-light paginationLightGray fw-bold dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      {pageSize}
+                    </button>
+                  </div>
+                  <div className="d-flex align-items-center">
+                    <ul className="dropdown-menu py-0 paginationDropdownMenu">
+                      <li>
+                        <button
+                          value={5}
+                          className="dropdown-item"
+                          onClick={() => {
+                            setPageSize(5);
+                          }}
+                        >
+                          5
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          value={10}
+                          className="dropdown-item"
+                          onClick={() => {
+                            setPageSize(10);
+                          }}
+                        >
+                          10
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          value={15}
+                          className="dropdown-item"
+                          onClick={() => {
+                            setPageSize(15);
+                          }}
+                        >
+                          15
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          value={20}
+                          className="dropdown-item"
+                          onClick={() => {
+                            setPageSize(20);
+                          }}
+                        >
+                          20
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          value={25}
+                          className="dropdown-item"
+                          onClick={() => {
+                            setPageSize(25);
+                          }}
+                        >
+                          25
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          value={30}
+                          className="dropdown-item"
+                          onClick={() => {
+                            setPageSize(30);
+                          }}
+                        >
+                          30
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          value={50}
+                          className="dropdown-item"
+                          onClick={() => {
+                            setPageSize(50);
+                          }}
+                        >
+                          50
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          value={100}
+                          className="dropdown-item"
+                          onClick={() => {
+                            setPageSize(100);
+                          }}
+                        >
+                          100
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                  <p className="mb-0 d-flex align-items-center fs-6 mx-4">
+                    {currentColumnCount}
+                  </p>
+                  <div>
+                    <button
+                      className={`border-none border-0 bg-light fw-bold `}
+                      disabled={currentPage === 1}
+                      onClick={() => {
+                        setCurrentPage(1);
+                      }}
+                    >
+                      <i
+                        className={`bx bx-chevrons-left pt-1 fs-2 ${
+                          currentPage === 1
+                            ? "paginationGray"
+                            : "paginationLightGray"
+                        }`}
+                      ></i>
+                    </button>
+                    <button
+                      className="border-none border-0 bg-light fw-bold"
+                      disabled={currentPage === 1}
+                      onClick={() => {
+                        setCurrentPage(currentPage - 1);
+                      }}
+                    >
+                      <i
+                        className={`bx bx-chevron-left fs-2 ${
+                          currentPage === 1
+                            ? "paginationGray"
+                            : "paginationLightGray"
+                        }`}
+                      ></i>
+                    </button>
+                    <button
+                      className="border-none border-0 bg-light fw-bold"
+                      disabled={currentPage === totalPages}
+                      onClick={() => {
+                        setCurrentPage(currentPage + 1);
+                      }}
+                    >
+                      <i
+                        className={`bx bx-chevron-right fs-2 ${
+                          currentPage === totalPages
+                            ? "paginationGray"
+                            : "paginationLightGray"
+                        }`}
+                      ></i>
+                    </button>
+                    <button
+                      className="border-none border-0 bg-light fw-bold"
+                      disabled={currentPage === totalPages}
+                      onClick={() => {
+                        setCurrentPage(totalPages);
+                      }}
+                    >
+                      <i
+                        className={`bx bx-chevrons-right fs-2 ${
+                          currentPage === totalPages
+                            ? "paginationGray"
+                            : "paginationLightGray"
+                        }`}
+                      ></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
