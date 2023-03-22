@@ -19,7 +19,9 @@ class CDCourseController extends Controller
 
         $user = Auth::user();
 
-        $query = Course::with('module')->where('course_code', $user->subjects)->where('department', $user->department)->get();
+        $subjectsArray = explode(',', $user->subjects);
+
+        $query = Course::with('module')->whereIn('course_code', $subjectsArray)->where('department', $user->department)->get();
 
         $response = [
             'course' => $query

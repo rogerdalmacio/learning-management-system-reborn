@@ -9,32 +9,35 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CoreFunctions\Announcement;
 use App\Http\Requests\Core\CreateAnnouncementRequest;
+use App\Http\Resources\CoreFunctions\AnnouncementResource;
 
 class AnnouncementsController extends Controller
 {
+    public function announcement() {
 
-    public function activeAnnouncements() {
+        $user = Auth::user();
 
-        $announcements = Announcement::where('status', true)->get();
+        if($user->usertype == 'admin') {
+
+            $data = Announcement::all();
+
+            $response = [
+                'Announcement' => $data,
+            ];
+
+            return response()->json($response, 200);
+        }
+
+        $data = Announcement::where('users', 'like', '%' . $user->usertype() . '%')->where('status', true)->get();
+
+        $announcements = AnnouncementResource::collection($data);
 
         $response = [
-            'announcements' => $announcements
+            'data' => $announcements
         ];
 
-        return response($response, 200);
+        return response()->json($response, 200);
 
-    }
-
-    public function inActiceAnnouncements() {
-
-        $announcements = Announcement::where('status', false)->get();
-
-        $response = [
-            'announcements' => $announcements
-        ];
-
-        return response($response, 200);
-        
     }
     
     public function createAnnouncement(CreateAnnouncementRequest $request) {

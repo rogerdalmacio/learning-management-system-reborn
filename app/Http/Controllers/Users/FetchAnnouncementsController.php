@@ -10,7 +10,7 @@ use App\Http\Resources\CoreFunctions\AnnouncementResource;
 
 class FetchAnnouncementsController extends Controller
 {
-    public function students()
+    public function announ()
     {
         $user = Auth::user();
 
