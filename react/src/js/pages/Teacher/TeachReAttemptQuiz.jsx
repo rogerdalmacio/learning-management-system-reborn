@@ -55,7 +55,7 @@ const TeachReAttemptQuiz = ({}) => {
                 // });
 
                 const filteredItem = item.quizresult.filter(
-                  (quiz) => quiz.module_id == `MATH00-${num}`
+                  (quiz) => quiz.module_id == `${data[0].subjects}-${num}`
                 );
 
                 return filteredItem.reduce((acc, cur) => {

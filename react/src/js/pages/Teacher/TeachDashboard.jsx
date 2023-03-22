@@ -40,23 +40,18 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
           )
           .then((response) => {
             const data = response.data.students;
-
             const numbers = [
               1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
             ];
-
+            console.log(data[0].subjects);
+            console.log(response.data.students);
             const result2 = numbers.map((num) => {
-              console.log(num);
               return data.map((item) => {
-                // const itemz = item.quizresult.filter((quiz) => {
-                //   console.log(quiz.module_id == "MATH00-1");
-                //   return quiz.module_id == "MATH00-1";
-                // });
-
                 const filteredItem = item.quizresult.filter(
-                  (quiz) => quiz.module_id == `MATH00-${num}`
+                  (quiz) => quiz.module_id == `${data[0].subjects}-${num}`
                 );
 
+                console.log(filteredItem);
                 return filteredItem.reduce((acc, cur) => {
                   console.log(cur);
                   console.log(cur.module_id);
