@@ -90,7 +90,7 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
 
     Route::post('/snapshot', [SnapshotController::class, 'saveSnapshot']);
 
-    Route::get('/announcements', [Announcement::class, 'announcement']);
+    Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
 });
 
 //teachers route
@@ -108,7 +108,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
 
     Route::apiResource('course', TCourseController::class);
 
-    Route::get('/announcements', [Announcement::class, 'announcement']);
+    Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
 });
 
 //course developer route
@@ -126,7 +126,7 @@ Route::group(['prefix' => 'coursedeveloper', 'middleware' => ['auth:sanctum','ab
 
     Route::patch('/submittodo/{id}', [CDToDoListController::class, 'submitTodo']);
 
-    Route::get('/announcements', [Announcement::class, 'announcement']);
+    Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
 });
 
 //course manager route
@@ -144,7 +144,7 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
 
     Route::get('/students', [ListOfUsersController::class, 'students']);
 
-    Route::get('/announcements', [Announcement::class, 'announcement']);
+    Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
 });
 
 //content routes
@@ -175,7 +175,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
 
     Route::patch('/resetpassword/{id}', [PasswordResetController::class, 'passwordReset']);
    
-    Route::get('/announcements', [Announcement::class, 'announcement']);
+    Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
 });
 
 //Admin Core
@@ -192,7 +192,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::patch('/batchmoduleupdatestatus/{id}', [ModuleStatusUpdateController::class, 'editModuleStatus']);
     Route::get('/modules', [ModuleStatusUpdateController::class, 'listOfModules']);
 
-    Route::get('/announcements', [AnnouncementsController::class, 'activeAnnouncements']);
+    Route::get('/announcements', [AnnouncementsControllersController::class, 'activeAnnouncements']);
     Route::get('/inactiveannouncements', [AnnouncementsController::class, 'inActiveAnnouncements']);
     Route::post('/createannouncement', [AnnouncementsController::class, 'createAnnouncement']);
     Route::patch('/editannouncement/{id}', [AnnouncementsController::class, 'editAnnouncement']);
@@ -206,7 +206,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::patch('/editstudentsubject/{id}', [SubjectTaggingController::class, 'editStudentSubject']);
     Route::patch('/editteachersubject/{id}', [SubjectTaggingController::class, 'editTeacherSubject']);
 
-    Route::get('/announcements', [Announcement::class, 'announcement']);
+    Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
 });
 
 Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'ability:Admin,SuperAdmin']], function(){
