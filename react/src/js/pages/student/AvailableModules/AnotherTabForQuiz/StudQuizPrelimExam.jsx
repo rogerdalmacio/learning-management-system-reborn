@@ -19,6 +19,9 @@ function StudQuizEvaluation() {
 
   const [progress, setProgress] = useState();
   const [getAnswer, setGetAnswer] = useState();
+  const [localstorageValue, setLocalstorageValue] = useState(
+    parseInt(localStorage.getItem("myValue")) || 0
+  );
 
   // useEffect(() => {
   //     if (getAnswer) {
@@ -39,6 +42,80 @@ function StudQuizEvaluation() {
   const weekForModule = weekMod.match(/\d+/)[0];
   const contentType = pathArray[5];
   console.log(contentType);
+
+  // Setting the locastorage
+  useEffect(() => {
+    localStorage.setItem("myValue", localstorageValue);
+
+    // Submitting the quiz if log is equal to 3
+  }, [localstorageValue]);
+
+  useEffect(() => {
+    if (localstorageValue >= 3) {
+      SubmitQuizHandler();
+    }
+  }, [localstorageValue, quizResultId]);
+  // Count if blurr or AFK or alt+tab
+  useEffect(() => {
+    const logsHandler = () => {
+      window.addEventListener("focus", () => {
+        console.log("not afk");
+      });
+      window.addEventListener("blur", () => {
+        setLocalstorageValue((prevValue) => prevValue + 1);
+
+        toast.error("Please do not get away from Keyboard");
+        <div></div>;
+      });
+    };
+    logsHandler();
+  }, []);
+
+  // Pressing keys
+  useEffect(() => {
+    function handleStorageChange(e) {
+      if (e.key === "count") {
+        console.log("localStorage count has been updated!");
+        console.log("New count value: " + e.newValue);
+      }
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+  });
+  let altKey = false;
+  let controlKey = false;
+  let shiftKey = false;
+  let tabKey = false;
+  useEffect(() => {
+    document.addEventListener("keydown", (e) => {
+      console.log("They Key that was pressed is: " + e.key);
+      if (e.key == "Alt") {
+        altKey = true;
+      } else if (e.key == "Control") {
+        controlKey = true;
+      } else if (e.key == "Shift") {
+        shiftKey = true;
+      } else if (e.key == "Tab") {
+        tabKey = true;
+      }
+      // if (controlKey && e.key == "Tab") {
+      //   toast.warning("Alt and key are pressed");
+      // }
+      if (
+        // e.key == "F12" ||
+        e.key == "Tab" ||
+        e.key == "ps" ||
+        e.key == "c" ||
+        e.key == "Control" ||
+        e.key == "Shift" ||
+        e.key == "Alt" ||
+        e.key == "g"
+      ) {
+        toast.warning("Please do not press any keys");
+        e.preventDefault();
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const progressHandler = async () => {
@@ -248,7 +325,7 @@ function StudQuizEvaluation() {
 
     const item = {
       answers: data,
-      logs: "x",
+      logs: localstorageValue,
       attempt: "finished",
     };
     let toastId;

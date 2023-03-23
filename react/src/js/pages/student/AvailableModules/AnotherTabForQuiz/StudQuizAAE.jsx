@@ -87,11 +87,13 @@ function StudQuizAAE() {
     localStorage.setItem("myValue", localstorageValue);
 
     // Submitting the quiz if log is equal to 3
+  }, [localstorageValue]);
+
+  useEffect(() => {
     if (localstorageValue >= 3) {
       SubmitQuizHandler();
     }
-  }, [localstorageValue]);
-
+  }, [localstorageValue, quizResultId]);
   // Count if blurr or AFK or alt+tab
   useEffect(() => {
     const logsHandler = () => {
@@ -149,7 +151,6 @@ function StudQuizAAE() {
         e.key == "g"
       ) {
         toast.warning("Please do not press any keys");
-        setLocalstorageValue((prevValue) => prevValue + 1);
         e.preventDefault();
       }
     });
@@ -378,7 +379,7 @@ function StudQuizAAE() {
 
     const item = {
       answers: data,
-      logs: logs,
+      logs: localstorageValue,
       attempt: "finished",
     };
     let toastId;

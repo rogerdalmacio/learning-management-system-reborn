@@ -11,7 +11,7 @@ function StudPrelimExam() {
     useStudentContext();
 
   const [quizInfo, setQuizInfo] = useState();
-  const [allow, setAllow] = useState(true);
+  const [allow, setAllow] = useState(false);
   const [permissionGranted, setPermissionGranted] = useState(true);
   const [hasAttempt, setHasAttempt] = useState();
   const [disableBut, setDisableBut] = useState(true);
@@ -264,6 +264,9 @@ function StudPrelimExam() {
       if (quizResultId && quizResultId[0].attempt !== "finished") {
         return null;
       } else {
+        if (localStorage.getItem("myValue")) {
+          localStorage.removeItem("myValue");
+        }
         const percentage =
           quizResultId[0].score * (100 / quizInfo.answers.split("|").length);
         const percentage2 = quizResultId[0].score;
@@ -352,7 +355,7 @@ function StudPrelimExam() {
             <button
               className=" smallButtonTemplate text-right sumbit-button btn px-5"
               onClick={AttemptQuizHandler}
-              disabled={permissionGranted || hasAttempt}
+              disabled={permissionGranted || (hasAttempt && allow == true)}
             >
               Attempt Quiz Now
             </button>
@@ -363,7 +366,8 @@ function StudPrelimExam() {
       return <p>loading...</p>;
     } else if (
       quizResultId.length !== 0 &&
-      quizResultId[0].attempt === "finished"
+      quizResultId[0].attempt === "finished" &&
+      allow == true
     ) {
       return (
         <button
@@ -373,12 +377,22 @@ function StudPrelimExam() {
           Attempt Quiz Now
         </button>
       );
-    } else {
+    } else if (allow == true) {
       return (
         <button
           className=" smallButtonTemplate text-right sumbit-button btn px-5"
           onClick={AttemptQuizHandler}
           disabled={permissionGranted || hasAttempt}
+        >
+          Attempt Quiz Now
+        </button>
+      );
+    } else if (allow == false) {
+      return (
+        <button
+          className=" smallButtonTemplate text-right sumbit-button btn px-5"
+          onClick={AttemptQuizHandler}
+          disabled={true}
         >
           Attempt Quiz Now
         </button>
@@ -410,7 +424,8 @@ function StudPrelimExam() {
                 <input
                   className="quizInputChecker form-check-input"
                   type="checkbox"
-                  onClick={AllowCameraHandler}
+                  checked={allow}
+                  onChange={AllowCameraHandler}
                   id="flexCheckDefault"
                 />
                 <label
