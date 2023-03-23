@@ -232,6 +232,10 @@ function StudAAE() {
       if (quizResultId && quizResultId[0].attempt !== "finished") {
         return null;
       } else {
+        // Clearing the logs here after taking the exam
+        if (localStorage.getItem("myValue")) {
+          localStorage.removeItem("myValue");
+        }
         const percentage =
           quizResultId[0].score * (100 / quizInfo.answers.split("|").length);
         const percentage2 = quizResultId[0].score;
