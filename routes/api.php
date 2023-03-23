@@ -96,6 +96,8 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
 //teachers route
 Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:Teacher']], function(){
 
+    Route::post('/deleteattempt', [QuizAttemptController::class, 'deleteAttempt']);
+
     Route::post('/computegrade', [GradesController::class, 'computeGrades']);
 
     Route::get('/listofstudents', [ListOfStudentController::class, 'listOfStudents']);
@@ -103,8 +105,6 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
     Route::patch('/checksnapshot/{id}', [TSnapshotController::class, 'checkSnapshot']);
 
     Route::patch('/rejectsnapshot/{id}', [TSnapshotController::class, 'rejectSnapshot']);
-    
-    Route::patch('/deletequizattempt/{id}', [QuizAttemptController::class, 'deleteAttempt']);
 
     Route::apiResource('course', TCourseController::class);
 
@@ -196,8 +196,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::get('/inactiveannouncements', [AnnouncementsController::class, 'inActiveAnnouncements']);
     Route::post('/createannouncement', [AnnouncementsController::class, 'createAnnouncement']);
     Route::patch('/editannouncement/{id}', [AnnouncementsController::class, 'editAnnouncement']);
-    Route::patch('/deleteannouncement/{id}', [
-    AnnouncementsController::class, 'deleteAnnouncement']);
+    Route::patch('/deleteannouncement/{id}', [AnnouncementsController::class, 'deleteAnnouncement']);
 
     Route::post('/batchstudentssubjecttagging', [SubjectTaggingController::class, 'batchStudentsSubjectTagging']);
     Route::post('/batchteachersubjecttagging', [SubjectTaggingController::class, 'batchTeacherSubjectTagging']);

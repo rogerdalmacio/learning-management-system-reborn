@@ -44,7 +44,6 @@ return [
         'Teacher' => [
             'driver' => 'session',
             'provider' => 'teacher',
-            'tokens_table' => 'lms_personal_access_token',
         ],
 
         'CourseDeveloper' => [
@@ -94,22 +93,27 @@ return [
         'teacher' => [
             'driver' => 'eloquent',
             'model' => App\Models\Users\Teacher::class,
+            'tokens_table' => 'lms_personal_access_token',
         ],
         'coursedeveloper' => [
             'driver' => 'eloquent',
             'model' => App\Models\Users\CourseDeveloper::class,
+            'tokens_table' => 'lms_personal_access_token',
         ],
         'coursemanager' => [
             'driver' => 'eloquent',
             'model' => App\Models\Users\CourseManager::class,
+            'tokens_table' => 'lms_personal_access_token',
         ],
         'admin' => [
             'driver' => 'eloquent',
             'model' => App\Models\Users\Admin::class,
+            'tokens_table' => 'lms_personal_access_token',
         ],
         'SuperAdmin' => [
             'driver' => 'eloquent',
             'model' => App\Models\Users\SuperAdmin::class,
+            'tokens_table' => 'lms_personal_access_token',
         ]
     ],
     // 'providers' => [

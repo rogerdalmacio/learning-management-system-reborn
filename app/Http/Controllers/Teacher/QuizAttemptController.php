@@ -13,17 +13,15 @@ use App\Models\CoreFunctions\Logs;
 class QuizAttemptController extends Controller
 {
     
-    public function deleteAttempt($id) {
+    public function deleteAttempt(Request $request) {
 
-        $quizresult = QuizResult::find($id);
+        $quizresult = QuizResult::find($request['id']);
 
         $quizresult->delete();
 
-        if(file_exists('public/quiz/' . $quizresult->type . '/' .$quizresult->student_id . $quizresult->quiz_type . $quizresult->id . '.jpg')) {
+        $path = storage_path('app/public/quiz/' . $quizresult->student_id . $quizresult->quiz_type . $quizresult->id . '.jpg');
 
-            File::delete($quizresult->student_id . $quizresult->quiz_type . $quizresult->id . '.jpg');
-
-        }
+        File::delete($path);
         
         $response = [
             'Attempt deleted successfully'
@@ -34,7 +32,6 @@ class QuizAttemptController extends Controller
             'user_type' => Auth::user()->usertype(),
             'activity_log' => 'quiz attempt reset for student - ' . $quizresult->student_id
         ]);
-
 
         return response($response, 204);
 
