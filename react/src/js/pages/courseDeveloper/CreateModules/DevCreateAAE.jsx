@@ -7,6 +7,8 @@ import DevCreateAAEedit from "./DevCreatAAEedit";
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
 import TestComponent from "./TestComponent";
 import Loading from "../../../components/layouts/Loading";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
+
 function DevCreateAAE() {
   // States
   const {
@@ -660,9 +662,11 @@ function DevCreateAAE() {
     <div className="mb-4 w-100">
       {/* <DevCreateAAEedit /> */}
       {/* <TestComponent /> */}
-      <label className="fs-5 fw-semibold">
-        Application, Analysis, and Exploration
-      </label>
+      <ArrowNextAndPrevious>
+        <label className="fs-5 fw-semibold">
+          Application, Analysis, and Exploration {currentWeek}
+        </label>
+      </ArrowNextAndPrevious>
       <div className="inputAnalysisContainer sm-shadow py-3 px-0 px-sm-3 px-xl-5">
         <div className={`input-group mb-3 ${hasContent ? "d-none" : "d-flex"}`}>
           <input

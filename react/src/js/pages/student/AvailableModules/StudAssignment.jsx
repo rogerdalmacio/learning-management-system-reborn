@@ -4,6 +4,7 @@ import useStudentContext from "../../../hooks/Student/useStudentContext";
 import Loading from "../../../components/layouts/Loading";
 import QuizResult from "./QuizResult/QuizResult";
 import { toast } from "react-toastify";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function StudAssignment() {
   const { userInfo, token, role } = useAuth();
@@ -375,8 +376,9 @@ function StudAssignment() {
     ) {
       return (
         <div>
-          <h4 className="mb-3">Assignment {currentWeek}</h4>
-
+          <ArrowNextAndPrevious>
+            <h4 className="m-0">Assignment {currentWeek}</h4>
+          </ArrowNextAndPrevious>
           <div className="d-flex justify-content-center">
             <div className="d-block text-center">
               <p>Attempt allowed: 1</p>

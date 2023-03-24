@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layouts/Loading";
 import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function AdminAvailableSubjects() {
   const { courses } = CourseContentProvider();
@@ -97,7 +98,9 @@ function AdminAvailableSubjects() {
     if (courses) {
       return (
         <Fragment>
-          <h2>Subject/s</h2>
+          <ArrowNextAndPrevious>
+            <h2 className="mb-0">Subject/s</h2>
+          </ArrowNextAndPrevious>
           <div className="ms-sm-4">
             <div>
               <input

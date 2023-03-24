@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import ListOfStudentWithSubjects from "./StudentListWithSubjects";
 import { data, states } from "../makeData";
 import Loading from "../../../components/layouts/Loading";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function StudentIndividualSubjectTagging() {
   const { token, role } = useAuth();
@@ -222,7 +223,9 @@ function StudentIndividualSubjectTagging() {
 
   return (
     <div>
-      <h3 className="mb-4">Student - Individual Subject Tagging</h3>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Student - Individual Subject Tagging</h3>
+      </ArrowNextAndPrevious>
       <div className="mb-4">
         <label
           htmlFor="studentSubjectTaggingId"

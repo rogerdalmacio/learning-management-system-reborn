@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
 import { useParams } from "react-router-dom";
 import Loading from "../../../components/layouts/Loading";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function StudLesson() {
   const { courses, setWeekLesson, setWeek, lesson, module } =
@@ -78,7 +79,6 @@ function StudLesson() {
     if (content) {
       return (
         <Fragment>
-          <h4 className="mb-3">Lesson for {currentWeek}</h4>
           {fetchContent()}
           <iframe
             className="createModuleIframe"
@@ -89,7 +89,6 @@ function StudLesson() {
     } else {
       return (
         <Fragment>
-          <h4 className="mb-3">Lesson for {currentWeek}</h4>
           <h4 className="d-flex justify-content-center fst-italic text-secondary py-5">
             No Content has been added yet.
           </h4>
@@ -99,7 +98,15 @@ function StudLesson() {
   };
 
   if (areEqual) {
-    return <div>{AvailableLesson()}</div>;
+    return (
+      <div>
+        {" "}
+        <ArrowNextAndPrevious>
+          <h4 className="m-0">Lesson for {currentWeek}</h4>
+        </ArrowNextAndPrevious>
+        {AvailableLesson()}
+      </div>
+    );
   } else {
     return <Loading />;
   }

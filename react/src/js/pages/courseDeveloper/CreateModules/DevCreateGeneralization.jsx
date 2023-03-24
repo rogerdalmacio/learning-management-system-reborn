@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function DevCreateGeneralization() {
   const { courses, setWeek, module, hasChange, setHasChange } =
@@ -242,7 +243,9 @@ function DevCreateGeneralization() {
 
   return (
     <div className="DevModuleContentContainer">
-      <h4 className="mb-4">Generalization</h4>
+      <ArrowNextAndPrevious>
+        <h4 className="m-0">Generalization {currentWeek}</h4>
+      </ArrowNextAndPrevious>
       <form
         onSubmit={hasContent ? EditActivityHandler : SubmitActivityHandler}
         className="ms-3"

@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   useRef,
+  Fragment,
 } from "react";
 import MaterialReactTable from "material-react-table";
 import {
@@ -25,6 +26,7 @@ import useAuth from "../../hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
 import { isNumber } from "lodash";
 import Loading from "../../components/layouts/Loading";
+import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
 
 const ManagerDashboard = () => {
   const { role, token } = useAuth();
@@ -294,45 +296,50 @@ const ManagerDashboard = () => {
   );
 
   return (
-    <div className="MaterialUiTable">
-      <MaterialReactTable
-        className="MaterialReactTable"
-        displayColumnDefOptions={{
-          "mrt-row-actions": {
-            muiTableHeadCellProps: {
-              align: "center",
+    <Fragment>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Create Subject</h3>
+      </ArrowNextAndPrevious>
+      <div className="MaterialUiTable">
+        <MaterialReactTable
+          className="MaterialReactTable"
+          displayColumnDefOptions={{
+            "mrt-row-actions": {
+              muiTableHeadCellProps: {
+                align: "center",
+              },
+              size: 120,
             },
-            size: 120,
-          },
-        }}
-        sortDescFirst
-        columns={columns}
-        data={tableData}
-        editingMode="modal" //default
-        enableColumnOrdering
-        // onEditingRowSave={handleSaveRowEdits}
-        // onEditingRowCancel={handleCancelRowEdits}
-        renderTopToolbarCustomActions={() => (
-          <Button
-            className="smallButtonTemplate"
-            color="secondary"
-            onClick={() => setCreateModalOpen(true)}
-            variant="contained"
-          >
-            Create Subject +
-          </Button>
-        )}
-      />
+          }}
+          sortDescFirst
+          columns={columns}
+          data={tableData}
+          editingMode="modal" //default
+          enableColumnOrdering
+          // onEditingRowSave={handleSaveRowEdits}
+          // onEditingRowCancel={handleCancelRowEdits}
+          renderTopToolbarCustomActions={() => (
+            <Button
+              className="smallButtonTemplate"
+              color="secondary"
+              onClick={() => setCreateModalOpen(true)}
+              variant="contained"
+            >
+              Create Subject +
+            </Button>
+          )}
+        />
 
-      <CreateNewAccountModal
-        columns={columns}
-        open={createModalOpen}
-        onClose={() => setCreateModalOpen(false)}
-        onSubmit={handleCreateNewRow}
-        setUpdatedList={setUpdatedList}
-        updatedList={updatedList}
-      />
-    </div>
+        <CreateNewAccountModal
+          columns={columns}
+          open={createModalOpen}
+          onClose={() => setCreateModalOpen(false)}
+          onSubmit={handleCreateNewRow}
+          setUpdatedList={setUpdatedList}
+          updatedList={updatedList}
+        />
+      </div>
+    </Fragment>
   );
 };
 

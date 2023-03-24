@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function AdminGetAAE() {
   // States
@@ -374,9 +375,12 @@ function AdminGetAAE() {
   // Render it all here
   return (
     <div className="mb-4 w-100">
-      <label className="fs-5 fw-semibold">
-        Application, Analysis, and Exploration
-      </label>
+      <ArrowNextAndPrevious>
+        <label className="fs-5 fw-semibold">
+          Application, Analysis, and Exploration {currentWeek}
+        </label>
+      </ArrowNextAndPrevious>
+
       {quiz !== undefined &&
       quiz !== null &&
       quiz.quiz.length !== 0 &&

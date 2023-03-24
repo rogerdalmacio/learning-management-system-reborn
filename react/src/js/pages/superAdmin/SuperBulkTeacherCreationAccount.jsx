@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
 
 function SuperBulkTeacherCreationAccount() {
   const [file, setFile] = useState(null);
@@ -151,7 +152,9 @@ function SuperBulkTeacherCreationAccount() {
 
   return (
     <div className="w-100">
-      <h3 className="mb-4">Teacher - Mass Creation of Accounts</h3>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Teacher - Mass Creation of Accounts</h3>
+      </ArrowNextAndPrevious>
       <form
         className="fileUploadContainer mx-auto w-100"
         method="post"
@@ -208,7 +211,7 @@ function SuperBulkTeacherCreationAccount() {
           <div className="d-flex justify-content-center mt-2">
             {getNumAlreadyExist && (
               <p className="text-danger fst-italic fs-6">
-                * Account id{" "}
+                * Account ID{" "}
                 <span className="fw-bold">{getNumAlreadyExist}</span> already
                 exist *
               </p>

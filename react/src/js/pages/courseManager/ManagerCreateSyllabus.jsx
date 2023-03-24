@@ -3,6 +3,7 @@ import Loading from "../../components/layouts/Loading";
 import useAuth from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
 import ManagerCreateSyllabusTItle from "./ManagerCreateSyllabusTItle";
+import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
 
 function ManagerCreateSyllabus() {
   const { token, role } = useAuth();
@@ -63,6 +64,7 @@ function ManagerCreateSyllabus() {
       const year = date.getFullYear();
 
       const formattedDate = `${month} ${day}, ${year}`;
+
       return (
         <div key={item.id}>
           <Link
@@ -85,7 +87,9 @@ function ManagerCreateSyllabus() {
   if (course) {
     return (
       <div>
-        <h3 className="mb-4">Create Syllabus</h3>
+        <ArrowNextAndPrevious>
+          <h3 className="m-0">Create Syllabus</h3>
+        </ArrowNextAndPrevious>
         <div className="mb-4">{AvailableCourseHandler()}</div>
       </div>
     );

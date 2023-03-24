@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
+import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
 
 function ManagerTagSubjToCourseDev() {
   const { token, role } = useAuth();
@@ -197,7 +198,9 @@ function ManagerTagSubjToCourseDev() {
 
   return (
     <div>
-      <h3 className="mb-4">Course Developer - Subject Tagging</h3>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Course Developer - Subject Tagging</h3>
+      </ArrowNextAndPrevious>
       <div className="mb-4">
         <label className="form-label fw-semibold fs-6 w-100 mb-3">
           <h5 className="mb-0">List of Subjects</h5>

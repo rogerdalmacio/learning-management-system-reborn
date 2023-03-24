@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent";
 import Loading from "../../../components/layouts/Loading";
 import ManagerValidateCourse from "./ManagerValidateCourse";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function ManagerAvailableContent() {
   const { courses } = CourseContentProvider();
@@ -131,7 +132,9 @@ function ManagerAvailableContent() {
     if (courses) {
       return (
         <Fragment>
-          <h3>{courseTitle}</h3>
+          <ArrowNextAndPrevious>
+            <h3 className="m-0">{courseTitle}</h3>
+          </ArrowNextAndPrevious>
           <h4 className="ms-sm-3 my-4">{newWeek}</h4>
           <div className="ms-sm-3">{ContentCheckHandler()}</div>
           <ManagerValidateCourse />

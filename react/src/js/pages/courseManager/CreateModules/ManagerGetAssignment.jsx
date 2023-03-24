@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function ManagetGetAssignment() {
   // States
@@ -339,7 +340,6 @@ function ManagetGetAssignment() {
   };
 
   // Render it all here
-  console.log(quiz !== undefined && quiz.week);
 
   const Mappedquiz = () => {
     if (quiz !== undefined) {
@@ -353,7 +353,9 @@ function ManagetGetAssignment() {
   console.log(Mappedquiz);
   return (
     <div className="mb-4 w-100">
-      <label className="fs-5 fw-semibold">Assignment</label>
+      <ArrowNextAndPrevious>
+        <label className="fs-5 fw-semibold">Assignment {currentWeek}</label>
+      </ArrowNextAndPrevious>
       {quiz !== undefined &&
       quiz !== null &&
       quiz.quiz.length !== 0 &&

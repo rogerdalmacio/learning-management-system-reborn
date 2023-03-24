@@ -7,6 +7,8 @@ import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCours
 import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent";
 import { Fragment } from "react";
 import Loading from "../../../components/layouts/Loading";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
+
 function AdminGetLesson() {
   const { courses, setWeek, module } = CourseContentProvider();
   const { course } = useGetAvailableCourse();
@@ -80,7 +82,6 @@ function AdminGetLesson() {
     if (content) {
       return (
         <Fragment>
-          <h4 className="mb-3">Lesson for {currentWeek}</h4>
           {fetchContent()}
           <iframe
             className="createModuleIframe"
@@ -91,7 +92,6 @@ function AdminGetLesson() {
     } else {
       return (
         <Fragment>
-          <h4 className="mb-3">Lesson for {currentWeek}</h4>
           <h4 className="d-flex justify-content-center fst-italic text-secondary py-5">
             No Content has been added yet.
           </h4>
@@ -101,7 +101,14 @@ function AdminGetLesson() {
   };
 
   if (areEqual) {
-    return <div>{AvailableLesson()}</div>;
+    return (
+      <div>
+        <ArrowNextAndPrevious>
+          <h4 className="m-0">Lesson for {currentWeek}</h4>
+        </ArrowNextAndPrevious>
+        {AvailableLesson()}
+      </div>
+    );
   } else {
     return <Loading />;
   }

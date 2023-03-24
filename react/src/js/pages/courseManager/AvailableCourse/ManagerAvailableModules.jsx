@@ -4,6 +4,7 @@ import Loading from "../../../components/layouts/Loading";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function ManagerAvailableModules() {
   const { courses } = CourseContentProvider();
@@ -21,7 +22,9 @@ function ManagerAvailableModules() {
         if (item.course == id) {
           return (
             <div key={item.id}>
-              <h2>{item.course}</h2>
+              <ArrowNextAndPrevious>
+                <h2>{item.course}</h2>
+              </ArrowNextAndPrevious>
               <div>
                 {item.module
                   .slice()

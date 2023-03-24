@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
 import Loading from "../../../components/layouts/Loading";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
+
 function DevCreateLesson() {
   const { token } = useAuth();
   const {
@@ -260,7 +262,9 @@ function DevCreateLesson() {
 
   return (
     <div className="DevModuleContentContainer">
-      <h4 className="mb-4">Lesson</h4>
+      <ArrowNextAndPrevious>
+        <h4 className="m-0">Lesson {currentWeek}</h4>
+      </ArrowNextAndPrevious>
       <form
         onSubmit={hasContent ? EditActivityHandler : SubmitActivityHandler}
         className="ms-3"

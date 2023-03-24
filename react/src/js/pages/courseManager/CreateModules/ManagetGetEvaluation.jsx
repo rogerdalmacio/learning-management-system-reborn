@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function ManagerGetEvaluation() {
   // States
@@ -373,7 +374,9 @@ function ManagerGetEvaluation() {
   // Render it all here
   return (
     <div className="mb-4 w-100">
-      <label className="fs-5 fw-semibold">Evaluation</label>
+      <ArrowNextAndPrevious>
+        <label className="fs-5 fw-semibold">Evaluation {currentWeek}</label>
+      </ArrowNextAndPrevious>
       {quiz !== undefined &&
       quiz !== null &&
       quiz.quiz.length !== 0 &&

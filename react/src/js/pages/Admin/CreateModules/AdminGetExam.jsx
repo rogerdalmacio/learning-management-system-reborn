@@ -6,6 +6,7 @@ import useAuth from "../../../hooks/useAuth";
 // import numberOfQuestions from "./DevCreateExamState/DevCreateExamQuestionState";
 import { toast } from "react-toastify";
 import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function AdminGetExam() {
   const { id } = useParams();
@@ -378,7 +379,9 @@ function AdminGetExam() {
   // Render it all here
   return (
     <div className="mb-4 w-100">
-      <label className="fs-5 fw-semibold">{ExamNewWord}</label>
+      <ArrowNextAndPrevious>
+        <label className="fs-5 fw-semibold">{ExamNewWord}</label>
+      </ArrowNextAndPrevious>
       {quiz !== undefined &&
       quiz !== null &&
       quiz.quiz.length !== 0 &&

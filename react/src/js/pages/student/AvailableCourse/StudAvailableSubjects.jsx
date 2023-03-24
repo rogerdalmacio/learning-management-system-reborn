@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layouts/Loading";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function StudAvailableSubjects() {
   const { courses } = useStudentContext();
@@ -56,7 +57,9 @@ function StudAvailableSubjects() {
     if (courses) {
       return (
         <Fragment>
-          <h2>Subject/s</h2>
+          <ArrowNextAndPrevious>
+            <h2 className="mb-0">Subject/s</h2>
+          </ArrowNextAndPrevious>
           <div className="ms-sm-4">{AvailableCourseHandler()}</div>
         </Fragment>
       );

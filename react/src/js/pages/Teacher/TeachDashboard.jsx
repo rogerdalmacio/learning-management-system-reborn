@@ -48,7 +48,7 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
             const result2 = numbers.map((num) => {
               return data.map((item) => {
                 const filteredItem = item.quizresult.filter(
-                  (quiz) => quiz.module_id == `${data[0].subjects}-${num}`
+                  (quiz) => quiz.module_id == `${"SPI00"}-${num}`
                 );
 
                 console.log(filteredItem);

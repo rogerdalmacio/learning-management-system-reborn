@@ -7,6 +7,7 @@ import SuperDashboardData from "../../superAdmin/SuperDashboardData";
 import SuperDashboardProgram from "../../superAdmin/SuperDashboardProgram";
 import Loading from "../../../components/layouts/Loading";
 import UserActivityLogs from "./UserActivityLogs";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function AdminDashboard() {
   const { role, token } = useAuth();
@@ -156,6 +157,9 @@ function AdminDashboard() {
 
   return (
     <div>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Analytics</h3>
+      </ArrowNextAndPrevious>
       <div className="d-block">
         {getStudents !== undefined &&
         getTeachers !== undefined &&

@@ -3,6 +3,7 @@ import useStudentContext from "../../../hooks/Student/useStudentContext";
 import { useParams } from "react-router-dom";
 import StudGeneralizationSubmit from "./StudGeneralizationSubmit";
 import Loading from "../../../components/layouts/Loading";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function StudGeneralization() {
   const { courses, setWeek, week, module } = useStudentContext();
@@ -74,7 +75,6 @@ function StudGeneralization() {
     if (content) {
       return (
         <Fragment>
-          <h4 className="mb-3">Generalization for {currentWeek}</h4>{" "}
           {fetchContent()}
           <iframe
             className="createModuleIframe"
@@ -88,7 +88,6 @@ function StudGeneralization() {
     } else {
       return (
         <Fragment>
-          <h4 className="mb-3">Lesson for {currentWeek}</h4>
           <h4 className="d-flex justify-content-center fst-italic text-secondary py-5">
             No Content has been added yet.
           </h4>
@@ -98,7 +97,14 @@ function StudGeneralization() {
   };
 
   if (areEqual) {
-    return <div>{AvailableActivity()}</div>;
+    return (
+      <div>
+        <ArrowNextAndPrevious>
+          <h4 className="m-0">Generalization for {currentWeek}</h4>
+        </ArrowNextAndPrevious>
+        {AvailableActivity()}
+      </div>
+    );
   } else {
     return <Loading />;
   }

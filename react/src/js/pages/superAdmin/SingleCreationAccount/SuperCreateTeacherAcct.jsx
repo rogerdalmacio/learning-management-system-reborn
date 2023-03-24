@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   useRef,
+  Fragment,
 } from "react";
 import MaterialReactTable from "material-react-table";
 import {
@@ -25,6 +26,7 @@ import useAuth from "../../../hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
 import { isNumber } from "lodash";
 import Loading from "../../../components/layouts/Loading";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 const SuperCreateTeacherAcct = () => {
   const { role, token } = useAuth();
@@ -284,10 +286,11 @@ const SuperCreateTeacherAcct = () => {
     // [getCommonEditTextFieldProps]
   );
 
-  if (tableData[0].id == "...") {
-    return <Loading />;
-  } else {
-    return (
+  return (
+    <Fragment>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Teacher Creation of Account</h3>
+      </ArrowNextAndPrevious>
       <div className="MaterialUiTable">
         <MaterialReactTable
           className="MaterialReactTable"
@@ -339,8 +342,8 @@ const SuperCreateTeacherAcct = () => {
           updatedList={updatedList}
         />
       </div>
-    );
-  }
+    </Fragment>
+  );
 };
 
 //example of creating a mui dialog modal for creating new rows

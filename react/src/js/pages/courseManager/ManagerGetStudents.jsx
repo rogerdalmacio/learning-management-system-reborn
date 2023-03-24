@@ -25,6 +25,7 @@ import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
+import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
 
 const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
   const { role, token } = useAuth();
@@ -125,7 +126,9 @@ const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
   };
   return (
     <div>
-      <h3 className="mb-4">List of Students</h3>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">List of Students</h3>
+      </ArrowNextAndPrevious>
       <div className="MaterialUiTable">
         <MaterialReactTable
           enableRowSelection

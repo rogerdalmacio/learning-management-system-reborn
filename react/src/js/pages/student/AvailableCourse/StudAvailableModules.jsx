@@ -4,6 +4,7 @@ import Loading from "../../../components/layouts/Loading";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function StudAvailableModules() {
   const { courses } = useStudentContext();
@@ -21,7 +22,9 @@ function StudAvailableModules() {
         if (item.course == id) {
           return (
             <div key={item.id}>
-              <h2>{item.course}</h2>
+              <ArrowNextAndPrevious>
+                <h2 className="mb-0">{item.course}</h2>
+              </ArrowNextAndPrevious>
               <div>
                 {item.module
                   .slice()

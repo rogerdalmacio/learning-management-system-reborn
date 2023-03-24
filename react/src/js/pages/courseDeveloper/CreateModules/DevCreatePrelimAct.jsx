@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function DevCreatePrelimAct() {
   const { courses, setWeek, module, hasChange, setHasChange } =
@@ -241,7 +242,9 @@ function DevCreatePrelimAct() {
 
   return (
     <div className="DevModuleContentContainer">
-      <h4 className="mb-4">Preliminary Activity</h4>
+      <ArrowNextAndPrevious>
+        <h4 className="m-0">Preliminary Activity {currentWeek}</h4>
+      </ArrowNextAndPrevious>
       <form
         onSubmit={hasContent ? EditActivityHandler : SubmitActivityHandler}
         className="ms-3"

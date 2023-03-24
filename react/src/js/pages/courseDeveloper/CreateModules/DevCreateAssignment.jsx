@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function DevCreateAssignment() {
   // States
@@ -587,7 +588,9 @@ function DevCreateAssignment() {
 
   return (
     <div className="mb-4 w-100">
-      <label className="fs-5 fw-semibold">Assignment</label>
+      <ArrowNextAndPrevious>
+        <label className="fs-5 fw-semibold">Assignment {currentWeek}</label>
+      </ArrowNextAndPrevious>
       <div className="p-3 inputAnalysisContainer">
         <div className={`input-group mb-3 ${hasContent ? "d-none" : "d-flex"}`}>
           <input

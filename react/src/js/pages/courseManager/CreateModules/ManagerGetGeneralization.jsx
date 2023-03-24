@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../../../components/layouts/Loading";
 import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function ManagerGetGeneralization() {
   const { courses, setWeek, week, module } = CourseContentProvider();
@@ -75,7 +76,6 @@ function ManagerGetGeneralization() {
     if (content) {
       return (
         <Fragment>
-          <h4 className="mb-3">Generalization for {currentWeek}</h4>{" "}
           {fetchContent()}
           <iframe
             className="createModuleIframe"
@@ -87,7 +87,6 @@ function ManagerGetGeneralization() {
     } else {
       return (
         <Fragment>
-          <h4 className="mb-3">Lesson for {currentWeek}</h4>
           <h4 className="d-flex justify-content-center fst-italic text-secondary py-5">
             No Content has been added yet.
           </h4>
@@ -97,7 +96,14 @@ function ManagerGetGeneralization() {
   };
 
   if (areEqual) {
-    return <div>{AvailableActivity()}</div>;
+    return (
+      <div>
+        <ArrowNextAndPrevious>
+          <h4 className="m-0">Generalization for {currentWeek}</h4>
+        </ArrowNextAndPrevious>
+        {AvailableActivity()}
+      </div>
+    );
   } else {
     return <Loading />;
   }

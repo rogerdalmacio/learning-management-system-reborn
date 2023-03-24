@@ -4,22 +4,13 @@ import TopNavbar from "./TopNavbar";
 import { Outlet } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import useAuth from "../../../../hooks/useAuth";
-import { useLocation, NavLink, useNavigate } from "react-router-dom";
+
 const Layout = () => {
   const { userInfo } = useAuth();
 
   const [openSidebar, setOpenSidebar] = useState(true);
   const [imageExisting, setImageExisting] = useState();
 
-  const navigate = useNavigate();
-
-  function handleClickLeft() {
-    navigate(-1); // Navigate back to the previous page
-  }
-
-  function handleClickRight() {
-    navigate(+1); // Navigate back to the previous page
-  }
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth <= 960) {
@@ -81,17 +72,7 @@ const Layout = () => {
         <div className="px-0 d-xl-flex position-relative d-flex" id="app">
           <SideNavbar openSidebar={openSidebar} />
           <main className="home-section mx-3 bg-light rounded shadow w-100">
-            <div className="position-absolute handleClickLeftButton">
-              <button className="bg-light border-0" onClick={handleClickLeft}>
-                <i class=" fs-1 text-secondary py-2 bx bxs-chevron-left"></i>
-              </button>
-            </div>
-            <div className="position-absolute handleClickRightButton">
-              <button className="bg-light border-0" onClick={handleClickRight}>
-                <i class=" fs-1 text-secondary py-2 bx bxs-chevron-right"></i>
-              </button>
-            </div>
-            <div className="px-3 p-sm-5 py-5 w-100">
+            <div className="px-3 px-sm-5 py-2 py-sm-5 w-100">
               <ToastContainer
                 position="top-right"
                 autoClose={3000}

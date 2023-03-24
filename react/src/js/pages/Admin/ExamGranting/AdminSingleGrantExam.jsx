@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function AdminSingleGrantExam() {
   const { token } = useAuth();
@@ -95,7 +96,9 @@ function AdminSingleGrantExam() {
 
   return (
     <div className="w-100">
-      <h3 className="mb-4">Student - Single Grant Exam</h3>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Student - Single Grant Exam</h3>
+      </ArrowNextAndPrevious>
       <div className="mb-4">
         <label
           htmlFor="studentId"

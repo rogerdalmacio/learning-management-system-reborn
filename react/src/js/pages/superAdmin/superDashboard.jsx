@@ -7,6 +7,7 @@ import SuperDashboardData from "./SuperDashboardData";
 import SuperDashboardProgram from "./SuperDashboardProgram";
 import Loading from "../../components/layouts/Loading";
 import UserActivityLogs from "../Admin/AdminDashboard/UserActivityLogs";
+import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
 
 function FileUpload() {
   const { role, token } = useAuth();
@@ -19,85 +20,10 @@ function FileUpload() {
   console.log(getStudents);
   console.log(getTeachers);
   console.log(getProgram);
-  // if (getStudents == undefined || getTeachers == undefined) {
-  //   data = [
-  //     {
-  //       id: "none",
-  //       label: "none",
-  //       value: "1",
-  //       color: "hsl(211, 70%, 50%)",
-  //     },
-  //     {
-  //       id: "none1",
-  //       label: "none1",
-  //       value: "2",
-  //       color: "hsl(147, 70%, 50%)",
-  //     },
-  //   ];
-  // } else {
-  //   data = [getStudents].concat([getTeachers]);
-  // }
 
   const data1 = [getStudents].concat(getTeachers);
   const data2 = data1.concat(getCourseManagers);
   const data = data2.concat(getCourseDev);
-  // let data;
-  // if (getStudents !== undefined && getTeachers !== undefined) {
-  //   data = [
-  //     {
-  //       id: getStudents.id,
-  //       label: getStudents.label,
-  //       value: getStudents.value,
-  //       color: getStudents.color,
-  //     },
-  //     {
-  //       id: getTeachers.id,
-  //       label: getTeachers.label,
-  //       value: getTeachers.value,
-  //       color: getTeachers.color,
-  //     },
-  //     {
-  //       id: "sass",
-  //       label: "sass",
-  //       value: 308,
-  //       color: "hsl(211, 70%, 50%)",
-  //     },
-  //     {
-  //       id: "lisp",
-  //       label: "lisp",
-  //       value: 186,
-  //       color: "hsl(147, 70%, 50%)",
-  //     },
-  //     {
-  //       id: "elixir",
-  //       label: "elixir",
-  //       value: 237,
-  //       color: "hsl(4, 70%, 50%)",
-  //     },
-  //   ];
-  // }
-  // const datatae = [
-  //   { program: "BSIT", name: "Tally" },
-  //   { program: "BSMT", name: "Lerry" },
-  //   { program: "BSIT", name: "Manny" },
-  //   { program: "BSED", name: "Sally" },
-  //   { program: "BSIS", name: "Billy" },
-  //   { program: "BSCE", name: "Gken" },
-  //   { program: "BSCRIM", name: "Capitle" },
-  //   { program: "BSOA", name: "Christian" },
-  //   { program: "BSBA", name: "Petty" },
-  //   { program: "BSP", name: "Sponge" },
-  //   { program: "BSIT", name: "gdf" },
-  //   { program: "BSMT", name: "juy" },
-  //   { program: "BSIT", name: "vdfd" },
-  //   { program: "BSED", name: "r534" },
-  //   { program: "BSIS", name: "fghfg" },
-  //   { program: "BSCE", name: "hfgt" },
-  //   { program: "BSCRIM", name: "qwe" },
-  //   { program: "BSOA", name: "bhgh" },
-  //   { program: "BSBA", name: "saa" },
-  //   { program: "BSP", name: "hjuy" },
-  // ];
 
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
@@ -228,6 +154,9 @@ function FileUpload() {
 
   return (
     <div>
+      <ArrowNextAndPrevious>
+        <h3 className="mb-0">Analytics</h3>
+      </ArrowNextAndPrevious>
       <div className="d-block">
         {getStudents !== undefined &&
         getTeachers !== undefined &&

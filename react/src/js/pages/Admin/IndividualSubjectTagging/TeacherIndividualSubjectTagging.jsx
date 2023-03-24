@@ -3,8 +3,8 @@ import { toast } from "react-toastify";
 import Loading from "../../../components/layouts/Loading";
 import useAuth from "../../../hooks/useAuth";
 import { data, states } from "../makeData";
-
 import TeacherListWithSubjects from "./TeacherListWithSubjects";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function StudentIndividualSubjectTagging() {
   const { token, role } = useAuth();
@@ -223,7 +223,9 @@ function StudentIndividualSubjectTagging() {
 
   return (
     <div>
-      <h3 className="mb-4">Teacher - Individual Subject Tagging</h3>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Teacher - Individual Subject Tagging</h3>
+      </ArrowNextAndPrevious>
       <div className="mb-4">
         <label
           htmlFor="studentSubjectTaggingId"

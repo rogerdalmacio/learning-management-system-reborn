@@ -1,5 +1,6 @@
 /* Google Font Link */
 // TOPBAR
+@use "../abstract/" as *;
 .topbar {
   position: sticky;
   top: 0;
@@ -82,17 +83,20 @@
   margin: 18px;
 }
 
-.handleClickLeftButton {
-  position: absolute;
-  top: 0;
-  left: 10px;
+.NextPreviousButton {
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  transition: 0.3s ease-out;
 }
 
-.handleClickRightButton {
-  position: absolute;
-  top: 0;
-  right: 10px;
+.NextPreviousButton:hover {
+  background-color: $light-gray !important;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
 }
+
 @media (min-width: 1540px) {
   .container-xxl {
     max-width: 1480px !important;

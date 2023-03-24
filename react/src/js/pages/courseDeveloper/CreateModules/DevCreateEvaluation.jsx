@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function DevCreateEvaluation() {
   // States
@@ -631,7 +632,9 @@ function DevCreateEvaluation() {
   // Render it all here
   return (
     <div className="mb-4 w-100">
-      <label className="fs-5 fw-semibold">Evaluation</label>
+      <ArrowNextAndPrevious>
+        <label className="fs-5 fw-semibold">Evaluation {currentWeek}</label>
+      </ArrowNextAndPrevious>
       <div className="inputAnalysisContainer sm-shadow py-3 px-0 px-sm-3 px-xl-5">
         <div className={`input-group mb-3 ${hasContent ? "d-none" : "d-flex"}`}>
           <input

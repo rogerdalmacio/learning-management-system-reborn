@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   useRef,
+  Fragment,
 } from "react";
 import MaterialReactTable from "material-react-table";
 import {
@@ -25,6 +26,7 @@ import useAuth from "../../../hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
 import { isNumber } from "lodash";
 import Loading from "../../../components/layouts/Loading";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 const SuperCreateStudentAcct = () => {
   const { role, token } = useAuth();
@@ -333,55 +335,62 @@ const SuperCreateStudentAcct = () => {
   );
 
   return (
-    <div className="MaterialUiTable">
-      <MaterialReactTable
-        className="MaterialReactTable"
-        displayColumnDefOptions={{
-          "mrt-row-actions": {
-            muiTableHeadCellProps: {
-              align: "center",
+    <Fragment>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Student Creation of Account</h3>
+      </ArrowNextAndPrevious>
+      <div className="MaterialUiTable">
+        <MaterialReactTable
+          className="MaterialReactTable"
+          displayColumnDefOptions={{
+            "mrt-row-actions": {
+              muiTableHeadCellProps: {
+                align: "center",
+              },
+              size: 120,
             },
-            size: 120,
-          },
-        }}
-        sortDescFirst
-        columns={columns}
-        data={tableData}
-        editingMode="modal" //default
-        enableColumnOrdering
-        enableEditing
-        onEditingRowSave={handleSaveRowEdits}
-        onEditingRowCancel={handleCancelRowEdits}
-        renderRowActions={({ row, table }) => (
-          <Box sx={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
-            <Tooltip arrow placement="left" title="Edit">
-              <IconButton onClick={() => table.setEditingRow(row)}>
-                <Edit />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-        renderTopToolbarCustomActions={() => (
-          <Button
-            className="smallButtonTemplate"
-            color="secondary"
-            onClick={() => setCreateModalOpen(true)}
-            variant="contained"
-          >
-            Create Student Account
-          </Button>
-        )}
-      />
+          }}
+          sortDescFirst
+          columns={columns}
+          data={tableData}
+          editingMode="modal" //default
+          enableColumnOrdering
+          enableEditing
+          onEditingRowSave={handleSaveRowEdits}
+          onEditingRowCancel={handleCancelRowEdits}
+          renderRowActions={({ row, table }) => (
+            <Box
+              sx={{ display: "flex", gap: "1rem", justifyContent: "center" }}
+            >
+              <Tooltip arrow placement="left" title="Edit">
+                <IconButton onClick={() => table.setEditingRow(row)}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
+          renderTopToolbarCustomActions={() => (
+            <Button
+              className="smallButtonTemplate"
+              color="secondary"
+              onClick={() => setCreateModalOpen(true)}
+              variant="contained"
+            >
+              Create Student Account
+            </Button>
+          )}
+        />
 
-      <CreateNewAccountModal
-        columns={columns}
-        open={createModalOpen}
-        onClose={() => setCreateModalOpen(false)}
-        onSubmit={handleCreateNewRow}
-        setUpdatedList={setUpdatedList}
-        updatedList={updatedList}
-      />
-    </div>
+        <CreateNewAccountModal
+          columns={columns}
+          open={createModalOpen}
+          onClose={() => setCreateModalOpen(false)}
+          onSubmit={handleCreateNewRow}
+          setUpdatedList={setUpdatedList}
+          updatedList={updatedList}
+        />
+      </div>
+    </Fragment>
   );
 };
 

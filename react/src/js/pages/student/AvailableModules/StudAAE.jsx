@@ -4,6 +4,7 @@ import useStudentContext from "../../../hooks/Student/useStudentContext";
 import Loading from "../../../components/layouts/Loading";
 import QuizResult from "./QuizResult/QuizResult";
 import { toast } from "react-toastify";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function StudAAE() {
   const { userInfo, token, role } = useAuth();
@@ -371,9 +372,11 @@ function StudAAE() {
     ) {
       return (
         <div>
-          <h4 className="mb-3">
-            Analysis, Application, and Exploration for {currentWeek}
-          </h4>
+          <ArrowNextAndPrevious>
+            <h4 className="m-0">
+              Analysis, Application, and Exploration for {currentWeek}
+            </h4>
+          </ArrowNextAndPrevious>
 
           <div className="d-flex justify-content-center">
             <div className="d-block text-center">

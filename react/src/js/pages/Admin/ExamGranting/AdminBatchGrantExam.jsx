@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function AdminBatchGrantExam() {
   const { userInfo, token } = useAuth();
@@ -142,7 +143,9 @@ function AdminBatchGrantExam() {
 
   return (
     <div className="w-100">
-      <h3 className="mb-5">Student - Grant Exam</h3>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Student - Grant Exam</h3>
+      </ArrowNextAndPrevious>
       <form
         className="fileUploadContainer mx-auto w-100"
         method="post"

@@ -30,6 +30,7 @@ import { data, states } from "./makeData";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import Loading from "../../components/layouts/Loading";
+import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
 
 const AdminAnnouncement = () => {
   const { role, token } = useAuth();
@@ -290,59 +291,64 @@ const AdminAnnouncement = () => {
   );
 
   return (
-    <div className="MaterialUiTable">
-      <MaterialReactTable
-        className="MaterialReactTable"
-        displayColumnDefOptions={{
-          "mrt-row-actions": {
-            muiTableHeadCellProps: {
-              align: "center",
+    <Fragment>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Create Announcement</h3>
+      </ArrowNextAndPrevious>
+      <div className="MaterialUiTable">
+        <MaterialReactTable
+          className="MaterialReactTable"
+          displayColumnDefOptions={{
+            "mrt-row-actions": {
+              muiTableHeadCellProps: {
+                align: "center",
+              },
+              size: 120,
             },
-            size: 120,
-          },
-        }}
-        sortDescFirst
-        columns={columns}
-        data={tableData}
-        editingMode="modal" //default
-        enableColumnOrdering
-        enableEditing
-        onEditingRowSave={handleSaveRowEdits}
-        onEditingRowCancel={handleCancelRowEdits}
-        renderRowActions={({ row, table }) => (
-          <Box sx={{ display: "flex", gap: "1rem" }}>
-            <Tooltip arrow placement="left" title="Edit">
-              <IconButton onClick={() => table.setEditingRow(row)}>
-                <Edit />
-              </IconButton>
-            </Tooltip>
-            <Tooltip arrow placement="right" title="Delete">
-              <IconButton color="error" onClick={() => handleDeleteRow(row)}>
-                <Delete />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-        renderTopToolbarCustomActions={() => (
-          <Button
-            className="smallButtonTemplate"
-            color="secondary"
-            onClick={() => setCreateModalOpen(true)}
-            variant="contained"
-          >
-            Create Announcement
-          </Button>
-        )}
-      />
-      <CreateNewAccountModal
-        columns={columns}
-        open={createModalOpen}
-        onClose={() => setCreateModalOpen(false)}
-        onSubmit={handleCreateNewRow}
-        setUpdatedList={setUpdatedList}
-        updatedList={updatedList}
-      />
-    </div>
+          }}
+          sortDescFirst
+          columns={columns}
+          data={tableData}
+          editingMode="modal" //default
+          enableColumnOrdering
+          enableEditing
+          onEditingRowSave={handleSaveRowEdits}
+          onEditingRowCancel={handleCancelRowEdits}
+          renderRowActions={({ row, table }) => (
+            <Box sx={{ display: "flex", gap: "1rem" }}>
+              <Tooltip arrow placement="left" title="Edit">
+                <IconButton onClick={() => table.setEditingRow(row)}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+              <Tooltip arrow placement="right" title="Delete">
+                <IconButton color="error" onClick={() => handleDeleteRow(row)}>
+                  <Delete />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
+          renderTopToolbarCustomActions={() => (
+            <Button
+              className="smallButtonTemplate"
+              color="secondary"
+              onClick={() => setCreateModalOpen(true)}
+              variant="contained"
+            >
+              Create Announcement
+            </Button>
+          )}
+        />
+        <CreateNewAccountModal
+          columns={columns}
+          open={createModalOpen}
+          onClose={() => setCreateModalOpen(false)}
+          onSubmit={handleCreateNewRow}
+          setUpdatedList={setUpdatedList}
+          updatedList={updatedList}
+        />
+      </div>
+    </Fragment>
   );
 };
 
@@ -599,7 +605,7 @@ export const CreateNewAccountModal = ({
                         <Checkbox
                           name="CourseManager"
                           onChange={handleChange}
-                        /> 
+                        />
                       }
                       label="Course Manager"
                     />

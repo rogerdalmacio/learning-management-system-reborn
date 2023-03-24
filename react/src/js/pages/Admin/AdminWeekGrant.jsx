@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import Loading from "../../components/layouts/Loading";
 import { toast } from "react-toastify";
+import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
 
 function AdminWeekGrant() {
   const { role, token } = useAuth();
@@ -138,7 +139,9 @@ function AdminWeekGrant() {
   if (isToggled !== undefined && isToggled !== null) {
     return (
       <div>
-        <h3 className="mb-4">Granting Week</h3>
+        <ArrowNextAndPrevious>
+          <h3 className="m-0">Granting Week</h3>
+        </ArrowNextAndPrevious>
         <div className="mb-4">{WeeksHandler()}</div>
       </div>
     );

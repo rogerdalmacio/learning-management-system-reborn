@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
 
 function AdminTeacherSubjectTagging() {
   const [file, setFile] = useState(null);
@@ -191,7 +192,9 @@ function AdminTeacherSubjectTagging() {
 
   return (
     <div className="w-100">
-      <h3 className="mb-5">Teacher - Bulk Subject Tagging</h3>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Teacher - Bulk Subject Tagging</h3>
+      </ArrowNextAndPrevious>
       <form
         className="fileUploadContainer mx-auto w-100"
         method="post"

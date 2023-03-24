@@ -3,6 +3,7 @@ import useStudentContext from "../../../hooks/Student/useStudentContext";
 import { useParams } from "react-router-dom";
 import StudPrelimActivitySubmit from "./StudPrelimActivitySubmit";
 import Loading from "../../../components/layouts/Loading";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function StudPrelimActivity() {
   const { courses, setWeek, week, module } = useStudentContext();
@@ -75,7 +76,6 @@ function StudPrelimActivity() {
     if (content) {
       return (
         <Fragment>
-          <h4 className="mb-3">Preliminary Activity for {currentWeek}</h4>{" "}
           {fetchContent()}
           <iframe
             className="createModuleIframe"
@@ -89,7 +89,6 @@ function StudPrelimActivity() {
     } else {
       return (
         <Fragment>
-          <h4 className="mb-3">Lesson for {currentWeek}</h4>
           <h4 className="d-flex justify-content-center fst-italic text-secondary py-5">
             No Content has been added yet.
           </h4>
@@ -99,7 +98,15 @@ function StudPrelimActivity() {
   };
 
   if (areEqual) {
-    return <div>{AvailableActivity()}</div>;
+    return (
+      <div>
+        {" "}
+        <ArrowNextAndPrevious>
+          <h4 className="m-0">Preliminary Activity for {currentWeek}</h4>
+        </ArrowNextAndPrevious>
+        {AvailableActivity()}
+      </div>
+    );
   } else {
     return <Loading />;
   }

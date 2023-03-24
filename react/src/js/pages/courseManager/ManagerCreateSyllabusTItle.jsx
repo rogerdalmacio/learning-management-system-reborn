@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
 
 function ManagerCreateSyllabusTItle() {
   const [content, setContent] = useState({
@@ -82,7 +83,9 @@ function ManagerCreateSyllabusTItle() {
 
   return (
     <div>
-      <h3 className="mb-4">{courseTitle} Syllabus</h3>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">{courseTitle} Syllabus</h3>
+      </ArrowNextAndPrevious>
       <p className="fs-5 fst-italic ms-sm-3 mb-4">syllabus for this course</p>
       <div className="mb-3 border-bottom">
         <div className="d-flex align-items-center mb-3 px-sm-3 py-1">
