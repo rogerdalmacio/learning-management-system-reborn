@@ -82,6 +82,17 @@
   margin: 18px;
 }
 
+.handleClickLeftButton {
+  position: absolute;
+  top: 0;
+  left: 10px;
+}
+
+.handleClickRightButton {
+  position: absolute;
+  top: 0;
+  right: 10px;
+}
 @media (min-width: 1540px) {
   .container-xxl {
     max-width: 1480px !important;
@@ -374,6 +385,7 @@
 .sidebar.close .nav-list li .sub-menu {
   display: block !important;
 }
+
 /* chevron icon */
 
 .sidebar.open .nav-list li .iocn-link i {
@@ -415,7 +427,8 @@
   opacity: 1;
 }
 /* sidebar close */
-.sidebar.close .nav-list li.showMenu .sub-menu {
+.sidebar.close .nav-list li.showMenu .sub-menu,
+.sidebar.close .arrow {
   display: none !important;
 }
 
