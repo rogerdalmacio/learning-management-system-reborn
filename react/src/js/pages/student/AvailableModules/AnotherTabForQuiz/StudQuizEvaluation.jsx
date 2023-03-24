@@ -22,18 +22,9 @@ function StudQuizEvaluation({}) {
   const [localstorageValue, setLocalstorageValue] = useState(
     parseInt(localStorage.getItem("myValue")) || 0
   );
-  // useEffect(() => {
-  //     if (getAnswer) {
-  //         const newArray = getAnswer.map((item) =>
-  //             typeof item === "undefined" ? "@$#" : item
-  //         );
-  //         console.log(newArray);
-  //     }
-  // });
-  // console.log(permissionGranted);
-  // console.log(getAnswer);
-  // console.log(isSnapshotAvail);
-
+  const [remainingTime, setRemainingTime] = useState(
+    localStorage.getItem("remainingTime") || 1200
+  );
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
   const courseBase = pathArray[2];
@@ -45,7 +36,25 @@ function StudQuizEvaluation({}) {
   console.log(contentType);
   console.log(progress);
 
-  console.log(quizResultId && quizResultId);
+  // Setting timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRemainingTime((prevTime) => {
+        const newTime = prevTime - 1;
+        localStorage.setItem("remainingTime", newTime);
+        return newTime;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (remainingTime === 0) {
+      SubmitQuizHandler();
+    }
+  }, [remainingTime]);
+
   // Setting the locastorage
   useEffect(() => {
     localStorage.setItem("myValue", localstorageValue);
@@ -426,6 +435,12 @@ function StudQuizEvaluation({}) {
   //         setQuizExist(true);
   //     }
   // });
+  const hours = Math.floor(remainingTime / 3600);
+  const minutes = Math.floor((remainingTime % 3600) / 60);
+  const seconds = remainingTime % 60;
+  const formattedTime = `${hours.toString().padStart(2, "0")} : ${minutes
+    .toString()
+    .padStart(2, "0")} : ${seconds.toString().padStart(2, "0")}`;
 
   const MainContent = () => {
     if (quizResultId && quizResultId.length !== 0) {
@@ -467,9 +482,14 @@ function StudQuizEvaluation({}) {
                 </div>
                 <div className="col-12 col-md-4 col-lg-3">
                   <div className="QuizContentCont Quizcontainer2 shadow p-3 mb-3">
-                    <p>
-                      Question {currentQuestionIndex + 1}/{content.length}
-                    </p>
+                    <div className="d-flex justify-content-between">
+                      <p className="fs-6 fw-semibold">
+                        Question {currentQuestionIndex + 1}/{content.length}
+                      </p>
+                      <p className="fs-6 fw-bold QuizTimerColor">
+                        {formattedTime}
+                      </p>
+                    </div>
                     <div className="QuizNavItemContainer d-flex flex-wrap">
                       {NavigationContent()}
                     </div>

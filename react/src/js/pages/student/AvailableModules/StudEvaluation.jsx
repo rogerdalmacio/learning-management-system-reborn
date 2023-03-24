@@ -260,6 +260,15 @@ function StudAAE() {
         if (localStorage.getItem("myValue")) {
           localStorage.removeItem("myValue");
         }
+        if (localStorage.getItem("ranNumber")) {
+          localStorage.removeItem("ranNumber");
+        }
+        if (localStorage.getItem("image")) {
+          localStorage.removeItem("image");
+        }
+        if (localStorage.getItem("remainingTime")) {
+          localStorage.removeItem("remainingTime");
+        }
         const percentage =
           quizResultId[0].score * (100 / quizInfo.answers.split("|").length);
         const percentage2 = quizResultId[0].score;
