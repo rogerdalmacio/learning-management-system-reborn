@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
 
-function StudPrelimActivitySubmit({ content }) {
+function StudPrelimActivitySubmit({ content, activityResult }) {
   const [file, setFile] = useState(null);
   const [submitFile, setSubmitFile] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -17,7 +17,9 @@ function StudPrelimActivitySubmit({ content }) {
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
+
   console.log(file);
+  console.log(activityResult);
   useEffect(() => {
     if (file && file.size > 26214400) {
       setSubmitFile(false);
@@ -221,6 +223,19 @@ function StudPrelimActivitySubmit({ content }) {
               Upload
             </button>
           </div>
+          {activityResult !== undefined && activityResult !== null && (
+            <a
+              className="text-decoration-none fw-semibold fs-5"
+              target="_blank"
+              href={`${
+                import.meta.env.VITE_API_BASE_URL
+              }/storage/activity/preliminaryactivity/${
+                activityResult.student_id
+              }${activityResult.activity_type}${activityResult.id}.pdf`}
+            >
+              {`${activityResult.student_id}${activityResult.activity_type}${activityResult.id}.pdf`}
+            </a>
+          )}
         </div>
       </form>
     </div>

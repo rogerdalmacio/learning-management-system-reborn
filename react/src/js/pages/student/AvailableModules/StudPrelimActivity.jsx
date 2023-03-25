@@ -6,7 +6,16 @@ import Loading from "../../../components/layouts/Loading";
 import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function StudPrelimActivity() {
-  const { courses, setWeek, week, module } = useStudentContext();
+  const {
+    courses,
+    setWeek,
+    week,
+    module,
+    setActivityId,
+    activity,
+    setWeekQuiz,
+    activityResult,
+  } = useStudentContext();
 
   const [content, setContent] = useState();
   const [weekNumber, setWeekNumber] = useState();
@@ -32,6 +41,7 @@ function StudPrelimActivity() {
         if (course.course == courseTitle) {
           course.module.map((mod) => {
             if (mod.week == weekForModule) {
+              setWeekQuiz(mod.id);
               setWeek(mod.id);
               setWeekNumber(mod.id);
             }
@@ -39,10 +49,20 @@ function StudPrelimActivity() {
         }
       });
     }
-  });
 
+    if (activity) {
+      const act = activity.activity
+        .filter((qui) => qui.activity_type == contentType)
+        .map((content) => {
+          console.log(content);
+          setActivityId(content.id);
+        });
+    }
+  });
+  console.log(activityResult);
   useEffect(() => {
     if (module) {
+      console.log(module);
       if (module.id == weekNumber) {
         setAreEqual(true);
         const act = module.activity
@@ -81,8 +101,11 @@ function StudPrelimActivity() {
             className="createModuleIframe"
             src={`${content.embed_links}?embedded=true`}
           ></iframe>
-          <div>
-            <StudPrelimActivitySubmit content={content} />
+          <div className="mt-3">
+            <StudPrelimActivitySubmit
+              content={content}
+              activityResult={activityResult}
+            />
           </div>
         </Fragment>
       );
@@ -100,7 +123,6 @@ function StudPrelimActivity() {
   if (areEqual) {
     return (
       <div>
-        {" "}
         <ArrowNextAndPrevious>
           <h4 className="m-0">Preliminary Activity for {currentWeek}</h4>
         </ArrowNextAndPrevious>

@@ -68,7 +68,7 @@ class SActivityResultController extends Controller
         ]);
 
         $response = [
-            'Activity Result' => $activityResult,
+            'ActivityResult' => $activityResult,
             'file path' => $path
         ];
 
@@ -94,7 +94,7 @@ class SActivityResultController extends Controller
         $activityResult = ActivityResult::find($id);
 
         $response = [
-            'Activity Result' => $activityResult
+            'ActivityResult' => $activityResult
         ];
 
         return response($response, 200);

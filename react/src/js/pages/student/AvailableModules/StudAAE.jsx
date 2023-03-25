@@ -53,6 +53,7 @@ function StudAAE() {
       const act = quiz.quiz
         .filter((qui) => qui.quiz_type == contentType)
         .map((content) => {
+          console.log(content);
           setQuizInfo(content);
           setQuizId(content.id);
         });

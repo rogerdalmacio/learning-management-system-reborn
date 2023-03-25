@@ -11,11 +11,13 @@ export const StudContextProvider = ({ children }) => {
   const [module, setModule] = useState();
   const [week, setWeek] = useState();
   const [lesson, setLesson] = useState();
+  const [activityResult, setActivityResult] = useState();
   const [weekLesson, setWeekLesson] = useState();
   const [officialQuiz, setOfficialQuiz] = useState();
   const [quiz, setQuiz] = useState();
   const [weekQuiz, setWeekQuiz] = useState();
   const [quizid, setQuizId] = useState();
+  const [activityid, setActivityId] = useState();
   const [quizResultId, setQuizResultId] = useState();
   const [hasChange, setHasChange] = useState(false);
   // const pathname = window.location.pathname;
@@ -76,6 +78,7 @@ export const StudContextProvider = ({ children }) => {
             }
           )
           .then((response) => {
+            console.log(response);
             setModule(response.data.Module);
           });
       }
@@ -109,6 +112,63 @@ export const StudContextProvider = ({ children }) => {
     renderLesson();
   }, [weekLesson]);
 
+  // ACTIVITY RESULT
+
+  useEffect(() => {
+    const renderActivityResult = async () => {
+      console.log(activityid);
+      if (role === "student" && activityid) {
+        await axios
+          .get(
+            `${
+              import.meta.env.VITE_API_BASE_URL
+            }/api/student/activityresult/${activityid}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response.data.ActivityResult);
+            setActivityResult(response.data.ActivityResult);
+          });
+      }
+    };
+
+    renderActivityResult();
+  }, [activityid]);
+
+  useEffect(() => {
+    const renderQuizResult = async () => {
+      if (role === "student" && activityid) {
+        const activity_id = { activity_id: activityid };
+
+        await axios
+          .post(
+            `${import.meta.env.VITE_API_BASE_URL}/api/student/activityresult`,
+            activity_id,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response.data[0]);
+            setQuizResultId(response.data[0]);
+          });
+      }
+    };
+
+    renderQuizResult();
+  }, [activityid]);
+
+  //
   useEffect(() => {
     const renderQuiz = async () => {
       console.log(weekQuiz);
@@ -127,9 +187,10 @@ export const StudContextProvider = ({ children }) => {
             }
           )
           .then((response) => {
-            console.log(response);
-            console.log(response.data.Module);
+            console.log(response.data);
+            // setQuiz here is shared by activity
             setQuiz(response.data.Module);
+            setActivity(response.data.Module);
           });
       }
     };
@@ -201,6 +262,9 @@ export const StudContextProvider = ({ children }) => {
         setWeekQuiz,
         quizid,
         setQuizId,
+        activityid,
+        setActivityId,
+        activityResult,
         officialQuiz,
         setQuizResultId,
         quizResultId,
