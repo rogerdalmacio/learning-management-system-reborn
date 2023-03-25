@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useStudentContext from "../../../hooks/Student/useStudentContext";
 
-function StudPrelimActivitySubmit({ content, activityResult }) {
+function StudPrelimActivitySubmit({ content, activityResultid }) {
+  console.log(activityResultid);
   const [file, setFile] = useState(null);
   const [submitFile, setSubmitFile] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -19,7 +20,7 @@ function StudPrelimActivitySubmit({ content, activityResult }) {
   };
 
   console.log(file);
-  console.log(activityResult);
+  console.log(activityResultid);
   useEffect(() => {
     if (file && file.size > 26214400) {
       setSubmitFile(false);
@@ -149,7 +150,7 @@ function StudPrelimActivitySubmit({ content, activityResult }) {
     } else if (file && file.size < 1000000000) {
       let fileMb = file.size / (1024 * 1024);
       return <p className="fileSize mb-0">{fileMb.toFixed(2)} MB</p>;
-    } else {
+    } else if (file) {
       let fileGb = file.size / (1024 * 1024 * 1024);
       return <p className="fileSize mb-0">{fileGb.toFixed(2)} GB</p>;
     }
@@ -166,6 +167,78 @@ function StudPrelimActivitySubmit({ content, activityResult }) {
       return <i className="bi bi-check2-circle fs-2 text-success"></i>;
     } else if (!submitFile) {
       return <i className="bi bi-x-circle fs-2 text-danger"></i>;
+    }
+  };
+
+  const FileSystemContainer = () => {
+    if (file == null && activityResultid !== undefined) {
+      return (
+        <div className="fileNameContainer mt-3 py-1 px-2">
+          <div className="d-flex justify-content-end">
+            <i
+              className="fileUploadCancelBtn bi bi-x text-right"
+              onClick={() => {
+                setFile(null);
+              }}
+            ></i>
+          </div>
+          <div className=" d-sm-flex align-items-center">
+            <div className="iconAndFileName d-flex align-items-center">
+              <i className="uploadedFileIcon bi bi-file-earmark-text-fill me-2"></i>
+              <a
+                className="text-decoration-none fs-5"
+                target="_blank"
+                href={`${
+                  import.meta.env.VITE_API_BASE_URL
+                }/storage/activity/preliminaryactivity/${
+                  activityResultid.student_id
+                }${activityResultid.activity_type}${
+                  activityResultid.activity_id
+                }.pdf`}
+              >
+                {`${activityResultid.student_id}${activityResultid.activity_type}${activityResultid.activity_id}.pdf`}
+              </a>
+              <div className="fileStateIcon d-block d-sm-none w-25 text-center">
+                {FileStateIcon()}
+              </div>
+            </div>
+            <div className="SizeAndLoading d-sm-flex justify-content-center align-items-center">
+              {ConvertSizeHandler()}
+            </div>
+            <div className="fileStateIcon d-none d-sm-block text-center">
+              {FileStateIcon()}
+            </div>
+          </div>
+        </div>
+      );
+    } else if (file !== null) {
+      return (
+        <div className="fileNameContainer mt-3 py-1 px-2">
+          <div className="d-flex justify-content-end">
+            <i
+              className="fileUploadCancelBtn bi bi-x text-right"
+              onClick={() => {
+                setFile(null);
+              }}
+            ></i>
+          </div>
+          <div className=" d-sm-flex align-items-center">
+            <div className="iconAndFileName d-flex align-items-center">
+              <i className="uploadedFileIcon bi bi-file-earmark-text-fill me-2"></i>
+              <p className="fileName mb-0">{file.name}</p>
+              <div className="fileStateIcon d-block d-sm-none w-25 text-center">
+                {FileStateIcon()}
+              </div>
+            </div>
+            <div className="SizeAndLoading d-sm-flex justify-content-center align-items-center">
+              {ConvertSizeHandler()}
+            </div>
+            <div className="fileStateIcon d-none d-sm-block text-center">
+              {FileStateIcon()}
+            </div>
+          </div>
+        </div>
+      );
     }
   };
 
@@ -187,55 +260,33 @@ function StudPrelimActivitySubmit({ content, activityResult }) {
             <input type="file" onChange={handleFileChange} />
           </label>
         </div>
-        {file && (
-          <div className="fileNameContainer mt-3 py-1 px-2">
-            <div className="d-flex justify-content-end">
-              <i
-                className="fileUploadCancelBtn bi bi-x text-right"
-                onClick={() => {
-                  setFile(null);
-                }}
-              ></i>
-            </div>
-            <div className=" d-sm-flex align-items-center">
-              <div className="iconAndFileName d-flex align-items-center">
-                <i className="uploadedFileIcon bi bi-file-earmark-text-fill me-2"></i>
-                <p className="fileName mb-0">{file.name}</p>
-                <div className="fileStateIcon d-block d-sm-none w-25 text-center">
-                  {FileStateIcon()}
-                </div>
-              </div>
-              <div className="SizeAndLoading d-sm-flex justify-content-center align-items-center">
-                {ConvertSizeHandler()}
-              </div>
-              <div className="fileStateIcon d-none d-sm-block text-center">
-                {FileStateIcon()}
-              </div>
-            </div>
-          </div>
-        )}
+        {FileSystemContainer()}
         <div className="d-block">
           <div className="d-flex justify-content-end">
             <button
               className="uploadButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
               type="submit"
             >
-              Upload
+              {activityResultid !== undefined && activityResultid !== null
+                ? "Update"
+                : "Upload"}
             </button>
           </div>
-          {activityResult !== undefined && activityResult !== null && (
+          {/* {activityResultid !== undefined && (
             <a
               className="text-decoration-none fw-semibold fs-5"
               target="_blank"
               href={`${
                 import.meta.env.VITE_API_BASE_URL
               }/storage/activity/preliminaryactivity/${
-                activityResult.student_id
-              }${activityResult.activity_type}${activityResult.id}.pdf`}
+                activityResultid.student_id
+              }${activityResultid.activity_type}${
+                activityResultid.activity_id
+              }.pdf`}
             >
-              {`${activityResult.student_id}${activityResult.activity_type}${activityResult.id}.pdf`}
+              {`${activityResultid.student_id}${activityResultid.activity_type}${activityResultid.activity_id}.pdf`}
             </a>
-          )}
+          )} */}
         </div>
       </form>
     </div>

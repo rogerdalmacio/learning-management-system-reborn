@@ -18,6 +18,7 @@ export const StudContextProvider = ({ children }) => {
   const [weekQuiz, setWeekQuiz] = useState();
   const [quizid, setQuizId] = useState();
   const [activityid, setActivityId] = useState();
+  const [activityResultid, setActivityrResultId] = useState();
   const [quizResultId, setQuizResultId] = useState();
   const [hasChange, setHasChange] = useState(false);
   // const pathname = window.location.pathname;
@@ -148,7 +149,9 @@ export const StudContextProvider = ({ children }) => {
 
         await axios
           .post(
-            `${import.meta.env.VITE_API_BASE_URL}/api/student/activityresult`,
+            `${
+              import.meta.env.VITE_API_BASE_URL
+            }/api/student/getactivityresultid`,
             activity_id,
             {
               headers: {
@@ -159,8 +162,9 @@ export const StudContextProvider = ({ children }) => {
             }
           )
           .then((response) => {
+            console.log(response.data[0][0]);
             console.log(response.data[0]);
-            setQuizResultId(response.data[0]);
+            setActivityrResultId(response.data[0][0]);
           });
       }
     };
@@ -241,7 +245,7 @@ export const StudContextProvider = ({ children }) => {
           )
           .then((response) => {
             console.log(response.data[0]);
-            setQuizResultId(response.data[0]);
+            setActivityrResultId(response.data[0]);
           });
       }
     };
@@ -270,6 +274,7 @@ export const StudContextProvider = ({ children }) => {
         quizResultId,
         hasChange,
         setHasChange,
+        activityResultid,
       }}
     >
       {children}

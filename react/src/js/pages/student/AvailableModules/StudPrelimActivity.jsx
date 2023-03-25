@@ -14,7 +14,7 @@ function StudPrelimActivity() {
     setActivityId,
     activity,
     setWeekQuiz,
-    activityResult,
+    activityResultid,
   } = useStudentContext();
 
   const [content, setContent] = useState();
@@ -32,7 +32,7 @@ function StudPrelimActivity() {
   const contentType = pathArray[5];
   console.log(contentType);
 
-  console.log(content);
+  console.log(activityResultid);
 
   //getting module_id for modules
   useEffect(() => {
@@ -59,7 +59,7 @@ function StudPrelimActivity() {
         });
     }
   });
-  console.log(activityResult);
+
   useEffect(() => {
     if (module) {
       console.log(module);
@@ -104,7 +104,7 @@ function StudPrelimActivity() {
           <div className="mt-3">
             <StudPrelimActivitySubmit
               content={content}
-              activityResult={activityResult}
+              activityResultid={activityResultid}
             />
           </div>
         </Fragment>

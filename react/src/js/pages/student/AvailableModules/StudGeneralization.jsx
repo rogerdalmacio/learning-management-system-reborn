@@ -6,7 +6,16 @@ import Loading from "../../../components/layouts/Loading";
 import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 function StudGeneralization() {
-  const { courses, setWeek, week, module } = useStudentContext();
+  const {
+    courses,
+    setWeek,
+    week,
+    module,
+    activity,
+    setWeekQuiz,
+    setActivityId,
+    activityResultid,
+  } = useStudentContext();
 
   const [content, setContent] = useState();
   const [weekNumber, setWeekNumber] = useState();
@@ -31,12 +40,22 @@ function StudGeneralization() {
         if (course.course == courseTitle) {
           course.module.map((mod) => {
             if (mod.week == weekForModule) {
+              setWeekQuiz(mod.id);
               setWeek(mod.id);
               setWeekNumber(mod.id);
             }
           });
         }
       });
+    }
+
+    if (activity) {
+      const act = activity.activity
+        .filter((qui) => qui.activity_type == contentType)
+        .map((content) => {
+          console.log(content);
+          setActivityId(content.id);
+        });
     }
   });
 
@@ -81,7 +100,10 @@ function StudGeneralization() {
             src={`${content.embed_links}?embedded=true`}
           ></iframe>
           <div>
-            <StudGeneralizationSubmit content={content} />
+            <StudGeneralizationSubmit
+              content={content}
+              activityResultid={activityResultid}
+            />
           </div>
         </Fragment>
       );

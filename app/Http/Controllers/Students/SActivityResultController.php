@@ -26,7 +26,7 @@ class SActivityResultController extends Controller
         ]);
 
         $acitivityresult = ActivityResult::where('student_id', Auth::user()->id)
-                        ->where('activitiy_id', $request['activitiy_id'])
+                        ->where('activity_id', $request['activity_id'])
                         ->get();
 
         $response = [
@@ -48,7 +48,7 @@ class SActivityResultController extends Controller
 
         $activityType = $request['activity_type'];
 
-        $activitiyId = $request['activity_id'];
+        $activityId = $request['activity_id'];
 
         $userId = $user->id;
 
@@ -64,7 +64,7 @@ class SActivityResultController extends Controller
 
         $extension = $request->file('file')->getClientOriginalExtension();
 
-        $newFileName = $userId . $activityType . $activitiyId . '.' . $extension;
+        $newFileName = $userId . $activityType . $activityId . '.' . $extension;
 
         $newFileLocation = 'public/activity/' . $activityType;
 
