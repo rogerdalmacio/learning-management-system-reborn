@@ -19,6 +19,22 @@ class SActivityResultController extends Controller
     // {
         
     // }
+    public function getActivityResultId(Request $request) {
+
+        $request->validate([
+            'activity_id' => 'required'
+        ]);
+
+        $quizResult = QuizResult::where('student_id', Auth::user()->id)
+                        ->where('activitiy_id', $request['activitiy_id'])
+                        ->get();
+
+        $response = [
+            $quizResult
+        ];
+
+        return response($response, 200);
+    }
 
     /**
      * Store a newly created resource in storage.
