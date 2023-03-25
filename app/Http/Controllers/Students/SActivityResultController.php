@@ -25,12 +25,12 @@ class SActivityResultController extends Controller
             'activity_id' => 'required'
         ]);
 
-        $quizResult = QuizResult::where('student_id', Auth::user()->id)
+        $acitivityresult = ActivityResult::where('student_id', Auth::user()->id)
                         ->where('activitiy_id', $request['activitiy_id'])
                         ->get();
 
         $response = [
-            $quizResult
+            $acitivityresult
         ];
 
         return response($response, 200);
