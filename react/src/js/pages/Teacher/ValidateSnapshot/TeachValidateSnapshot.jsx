@@ -20,13 +20,22 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Delete, Edit, Check } from "@mui/icons-material";
-import { data, states } from "../Admin/makeData";
-import useAuth from "../../hooks/useAuth";
+import { data, states } from "../../Admin/makeData";
+import useAuth from "../../../hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 const SuperCreateTeacherAcct = () => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
+
+  // Course Title
+  const pathname = window.location.pathname;
+  const pathArray = pathname.split("/");
+  // subjects
+  const courseBase = pathArray[3];
+  // sections
+  const courseSection = pathArray[4];
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [getAnnouncement, setGetAnnouncement] = useState(data);
@@ -50,50 +59,9 @@ const SuperCreateTeacherAcct = () => {
             }
           )
           .then((response) => {
-            // console.log(response.data.students);
-            // const result = data
-            //   .filter(({ quizresult }) =>
-            //     quizresult.filter(({ snapshot }) => snapshot === 1)
-            //   )
-            //   .map(
-            //     ({
-            //       id,
-            //       first_name,
-            //       last_name,
-            //       program,
-            //       quizresult,
-            //       year_and_section,
-            //     }) => {
-            //       const snapshot = quizresult.find(({ snapshot, id }) => {
-            //         console.log(snapshot);
-            //         return snapshot === 1;
-            //       });
-            //       console.log(snapshot);
-            //       const weekNo =
-            //         Number(snapshot?.module_id?.match(/\d+/)[0]) || null;
-            //       const snapshotValue = snapshot
-            //         ? `${snapshot.student_id}${snapshot.quiz_type}${snapshot.quiz_id}`
-            //         : "0";
-            //       console.log(snapshotValue);
-            //       console.log(weekNo);
-            //       return {
-            //         first_name,
-            //         id,
-            //         last_name,
-            //         year_and_section,
-            //         program,
-            //         snapshot: snapshotValue,
-            //         weekNo,
-            //         quizresultId: snapshot.id,
-            //       };
-            //     }
-            //   );
-
-            // console.log(result);
-
-            // console.log(response);
-            // console.log(data);
             const data = response.data.students;
+            console.log(data);
+
             const result2 = data.map(
               ({
                 id,
@@ -103,15 +71,22 @@ const SuperCreateTeacherAcct = () => {
                 quiz_type,
                 quizresult,
                 year_and_section,
+                subjects,
               }) => {
                 console.log(quizresult);
+
+                const studSubjects = subjects.split(",");
+                console.log(studSubjects);
+                studSubjects.map((sub) => {});
                 const snapshot = quizresult.filter(
-                  ({ snapshot, quiz_type, attempt }) =>
-                    snapshot === 1 && attempt == "finished"
+                  ({ snapshot, quiz_type, attempt, module_id }) =>
+                    snapshot === 1 &&
+                    attempt == "finished" &&
+                    year_and_section == courseSection &&
+                    module_id.split("-")[0] == courseBase
                 );
                 console.log(snapshot);
                 return snapshot.map((snapshot) => {
-                  console.log(snapshot);
                   const weekNo =
                     Number(snapshot?.module_id?.match(/\d+/)[0]) || null;
                   const snapshotValue = snapshot
@@ -293,7 +268,11 @@ const SuperCreateTeacherAcct = () => {
 
   return (
     <div>
-      <h3 className="mb-4">Student - Validate Snapshot</h3>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">
+          Validate Snapshot - {courseBase} - {courseSection}
+        </h3>
+      </ArrowNextAndPrevious>
       <div className="MaterialUiTable">
         <MaterialReactTable
           className="MaterialReactTable"

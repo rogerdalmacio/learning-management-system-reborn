@@ -90,14 +90,18 @@ import StudQuizPrelimExam from "../pages/student/AvailableModules/AnotherTabForQ
 
 // Teacher
 import TeacherLayout from "./layouts/authenticatedLayout/TeacherNavigationBar/TeacherLayout";
-import TeachDashboard from "../pages/Teacher/TeachDashboard";
+import TeachDashboard from "../pages/Teacher/QuizResult/TeachDashboard";
 import TeachEditProfile from "../pages/Teacher/TeachEditProfile";
 import StudEditProfile from "../pages/student/StudEditProfile";
 import StudAvailableSubjects from "../pages/student/AvailableCourse/StudAvailableSubjects";
 import StudAvailableModules from "../pages/student/AvailableCourse/StudAvailableModules";
 import StudAvailableContent from "../pages/student/AvailableCourse/StudAvailableContent";
-import TeachValidateSnapshot from "../pages/Teacher/TeachValidateSnapshot";
-import TeachReAttemptQuiz from "../pages/Teacher/TeachReAttemptQuiz";
+import TeachValidateSnapshot from "../pages/Teacher/ValidateSnapshot/TeachValidateSnapshot";
+import SortBySubjects from "../pages/Teacher/QuizResult/SortBySubjects";
+import SortBySection from "../pages/Teacher/QuizResult/SortBySection";
+import ValidateSnapSortBySubjects from "../pages/Teacher/ValidateSnapshot/ValidateSnapSortBySubjects";
+import ValidateSnapSortBySection from "../pages/Teacher/ValidateSnapshot/ValidateSnapSortBySection";
+import TeachReAttemptQuiz from "../pages/Teacher/ClearQuizAttempt/TeachReAttemptQuiz";
 
 // Others
 import Login from "./authentication/Login";
@@ -105,6 +109,8 @@ import RequireAuth from "./authentication/RequireAuth";
 import NotRequireAuth from "./authentication/notRequireAuth";
 import UnAuthorized from "./layouts/unAuthorized";
 import Missing from "./layouts/Missing";
+import ClearAttemptSortBySection from "../pages/Teacher/ClearQuizAttempt/ClearAttemptSortBySection";
+import ClearAttemptSortBySubjects from "../pages/Teacher/ClearQuizAttempt/ClearAttemptSortBySubjects";
 
 function App() {
   useEffect(() => {
@@ -183,14 +189,35 @@ function App() {
       {/* TEACHER */}
       <Route element={<RequireAuth allowedRoles={"teacher"} />}>
         <Route element={<TeacherLayout />}>
-          <Route path="/teacher/home" element={<TeachDashboard />} />
           <Route path="/teacher/editprofile" element={<TeachEditProfile />} />
+          {/* quizresult */}
+          <Route path="/teacher/home" element={<SortBySubjects />} />
+          <Route path="/teacher/home/:id" element={<SortBySection />} />
+          <Route path="/teacher/home/:id/:id" element={<TeachDashboard />} />
+          {/* validate snapshot */}
           <Route
             path="/teacher/validatesnapshot"
-            element={<TeachValidateSnapshot />}
+            element={<ValidateSnapSortBySubjects />}
           />
           <Route
+            path="/teacher/validatesnapshot/:id"
+            element={<ValidateSnapSortBySection />}
+          />
+          <Route
+            path="/teacher/validatesnapshot/:id/:id"
+            element={<TeachValidateSnapshot />}
+          />
+          {/* Clear Attempt */}
+          <Route
             path="/teacher/resetquizattempt"
+            element={<ClearAttemptSortBySubjects />}
+          />
+          <Route
+            path="/teacher/resetquizattempt/:id"
+            element={<ClearAttemptSortBySection />}
+          />
+          <Route
+            path="/teacher/resetquizattempt/:id/:id"
             element={<TeachReAttemptQuiz />}
           />
         </Route>

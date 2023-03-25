@@ -7,15 +7,24 @@ import React, {
 } from "react";
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
-import { data, states } from "../Admin/makeData";
-import useAuth from "../../hooks/useAuth";
+import { data, states } from "../../Admin/makeData";
+import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 const TeachDashboard = ({ updatedList, setUpdatedList }) => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
+
+  // Course Title
+  const pathname = window.location.pathname;
+  const pathArray = pathname.split("/");
+  // subjects
+  const courseBase = pathArray[3];
+  // sections
+  const courseSection = pathArray[4];
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [getAnnouncement, setGetAnnouncement] = useState(data);
@@ -43,12 +52,14 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
             const numbers = [
               1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
             ];
-            console.log(data[0].subjects);
-            console.log(response.data.students);
+
             const result2 = numbers.map((num) => {
               return data.map((item) => {
+                console.log(item.year_and_section);
                 const filteredItem = item.quizresult.filter(
-                  (quiz) => quiz.module_id == `${"SPI00"}-${num}`
+                  (quiz) =>
+                    quiz.module_id == `${courseBase}-${num}` &&
+                    item.year_and_section == courseSection
                 );
 
                 console.log(filteredItem);
@@ -258,7 +269,9 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
 
   return (
     <div>
-      <h3 className="mb-4">Student - Quiz Results</h3>
+      <ArrowNextAndPrevious>
+        <h3 className="m-0">Quiz Results - {courseBase} - {courseSection}</h3>
+      </ArrowNextAndPrevious>
       <div className="MaterialUiTable">
         <MaterialReactTable
           enableRowSelection
