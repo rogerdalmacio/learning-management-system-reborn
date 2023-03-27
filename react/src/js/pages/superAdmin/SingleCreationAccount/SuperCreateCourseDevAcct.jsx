@@ -90,7 +90,8 @@ const SuperCreateCourseDevAcct = () => {
           info.last_name == "" ||
           info.year_and_section == "" ||
           info.program == "" ||
-          info.department == ""
+          info.department == "" ||
+          info.subjects == ""
         ) {
           toast.error("Please fill out the blank area");
         } else {
@@ -333,20 +334,8 @@ const SuperCreateCourseDevAcct = () => {
           data={tableData}
           editingMode="modal" //default
           enableColumnOrdering
-          enableEditing
           onEditingRowSave={handleSaveRowEdits}
           onEditingRowCancel={handleCancelRowEdits}
-          renderRowActions={({ row, table }) => (
-            <Box
-              sx={{ display: "flex", gap: "1rem", justifyContent: "center" }}
-            >
-              <Tooltip arrow placement="left" title="Edit">
-                <IconButton onClick={() => table.setEditingRow(row)}>
-                  <Edit />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          )}
           renderTopToolbarCustomActions={() => (
             <Button
               className="smallButtonTemplate"

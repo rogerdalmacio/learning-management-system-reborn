@@ -63,6 +63,7 @@ function ManagerAvailableModules() {
                         );
                       }
                     };
+                    console.log(mod);
                     return (
                       <div key={mod.id}>
                         <Link

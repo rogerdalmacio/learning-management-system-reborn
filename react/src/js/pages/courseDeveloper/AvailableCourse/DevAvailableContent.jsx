@@ -1,12 +1,14 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layouts/Loading";
 import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
+import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
 
 function DevAvailableContent() {
   const { course } = useGetAvailableCourse();
+  const { courses, module, setWeekQuiz, quiz } = useCourseDevContext();
   const { id } = useParams();
 
   // Course Title
@@ -14,11 +16,34 @@ function DevAvailableContent() {
   const pathArray = pathname.split("/");
   const courseBase = pathArray[2];
   const courseTitle = courseBase.replace(/%20/g, " ");
-  console.log(courseTitle);
+
+  // Course Title
+  const weekMod = pathArray[4];
+  const currentWeek = weekMod.replace("week", "Week ");
+  const weekForModule = weekMod.match(/\d+/)[0];
+  const contentType = pathArray[5];
+  console.log(quiz);
+
+  useEffect(() => {
+    if (courses) {
+      courses.map((course) => {
+        if (course.course == courseTitle) {
+          course.module.map((mod) => {
+            if (mod.week == weekForModule) {
+              setWeekQuiz(mod.id);
+            }
+          });
+        }
+      });
+    }
+
+    // this will check if quizId is available
+  });
+  console.log(course);
+  console.log(module);
 
   const newWeek = id.replace("week", "WEEK ");
   const weekNumber = newWeek.match(/\d+/)[0];
-
   const NameOfExam = () => {
     if (weekNumber == 6) {
       return (
@@ -143,6 +168,26 @@ function DevAvailableContent() {
           </ArrowNextAndPrevious>
           <h4 className="ms-3 my-4">{newWeek}</h4>
           <div className="ms-3">{ContentCheckHandler()}</div>
+          {quiz !== undefined && quiz.content_validate.submitted == 0 && (
+            <div>
+              <h4 className="ms-sm-3 my-4">Comments: </h4>
+              <div className="ms-sm-3 ">
+                <div style={{ maxWidth: "700px" }}>
+                  <div className="border border-2 p-2 border-dark">
+                    {quiz && <p>{quiz.content_validate.comments}</p>}
+                  </div>
+                  <div className="d-flex justify-content-end">
+                    <button
+                      className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
+                      // onClick={HandleSubmit}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </Fragment>
       );
     } else {

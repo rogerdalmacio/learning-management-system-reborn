@@ -183,7 +183,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
     Route::patch('/editteacher/{id}', [AccountManageController::class, 'editTeacher']);
 
     Route::patch('/resetpassword/{id}', [PasswordResetController::class, 'passwordReset']);
-   
+
     Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
 });
 

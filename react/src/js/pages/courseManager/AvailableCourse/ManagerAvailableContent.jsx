@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import useGetAvailableCourse from "../../../hooks/CourseDev/useGetAvailableCourse";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -6,11 +6,16 @@ import CourseContentProvider from "../../../hooks/CourseContent/useCourseContent
 import Loading from "../../../components/layouts/Loading";
 import ManagerValidateCourse from "./ManagerValidateCourse";
 import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
+import { toast } from "react-toastify";
+import useAuth from "../../../hooks/useAuth";
 
 function ManagerAvailableContent() {
   const { courses } = CourseContentProvider();
+  const { token } = useAuth();
   const { id } = useParams();
-
+  const [moduleId, setModuleId] = useState();
+  const [comment, setComment] = useState();
+  const [hasError, setHasError] = useState(false);
   // Course Title
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
@@ -20,6 +25,93 @@ function ManagerAvailableContent() {
 
   const newWeek = id.replace("week", "WEEK ");
   const weekNumber = newWeek.match(/\d+/)[0];
+  console.log(weekNumber);
+
+  useEffect(() => {
+    if (courses !== undefined) {
+      const course1 = courses.find((course) => {
+        return course.course == courseTitle;
+      });
+      // .find((week) => week.week == weekNumber);
+      console.log(course1);
+      const moduleId = course1.module.find((week) => {
+        return week.week == weekNumber;
+      });
+      setModuleId(moduleId.id);
+    }
+  }, [courses, weekNumber]);
+
+  const HandleSubmit = async () => {
+    //put your validation logic here
+    let toastId;
+    if (comment == null || comment == "") {
+      setHasError(true);
+      toast.error("Please fill out the blank area");
+    } else {
+      setHasError(false);
+
+      const userInformation = {
+        module_id: moduleId,
+        status: "inProgress",
+        comments: comment,
+      };
+
+      toastId = toast.info("Sending Request...");
+      await axios
+        .post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/coursemanager/createtodo`,
+          userInformation,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status >= 200 && response.status <= 300) {
+            // if (response.data.length !== 0) {
+            //     toast.update(toastId, {
+            //         render: `Student ID is ${response.data[0]}`,
+            //         type: toast.TYPE.ERROR,
+            //         autoClose: 2000,
+            //     });
+            // } else {
+            toast.update(toastId, {
+              render: "Request Successfully",
+              type: toast.TYPE.SUCCESS,
+              autoClose: 2000,
+            });
+            // }]
+            setModuleId("");
+          } else {
+            throw new Error(response.status || "Something Went Wrong!");
+          }
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.data.errors) {
+            // to access the subject itself you can use this : error.response.data.SubjectAlreadyExists[1]
+            toast.update(toastId, {
+              render: error.response.data.errors.id[0],
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+            setIdAlreadyTaken(error.response.data.errors.id[0]);
+          } else {
+            toast.update(toastId, {
+              render: `${error.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          }
+          setIsLoading(false);
+        });
+    }
+  };
 
   const NameOfExam = () => {
     if (weekNumber == 6) {
@@ -127,7 +219,6 @@ function ManagerAvailableContent() {
       );
     }
   };
-
   const AvailableModules = () => {
     if (courses) {
       return (
@@ -137,7 +228,10 @@ function ManagerAvailableContent() {
           </ArrowNextAndPrevious>
           <h4 className="ms-sm-3 my-4">{newWeek}</h4>
           <div className="ms-sm-3">{ContentCheckHandler()}</div>
-          <ManagerValidateCourse />
+          <ManagerValidateCourse
+            setComment={setComment}
+            HandleSubmit={HandleSubmit}
+          />
         </Fragment>
       );
     } else {

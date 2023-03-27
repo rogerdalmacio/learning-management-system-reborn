@@ -46,20 +46,17 @@ const SuperCreateAdminAcct = () => {
     const GetAnnouncementHandler = async () => {
       if (role === "SuperAdmin") {
         await axios
-          .get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/listofusers/students`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-            }
-          )
+          .get(`${import.meta.env.VITE_API_BASE_URL}/api/listofusers/admins`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          })
           .then((response) => {
             console.log(response);
-            setGetAnnouncement(response.data.students);
-            setTableData(response.data.students.sort((a, b) => b.id - a.id));
+            setGetAnnouncement(response.data.Admin);
+            setTableData(response.data.Admin.sort((a, b) => b.id - a.id));
           });
       }
     };
@@ -267,47 +264,6 @@ const SuperCreateAdminAcct = () => {
         }),
       },
       {
-        accessorKey: "year_and_section",
-        header: "Year and Section",
-        size: 140,
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...getCommonEditTextFieldProps(cell),
-          inputProps: {
-            type: "number",
-            onKeyPress: (event) => {
-              const keyCode = event.which || event.keyCode;
-              const keyValue = String.fromCharCode(keyCode);
-              if (/[^0-9]/.test(keyValue)) {
-                event.preventDefault();
-              }
-            },
-          },
-        }),
-      },
-      {
-        accessorKey: "program",
-        header: "Program",
-        size: 140,
-
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...getCommonEditTextFieldProps(cell),
-        }),
-      },
-      {
-        accessorKey: "department",
-        header: "Department",
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...getCommonEditTextFieldProps(cell),
-        }),
-      },
-      {
-        accessorKey: "major",
-        header: "Major",
-        // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-        //   ...getCommonEditTextFieldProps(cell),
-        // }),
-      },
-      {
         accessorKey: "created_at",
         header: "Created At",
         size: 80,
@@ -344,20 +300,8 @@ const SuperCreateAdminAcct = () => {
           data={tableData}
           editingMode="modal" //default
           enableColumnOrdering
-          enableEditing
           onEditingRowSave={handleSaveRowEdits}
           onEditingRowCancel={handleCancelRowEdits}
-          renderRowActions={({ row, table }) => (
-            <Box
-              sx={{ display: "flex", gap: "1rem", justifyContent: "center" }}
-            >
-              <Tooltip arrow placement="left" title="Edit">
-                <IconButton onClick={() => table.setEditingRow(row)}>
-                  <Edit />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          )}
           renderTopToolbarCustomActions={() => (
             <Button
               className="smallButtonTemplate"
