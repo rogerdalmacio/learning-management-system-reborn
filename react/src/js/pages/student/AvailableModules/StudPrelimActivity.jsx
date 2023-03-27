@@ -15,6 +15,7 @@ function StudPrelimActivity() {
     activity,
     setWeekQuiz,
     activityResultid,
+    hasQuizResultIdChange,
   } = useStudentContext();
 
   const [content, setContent] = useState();

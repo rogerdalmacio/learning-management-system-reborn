@@ -360,7 +360,7 @@ function StudAAE() {
     }
   };
 
-  console.log(quizInfo);
+  console.log(quizResultId);
   const MainContent = () => {
     if (
       quizResultId &&

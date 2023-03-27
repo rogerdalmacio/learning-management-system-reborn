@@ -14,7 +14,7 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
-const TeachReAttemptQuiz = ({}) => {
+const GetStudentActivities = ({}) => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
 
@@ -62,77 +62,42 @@ const TeachReAttemptQuiz = ({}) => {
                 //   console.log(quiz.module_id == "MATH00-1");
                 //   return quiz.module_id == "MATH00-1";
                 // });
-
-                const filteredItem = item.quizresult.filter(
+                console.log(item);
+                const filteredItem = item.activityresult.filter(
                   (quiz) =>
                     quiz.module_id == `${courseBase}-${num}` &&
                     item.year_and_section == courseSection
                 );
-                console.log(filteredItem);
 
+                console.log(filteredItem);
                 return filteredItem.reduce((acc, cur) => {
                   console.log(cur);
-                  console.log(cur.quiz_type);
-                  const value = cur.id;
-                  const quizType = cur.quiz_type + "id";
+                  console.log(cur.module_id);
 
                   const weekNo = parseInt(cur.module_id.split("-")[1], 10);
-                  acc[cur.quiz_type] = cur.score;
+                  acc[cur.activity_type] = cur.activity_type;
                   acc.weekNo = weekNo;
-                  acc[quizType] = value;
+                  acc[
+                    cur.activity_type
+                  ] = `${item.id}${cur.activity_type}${cur.activity_id}`;
                   console.log(acc);
-
                   const resul = {
                     id: item.id,
                     first_name: item.first_name,
                     last_name: item.last_name,
                     year_and_section: item.year_and_section,
                     program: item.program,
-                    evaluation:
-                      acc.evaluation == undefined ? "" : acc.evaluation,
-                    aae: acc.aae == undefined ? "" : acc.aae,
-                    assignment:
-                      acc.assignment == undefined ? "" : acc.assignment,
-                    prelim_examination:
-                      acc.preliminaryexamination == undefined
-                        ? ""
-                        : acc.preliminaryexamination,
-                    midterm_examination:
-                      acc.midtermexamination == undefined
-                        ? ""
-                        : acc.midtermexamination,
-                    final_examination:
-                      acc.finalexamination == undefined
-                        ? ""
-                        : acc.finalexamination,
-                    weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
-                    evaluationid:
-                      acc.evaluationid == undefined ? "" : acc.evaluationid,
-                    aaeid: acc.aaeid == undefined ? "" : acc.aaeid,
-                    assignmentid:
-                      acc.assignmentid == undefined ? "" : acc.assignmentid,
-                    prelim_examinationid:
-                      acc.preliminaryexaminationid == undefined
-                        ? ""
-                        : acc.preliminaryexaminationid,
-                    midterm_examinationid:
-                      acc.midtermexaminationid == undefined
-                        ? ""
-                        : acc.midtermexaminationid,
-                    final_examinationid:
-                      acc.finalexaminationid == undefined
-                        ? ""
-                        : acc.finalexaminationid,
-                    weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
+                    [cur.activity_type]: `${item.id}${cur.activity_type}${cur.activity_id}`,
                   };
 
                   return resul;
                 }, {});
               });
             });
+
             console.log(result2);
             let finalItem = [];
-            const item = result2.map((item) => {
+            result2.map((item) => {
               console.log(item);
               return item.map((ite) => {
                 console.log(ite);
@@ -152,7 +117,7 @@ const TeachReAttemptQuiz = ({}) => {
     };
     GetAnnouncementHandler();
   }, [updatedList]);
-
+  console.log(tableData);
   const handleAction = (quizResultId, studID, quizType) => {
     if (
       !confirm(
@@ -235,8 +200,8 @@ const TeachReAttemptQuiz = ({}) => {
       size: 80,
     },
     {
-      accessorKey: "aae",
-      header: "AAE",
+      accessorKey: "preliminaryactivity",
+      header: "Preliminary Activity",
       enableColumnOrdering: true,
       enableEditing: false, //disable editing on this column
       enableSorting: true,
@@ -244,12 +209,23 @@ const TeachReAttemptQuiz = ({}) => {
       Cell: ({ row, column }) => (
         <div
           className={`${
-            row.original.aae !== "" ? "d-flex align-items-center" : "d-none"
+            row.original.preliminaryactivity !== ""
+              ? "d-flex align-items-center"
+              : "d-none"
           }`}
         >
           {console.log(column.id)}
-
-          <p className="mb-0 fw-bold me-3 fs-6">{row.original.aae}</p>
+          <a
+            className="text-decoration-none fs-6"
+            target="_blank"
+            href={`${
+              import.meta.env.VITE_API_BASE_URL
+            }/storage/activity/preliminaryactivity/${
+              row.original.preliminaryactivity
+            }.pdf`}
+          >
+            {`${row.original.preliminaryactivity}.pdf`}
+          </a>{" "}
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
             onClick={() =>
@@ -262,8 +238,8 @@ const TeachReAttemptQuiz = ({}) => {
       ),
     },
     {
-      accessorKey: "evaluation",
-      header: "Evaluation",
+      accessorKey: "generalization",
+      header: "Generalization",
       enableColumnOrdering: true,
       enableEditing: false, //disable editing on this column
       enableSorting: true,
@@ -271,154 +247,27 @@ const TeachReAttemptQuiz = ({}) => {
       Cell: ({ row, column }) => (
         <div
           className={`${
-            row.original.evaluation !== ""
+            row.original.generalization !== ""
               ? "d-flex align-items-center"
               : "d-none"
           }`}
         >
           {console.log(column.id)}
-
-          <p className="mb-0 fw-bold me-3 fs-6">{row.original.evaluation}</p>
-          <button
-            className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() =>
-              handleAction(
-                row.original.evaluationid,
-                row.original.id,
-                column.id
-              )
-            }
+          <a
+            className="text-decoration-none fs-6"
+            target="_blank"
+            href={`${
+              import.meta.env.VITE_API_BASE_URL
+            }/storage/activity/generalization/${
+              row.original.generalization
+            }.pdf`}
           >
-            Delete
-          </button>
-        </div>
-      ),
-    },
-    {
-      accessorKey: "assignment",
-      header: "Assignment",
-      enableColumnOrdering: true,
-      enableEditing: false, //disable editing on this column
-      enableSorting: true,
-      size: 80,
-      Cell: ({ row, column }) => (
-        <div
-          className={`${
-            row.original.assignment !== ""
-              ? "d-flex align-items-center"
-              : "d-none"
-          }`}
-        >
-          {console.log(column.id)}
-
-          <p className="mb-0 fw-bold me-3 fs-6">{row.original.assignment}</p>
+            {`${row.original.generalization}.pdf`}
+          </a>{" "}
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
             onClick={() =>
-              handleAction(
-                row.original.assignmentid,
-                row.original.id,
-                column.id
-              )
-            }
-          >
-            Delete
-          </button>
-        </div>
-      ),
-    },
-    {
-      accessorKey: "prelim_examination",
-      header: "Preliminary Exam",
-      enableColumnOrdering: true,
-      enableEditing: false, //disable editing on this column
-      enableSorting: true,
-      size: 80,
-      Cell: ({ row, column }) => (
-        <div
-          className={`${
-            row.original.prelim_examination !== ""
-              ? "d-flex align-items-center"
-              : "d-none"
-          }`}
-        >
-          <p className="mb-0 fw-bold me-3 fs-6">
-            {row.original.prelim_examination}
-          </p>
-          <button
-            className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() =>
-              handleAction(
-                row.original.prelim_examinationid,
-                row.original.id,
-                column.id
-              )
-            }
-          >
-            Delete
-          </button>
-        </div>
-      ),
-    },
-    {
-      accessorKey: "midterm_examination",
-      header: "Midterm Exam",
-      enableColumnOrdering: true,
-      enableEditing: false, //disable editing on this column
-      enableSorting: true,
-      size: 80,
-      Cell: ({ row, column }) => (
-        <div
-          className={`${
-            row.original.midterm_examination !== ""
-              ? "d-flex align-items-center"
-              : "d-none"
-          }`}
-        >
-          <p className="mb-0 fw-bold me-3 fs-6">
-            {row.original.midterm_examination}
-          </p>
-          <button
-            className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() =>
-              handleAction(
-                row.original.midterm_examinationid,
-                row.original.id,
-                column.id
-              )
-            }
-          >
-            Delete
-          </button>
-        </div>
-      ),
-    },
-    {
-      accessorKey: "final_examination",
-      header: "Final Exam",
-      enableColumnOrdering: true,
-      enableEditing: false, //disable editing on this column
-      enableSorting: true,
-      size: 80,
-      Cell: ({ row, column }) => (
-        <div
-          className={`${
-            row.original.final_examination !== ""
-              ? "d-flex align-items-center"
-              : "d-none"
-          }`}
-        >
-          <p className="mb-0 fw-bold me-3 fs-6">
-            {row.original.final_examination}
-          </p>
-          <button
-            className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() =>
-              handleAction(
-                row.original.final_examinationid,
-                row.original.id,
-                column.id
-              )
+              handleAction(row.original.aaeid, row.original.id, column.id)
             }
           >
             Delete
@@ -432,7 +281,7 @@ const TeachReAttemptQuiz = ({}) => {
     <div>
       <ArrowNextAndPrevious>
         <h3 className="m-0">
-          Reset Quiz Attempt - {courseBase} - {courseSection}
+          Student's Activities - {courseBase} - {courseSection}
         </h3>
       </ArrowNextAndPrevious>
       <div className="MaterialUiTable">
@@ -466,4 +315,4 @@ const TeachReAttemptQuiz = ({}) => {
   );
 };
 
-export default TeachReAttemptQuiz;
+export default GetStudentActivities;

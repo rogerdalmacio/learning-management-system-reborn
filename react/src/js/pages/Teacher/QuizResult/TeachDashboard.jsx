@@ -270,7 +270,9 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
   return (
     <div>
       <ArrowNextAndPrevious>
-        <h3 className="m-0">Quiz Results - {courseBase} - {courseSection}</h3>
+        <h3 className="m-0">
+          Quiz Results - {courseBase} - {courseSection}
+        </h3>
       </ArrowNextAndPrevious>
       <div className="MaterialUiTable">
         <MaterialReactTable

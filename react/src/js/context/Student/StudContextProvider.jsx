@@ -20,6 +20,7 @@ export const StudContextProvider = ({ children }) => {
   const [activityid, setActivityId] = useState();
   const [activityResultid, setActivityrResultId] = useState();
   const [quizResultId, setQuizResultId] = useState();
+  const [hasQuizResultIdChange, setHasQuizResultIdChange] = useState(false);
   const [hasChange, setHasChange] = useState(false);
   // const pathname = window.location.pathname;
   // const pathArray = pathname.split("/");
@@ -245,14 +246,14 @@ export const StudContextProvider = ({ children }) => {
           )
           .then((response) => {
             console.log(response.data[0]);
-            setActivityrResultId(response.data[0]);
+            setQuizResultId(response.data[0]);
           });
       }
     };
 
     renderQuizResult();
-  }, [quizid]);
-
+  }, [quizid, hasQuizResultIdChange]);
+  console.log(hasQuizResultIdChange);
   return (
     <StudentContext.Provider
       value={{
