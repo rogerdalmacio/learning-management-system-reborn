@@ -2,7 +2,9 @@
 <?php
 
 use Carbon\Carbon;
+use App\Models\CourseRating;
 use Illuminate\Support\Facades\Route;
+use App\Models\CoreFunctions\Announcement;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\Students\SQuizController;
 use App\Http\Controllers\Teacher\GradesController;
@@ -40,9 +42,9 @@ use App\Http\Controllers\CoreFunctions\AnnouncementsController;
 use App\Http\Controllers\CoreFunctions\PasswordResetController;
 use App\Http\Controllers\CoreFunctions\ListOfSubjectsController;
 use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
+use App\Http\Controllers\CourseManager\CMCourseRatingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
-use App\Models\CoreFunctions\Announcement;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,12 +144,16 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
     Route::post('/singlecoursedevelopersubjecttagging', [SubjectTaggingController::class, 'singleCourseDeveloperSubjectTagging']);
 
     Route::post('/createtodo', [CMToDoListController::class, 'createTodo']);
-    Route::patch('/moduleapprove/{id}', [CMToDoListController::class, 'moduleApproval']);
+    Route::patch('/acceptTodo/{id}', [CMToDoListController::class, 'acceptTodo']);
+    Route::patch('/moduleapprove/{id}', [CMToDoListController::class, 'toggleModuleApproval']);
     Route::patch('/courseapprove/{id}', [CMToDoListController::class, 'toggleCourseApproval']);
 
     Route::get('/students', [ListOfUsersController::class, 'students']);
 
     Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
+
+    Route::post('/course-rating', [CMCourseRatingController::class, 'rating']);
+    Route::post('/course-rating/{id}', [CMCourseRatingController::class, 'editRating']);
 });
 
 //content routes
@@ -219,6 +225,7 @@ Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'abili
     Route::get('/teachers', [ListOfUsersController::class, 'teachers']);
     Route::get('/coursemanagers', [ListOfUsersController::class, 'coursemanager']);
     Route::get('/coursedevelopers', [ListOfUsersController::class, 'coursedeveloper']);
+    Route::get('/admins', [ListOfUsersController::class, 'admin']);
 
 });
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CoreFunctions;
 
 use App\Http\Controllers\Controller;
+use App\Models\Users\Admin;
 use App\Models\Users\CourseDeveloper;
 use App\Models\Users\CourseManager;
 use App\Models\Users\Student;
@@ -58,7 +59,17 @@ class ListOfUsersController extends Controller
         ];
 
         return response($response, 200);
+    }
 
+    public function admin() {
+
+        $admin = Admin::all();
+
+        $response = [
+            'Admin' => $admin
+        ];
+
+        return response($response, 200);
 
     }
     

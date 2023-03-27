@@ -39,12 +39,37 @@ class CMToDoListController extends Controller
             'user_type' => Auth::user()->usertype(),
             'activity_log' => 'Created to do for ' . $contentvalidation->module_id
         ]);
-
+        
         return response($response, 201);
+    }
+
+    public function acceptTodo(Request $request, $id) {
+
+        $request->validate([
+            'status' => 'required'
+        ]);
+
+        $todo = ContentValidation::find($id);
+
+        $todo->update([
+            'status' => $request['status'],
+        ]);
+
+        $response = [
+            'Todo' => $todo
+        ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Accepted to do for ' . $todo->module_id
+        ]);
+
+        return response($response, 204);
 
     }
 
-    public function moduleApproval($id) {
+    public function toggleModuleApproval($id) {
 
         $module = Module::find($id);
 

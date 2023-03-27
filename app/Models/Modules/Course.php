@@ -3,6 +3,7 @@
 namespace App\Models\Modules;
 
 use App\Models\CourseManager\ContentValidation;
+use App\Models\CourseRating;
 use App\Models\Modules\Module;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -67,5 +68,10 @@ class Course extends Model
             'id',
             'id'
         );
+    }
+
+    public function rating()
+    {
+        return $this->hasOne(CourseRating::class);
     }
 }
