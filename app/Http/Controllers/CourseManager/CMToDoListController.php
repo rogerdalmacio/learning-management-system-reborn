@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\CourseManager;
 
+use Illuminate\Http\Request;
 use App\Models\Modules\Course;
 use App\Models\Modules\Module;
 use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use App\Models\CourseManager\ContentValidation;
 
 class CMToDoListController extends Controller
