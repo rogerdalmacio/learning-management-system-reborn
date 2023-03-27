@@ -19,6 +19,7 @@ export const CourseContentProvider = ({ children }) => {
   const [quizResultId, setQuizResultId] = useState();
   const [updateList, setUpdatedList] = useState(false);
   const [hasChange, setHasChange] = useState(false);
+  const [courseUpdate, setCourseUpdate] = useState(false);
 
   // const pathname = window.location.pathname;
   // const pathArray = pathname.split("/");
@@ -45,7 +46,7 @@ export const CourseContentProvider = ({ children }) => {
     };
 
     renderCourse();
-  }, []);
+  }, [courseUpdate]);
 
   useEffect(() => {
     const renderModule = async () => {
@@ -193,6 +194,8 @@ export const CourseContentProvider = ({ children }) => {
     <CourseContentContext.Provider
       value={{
         courses,
+        setCourseUpdate,
+        courseUpdate,
         setWeek,
         setWeekLesson,
         updateList,

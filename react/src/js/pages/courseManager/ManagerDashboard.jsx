@@ -27,10 +27,12 @@ import { ToastContainer, toast } from "react-toastify";
 import { isNumber } from "lodash";
 import Loading from "../../components/layouts/Loading";
 import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
+import useCourseContent from "../../hooks/CourseContent/useCourseContent";
 
 const ManagerDashboard = () => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
+  const { setCourseUpdate, courseUpdate } = useCourseContent();
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [getAnnouncement, setGetAnnouncement] = useState(data);
@@ -337,6 +339,8 @@ const ManagerDashboard = () => {
           onSubmit={handleCreateNewRow}
           setUpdatedList={setUpdatedList}
           updatedList={updatedList}
+          setCourseUpdate={setCourseUpdate}
+          courseUpdate={courseUpdate}
         />
       </div>
     </Fragment>
@@ -351,6 +355,8 @@ export const CreateNewAccountModal = ({
   onSubmit,
   setUpdatedList,
   updatedList,
+  setCourseUpdate,
+  courseUpdate,
 }) => {
   const [values, setValues] = useState(() =>
     columns.reduce((acc, column) => {
@@ -420,6 +426,7 @@ export const CreateNewAccountModal = ({
               autoClose: 2000,
             });
             setUpdatedList(!updatedList);
+            setCourseUpdate(!courseUpdate);
             onClose();
 
             setValues({

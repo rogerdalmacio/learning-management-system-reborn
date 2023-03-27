@@ -88,7 +88,8 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
     Route::apiResource('activityresult', SActivityResultController::class);
     Route::apiResource('quizresult', SQuizResultController::class);
     Route::post('/getquizresultid', [SQuizResultController::class, 'getQuizResultId']);
-    Route::post('/getactivityresultid', [SActivityResultController::class, 'getActivityResultId']);
+    Route::post('/
+    ', [SActivityResultController::class, 'getActivityResultId']);
 
     Route::post('/snapshot', [SnapshotController::class, 'saveSnapshot']);
 
