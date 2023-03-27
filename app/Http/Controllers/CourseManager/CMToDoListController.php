@@ -50,7 +50,8 @@ class CMToDoListController extends Controller
         $todo = ContentValidation::find($id);
 
         $todo->update([
-            'comments' => $request['comments']
+            'comments' => $request['comments'],
+            'submitted' => false,
         ]);
 
         $response = [
@@ -119,7 +120,5 @@ class CMToDoListController extends Controller
         ]);
 
         return response($response, 204);
-
     }
-
 }

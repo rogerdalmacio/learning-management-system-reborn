@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CourseDeveloper;
 
+use Illuminate\Http\Request;
 use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +11,7 @@ use App\Models\CourseManager\ContentValidation;
 class CDToDoListController extends Controller
 {
 
-    public function submitTodo($id) {
+    public function submitTodo(Request $request, $id) {
 
         $content_validate = ContentValidation::find($id);
 
