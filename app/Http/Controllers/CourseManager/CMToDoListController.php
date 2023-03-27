@@ -55,6 +55,12 @@ class CMToDoListController extends Controller
             'status' => $request['status'],
         ]);
 
+        $module = Module::find($todo->module_id);
+
+        $module->update([
+            'approval' => true
+        ]);
+
         $response = [
             'Todo' => $todo
         ];
@@ -63,31 +69,6 @@ class CMToDoListController extends Controller
             'user_id' => Auth::user()->id,
             'user_type' => Auth::user()->usertype(),
             'activity_log' => 'Accepted to do for ' . $todo->module_id
-        ]);
-
-        return response($response, 204);
-
-    }
-
-    public function toggleModuleApproval($id) {
-
-        $module = Module::find($id);
-
-        $module->update([
-            'approval' => ! $module->approval
-        ]);
-
-        $message = $module->approval ? 'Module approved' : 'Module approval reset';
-
-        $response = [
-            'message' => $message
-        ];
-
-        
-        Logs::create([
-            'user_id' => Auth::user()->id,
-            'user_type' => Auth::user()->usertype(),
-            'activity_log' => 'Approved module' . $module->id
         ]);
 
         return response($response, 204);

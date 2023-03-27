@@ -145,7 +145,6 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
 
     Route::post('/createtodo', [CMToDoListController::class, 'createTodo']);
     Route::patch('/acceptTodo/{id}', [CMToDoListController::class, 'acceptTodo']);
-    Route::patch('/moduleapprove/{id}', [CMToDoListController::class, 'toggleModuleApproval']);
     Route::patch('/courseapprove/{id}', [CMToDoListController::class, 'toggleCourseApproval']);
 
     Route::get('/students', [ListOfUsersController::class, 'students']);
