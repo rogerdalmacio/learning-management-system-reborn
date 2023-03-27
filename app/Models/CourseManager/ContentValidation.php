@@ -16,7 +16,6 @@ class ContentValidation extends Model
         'module_id',
         'status',
         'comments',
-        'deadline',
         'submitted' 
     ];
 

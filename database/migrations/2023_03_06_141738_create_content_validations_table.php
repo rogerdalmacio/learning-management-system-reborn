@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('module_id')->onDelete('cascade');
             $table->string('status');
             $table->text('comment');
-            $table->timestamp('deadline');
             $table->boolean('submitted');
             $table->timestamps();
         });
