@@ -19,14 +19,12 @@ class CMToDoListController extends Controller
             'module_id' => 'required|string' ,
             'status' => 'required|string',
             'comments' => 'required|string',
-            'deadline' => 'required|string'
         ]);
 
         $contentvalidation = ContentValidation::create([
             'module_id' => $request['module_id'],
             'status' => $request['status'],
             'comments' => $request['comments'],
-            'deadline' => $request['deadline'],
             'submitted' => false
         ]);
 
