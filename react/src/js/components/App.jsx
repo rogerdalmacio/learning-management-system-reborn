@@ -105,7 +105,7 @@ import ValidateSnapSortBySubjects from "../pages/Teacher/ValidateSnapshot/Valida
 import ValidateSnapSortBySection from "../pages/Teacher/ValidateSnapshot/ValidateSnapSortBySection";
 import TeachReAttemptQuiz from "../pages/Teacher/ClearQuizAttempt/TeachReAttemptQuiz";
 import GetStudentsActivities from "../pages/Teacher/GetActivities/GetStudentsActivities";
-
+import GetActivitiesSortByAct from "../pages/Teacher/GetActivities/GetActivitiesSortByAct";
 // Others
 import Login from "./authentication/Login";
 import RequireAuth from "./authentication/RequireAuth";
@@ -234,6 +234,10 @@ function App() {
           />
           <Route
             path="/teacher/studentsActivities/:id/:id"
+            element={<GetActivitiesSortByAct />}
+          />
+          <Route
+            path="/teacher/studentsActivities/:id/:id/:id"
             element={<GetStudentsActivities />}
           />
         </Route>

@@ -25,6 +25,8 @@ const GetStudentActivities = ({}) => {
   const courseBase = pathArray[3];
   // sections
   const courseSection = pathArray[4];
+  // sections
+  const courseActivity = pathArray[5];
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [getAnnouncement, setGetAnnouncement] = useState(data);
@@ -66,7 +68,8 @@ const GetStudentActivities = ({}) => {
                 const filteredItem = item.activityresult.filter(
                   (quiz) =>
                     quiz.module_id == `${courseBase}-${num}` &&
-                    item.year_and_section == courseSection
+                    item.year_and_section == courseSection &&
+                    quiz.activity_type == courseActivity
                 );
 
                 console.log(filteredItem);
@@ -87,7 +90,8 @@ const GetStudentActivities = ({}) => {
                     last_name: item.last_name,
                     year_and_section: item.year_and_section,
                     program: item.program,
-                    [cur.activity_type]: `${item.id}${cur.activity_type}${cur.activity_id}`,
+                    activity: `${item.id}${cur.activity_type}${cur.activity_id}`,
+                    weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
                   };
 
                   return resul;
@@ -200,8 +204,8 @@ const GetStudentActivities = ({}) => {
       size: 80,
     },
     {
-      accessorKey: "preliminaryactivity",
-      header: "Preliminary Activity",
+      accessorKey: `${courseActivity}`,
+      header: `${courseActivity}`,
       enableColumnOrdering: true,
       enableEditing: false, //disable editing on this column
       enableSorting: true,
@@ -209,7 +213,7 @@ const GetStudentActivities = ({}) => {
       Cell: ({ row, column }) => (
         <div
           className={`${
-            row.original.preliminaryactivity !== ""
+            row.original.activity !== ""
               ? "d-flex align-items-center"
               : "d-none"
           }`}
@@ -220,49 +224,9 @@ const GetStudentActivities = ({}) => {
             target="_blank"
             href={`${
               import.meta.env.VITE_API_BASE_URL
-            }/storage/activity/preliminaryactivity/${
-              row.original.preliminaryactivity
-            }.pdf`}
+            }/storage/activity/${courseActivity}/${row.original.activity}.pdf`}
           >
-            {`${row.original.preliminaryactivity}.pdf`}
-          </a>{" "}
-          <button
-            className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() =>
-              handleAction(row.original.aaeid, row.original.id, column.id)
-            }
-          >
-            Delete
-          </button>
-        </div>
-      ),
-    },
-    {
-      accessorKey: "generalization",
-      header: "Generalization",
-      enableColumnOrdering: true,
-      enableEditing: false, //disable editing on this column
-      enableSorting: true,
-      size: 80,
-      Cell: ({ row, column }) => (
-        <div
-          className={`${
-            row.original.generalization !== ""
-              ? "d-flex align-items-center"
-              : "d-none"
-          }`}
-        >
-          {console.log(column.id)}
-          <a
-            className="text-decoration-none fs-6"
-            target="_blank"
-            href={`${
-              import.meta.env.VITE_API_BASE_URL
-            }/storage/activity/generalization/${
-              row.original.generalization
-            }.pdf`}
-          >
-            {`${row.original.generalization}.pdf`}
+            {`${row.original.activity}.pdf`}
           </a>{" "}
           <button
             className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
