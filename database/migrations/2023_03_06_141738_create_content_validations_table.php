@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('module_id')->onDelete('cascade');
             $table->string('status');
-            $table->text('comment');
+            $table->text('comments');
             $table->boolean('submitted');
             $table->timestamps();
         });
