@@ -43,6 +43,31 @@ class CMToDoListController extends Controller
         return response($response, 201);
     }
 
+    public function updateTodo(Request $request, $id) {
+
+        $request->validate([
+            'comments' => 'required'
+        ]);
+
+        $todo = ContentValidation::find($id);
+
+        $todo->update([
+            'comments' => $request['comments']
+        ]);
+
+        $response = [
+            'message' => 'To do successfully sent'
+        ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Created to do for ' . $contentvalidation->module_id
+        ]);
+
+        return response($response, 204);
+    }
+
     public function acceptTodo(Request $request, $id) {
 
         $request->validate([
