@@ -2,6 +2,7 @@
 
 namespace App\Models\Modules;
 
+use App\Models\CourseManager\ContentValidation;
 use App\Models\Modules\Quiz;
 use App\Models\Modules\Course;
 use App\Models\Modules\Lesson;
@@ -39,5 +40,15 @@ class Module extends Model
 
     public function lesson(){
         return $this->hasMany(Lesson::class);
+    }
+
+    public function rating()
+    {
+        return $this->hasOne(CourseRating::class);
+    }
+
+    public function contentValidate()
+    {
+        return $this->hasOne(ContentValidation::class);
     }
 }

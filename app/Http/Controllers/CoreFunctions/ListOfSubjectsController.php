@@ -11,7 +11,7 @@ class ListOfSubjectsController extends Controller
     
     public function index() {
 
-        $subjects = Course::with('rating')->get();
+        $subjects = Course::all();
 
         return response($subjects, 200);
 

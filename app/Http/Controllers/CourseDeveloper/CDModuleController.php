@@ -39,7 +39,7 @@ class CDModuleController extends Controller
     public function show($id)
     {
 
-        $query = Module::with(['lesson','activity','quiz'])->where('id', $id)->get();
+        $query = Module::with(['lesson','activity','quiz', 'rating'])->where('id', $id)->get();
 
         $response = [
             'Module' => $query

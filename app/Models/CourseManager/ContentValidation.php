@@ -24,6 +24,4 @@ class ContentValidation extends Model
     {
         return $this->belongsTo(Module::class);
     }
-
-
 }

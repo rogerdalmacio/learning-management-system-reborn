@@ -26,7 +26,7 @@ class CMCourseController extends Controller
 
         $department = $user->department;
 
-        $query = Course::with('module','rating')->where('department', $department)->get();
+        $query = Course::with('module')->where('department', $department)->get();
 
         $response = [
             'Course' => $query
