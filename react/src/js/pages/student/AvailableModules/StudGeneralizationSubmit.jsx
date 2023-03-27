@@ -32,15 +32,15 @@ function StudGeneralizationSubmit({ content, activityResultid }) {
 
     console.log(getNumAlreadyExist);
     const handleSubmit = (e) => {
-        e.preventDefault();
-
         let toastId;
-
+        console.log(file);
         if (!file) {
             toast.error("Please Choose your File First");
             return;
         } else if (file.size > 26214400) {
             toast.error("The file must not be exceeded to 25 MB");
+        } else if (file.type !== "application/pdf") {
+            toast.error("The file must be in PDF formaat");
         }
         // else if (file.type !== "text/csv") {
         //   toast.error("The file must be in a CSV format");
@@ -63,7 +63,7 @@ function StudGeneralizationSubmit({ content, activityResultid }) {
             formData.append("activity_type", content.title);
             formData.append("terms", content.preliminaries);
             formData.append("attempt", 1);
-            formData.append("score", "0");
+            formData.append("score", null);
 
             toastId = toast.info("Sending Request...");
             // console.log(item);
@@ -82,6 +82,117 @@ function StudGeneralizationSubmit({ content, activityResultid }) {
                     }
                 )
                 .then((response) => {
+                    console.log(response);
+                    console.log(response.data.errors);
+                    if (response.data.errors) {
+                        const idString = response.data.errors.map((error) => {
+                            return error.id[0];
+                        });
+
+                        const extractIdNumber = (idString) => {
+                            const idRegex = /^ID\s+(\d+)/;
+                            const match = idRegex.exec(idString);
+                            if (match) {
+                                return parseInt(match[1], 10);
+                            }
+                            return null;
+                        };
+
+                        const idNumbers = idString.map((idString) =>
+                            extractIdNumber(idString)
+                        );
+
+                        toast.update(toastId, {
+                            render: `Account/s already exist`,
+                            type: toast.TYPE.ERROR,
+                            autoClose: 2000,
+                        });
+
+                        setGetNumAlreadyExist(idNumbers.join(", "));
+                    } else if (
+                        response.status >= 200 &&
+                        response.status <= 300
+                    ) {
+                        toast.update(toastId, {
+                            render: "Request Successfully",
+                            type: toast.TYPE.SUCCESS,
+                            autoClose: 2000,
+                        });
+                        setSubmitFile(true);
+                        setProcessing(false);
+                    } else {
+                        throw new Error(
+                            response.status || "Something Went Wrong!"
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    if (error.response.data.length !== 0) {
+                        toast.update(toastId, {
+                            render: `${error.response.data[0]}`,
+                            type: toast.TYPE.ERROR,
+                            autoClose: 2000,
+                        });
+                    } else {
+                        toast.update(toastId, {
+                            render: `${error.message}`,
+                            type: toast.TYPE.ERROR,
+                            autoClose: 2000,
+                        });
+                    }
+                    setProcessing(false);
+                    setSubmitFile(false);
+                });
+        }
+    };
+    console.log(activityResultid);
+    const handleEdit = (e) => {
+        let toastId;
+
+        if (!file) {
+            toast.error("Please Choose your File First");
+            return;
+        } else if (file.size > 26214400) {
+            toast.error("The file must not be exceeded to 25 MB");
+        } else if (file.type !== "application/pdf") {
+            toast.error("The file must be in PDF formaaat");
+        }
+        // else if (file.type !== "text/csv") {
+        //   toast.error("The file must be in a CSV format");
+        // }
+        else {
+            const formData = new FormData();
+            // const item = {
+            //   file: formData,
+            //   student_id: userInfo.id,
+            //   activity_id: content.id,
+            //   module_id: content.module_id,
+            //   terms: content.preliminaries,
+            //   attempt: "inProgress",
+            //   score: "",
+            // };
+            formData.append("file", file);
+            formData.append("_method", "patch");
+
+            toastId = toast.info("Sending Request...");
+            // console.log(item);
+            axios
+                .post(
+                    `${
+                        import.meta.env.VITE_API_BASE_URL
+                    }/api/student/activityresult/${activityResultid.id}`,
+                    formData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+                    }
+                )
+                .then((response) => {
+                    console.log("tangianmo");
                     console.log(response);
                     console.log(response.data.errors);
                     if (response.data.errors) {
@@ -245,15 +356,11 @@ function StudGeneralizationSubmit({ content, activityResultid }) {
             );
         }
     };
-
+    console.log(activityResultid);
     return (
         <div className="w-100">
             <h4 className="mb-4">Submit Generalization</h4>
-            <form
-                className="fileUploadContainer mx-auto w-100"
-                method="post"
-                onSubmit={handleSubmit}
-            >
+            <form className="fileUploadContainer mx-auto w-100" method="post">
                 <div className="d-flex justify-content-center w-100">
                     <label className="uploadFile">
                         <div className="d-block text-center h-100">
@@ -269,16 +376,24 @@ function StudGeneralizationSubmit({ content, activityResultid }) {
                 {FileSystemContainer()}
                 <div className="d-block">
                     <div className="d-flex justify-content-end">
-                        <button
-                            className="uploadButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
-                            type="submit"
-                        >
-                            {activityResultid !== undefined &&
-                            activityResultid !== null
-                                ? "Update"
-                                : "Upload"}
-                        </button>
-                        <div>Tngianmo</div>
+                        {activityResultid !== undefined &&
+                        activityResultid !== null ? (
+                            <button
+                                className="uploadButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
+                                type="button"
+                                onClick={handleEdit}
+                            >
+                                Update
+                            </button>
+                        ) : (
+                            <button
+                                className="uploadButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
+                                type="button"
+                                onClick={handleSubmit}
+                            >
+                                Upload
+                            </button>
+                        )}
                     </div>
                 </div>
             </form>

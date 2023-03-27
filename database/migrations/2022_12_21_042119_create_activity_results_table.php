@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('activity_type');
             $table->string('terms');
             $table->boolean('attempt');
+            $table->string('status');
             $table->string('score')->nullable();
             $table->timestamps();
         });

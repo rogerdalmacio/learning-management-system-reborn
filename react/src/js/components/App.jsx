@@ -113,359 +113,398 @@ import ClearAttemptSortBySection from "../pages/Teacher/ClearQuizAttempt/ClearAt
 import ClearAttemptSortBySubjects from "../pages/Teacher/ClearQuizAttempt/ClearAttemptSortBySubjects";
 
 function App() {
-  useEffect(() => {
-    document.cookie = `name=value;samesite=None;secure;httponly;expires=${new Date(
-      Date.now() + 86400 * 1000
-    ).toUTCString()}`;
-  }, []);
+    useEffect(() => {
+        document.cookie = `name=value;samesite=None;secure;httponly;expires=${new Date(
+            Date.now() + 86400 * 1000
+        ).toUTCString()}`;
+    }, []);
 
-  return (
-    <Routes>
-      <Route element={<NotRequireAuth />}>
-        <Route path="/" element={<Login />} />
-      </Route>
+    return (
+        <Routes>
+            <Route element={<NotRequireAuth />}>
+                <Route path="/" element={<Login />} />
+            </Route>
 
-      {/* STUDENT */}
-      <Route element={<RequireAuth allowedRoles={"student"} />}>
-        <Route
-          path="/student/:id/modules/:id/aae/quiz"
-          element={<StudQuizAAE />}
-        />
-        <Route
-          path="/student/:id/modules/:id/evaluation/quiz"
-          element={<StudQuizEvaluation />}
-        />
-        <Route
-          path="/student/:id/modules/:id/assignment/quiz"
-          element={<StudQuizAssignment />}
-        />
-        <Route
-          path="/student/:id/modules/:id/:id/quiz"
-          element={<StudQuizPrelimExam />}
-        />
-        <Route element={<StudentLayout />}>
-          <Route path="/student/home" element={<Dashboard />}></Route>
-          <Route
-            path="/student/editprofile"
-            element={<StudEditProfile />}
-          ></Route>
-          <Route path="/student/subjects" element={<StudAvailableSubjects />} />
-          <Route
-            path="/student/:id/modules"
-            element={<StudAvailableModules />}
-          />
-          <Route
-            path="/student/:id/modules/:id"
-            element={<StudAvailableContent />}
-          />
-          <Route
-            path="/student/:id/modules/:id/preliminaryactivity"
-            element={<StudPrelimActivity />}
-          />
-          <Route
-            path="/student/:id/modules/:id/generalization"
-            element={<StudGeneralization />}
-          />
-          <Route
-            path="/student/:id/modules/:id/lesson"
-            element={<StudLesson />}
-          />
-          <Route path="/student/:id/modules/:id/aae" element={<StudAAE />} />
-          <Route
-            path="/student/:id/modules/:id/evaluation"
-            element={<StudEvaluation />}
-          />
-          <Route
-            path="/student/:id/modules/:id/assignment"
-            element={<StudAssignment />}
-          />
-          <Route
-            path="/student/:id/modules/:id/:id"
-            element={<StudPrelimExam />}
-          />
-        </Route>
-      </Route>
+            {/* STUDENT */}
+            <Route element={<RequireAuth allowedRoles={"student"} />}>
+                <Route
+                    path="/student/:id/modules/:id/aae/quiz"
+                    element={<StudQuizAAE />}
+                />
+                <Route
+                    path="/student/:id/modules/:id/evaluation/quiz"
+                    element={<StudQuizEvaluation />}
+                />
+                <Route
+                    path="/student/:id/modules/:id/assignment/quiz"
+                    element={<StudQuizAssignment />}
+                />
+                <Route
+                    path="/student/:id/modules/:id/:id/quiz"
+                    element={<StudQuizPrelimExam />}
+                />
+                <Route element={<StudentLayout />}>
+                    <Route path="/student/home" element={<Dashboard />}></Route>
+                    <Route
+                        path="/student/editprofile"
+                        element={<StudEditProfile />}
+                    ></Route>
+                    <Route
+                        path="/student/subjects"
+                        element={<StudAvailableSubjects />}
+                    />
+                    <Route
+                        path="/student/:id/modules"
+                        element={<StudAvailableModules />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id"
+                        element={<StudAvailableContent />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/preliminaryactivity"
+                        element={<StudPrelimActivity />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/generalization"
+                        element={<StudGeneralization />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/lesson"
+                        element={<StudLesson />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/aae"
+                        element={<StudAAE />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/evaluation"
+                        element={<StudEvaluation />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/assignment"
+                        element={<StudAssignment />}
+                    />
+                    <Route
+                        path="/student/:id/modules/:id/:id"
+                        element={<StudPrelimExam />}
+                    />
+                </Route>
+            </Route>
 
-      {/* TEACHER */}
-      <Route element={<RequireAuth allowedRoles={"teacher"} />}>
-        <Route element={<TeacherLayout />}>
-          <Route path="/teacher/editprofile" element={<TeachEditProfile />} />
-          {/* quizresult */}
-          <Route path="/teacher/home" element={<SortBySubjects />} />
-          <Route path="/teacher/home/:id" element={<SortBySection />} />
-          <Route path="/teacher/home/:id/:id" element={<TeachDashboard />} />
-          {/* validate snapshot */}
-          <Route
-            path="/teacher/validatesnapshot"
-            element={<ValidateSnapSortBySubjects />}
-          />
-          <Route
-            path="/teacher/validatesnapshot/:id"
-            element={<ValidateSnapSortBySection />}
-          />
-          <Route
-            path="/teacher/validatesnapshot/:id/:id"
-            element={<TeachValidateSnapshot />}
-          />
-          {/* Clear Attempt */}
-          <Route
-            path="/teacher/resetquizattempt"
-            element={<ClearAttemptSortBySubjects />}
-          />
-          <Route
-            path="/teacher/resetquizattempt/:id"
-            element={<ClearAttemptSortBySection />}
-          />
-          <Route
-            path="/teacher/resetquizattempt/:id/:id"
-            element={<TeachReAttemptQuiz />}
-          />
-        </Route>
-      </Route>
+            {/* TEACHER */}
+            <Route element={<RequireAuth allowedRoles={"teacher"} />}>
+                <Route element={<TeacherLayout />}>
+                    <Route
+                        path="/teacher/editprofile"
+                        element={<TeachEditProfile />}
+                    />
+                    {/* quizresult */}
+                    <Route path="/teacher/home" element={<SortBySubjects />} />
+                    <Route
+                        path="/teacher/home/:id"
+                        element={<SortBySection />}
+                    />
+                    <Route
+                        path="/teacher/home/:id/:id"
+                        element={<TeachDashboard />}
+                    />
+                    {/* validate snapshot */}
+                    <Route
+                        path="/teacher/validatesnapshot"
+                        element={<ValidateSnapSortBySubjects />}
+                    />
+                    <Route
+                        path="/teacher/validatesnapshot/:id"
+                        element={<ValidateSnapSortBySection />}
+                    />
+                    <Route
+                        path="/teacher/validatesnapshot/:id/:id"
+                        element={<TeachValidateSnapshot />}
+                    />
+                    {/* Clear Attempt */}
+                    <Route
+                        path="/teacher/resetquizattempt"
+                        element={<ClearAttemptSortBySubjects />}
+                    />
+                    <Route
+                        path="/teacher/resetquizattempt/:id"
+                        element={<ClearAttemptSortBySection />}
+                    />
+                    <Route
+                        path="/teacher/resetquizattempt/:id/:id"
+                        element={<TeachReAttemptQuiz />}
+                    />
+                </Route>
+            </Route>
 
-      {/* COURSE MANAGER */}
-      <Route element={<RequireAuth allowedRoles={"CourseManager"} />}>
-        <Route element={<CourseManagerLayout />}>
-          <Route path="/courseManager/home" element={<ManagerDashboard />} />
-          <Route
-            path="/courseManager/editprofile"
-            element={<ManagerEditProfile />}
-          />
-          <Route
-            path="/courseManager/course"
-            element={<ManagerGetCreatedCourse />}
-          />
-          <Route
-            path="/courseManager/taggingSubjectForCourseDev"
-            element={<ManagerTagSubjToCourseDev />}
-          />
-          <Route
-            path="/courseManager/listOfStudents"
-            element={<ManagerGetStudents />}
-          />
-          <Route
-            path="/courseManager/createsyllabus"
-            element={<ManagerCreateSyllabus />}
-          />
-          <Route
-            path="/courseManager/:id/:id/modules"
-            element={<ManagerCreateSyllabusTItle />}
-          />
-          {/* courses */}
-          <Route
-            path="/courseManager/subjects"
-            element={<ManagerAvailableSubjects />}
-          />
-          <Route
-            path="/courseManager/:id/modules"
-            element={<ManagerAvailableModules />}
-          />
-          <Route
-            path="/courseManager/:id/modules/:id"
-            element={<ManagerAvailableContent />}
-          />
-          {/* modules */}
-          <Route
-            path="/courseManager/:id/modules/:id/aae"
-            element={<ManagerGetAAE />}
-          />
-          <Route
-            path="/courseManager/:id/modules/:id/assignment"
-            element={<ManagerGetAssignment />}
-          />
-          <Route
-            path="/courseManager/:id/modules/:id/evaluation"
-            element={<ManagerGetEvaluation />}
-          />
-          <Route
-            path="/courseManager/:id/modules/:id/:id"
-            element={<ManagerGetExam />}
-          />
-          <Route
-            path="/courseManager/:id/modules/:id/lesson"
-            element={<ManagerGetLesson />}
-          />
-          <Route
-            path="/courseManager/:id/modules/:id/preliminaryactivity"
-            element={<ManagerGetPrelimAct />}
-          />
-          <Route
-            path="/courseManager/:id/modules/:id/generalization"
-            element={<ManagerGetGeneralization />}
-          />
-        </Route>
-      </Route>
+            {/* COURSE MANAGER */}
+            <Route element={<RequireAuth allowedRoles={"CourseManager"} />}>
+                <Route element={<CourseManagerLayout />}>
+                    <Route
+                        path="/courseManager/home"
+                        element={<ManagerDashboard />}
+                    />
+                    <Route
+                        path="/courseManager/editprofile"
+                        element={<ManagerEditProfile />}
+                    />
+                    <Route
+                        path="/courseManager/course"
+                        element={<ManagerGetCreatedCourse />}
+                    />
+                    <Route
+                        path="/courseManager/taggingSubjectForCourseDev"
+                        element={<ManagerTagSubjToCourseDev />}
+                    />
+                    <Route
+                        path="/courseManager/listOfStudents"
+                        element={<ManagerGetStudents />}
+                    />
+                    <Route
+                        path="/courseManager/createsyllabus"
+                        element={<ManagerCreateSyllabus />}
+                    />
+                    <Route
+                        path="/courseManager/:id/:id/modules"
+                        element={<ManagerCreateSyllabusTItle />}
+                    />
+                    {/* courses */}
+                    <Route
+                        path="/courseManager/subjects"
+                        element={<ManagerAvailableSubjects />}
+                    />
+                    <Route
+                        path="/courseManager/:id/modules"
+                        element={<ManagerAvailableModules />}
+                    />
+                    <Route
+                        path="/courseManager/:id/modules/:id"
+                        element={<ManagerAvailableContent />}
+                    />
+                    {/* modules */}
+                    <Route
+                        path="/courseManager/:id/modules/:id/aae"
+                        element={<ManagerGetAAE />}
+                    />
+                    <Route
+                        path="/courseManager/:id/modules/:id/assignment"
+                        element={<ManagerGetAssignment />}
+                    />
+                    <Route
+                        path="/courseManager/:id/modules/:id/evaluation"
+                        element={<ManagerGetEvaluation />}
+                    />
+                    <Route
+                        path="/courseManager/:id/modules/:id/:id"
+                        element={<ManagerGetExam />}
+                    />
+                    <Route
+                        path="/courseManager/:id/modules/:id/lesson"
+                        element={<ManagerGetLesson />}
+                    />
+                    <Route
+                        path="/courseManager/:id/modules/:id/preliminaryactivity"
+                        element={<ManagerGetPrelimAct />}
+                    />
+                    <Route
+                        path="/courseManager/:id/modules/:id/generalization"
+                        element={<ManagerGetGeneralization />}
+                    />
+                </Route>
+            </Route>
 
-      {/* SUPER ADMIN */}
-      <Route element={<RequireAuth allowedRoles={"SuperAdmin"} />}>
-        <Route element={<SuperAdminLayout />}>
-          <Route path="/superAdmin/home" element={<SuperDashboard />} />
-          <Route
-            path="/superAdmin/editprofile"
-            element={<SuperEditProfile />}
-          />
-          <Route
-            path="/superAdmin/studentBulkCreationAccount"
-            element={<SuperBulkStudentCreationAccount />}
-          />
-          <Route
-            path="/superAdmin/teacherBulkCreationAccount"
-            element={<SuperBulkTeacherCreationAccount />}
-          />
+            {/* SUPER ADMIN */}
+            <Route element={<RequireAuth allowedRoles={"SuperAdmin"} />}>
+                <Route element={<SuperAdminLayout />}>
+                    <Route
+                        path="/superAdmin/home"
+                        element={<SuperDashboard />}
+                    />
+                    <Route
+                        path="/superAdmin/editprofile"
+                        element={<SuperEditProfile />}
+                    />
+                    <Route
+                        path="/superAdmin/studentBulkCreationAccount"
+                        element={<SuperBulkStudentCreationAccount />}
+                    />
+                    <Route
+                        path="/superAdmin/teacherBulkCreationAccount"
+                        element={<SuperBulkTeacherCreationAccount />}
+                    />
 
-          <Route
-            path="/superAdmin/teacherCreateSingleAccount"
-            element={<SuperCreateTeacherAcct />}
-          />
-          <Route
-            path="/superAdmin/studentCreateSingleAccount"
-            element={<SuperCreateStudentAcct />}
-          />
-          <Route
-            path="/superAdmin/adminCreateSingleAccount"
-            element={<SuperCreateAdminAcct />}
-          />
-          <Route
-            path="/superAdmin/courseDeveloperCreateSingleAccount"
-            element={<SuperCreateCourseDevAcct />}
-          />
-          <Route
-            path="/superAdmin/courseManagerCreateSingleAccount"
-            element={<SuperCreateCourseManAcct />}
-          />
-        </Route>
-      </Route>
+                    <Route
+                        path="/superAdmin/teacherCreateSingleAccount"
+                        element={<SuperCreateTeacherAcct />}
+                    />
+                    <Route
+                        path="/superAdmin/studentCreateSingleAccount"
+                        element={<SuperCreateStudentAcct />}
+                    />
+                    <Route
+                        path="/superAdmin/adminCreateSingleAccount"
+                        element={<SuperCreateAdminAcct />}
+                    />
+                    <Route
+                        path="/superAdmin/courseDeveloperCreateSingleAccount"
+                        element={<SuperCreateCourseDevAcct />}
+                    />
+                    <Route
+                        path="/superAdmin/courseManagerCreateSingleAccount"
+                        element={<SuperCreateCourseManAcct />}
+                    />
+                </Route>
+            </Route>
 
-      {/* ADMIN */}
-      <Route element={<RequireAuth allowedRoles={"admin"} />}>
-        <Route element={<AdminLayout />}>
-          <Route path="/admin/home" element={<AdminDashboard />} />
-          <Route path="/admin/editProfile" element={<AdminEditProfile />} />
-          <Route
-            path="/admin/studentSubjectTagging"
-            element={<AdminStudentSubjectTagging />}
-          />
-          <Route
-            path="/admin/teacherSubjectTagging"
-            element={<AdminTeacherSubjectTagging />}
-          />
-          <Route
-            path="/admin/studentIndividualSubjectTagging"
-            element={<StudentIndividualSubjectTagging />}
-          />
-          <Route
-            path="/admin/teacherIndividualSubjectTagging"
-            element={<TeacherIndividualSubjectTagging />}
-          />
-          <Route
-            path="/admin/batchgrantexam"
-            element={<AdminBatchGrantExam />}
-          />
-          <Route
-            path="/admin/singleGrantExam"
-            element={<AdminSingleGrantExam />}
-          />
-          <Route
-            path="/admin/createAnnouncement"
-            element={<AdminAnnouncement />}
-          />
-          <Route path="/admin/weekGrant" element={<AdminWeekGrant />} />
-          {/* courses */}
-          <Route path="/admin/subjects" element={<AdminAvailableSubjects />} />
-          <Route
-            path="/admin/:id/modules"
-            element={<AdminAvailableModules />}
-          />
-          <Route
-            path="/admin/:id/modules/:id"
-            element={<AdminAvailableContent />}
-          />
-          {/* modules */}
-          <Route path="/admin/:id/modules/:id/aae" element={<AdminGetAAE />} />
-          <Route
-            path="/admin/:id/modules/:id/assignment"
-            element={<AdminGetAssignment />}
-          />
-          <Route
-            path="/admin/:id/modules/:id/evaluation"
-            element={<AdminGetEvaluation />}
-          />
-          <Route path="/admin/:id/modules/:id/:id" element={<AdminGetExam />} />
-          <Route
-            path="/admin/:id/modules/:id/lesson"
-            element={<AdminGetLesson />}
-          />
-          <Route
-            path="/admin/:id/modules/:id/preliminaryactivity"
-            element={<AdminGetPrelimAct />}
-          />
-          <Route
-            path="/admin/:id/modules/:id/generalization"
-            element={<AdminGetGeneralization />}
-          />
-        </Route>
-      </Route>
+            {/* ADMIN */}
+            <Route element={<RequireAuth allowedRoles={"admin"} />}>
+                <Route element={<AdminLayout />}>
+                    <Route path="/admin/home" element={<AdminDashboard />} />
+                    <Route
+                        path="/admin/editProfile"
+                        element={<AdminEditProfile />}
+                    />
+                    <Route
+                        path="/admin/studentSubjectTagging"
+                        element={<AdminStudentSubjectTagging />}
+                    />
+                    <Route
+                        path="/admin/teacherSubjectTagging"
+                        element={<AdminTeacherSubjectTagging />}
+                    />
+                    <Route
+                        path="/admin/studentIndividualSubjectTagging"
+                        element={<StudentIndividualSubjectTagging />}
+                    />
+                    <Route
+                        path="/admin/teacherIndividualSubjectTagging"
+                        element={<TeacherIndividualSubjectTagging />}
+                    />
+                    <Route
+                        path="/admin/batchgrantexam"
+                        element={<AdminBatchGrantExam />}
+                    />
+                    <Route
+                        path="/admin/singleGrantExam"
+                        element={<AdminSingleGrantExam />}
+                    />
+                    <Route
+                        path="/admin/createAnnouncement"
+                        element={<AdminAnnouncement />}
+                    />
+                    <Route
+                        path="/admin/weekGrant"
+                        element={<AdminWeekGrant />}
+                    />
+                    {/* courses */}
+                    <Route
+                        path="/admin/subjects"
+                        element={<AdminAvailableSubjects />}
+                    />
+                    <Route
+                        path="/admin/:id/modules"
+                        element={<AdminAvailableModules />}
+                    />
+                    <Route
+                        path="/admin/:id/modules/:id"
+                        element={<AdminAvailableContent />}
+                    />
+                    {/* modules */}
+                    <Route
+                        path="/admin/:id/modules/:id/aae"
+                        element={<AdminGetAAE />}
+                    />
+                    <Route
+                        path="/admin/:id/modules/:id/assignment"
+                        element={<AdminGetAssignment />}
+                    />
+                    <Route
+                        path="/admin/:id/modules/:id/evaluation"
+                        element={<AdminGetEvaluation />}
+                    />
+                    <Route
+                        path="/admin/:id/modules/:id/:id"
+                        element={<AdminGetExam />}
+                    />
+                    <Route
+                        path="/admin/:id/modules/:id/lesson"
+                        element={<AdminGetLesson />}
+                    />
+                    <Route
+                        path="/admin/:id/modules/:id/preliminaryactivity"
+                        element={<AdminGetPrelimAct />}
+                    />
+                    <Route
+                        path="/admin/:id/modules/:id/generalization"
+                        element={<AdminGetGeneralization />}
+                    />
+                </Route>
+            </Route>
 
-      {/* COURSE DEVELOPER */}
+            {/* COURSE DEVELOPER */}
 
-      <Route element={<RequireAuth allowedRoles={"courseDeveloper"} />}>
-        <Route element={<CourseDevLayout />}>
-          <Route path="/developer/home" element={<DevDashboard />} />
-          <Route path="/developer/editprofile" element={<DevEditProfile />} />
-          <Route
-            path="/developer/availableCourse"
-            element={<DevAvailableCourse />}
-          />
-          <Route
-            path="/developer/:id/modules"
-            element={<DevAvailableModules />}
-          />
-          <Route
-            path="/developer/:id/modules/:id"
-            element={<DevAvailableContent />}
-          />
-          <Route
-            path="/developer/:id/modules/:id/aae"
-            element={<DevCreateAAE />}
-          />
-          <Route
-            path="/developer/:id/modules/:id/preliminaryactivity"
-            element={<DevCreatePrelimAct />}
-          />
-          <Route
-            path="/developer/:id/modules/:id/inserttitle"
-            element={<DevInserTitle />}
-          />
-          <Route
-            path="/developer/:id/modules/:id/generalization"
-            element={<DevCreateGeneralization />}
-          />
-          <Route
-            path="/developer/:id/modules/:id/evaluation"
-            element={<DevCreateEvaluation />}
-          />
-          <Route
-            path="/developer/:id/modules/:id/assignment"
-            element={<DevCreateAssignment />}
-          />
-          <Route
-            path="/developer/:id/modules/:id/:id"
-            element={<DevCreateExam />}
-          />
-          <Route
-            path="/developer/:id/modules/:id/lesson"
-            element={<DevCreateLesson />}
-          />
-        </Route>
-      </Route>
+            <Route element={<RequireAuth allowedRoles={"courseDeveloper"} />}>
+                <Route element={<CourseDevLayout />}>
+                    <Route path="/developer/home" element={<DevDashboard />} />
+                    <Route
+                        path="/developer/editprofile"
+                        element={<DevEditProfile />}
+                    />
+                    <Route
+                        path="/developer/availableCourse"
+                        element={<DevAvailableCourse />}
+                    />
+                    <Route
+                        path="/developer/:id/modules"
+                        element={<DevAvailableModules />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id"
+                        element={<DevAvailableContent />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/aae"
+                        element={<DevCreateAAE />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/preliminaryactivity"
+                        element={<DevCreatePrelimAct />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/inserttitle"
+                        element={<DevInserTitle />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/generalization"
+                        element={<DevCreateGeneralization />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/evaluation"
+                        element={<DevCreateEvaluation />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/assignment"
+                        element={<DevCreateAssignment />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/:id"
+                        element={<DevCreateExam />}
+                    />
+                    <Route
+                        path="/developer/:id/modules/:id/lesson"
+                        element={<DevCreateLesson />}
+                    />
+                </Route>
+            </Route>
 
-      {/* UnAuthorized Pages */}
-      <Route path="unauthorized" element={<UnAuthorized />} />
+            {/* UnAuthorized Pages */}
+            <Route path="unauthorized" element={<UnAuthorized />} />
 
-      {/* 404 ERROR */}
-      <Route path="*" element={<Missing />} />
-    </Routes>
-  );
+            {/* 404 ERROR */}
+            <Route path="*" element={<Missing />} />
+        </Routes>
+    );
 }
 
 export default App;

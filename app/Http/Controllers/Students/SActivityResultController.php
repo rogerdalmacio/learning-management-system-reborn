@@ -80,7 +80,8 @@ class SActivityResultController extends Controller
             'activity_type' => $request['activity_type'],
             'terms' => $request['terms'],
             'attempt' => $request['attempt'],
-            'score' => null
+            'score' => null,
+            'status' => 'submitted',
         ]);
 
         $response = [
@@ -117,17 +118,48 @@ class SActivityResultController extends Controller
 
     }
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(Request $request, $id)
-    // {
-    //     //
-    // }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'file' => 'required|mimes:docx,pdf|max:5000',
+        ]);
+
+        $activity = ActivityResult::find($id);
+
+        $user = Auth::user();
+        
+
+        $extension = $request->file('file')->getClientOriginalExtension();
+
+        $newFileName = $user->id . $activity->activity_type . $activity->activity_id . '.' . $extension;
+
+        $newFileLocation = 'public/activity/' . $activity->activity_type;
+
+        $path = $request->file('file')->storeAs(
+            $newFileLocation,
+            $newFileName
+        );
+
+        $response = [
+            'ActivityResult' => $activity,
+            'file path' => $path
+        ];
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Submitted activity - ' . $activity->activity_id
+        ]);
+
+        return response($response, 204);
+    }
 
     // /**
     //  * Remove the specified resource from storage.
