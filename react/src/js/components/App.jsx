@@ -10,6 +10,7 @@ import SuperBulkTeacherCreationAccount from "../pages/superAdmin/SuperBulkTeache
 import SuperCreateAdminAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateAdminAcct";
 import SuperCreateCourseDevAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateCourseDevAcct";
 import SuperCreateStudentAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateStudentAcct";
+import SuperCreateStudentAcctFilter from "../pages/superAdmin/SingleCreationAccount/SuperCreateStudentAcctFilter";
 import SuperCreateTeacherAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateTeacherAcct";
 import SuperCreateCourseManAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateCourseManAcct";
 
@@ -19,7 +20,8 @@ import ManagerDashboard from "../pages/courseManager/ManagerDashboard";
 import ManagerEditProfile from "../pages/courseManager/ManagerEditProfile";
 import ManagerGetCreatedCourse from "../pages/courseManager/ManagerGetCreatedCourse";
 import ManagerTagSubjToCourseDev from "../pages/courseManager/ManagerTagSubjToCourseDev";
-import ManagerGetStudents from "../pages/courseManager/ManagerGetStudents";
+import ManagerGetStudents from "../pages/courseManager/GetStudents/ManagerGetStudents";
+import SortByYear from "../pages/courseManager/GetStudents/SortByYear";
 import ManagerCreateSyllabus from "../pages/courseManager/ManagerCreateSyllabus";
 import ManagerCreateSyllabusTItle from "../pages/courseManager/ManagerCreateSyllabusTItle";
 import ManagerAvailableContent from "../pages/courseManager/AvailableCourse/ManagerAvailableContent";
@@ -261,6 +263,10 @@ function App() {
           />
           <Route
             path="/courseManager/listOfStudents"
+            element={<SortByYear />}
+          />
+          <Route
+            path="/courseManager/listOfStudents/:id"
             element={<ManagerGetStudents />}
           />
           <Route
@@ -337,8 +343,13 @@ function App() {
             path="/superAdmin/teacherCreateSingleAccount"
             element={<SuperCreateTeacherAcct />}
           />
+          {/* create single student account */}
           <Route
             path="/superAdmin/studentCreateSingleAccount"
+            element={<SuperCreateStudentAcctFilter />}
+          />
+          <Route
+            path="/superAdmin/studentCreateSingleAccount/:id"
             element={<SuperCreateStudentAcct />}
           />
           <Route

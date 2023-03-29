@@ -1,0 +1,41 @@
+.AnnouncementContainer {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  transition: 0.5s ease;
+}
+
+.AnnouncementBody {
+  text-align: justify;
+
+  line-height: 1.5;
+}
+
+.AnnouncementBodyContainer {
+  // overflow: hidden;
+  // display: -webkit-box;
+  // -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  color: #454545;
+  text-align: left;
+  font-weight: 400;
+}
+
+.AnnouncementEmbedLinks {
+  height: 100%;
+  object-fit: cover;
+}
+
+.AnnouncementContainer:hover {
+  background-color: #b3deff;
+}
+
+.AnnouncementBody::first-line:nth-child(5n + 5) {
+  margin-bottom: 10px; /* or whatever value you want */
+}
+// .AnnouncementBody::first-line {
+// }
+
+// .AnnouncementBody:nth-of-type(5n + 1)::first-line {
+//   margin-bottom: 1em; /* Add space after every 5th sentence */
+// }

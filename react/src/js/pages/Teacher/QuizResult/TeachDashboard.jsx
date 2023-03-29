@@ -243,7 +243,7 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
       size: 80,
       Cell: ({ row }) => (
         <p className="mb-0 fw-bold me-3 fs-6">
-          {row.original.midterm_examination}
+          {row.original.final_examination}
         </p>
       ),
     },

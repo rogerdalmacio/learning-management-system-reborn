@@ -8,7 +8,7 @@ const NotRequireAuth = () => {
     if (!role) {
       return <Outlet />;
     } else if (role === "student") {
-      return <Navigate to="student/subjects" replace />;
+      return <Navigate to="student/home" replace />;
     } else if (role === "teacher") {
       return <Navigate to="teacher/home" replace />;
     } else if (role === "admin") {

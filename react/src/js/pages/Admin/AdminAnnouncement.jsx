@@ -247,7 +247,7 @@ const AdminAnnouncement = () => {
       {
         accessorKey: "status",
         header: "Status",
-        size: 140,
+        size: 80,
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...getCommonEditTextFieldProps(cell),
         }),
@@ -255,8 +255,7 @@ const AdminAnnouncement = () => {
       {
         accessorKey: "body",
         header: "Body",
-        size: 140,
-
+        size: 540,
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...getCommonEditTextFieldProps(cell),
         }),
@@ -267,6 +266,7 @@ const AdminAnnouncement = () => {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...getCommonEditTextFieldProps(cell),
         }),
+        size: 540,
       },
       {
         accessorKey: "created_at",

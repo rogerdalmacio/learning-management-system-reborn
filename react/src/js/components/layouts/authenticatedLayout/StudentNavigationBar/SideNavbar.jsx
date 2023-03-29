@@ -9,6 +9,7 @@ function Navbar({ openSidebar }) {
   const { courses } = useStudentContext();
 
   const [openDropdown, setOpenDropdown] = useState(false);
+
   const [openChildOneDropdown, setOpenChildOneDropdown] = useState(false);
   const [openChildTwoDropdown, setOpenChildTwoDropdown] = useState(false);
 
@@ -141,6 +142,19 @@ function Navbar({ openSidebar }) {
               <span className="tooltip">Dashboard</span>
             </li>
           </Link> */}
+          <Link to="/student/home" className="text-decoration-none">
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/student/home" ? "activeSideBar" : ""
+                }`}
+              >
+                <i className="bx bx-grid-alt"></i>
+                <span className="links_name">Dashboard</span>
+              </span>
+              <span className="tooltip">Dashboard</span>
+            </li>
+          </Link>
           <li className={` ${openDropdown ? "showMenu" : ""}`}>
             <div
               className="iocn-link"

@@ -20,12 +20,12 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import { data, states } from "../Admin/makeData";
-import useAuth from "../../hooks/useAuth";
+import { data, states } from "../../Admin/makeData";
+import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
-import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
 const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
   const { role, token } = useAuth();
@@ -38,6 +38,13 @@ const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
   const [tableData, setTableData] = useState(getAnnouncement);
   const [validationErrors, setValidationErrors] = useState({});
   console.log(tableData);
+
+  // Course Title
+  const pathname = window.location.pathname;
+  const pathArray = pathname.split("/");
+  const studentYear = pathArray[3];
+  console.log(studentYear);
+
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
       if (role === "CourseManager") {
@@ -54,16 +61,26 @@ const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
           )
           .then((response) => {
             console.log(response.data.students);
-            setGetAnnouncement(response.data.students);
 
-            const firstNameAndLastName = response.data.students.map(
+            const initialRender = response.data.students.filter((data) => {
+              return (
+                parseInt(data.year_and_section.toString().substr(0, 1)) ==
+                studentYear
+              );
+            });
+            console.log(initialRender);
+
+            const firstNameAndLastName = initialRender.map(
               ({ id, first_name, last_name, year_and_section }) => ({
                 first_name,
                 last_name,
                 id,
                 year_and_section,
+                password: `#${last_name.substring(0, 2)}2023`,
               })
             );
+            setGetAnnouncement(firstNameAndLastName);
+
             setTableData(firstNameAndLastName);
           });
       }
@@ -99,6 +116,14 @@ const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
     {
       accessorKey: "year_and_section",
       header: "Year and Section",
+      enableColumnOrdering: false,
+      enableEditing: false, //disable editing on this column
+      enableSorting: false,
+      size: 80,
+    },
+    {
+      accessorKey: "password",
+      header: "Password",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,

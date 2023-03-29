@@ -67,6 +67,7 @@ function StudPrelimActivitySubmit({ content, activityResultid }) {
       formData.append("module_id", content.module_id);
       formData.append("activity_type", content.title);
       formData.append("terms", content.preliminaries);
+      formData.append("status", "finished");
       formData.append("attempt", 1);
       formData.append("score", null);
 
