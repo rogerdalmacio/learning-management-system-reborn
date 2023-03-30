@@ -16,7 +16,7 @@ class Announcement extends Model
         'title',
         'body',
         'status',
-        'embed_link',
+        'photo_path',
         'users',
         'tags',
     ];

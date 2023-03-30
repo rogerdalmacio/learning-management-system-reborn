@@ -20,7 +20,7 @@ class AnnouncementResource extends JsonResource
             'body' => $this->body,
             'status' => $this->status,
             'tags' => $this->tags,
-            'embed_link' => $this->embed_link,
+            'photo_path' => $this->photo_path,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

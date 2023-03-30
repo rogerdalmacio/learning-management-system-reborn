@@ -29,7 +29,7 @@ class CreateAnnouncementRequest extends FormRequest
         'status' => 'required|boolean',
         'tags' => 'required|string',
         'users' => 'required|string',
-        'embed_link' => 'sometimes',
+        'photo_path' => 'required',
         ];
     }
 }

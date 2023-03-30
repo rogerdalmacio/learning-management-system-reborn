@@ -40,6 +40,8 @@ use App\Http\Controllers\CourseDeveloper\CDToDoListController;
 use App\Http\Controllers\CoreFunctions\AccountManageController;
 use App\Http\Controllers\CoreFunctions\AnnouncementsController;
 use App\Http\Controllers\CoreFunctions\PasswordResetController;
+use App\Http\Controllers\CourseManager\CMEditSectionController;
+use App\Http\Controllers\CourseManager\CMListOfUsersController;
 use App\Http\Controllers\CoreFunctions\ListOfSubjectsController;
 use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CourseManager\CMCourseRatingController;
@@ -149,6 +151,9 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
     Route::patch('/courseapprove/{id}', [CMToDoListController::class, 'toggleCourseApproval']);
 
     Route::get('/students', [ListOfUsersController::class, 'students']);
+    Route::get('/teachers', [CMListOfUsersController::class, 'teacher']);
+
+    Route::patch('/teachers/edit-year-and-sections', [CMEditSectionController::class, 'editTeacherSection']);
 
     Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CoreFunctions;
 
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
@@ -42,7 +43,25 @@ class AnnouncementsController extends Controller
     
     public function createAnnouncement(CreateAnnouncementRequest $request) {
 
-        Announcement::create($request->all());
+        $extension = $request->file('photo_path')->getClientOriginalExtension();
+
+        $newFileName =  Str::uuid() . $extension;
+
+        $newFileLocation = 'public/announcement';
+
+        $path = $request->file('photo_path')->storeAs(
+            $newFileLocation,
+            $newFileName
+        );
+
+        Announcement::create([
+            'title' => $request['title'],
+            'body' => $request['body'],
+            'status'  => $request['status'],
+            'photo_path' => $path,
+            'users' => $request['users'],
+            'tags'  => $request['tags'],
+        ]);
 
         $response = [
             'Announcement Succesfully created: ' => $request['title'],
@@ -62,19 +81,35 @@ class AnnouncementsController extends Controller
     public function editAnnouncement(Request $request, $id) {
 
         $request->validate([
-            'title' => 'sometimes',
-            'body' => 'sometimes',
-            'status' => 'sometimes|boolean',
-            'tags' => 'sometimes|boolean',
-            'users' => 'sometimes|boolean',
-            'embed_link' => 'sometimes',
+            'title' => 'required',
+            'body' => 'required',
+            'status' => 'required',
+            'tags' => 'required',
+            'users' => 'required',
+            'photo_path' => 'required',
         ]);
 
-        $data = $request->only(['title', 'body', 'status', 'tags', 'users', 'embed_link']);
+        $extension = $request->file('photo_path')->getClientOriginalExtension();
+
+        $newFileName =  Str::uuid() . $extension;
+
+        $newFileLocation = 'public/announcement';
+
+        $path = $request->file('photo_path')->storeAs(
+            $newFileLocation,
+            $newFileName
+        );
 
         $announcement = Announcement::find($id);
 
-        $announcement->update($data);
+        $announcement->update([
+            'title' => $request['title'],
+            'body' => $request['body'],
+            'status'  => $request['status'],
+            'photo_path' => $path,
+            'users' => $request['users'],
+            'tags'  => $request['tags'],
+        ]);
 
         $response = [
             'Announcement Edited Succesfully: ' => $announcement,

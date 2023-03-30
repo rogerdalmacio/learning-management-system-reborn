@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('body');
+            $table->text('body');
             $table->string('status');
             $table->string('tags');
             $table->json('users');
-            $table->string('embed_link');
+            $table->string('photo_path');
             $table->timestamps();
         });
 
