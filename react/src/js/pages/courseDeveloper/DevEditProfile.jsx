@@ -129,10 +129,7 @@ function DevEditProfile() {
                     <h5 className="user-name">
                       {userInfo.first_name} {userInfo.last_name}
                     </h5>
-                    <h6 className="user-email">
-                      {userInfo.first_name}
-                      {userInfo.last_name}@gmail.com
-                    </h6>
+                    <h6 className="user-email">{userInfo.email}</h6>
                   </div>
                   <div className="about">
                     <h5>About</h5>
@@ -155,16 +152,10 @@ function DevEditProfile() {
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div className="form-group">
                       <div>Full Name</div>
-                      <p className="ms-3 mb-0">
-                        {userInfo.first_name} {userInfo.last_name}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div className="form-group">
-                      <div htmlFor="eMail">Email</div>
                       <input
-                        type="email"
+                        type="text"
+                        disabled={true}
+                        value={`${userInfo.first_name} ${userInfo.last_name}`}
                         className="form-control"
                         id="eMail"
                         placeholder="Enter email ID"
@@ -173,12 +164,14 @@ function DevEditProfile() {
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div className="form-group">
-                      <label htmlFor="phone">Phone</label>
+                      <div htmlFor="eMail">Email</div>
                       <input
-                        type="text"
+                        type="email"
+                        disabled={true}
+                        value={userInfo.email && userInfo.email}
                         className="form-control"
-                        id="phone"
-                        placeholder="Enter phone number"
+                        id="eMail"
+                        placeholder="Enter email ID"
                       />
                     </div>
                   </div>

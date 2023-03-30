@@ -36,6 +36,7 @@ import ManagerGetPrelimAct from "../pages/courseManager/CreateModules/ManagerGet
 import ManagerGetGeneralization from "../pages/courseManager/CreateModules/ManagerGetGeneralization";
 import ManagerDashboard from "../pages/courseManager/AnnouncementDashboard/ManagerDashboard";
 import ManagerDashboardSpecificAnnouncement from "../pages/courseManager/AnnouncementDashboard/ManagerDashboardSpecificAnnouncement";
+import ManagerGetTeachers from "../pages/courseManager/GetTeachers/ManagerGetTeachers";
 
 // Admin
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
@@ -298,6 +299,10 @@ function App() {
           <Route
             path="/courseManager/listOfStudents/:id"
             element={<ManagerGetStudents />}
+          />
+          <Route
+            path="/courseManager/listOfTeachers"
+            element={<ManagerGetTeachers />}
           />
           <Route
             path="/courseManager/createsyllabus"

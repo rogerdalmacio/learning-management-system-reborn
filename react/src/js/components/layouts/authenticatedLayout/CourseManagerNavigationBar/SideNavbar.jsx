@@ -168,6 +168,24 @@ function Navbar({ openSidebar }) {
             </li>
           </Link>
           <Link
+            to="/courseManager/listOfTeachers"
+            className="text-decoration-none"
+          >
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/courseManager/listOfTeachers"
+                    ? "activeSideBar"
+                    : ""
+                }`}
+              >
+                <i className="bx bx-grid-alt"></i>
+                <span className="links_name">List of Teachers</span>
+              </span>
+              <span className="tooltip">List of Teachers</span>
+            </li>
+          </Link>
+          <Link
             to="/courseManager/taggingSubjectForCourseDev"
             className="text-decoration-none"
           >

@@ -93,6 +93,8 @@ const AdminAnnouncement = () => {
           info.title == "" ||
           info.body == "" ||
           info.status == "" ||
+          info.tags == "" ||
+          info.users == "" ||
           info.title == undefined ||
           info.body == undefined
         ) {
@@ -103,7 +105,10 @@ const AdminAnnouncement = () => {
             embed_link: info.embed_link,
             title: info.title,
             body: info.body,
+            tags: info.tags,
             status: 1,
+            users: info.users,
+            photo_path: info.photo_path,
           };
           console.log(item);
           console.log(info.id);
@@ -174,7 +179,7 @@ const AdminAnnouncement = () => {
     }
     let toastId;
     axios
-      .delete(
+      .patch(
         `${
           import.meta.env.VITE_API_BASE_URL
         }/api/core/deleteannouncement/${row.getValue("id")}`,
@@ -253,6 +258,14 @@ const AdminAnnouncement = () => {
         }),
       },
       {
+        accessorKey: "tags",
+        header: "Tags",
+        size: 80,
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...getCommonEditTextFieldProps(cell),
+        }),
+      },
+      {
         accessorKey: "body",
         header: "Body",
         size: 540,
@@ -261,12 +274,21 @@ const AdminAnnouncement = () => {
         }),
       },
       {
-        accessorKey: "embed_link",
-        header: "Embed Link",
+        accessorKey: "photo_path",
+        header: "Photo",
+        enableEditing: false, //disable editing on this column
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...getCommonEditTextFieldProps(cell),
         }),
         size: 540,
+      },
+      {
+        accessorKey: "users",
+        header: "List of Users",
+        size: 80,
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...getCommonEditTextFieldProps(cell),
+        }),
       },
       {
         accessorKey: "created_at",
@@ -372,8 +394,10 @@ export const CreateNewAccountModal = ({
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
+  const [file, setFile] = useState(null);
+  const [fileError, setFileError] = useState(false);
   console.log(checkedItems);
-  console.log(open);
+  console.log(file);
 
   // clear the checkItems if the modal is close
   useEffect(() => {
@@ -392,6 +416,12 @@ export const CreateNewAccountModal = ({
       setCheckedItems(rest);
     }
   };
+  const handleFileInputChange = (event) => {
+    const imgFile = event.target.files[0];
+    setFile(imgFile);
+    // ... your code here
+  };
+
   const handleSubmit = () => {
     //put your validation logic here
 
@@ -401,16 +431,25 @@ export const CreateNewAccountModal = ({
       values == null ||
       values.title == "" ||
       values.body == "" ||
-      values.embed_link == "" ||
+      file == null ||
       values.title == null ||
       values.body == null ||
-      values.embed_link == null ||
       values.title == undefined ||
       values.body == undefined ||
       checkedItems.length == 0
     ) {
       setHasError(true);
       toast.error("Please fill out the blank area");
+    } else if (
+      file !== null &&
+      file !== undefined &&
+      file.type !== "image/jpeg" &&
+      file.type !== "image/png" &&
+      file.type !== "image/jpg"
+    ) {
+      console.log(file.type);
+      setFileError(true);
+      toast.error("File must be image");
     } else {
       setIsLoading(true);
       onSubmit(values);
@@ -421,6 +460,15 @@ export const CreateNewAccountModal = ({
       const listOfUsers = Object.keys(checkedItems).filter(
         (key) => checkedItems[key]
       );
+      const formData = new FormData();
+
+      formData.append("photo_path", file);
+      formData.append("title", values.title);
+      formData.append("body", values.body);
+      formData.append("tags", "announcement");
+      formData.append("users", JSON.stringify(listOfUsers));
+      formData.append("status", 1);
+
       console.log(JSON.stringify(listOfUsers));
       const item = {
         embed_link: values.embed_link,
@@ -435,7 +483,7 @@ export const CreateNewAccountModal = ({
       axios
         .post(
           `${import.meta.env.VITE_API_BASE_URL}/api/core/createannouncement`,
-          item,
+          formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -462,8 +510,9 @@ export const CreateNewAccountModal = ({
             setUpdatedList(!updatedList);
             onClose();
             // }]
+            setFileError(false);
             setValues({
-              embed_link: "",
+              file: null,
               title: "",
               body: "",
             });
@@ -474,20 +523,21 @@ export const CreateNewAccountModal = ({
         })
         .catch((error) => {
           console.log(error);
-          // if (error.response.data.message) {
-          //     toast.update(toastId, {
-          //         render: `${error.response.data.message}`,
-          //         type: toast.TYPE.ERROR,
-          //         autoClose: 2000,
-          //     });
-          // } else {
-          toast.update(toastId, {
-            render: `${error.message}`,
-            type: toast.TYPE.ERROR,
-            autoClose: 2000,
-          });
-          // }
-          setIsLoading(false);
+          if (error.response.data.message) {
+            toast.update(toastId, {
+              render: `${error.response.data.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          } else {
+            toast.update(toastId, {
+              render: `${error.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+            // }
+            setIsLoading(false);
+          }
         });
     }
   };
@@ -511,16 +561,16 @@ export const CreateNewAccountModal = ({
             {columns.map((column) => (
               <TextField
                 className="myTextField"
+                InputProps={{
+                  type: "file",
+                }}
                 helperText={
                   (hasError &&
                     values.title == "" &&
                     column.accessorKey == "title") ||
                   (hasError &&
                     values.body == "" &&
-                    column.accessorKey == "body") ||
-                  (hasError &&
-                    values.embed_link == "" &&
-                    column.accessorKey == "embed_link")
+                    column.accessorKey == "body")
                     ? "This field is required"
                     : ""
                 }
@@ -545,7 +595,43 @@ export const CreateNewAccountModal = ({
                 }
               />
             ))}
-
+            {/* <label htmlFor="file-upload" className="file-upload-label">
+              <TextField
+                // className="border-warning my-3"
+                // type="file"
+                // key="file"
+                label="Upload file"
+                InputProps={{
+                  readOnly: true,
+                  onClick: () => document.getElementById("file-upload").click(),
+                }}
+                // value={file !== null ? file.name : ""}
+                // onChange={handleFileInputChange}
+                // InputLabelProps={{ shrink: true }}
+              />
+            </label> */}
+            <div>
+              <input
+                type="file"
+                id="my-file-input"
+                className="file-upload-input border border-1 border-secondary p-2 d-flex w-100"
+                onChange={handleFileInputChange}
+              />
+              <span
+                className={`fieldRequiredCheckBoxAnnouncement ${
+                  hasError && file == null ? "d-block" : "d-none"
+                }`}
+              >
+                {hasError && file == null ? "This field is required" : ""}
+              </span>
+              <span
+                className={`fieldRequiredCheckBoxAnnouncement ${
+                  fileError ? "d-block" : "d-none"
+                }`}
+              >
+                {fileError ? "File must be image" : ""}
+              </span>
+            </div>
             <div>
               <Typography
                 id="sandwich-group"
@@ -612,7 +698,7 @@ export const CreateNewAccountModal = ({
                   </ListItem>
                 </List>
               </Box>
-              <p className="fw-semibold text-secondary">Checked Users:</p>
+              <p className="fw-semibold text-secondary">Selected Users:</p>
               <ul class="list-group list-group-flush">
                 {Object.keys(checkedItems).map((item) => (
                   <li class="list-group-item" key={item}>
