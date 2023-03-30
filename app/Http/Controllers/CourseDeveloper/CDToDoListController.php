@@ -17,7 +17,7 @@ class CDToDoListController extends Controller
         $content_validate = ContentValidation::find($id);
 
         $content_validate->update([
-            'submitted' => true
+            'submitted' => 1
         ]);
 
         $response = [
