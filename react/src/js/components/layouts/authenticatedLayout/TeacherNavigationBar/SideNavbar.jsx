@@ -27,6 +27,19 @@ function Navbar({ openSidebar }) {
                 }`}
               >
                 <i className="bx bx-grid-alt"></i>
+                <span className="links_name">Dashboard</span>
+              </span>
+              <span className="tooltip">Dashboard</span>
+            </li>
+          </Link>
+          <Link to="/teacher/quizresult" className="text-decoration-none">
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/teacher/quizresult" ? "activeSideBar" : ""
+                }`}
+              >
+                <i className="bx bx-grid-alt"></i>
                 <span className="links_name">Quiz Results</span>
               </span>
               <span className="tooltip">Quiz Results</span>

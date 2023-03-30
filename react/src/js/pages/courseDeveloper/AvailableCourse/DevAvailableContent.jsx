@@ -227,6 +227,7 @@ function DevAvailableContent() {
       );
     }
   };
+  console.log(quiz);
   const AvailableContentHandler = () => {
     if (course) {
       return (

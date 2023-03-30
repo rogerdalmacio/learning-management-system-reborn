@@ -20,7 +20,7 @@ function SortBySection() {
       return (
         <div key={i}>
           <Link
-            to={`/teacher/home/${courseBase}/${section}`}
+            to={`/teacher/quizresult/${courseBase}/${section}`}
             className="text-decoration-none"
           >
             <div className="DevCourseContainer py-3 px-2 mb-3 shadow p-3">

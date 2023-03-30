@@ -15,7 +15,7 @@ function SortBySubjects() {
       return (
         <div key={i}>
           <Link
-            to={`/teacher/home/${subject}`}
+            to={`/teacher/quizresult/${subject}`}
             className="text-decoration-none"
           >
             <div className="DevCourseContainer py-3 px-2 mb-3 shadow p-3">

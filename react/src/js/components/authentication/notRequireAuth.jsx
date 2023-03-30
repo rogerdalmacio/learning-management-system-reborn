@@ -14,9 +14,9 @@ const NotRequireAuth = () => {
     } else if (role === "admin") {
       return <Navigate to="admin/home" replace />;
     } else if (role === "courseDeveloper") {
-      return <Navigate to="developer/availableCourse" replace />;
+      return <Navigate to="developer/home" replace />;
     } else if (role === "CourseManager") {
-      return <Navigate to="courseManager/listOfStudents" replace />;
+      return <Navigate to="courseManager/home" replace />;
     } else if (role === "SuperAdmin") {
       return <Navigate to="superAdmin/home" replace />;
     } else {

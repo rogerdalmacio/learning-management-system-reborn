@@ -136,6 +136,19 @@ function Navbar({ openSidebar }) {
             <input type="text" placeholder="Search..." />
             <span className="tooltip">Search</span>
           </li>
+          <Link to="/courseManager/home" className="text-decoration-none">
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/courseManager/home" ? "activeSideBar" : ""
+                }`}
+              >
+                <i className="bx bx-grid-alt"></i>
+                <span className="links_name">Dashboard</span>
+              </span>
+              <span className="tooltip">Dashboard</span>
+            </li>
+          </Link>
           <Link
             to="/courseManager/listOfStudents"
             className="text-decoration-none"
@@ -172,11 +185,16 @@ function Navbar({ openSidebar }) {
               <span className="tooltip">Tagging Subj for CourseDev.</span>
             </li>
           </Link>
-          <Link to="/courseManager/home" className="text-decoration-none">
+          <Link
+            to="/courseManager/createCourse"
+            className="text-decoration-none"
+          >
             <li>
               <span
                 className={`a ${
-                  pathName === "/courseManager/home" ? "activeSideBar" : ""
+                  pathName === "/courseManager/createCourse"
+                    ? "activeSideBar"
+                    : ""
                 }`}
               >
                 <i className="bx bx-palette"></i>

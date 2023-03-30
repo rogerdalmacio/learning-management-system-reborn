@@ -1,4 +1,14 @@
+@use "../../abstract/" as *;
+
 .AnnouncementContainer {
+  height: 100%;
+  overflow: hidden;
+  max-height: 300px;
+  position: relative;
+  transition: 0.5s ease;
+}
+
+.AnnouncementContainer2 {
   height: 100%;
   overflow: hidden;
   position: relative;
@@ -11,11 +21,28 @@
   line-height: 1.5;
 }
 
+.AnnouncementTags {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: $primary-color;
+  border-radius: 1px;
+}
 .AnnouncementBodyContainer {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  color: #454545;
+  text-align: left;
+  font-weight: 400;
+}
+
+.AnnouncementBodyContainer2 {
   // overflow: hidden;
   // display: -webkit-box;
   // -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
+  // -webkit-box-orient: vertical;
   color: #454545;
   text-align: left;
   font-weight: 400;
@@ -39,3 +66,8 @@
 // .AnnouncementBody:nth-of-type(5n + 1)::first-line {
 //   margin-bottom: 1em; /* Add space after every 5th sentence */
 // }
+@media screen and (max-width: 1400px) {
+  .AnnouncementContainer {
+    max-height: 100%;
+  }
+}

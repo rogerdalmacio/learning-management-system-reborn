@@ -23,7 +23,7 @@ function StudQuizEvaluation() {
     parseInt(localStorage.getItem("myValue")) || 0
   );
   const [remainingTime, setRemainingTime] = useState(
-    localStorage.getItem("remainingTime") || 1200
+    localStorage.getItem("remainingTime") || 3600
   );
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");

@@ -16,7 +16,7 @@ import SuperCreateCourseManAcct from "../pages/superAdmin/SingleCreationAccount/
 
 // CourseManager
 import CourseManagerLayout from "./layouts/authenticatedLayout/CourseManagerNavigationBar/CourseManagerLayout";
-import ManagerDashboard from "../pages/courseManager/ManagerDashboard";
+import ManagerCreateCourse from "../pages/courseManager/ManagerCreateCourse";
 import ManagerEditProfile from "../pages/courseManager/ManagerEditProfile";
 import ManagerGetCreatedCourse from "../pages/courseManager/ManagerGetCreatedCourse";
 import ManagerTagSubjToCourseDev from "../pages/courseManager/ManagerTagSubjToCourseDev";
@@ -34,6 +34,8 @@ import ManagerGetExam from "../pages/courseManager/CreateModules/ManagerGetExam"
 import ManagerGetLesson from "../pages/courseManager/CreateModules/ManagerGetLesson";
 import ManagerGetPrelimAct from "../pages/courseManager/CreateModules/ManagerGetPrelimAct";
 import ManagerGetGeneralization from "../pages/courseManager/CreateModules/ManagerGetGeneralization";
+import ManagerDashboard from "../pages/courseManager/AnnouncementDashboard/ManagerDashboard";
+import ManagerDashboardSpecificAnnouncement from "../pages/courseManager/AnnouncementDashboard/ManagerDashboardSpecificAnnouncement";
 
 // Admin
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
@@ -60,7 +62,6 @@ import AdminGetPrelimAct from "../pages/Admin/CreateModules/AdminGetPrelimAct";
 
 // Course Developer
 import CourseDevLayout from "./layouts/authenticatedLayout/CourseDeveloperNavifationBar/CourseDevLayout";
-import DevDashboard from "../pages/courseDeveloper/DevDashboard";
 import DevEditProfile from "../pages/courseDeveloper/DevEditProfile";
 import DevAvailableCourse from "../pages/courseDeveloper/AvailableCourse/DevAvailableCourse";
 import DevAvailableModules from "../pages/courseDeveloper/AvailableCourse/DevAvailableModules";
@@ -73,11 +74,14 @@ import DevCreateEvaluation from "../pages/courseDeveloper/CreateModules/DevCreat
 import DevCreateAssignment from "../pages/courseDeveloper/CreateModules/DevCreateAssignment";
 import DevCreateExam from "../pages/courseDeveloper/CreateModules/DevCreateExam";
 import DevCreateLesson from "../pages/courseDeveloper/CreateModules/DevCreateLesson";
+import DevDashboard from "../pages/courseDeveloper/AnnouncementDashboard/DevDashboard";
+import DevDashboardSpecificAnnouncement from "../pages/courseDeveloper/AnnouncementDashboard/DevDashboardSpecificAnnouncement";
 
 // Student
 import StudentLayout from "./layouts/authenticatedLayout/StudentNavigationBar/StudentLayout";
 import Course from "../pages/student/Course";
-import Dashboard from "../pages/student/Dashboard";
+import Dashboard from "../pages/student/AnnouncementDashboard/Dashboard";
+import DashboardSpecificAnnouncement from "../pages/student/AnnouncementDashboard/DashboardSpecificAnnouncement";
 import StudPrelimActivity from "../pages/student/AvailableModules/StudPrelimActivity";
 import StudGeneralization from "../pages/student/AvailableModules/StudGeneralization";
 import StudLesson from "../pages/student/AvailableModules/StudLesson";
@@ -94,7 +98,7 @@ import GetActivitiesSortBySubjects from "../pages/Teacher/GetActivities/GetActiv
 
 // Teacher
 import TeacherLayout from "./layouts/authenticatedLayout/TeacherNavigationBar/TeacherLayout";
-import TeachDashboard from "../pages/Teacher/QuizResult/TeachDashboard";
+import TeachQuizResult from "../pages/Teacher/QuizResult/TeachQuizResult";
 import TeachEditProfile from "../pages/Teacher/TeachEditProfile";
 import StudEditProfile from "../pages/student/StudEditProfile";
 import StudAvailableSubjects from "../pages/student/AvailableCourse/StudAvailableSubjects";
@@ -108,6 +112,9 @@ import ValidateSnapSortBySection from "../pages/Teacher/ValidateSnapshot/Validat
 import TeachReAttemptQuiz from "../pages/Teacher/ClearQuizAttempt/TeachReAttemptQuiz";
 import GetStudentsActivities from "../pages/Teacher/GetActivities/GetStudentsActivities";
 import GetActivitiesSortByAct from "../pages/Teacher/GetActivities/GetActivitiesSortByAct";
+import TeachDashboard from "../pages/Teacher/AnnouncementDashboard/TeachDashboard";
+import TeachDashboardSpecificAnnouncement from "../pages/Teacher/AnnouncementDashboard/TeachDashboardSpecificAnnouncement";
+
 // Others
 import Login from "./authentication/Login";
 import RequireAuth from "./authentication/RequireAuth";
@@ -150,6 +157,11 @@ function App() {
         />
         <Route element={<StudentLayout />}>
           <Route path="/student/home" element={<Dashboard />}></Route>
+          <Route
+            path="/student/home/:id"
+            element={<DashboardSpecificAnnouncement />}
+          ></Route>
+
           <Route
             path="/student/editprofile"
             element={<StudEditProfile />}
@@ -195,10 +207,19 @@ function App() {
       <Route element={<RequireAuth allowedRoles={"teacher"} />}>
         <Route element={<TeacherLayout />}>
           <Route path="/teacher/editprofile" element={<TeachEditProfile />} />
+          {/* dashboard */}
+          <Route path="/teacher/home" element={<TeachDashboard />} />
+          <Route
+            path="/teacher/home/:id"
+            element={<TeachDashboardSpecificAnnouncement />}
+          />
           {/* quizresult */}
-          <Route path="/teacher/home" element={<SortBySubjects />} />
-          <Route path="/teacher/home/:id" element={<SortBySection />} />
-          <Route path="/teacher/home/:id/:id" element={<TeachDashboard />} />
+          <Route path="/teacher/quizresult" element={<SortBySubjects />} />
+          <Route path="/teacher/quizresult/:id" element={<SortBySection />} />
+          <Route
+            path="/teacher/quizresult/:id/:id"
+            element={<TeachQuizResult />}
+          />
           {/* validate snapshot */}
           <Route
             path="/teacher/validatesnapshot"
@@ -248,7 +269,16 @@ function App() {
       {/* COURSE MANAGER */}
       <Route element={<RequireAuth allowedRoles={"CourseManager"} />}>
         <Route element={<CourseManagerLayout />}>
+          {/* dashboard */}
           <Route path="/courseManager/home" element={<ManagerDashboard />} />
+          <Route
+            path="/courseManager/home/:id"
+            element={<ManagerDashboardSpecificAnnouncement />}
+          />
+          <Route
+            path="/courseManager/createCourse"
+            element={<ManagerCreateCourse />}
+          />
           <Route
             path="/courseManager/editprofile"
             element={<ManagerEditProfile />}
@@ -442,6 +472,11 @@ function App() {
       <Route element={<RequireAuth allowedRoles={"courseDeveloper"} />}>
         <Route element={<CourseDevLayout />}>
           <Route path="/developer/home" element={<DevDashboard />} />
+          <Route
+            path="/developer/home/:id"
+            element={<DevDashboardSpecificAnnouncement />}
+          />
+
           <Route path="/developer/editprofile" element={<DevEditProfile />} />
           <Route
             path="/developer/availableCourse"
