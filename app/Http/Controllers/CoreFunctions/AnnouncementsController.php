@@ -47,18 +47,20 @@ class AnnouncementsController extends Controller
 
         $newFileName =  Str::uuid() . '.' . $extension;
 
-        $newFileLocation = 'storage/announcement';
+        $newFileLocation = 'public/announcement';
 
         $path = $request->file('photo_path')->storeAs(
             $newFileLocation,
             $newFileName
         );
 
+        $databasePath = 'storage/announcement/' . $newFileName; 
+
         Announcement::create([
             'title' => $request['title'],
             'body' => $request['body'],
             'status'  => $request['status'],
-            'photo_path' => $path,
+            'photo_path' => $databasePath,
             'users' => $request['users'],
             'tags'  => $request['tags'],
         ]);
