@@ -27,13 +27,15 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
-const ManagerGetTeachers = ({}) => {
+const AdminRequestGrantExam = () => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
+  const [request, setRequest] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [updatedList, setUpdatedList] = useState(false);
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [getAnnouncement, setGetAnnouncement] = useState(data);
-  const [updatedList, setUpdatedList] = useState(false);
   // updateList is for rerendering again the getList
   const [hasError, setHasError] = useState(false);
   const [tableData, setTableData] = useState(getAnnouncement);
@@ -48,160 +50,76 @@ const ManagerGetTeachers = ({}) => {
 
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
-      if (role === "CourseManager") {
+      if (role === "admin") {
         await axios
-          .get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/coursemanager/teachers`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-            }
-          )
+          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/grantees`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          })
           .then((response) => {
-            console.log(response.data);
+            console.log(response.data.students);
             console.log(response.data.students);
 
-            const firstNameAndLastName = response.data.students.map(
-              ({ id, first_name, last_name, year_and_sections }) => ({
-                first_name,
-                last_name,
-                id,
-                year_and_sections,
-                password: `#${last_name.substring(0, 2)}2023`,
-              })
-            );
-            setGetAnnouncement(firstNameAndLastName);
+            // const initialRender = response.data.students.filter((data) => {
+            //   return (
+            //     parseInt(data.year_and_section.toString().substr(0, 1)) ==
+            //     studentYear
+            //   );
+            // });
+            // console.log(initialRender);
 
-            setTableData(firstNameAndLastName);
+            // const firstNameAndLastName = initialRender.map(
+            //   ({ id, first_name, last_name, year_and_section }) => ({
+            //     first_name,
+            //     last_name,
+            //     id,
+            //     year_and_section,
+            //     password: `#${last_name.substring(0, 2)}2023`,
+            //   })
+            // );
+            const data = response.data.students.map((studInfo) => {
+              return studInfo.grant.find((gran) => {
+                return gran;
+              });
+            });
+
+            const filteredData = data.filter((item) => item !== undefined);
+            console.log(filteredData);
+
+            setGetAnnouncement(filteredData);
+
+            setTableData(filteredData);
           });
       }
     };
     GetAnnouncementHandler();
   }, [updatedList]);
 
-  const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
-    if (tableData !== undefined) {
-      if (!Object.keys(validationErrors).length) {
-        const info = (tableData[row.index] = values);
-        //send/receive api updates here, then refetch or update local table data for re-render
-        let toastId;
-        console.log(info);
-        console.log(info.id);
-        if (
-          info.year_and_sections == "" ||
-          info.year_and_sections == undefined
-        ) {
-          toast.error("Please fill out the black space");
-          setHasError(true);
-        } else if (
-          info.year_and_sections.endsWith(",") ||
-          info.year_and_sections.endsWith(".") ||
-          info.year_and_sections.endsWith("!") ||
-          info.year_and_sections == ""
-        ) {
-          toast.error("Please remove the comma at the end");
-          setHasError(true);
-        } else {
-          setHasError(false);
-          toastId = toast.info("Sending Request...");
-          const item = {
-            year_and_sections: info.year_and_sections,
-          };
-          console.log(item);
-          axios
-            .patch(
-              `${
-                import.meta.env.VITE_API_BASE_URL
-              }/api/coursemanager/teachers/edit-year-and-sections/${info.id}`,
-              item,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  "Content-Type": "application/json",
-                  Accept: "application/json",
-                },
-              }
-            )
-            .then((response) => {
-              console.log(response);
-              if (response.status >= 200 && response.status <= 300) {
-                toast.update(toastId, {
-                  render: "Request Successfully",
-                  type: toast.TYPE.SUCCESS,
-                  autoClose: 2000,
-                });
-                // }
-                setTableData([...tableData]);
-                setUpdatedList(!updatedList);
-                exitEditingMode(); //required to exit editing mode and close modal
-              } else {
-                throw new Error(response.status || "Something Went Wrong!");
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-              // if (error.response.data.message) {
-              //     toast.update(toastId, {
-              //         render: `${error.response.data.message}`,
-              //         type: toast.TYPE.ERROR,
-              //         autoClose: 2000,
-              //     });
-              // } else {
-              toast.update(toastId, {
-                render: `${error.message}`,
-                type: toast.TYPE.ERROR,
-                autoClose: 2000,
-              });
-              // }
-            });
-        }
-      }
-    }
-  };
-
-  const handleCancelRowEdits = () => {
-    setValidationErrors({});
-  };
+  const HandleSubmit = () => {};
 
   const columns = useMemo(() => [
     {
       accessorKey: "id",
-      header: "Email",
+      header: "Student Id",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "first_name",
-      header: "First Name",
+      accessorKey: "preliminaries",
+      header: "Term",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "last_name",
-      header: "Last Name",
-      enableColumnOrdering: false,
-      enableEditing: false, //disable editing on this column
-      enableSorting: false,
-      size: 80,
-    },
-    {
-      accessorKey: "year_and_sections",
-      header: "Year and Section",
-      enableColumnOrdering: false,
-      enableEditing: true, //disable editing on this column
-      enableSorting: false,
-      size: 80,
-    },
-    {
-      accessorKey: "password",
-      header: "Password",
+      accessorKey: "granted_at",
+      header: "Granted At",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
@@ -230,8 +148,34 @@ const ManagerGetTeachers = ({}) => {
   return (
     <div>
       <ArrowNextAndPrevious>
-        <h3 className="m-0">List of Teachers</h3>
+        <h3 className="m-0">Student - Request Grant Exam</h3>
       </ArrowNextAndPrevious>
+      <div>
+        <div className="ms-sm-3 ">
+          <div class="form-floating " style={{ maxWidth: "700px" }}>
+            <textarea
+              class="form-control"
+              placeholder="Leave a comment here"
+              id="floatingTextarea"
+              value={request}
+              onChange={(e) => {
+                setRequest(e.target.value);
+              }}
+              style={{ height: "300px" }}
+            ></textarea>
+            <label for="floatingTextarea">Comments</label>
+            <div className="d-flex justify-content-end">
+              <button
+                className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
+                onClick={HandleSubmit}
+                disabled={isLoading}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="MaterialUiTable">
         <MaterialReactTable
           enableRowSelection
@@ -302,25 +246,10 @@ const ManagerGetTeachers = ({}) => {
               </Button>
             </Box>
           )}
-          renderRowActions={({ row, table }) => (
-            <Box
-              sx={{ display: "flex", gap: "1rem", justifyContent: "center" }}
-            >
-              <Tooltip arrow placement="left" title="Edit">
-                <IconButton onClick={() => table.setEditingRow(row)}>
-                  <Edit />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          )}
-          editingMode="modal" //default
-          enableEditing
-          onEditingRowSave={handleSaveRowEdits}
-          onEditingRowCancel={handleCancelRowEdits}
         />
       </div>
     </div>
   );
 };
 
-export default ManagerGetTeachers;
+export default AdminRequestGrantExam;

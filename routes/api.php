@@ -153,7 +153,7 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
     Route::get('/students', [ListOfUsersController::class, 'students']);
     Route::get('/teachers', [CMListOfUsersController::class, 'teacher']);
 
-    Route::patch('/teachers/edit-year-and-sections', [CMEditSectionController::class, 'editTeacherSection']);
+    Route::patch('/teachers/edit-year-and-sections/{id}', [CMEditSectionController::class, 'editTeacherSection']);
 
     Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
 

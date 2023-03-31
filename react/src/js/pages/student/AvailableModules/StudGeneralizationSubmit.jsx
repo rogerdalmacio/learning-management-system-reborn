@@ -187,7 +187,6 @@ function StudGeneralizationSubmit({ content, activityResultid }) {
           }
         )
         .then((response) => {
-          console.log("tangianmo");
           console.log(response);
           console.log(response.data.errors);
           if (response.data.errors) {

@@ -60,6 +60,7 @@ import AdminGetExam from "../pages/Admin/CreateModules/AdminGetExam";
 import AdminGetGeneralization from "../pages/Admin/CreateModules/AdminGetGeneralization";
 import AdminGetLesson from "../pages/Admin/CreateModules/AdminGetLesson";
 import AdminGetPrelimAct from "../pages/Admin/CreateModules/AdminGetPrelimAct";
+import AdminRequestGrantExam from "../pages/Admin/ExamGranting/AdminRequestGrantExam";
 
 // Course Developer
 import CourseDevLayout from "./layouts/authenticatedLayout/CourseDeveloperNavifationBar/CourseDevLayout";
@@ -430,6 +431,10 @@ function App() {
           <Route
             path="/admin/singleGrantExam"
             element={<AdminSingleGrantExam />}
+          />
+          <Route
+            path="/admin/requestGrantExam"
+            element={<AdminRequestGrantExam />}
           />
           <Route
             path="/admin/createAnnouncement"

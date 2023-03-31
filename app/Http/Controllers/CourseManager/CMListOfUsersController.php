@@ -25,7 +25,7 @@ class CMListOfUsersController extends Controller
 
     public function teacher() {
 
-        $teacher = Teacher::where('depertment', Auth::user()->department)->get();
+        $teacher = Teacher::where('department', Auth::user()->department)->get();
 
         $response = [
             'students' => $teacher

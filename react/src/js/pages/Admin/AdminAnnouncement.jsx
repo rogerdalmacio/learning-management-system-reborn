@@ -101,14 +101,13 @@ const AdminAnnouncement = () => {
           toast.error("Please fill out the blank area");
         } else {
           toastId = toast.info("Sending Request...");
+
           const item = {
-            embed_link: info.embed_link,
             title: info.title,
             body: info.body,
             tags: info.tags,
             status: 1,
             users: info.users,
-            photo_path: info.photo_path,
           };
           console.log(item);
           console.log(info.id);
@@ -560,10 +559,16 @@ export const CreateNewAccountModal = ({
           >
             {columns.map((column) => (
               <TextField
-                className="myTextField"
-                InputProps={{
-                  type: "file",
-                }}
+                className={`myTextField ${
+                  column.accessorKey == "photo_path" ||
+                  column.accessorKey == "users" ||
+                  column.accessorKey == "created_at" ||
+                  column.accessorKey == "updated_at" ||
+                  column.accessorKey == "id" ||
+                  column.accessorKey == "status"
+                    ? "d-none"
+                    : "d-flex"
+                }`}
                 helperText={
                   (hasError &&
                     values.title == "" &&

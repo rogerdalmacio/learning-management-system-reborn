@@ -199,6 +199,24 @@ function Navbar({ openSidebar }) {
                 <div className="firstChildDropdownContainer dropdown overflow-hidden">
                   <div>
                     <Link
+                      to={`/admin/requestGrantExam`}
+                      className={`overflow-hidden ${
+                        pathName === "/admin/requestGrantExam"
+                          ? "firstNavbarChild"
+                          : ""
+                      }`}
+                    >
+                      <p className={`mb-0 NavbarCourseTitle `}>
+                        Request Grant Exam
+                      </p>
+                    </Link>
+                  </div>
+                </div>
+              </li>
+              <li className={`${openSidebar ? "" : "d-none"}`}>
+                <div className="firstChildDropdownContainer dropdown overflow-hidden">
+                  <div>
+                    <Link
                       to={`/admin/batchgrantexam`}
                       className={`overflow-hidden ${
                         pathName === "/admin/batchgrantexam"
