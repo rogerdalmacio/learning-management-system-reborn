@@ -86,19 +86,7 @@ class AnnouncementsController extends Controller
             'status' => 'required',
             'tags' => 'required',
             'users' => 'required',
-            'photo_path' => 'required',
         ]);
-
-        $extension = $request->file('photo_path')->getClientOriginalExtension();
-
-        $newFileName =  Str::uuid() . '.' . $extension;
-
-        $newFileLocation = 'public/announcement';
-
-        $path = $request->file('photo_path')->storeAs(
-            $newFileLocation,
-            $newFileName
-        );
 
         $announcement = Announcement::find($id);
 
@@ -106,7 +94,6 @@ class AnnouncementsController extends Controller
             'title' => $request['title'],
             'body' => $request['body'],
             'status'  => $request['status'],
-            'photo_path' => $path,
             'users' => $request['users'],
             'tags'  => $request['tags'],
         ]);
