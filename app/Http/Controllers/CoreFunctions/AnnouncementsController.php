@@ -112,7 +112,7 @@ class AnnouncementsController extends Controller
 
     }
 
-    public function deleteAnnouncement($id) {
+    public function deleteAnnouncement(Request $request, $id) {
 
         $announcement = Announcement::find($id);
 

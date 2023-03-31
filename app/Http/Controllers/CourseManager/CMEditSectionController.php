@@ -14,12 +14,8 @@ class CMEditSectionController extends Controller
     {
         $teacher = Teacher::find($id);
 
-        $year_and_sections = explode(",", $teacher->year_and_sections);
-
-        $new_year_and_sections = array_push($year_and_sections, explode(",", $request['year_and_sections']));
-        
         $teacher->update([
-            'year_and_sections' => $new_year_and_sections
+            'year_and_sections' => $request['year_and_sections']
         ]);
 
         Logs::create([
@@ -33,6 +29,6 @@ class CMEditSectionController extends Controller
             'message' => 'Year and sections updated successfully'
         ];
 
-        return response($response, 204);
+        return response($response, 200);
     }
 }
