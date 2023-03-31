@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Students;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Users\Student;
 use App\Models\Modules\Course;
+use App\Http\Controllers\Controller;
+use App\Models\CoreFunctions\ExaminationGrant;
+use Illuminate\Support\Facades\Auth;
 
 class SCourseController extends Controller
 {
@@ -31,8 +33,11 @@ class SCourseController extends Controller
                             })
                             ->get();
 
+        $examgrant = ExaminationGrant::where('student_id', $user->id)->get();
+
         $response = [
-            'subjects' => $courses
+            'subjects' => $courses,
+            'grant' => $examgrant,
         ];
 
         return response($response, 200);

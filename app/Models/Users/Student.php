@@ -39,6 +39,10 @@ class Student extends Model
         'is_logged_in',
     ];
 
+    protected $attribute = [
+        'major' => null
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *

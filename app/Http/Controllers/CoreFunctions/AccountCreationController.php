@@ -53,7 +53,7 @@ class AccountCreationController extends Controller
                     'required',
                 ],
                 'major' => [
-                    'required',
+                    'sometimes',
                 ],
                 'department' => [
                     'required',
