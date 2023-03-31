@@ -45,7 +45,7 @@ class AnnouncementsController extends Controller
 
         $extension = $request->file('photo_path')->getClientOriginalExtension();
 
-        $newFileName =  Str::uuid() . $extension;
+        $newFileName =  Str::uuid() . '.' . $extension;
 
         $newFileLocation = 'public/announcement';
 
@@ -91,7 +91,7 @@ class AnnouncementsController extends Controller
 
         $extension = $request->file('photo_path')->getClientOriginalExtension();
 
-        $newFileName =  Str::uuid() . $extension;
+        $newFileName =  Str::uuid() . '.' . $extension;
 
         $newFileLocation = 'public/announcement';
 
