@@ -95,6 +95,7 @@ function SuperBulkTeacherCreationAccount() {
                 type: toast.TYPE.SUCCESS,
                 autoClose: 2000,
               });
+              setIsLoading(false);
             }
             setGetNumAlreadyExist(idNumbers.join(", "));
           } else if (response.status >= 200 && response.status <= 300) {

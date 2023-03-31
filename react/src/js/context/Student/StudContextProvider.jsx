@@ -54,7 +54,7 @@ export const StudContextProvider = ({ children }) => {
                 module: sub.module.filter((module) => module.status === 1),
               };
             });
-
+            console.log(modulesWithStatus1);
             setCourses(modulesWithStatus1);
           });
       }
@@ -163,6 +163,7 @@ export const StudContextProvider = ({ children }) => {
             }
           )
           .then((response) => {
+            console.log(response);
             console.log(response.data[0][0]);
             console.log(response.data[0]);
             setActivityrResultId(response.data[0][0]);

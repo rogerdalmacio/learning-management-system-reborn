@@ -31,6 +31,7 @@ const AdminRequestGrantExam = () => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
   const [request, setRequest] = useState();
+  const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [updatedList, setUpdatedList] = useState(false);
 
@@ -52,74 +53,138 @@ const AdminRequestGrantExam = () => {
     const GetAnnouncementHandler = async () => {
       if (role === "admin") {
         await axios
-          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/grantees`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          })
+          .get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/core/mis/list-of-request`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
           .then((response) => {
-            console.log(response.data.students);
-            console.log(response.data.students);
+            console.log(response.data.List);
 
-            // const initialRender = response.data.students.filter((data) => {
-            //   return (
-            //     parseInt(data.year_and_section.toString().substr(0, 1)) ==
-            //     studentYear
-            //   );
+            // const data = response.data.List.map((studInfo) => {
+            //   return studInfo.grant.find((gran) => {
+            //     return gran;
+            //   });
             // });
-            // console.log(initialRender);
 
-            // const firstNameAndLastName = initialRender.map(
-            //   ({ id, first_name, last_name, year_and_section }) => ({
-            //     first_name,
-            //     last_name,
-            //     id,
-            //     year_and_section,
-            //     password: `#${last_name.substring(0, 2)}2023`,
-            //   })
-            // );
-            const data = response.data.students.map((studInfo) => {
-              return studInfo.grant.find((gran) => {
-                return gran;
-              });
-            });
+            // const filteredData = data.filter((item) => item !== undefined);
+            // console.log(filteredData);
 
-            const filteredData = data.filter((item) => item !== undefined);
-            console.log(filteredData);
+            setGetAnnouncement(
+              response.data.List.sort((a, b) => a.id - blur.id)
+            );
 
-            setGetAnnouncement(filteredData);
-
-            setTableData(filteredData);
+            setTableData(
+              response.data.List.sort((a, b) => b.inq_num - a.inq_num)
+            );
           });
       }
     };
     GetAnnouncementHandler();
   }, [updatedList]);
 
-  const HandleSubmit = () => {};
+  const HandleSubmit = () => {
+    let toastId;
+
+    if (request == "" || request == undefined) {
+      setError(true);
+      toast.error("Please fill out the blank area");
+    } else {
+      setIsLoading(true);
+      setError(false);
+
+      const item = { inq_type: request };
+      console.log(item);
+      axios
+        .post(
+          `${
+            import.meta.env.VITE_API_BASE_URL
+          }/api/core/mis/request-exam-grantees`,
+          item,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status >= 200 && response.status <= 300) {
+            toast.update(toastId, {
+              render: "Request Successfully",
+              type: toast.TYPE.SUCCESS,
+              autoClose: 2000,
+            });
+            setRequest("");
+            setUpdatedList(!updatedList);
+          } else {
+            throw new Error(response.status || "Something Went Wrong!");
+          }
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.data.message) {
+            toast.update(toastId, {
+              render: `${error.response.data.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          } else {
+            toast.update(toastId, {
+              render: `${error.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          }
+          setIsLoading(false);
+        });
+    }
+  };
 
   const columns = useMemo(() => [
     {
-      accessorKey: "id",
-      header: "Student Id",
+      accessorKey: "inq_num",
+      header: "Inquiry Number",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "preliminaries",
-      header: "Term",
+      accessorKey: "department",
+      header: "Department",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "granted_at",
-      header: "Granted At",
+      accessorKey: "inq_type",
+      header: "Inquiries Type",
+      enableColumnOrdering: false,
+      enableEditing: false, //disable editing on this column
+      enableSorting: false,
+      size: 80,
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      enableColumnOrdering: false,
+      enableEditing: false, //disable editing on this column
+      enableSorting: false,
+      size: 80,
+    },
+    {
+      accessorKey: "date_req",
+      header: "Date Request",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
@@ -151,17 +216,17 @@ const AdminRequestGrantExam = () => {
         <h3 className="m-0">Student - Request Grant Exam</h3>
       </ArrowNextAndPrevious>
       <div>
-        <div className="ms-sm-3 ">
+        <div className="d-flex justify-content-start mb-3">
           <div class="form-floating " style={{ maxWidth: "700px" }}>
             <textarea
-              class="form-control"
+              class="form-control m-auto"
               placeholder="Leave a comment here"
               id="floatingTextarea"
               value={request}
               onChange={(e) => {
                 setRequest(e.target.value);
               }}
-              style={{ height: "300px" }}
+              style={{ height: "200px", width: "700px" }}
             ></textarea>
             <label for="floatingTextarea">Comments</label>
             <div className="d-flex justify-content-end">

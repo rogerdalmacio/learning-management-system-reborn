@@ -62,7 +62,7 @@ function SuperBulkTeacherCreationAccount() {
           }
         )
         .then((response) => {
-          console.log(response.data.errors);
+          console.log(response);
           if (response.data.errors.length !== 0) {
             const idString = response.data.errors.map((error) => {
               return error.id[0];

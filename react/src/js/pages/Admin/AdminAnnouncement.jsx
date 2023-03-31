@@ -514,11 +514,14 @@ export const CreateNewAccountModal = ({
             onClose();
             // }]
             setFileError(false);
+            setFile(null);
             setValues({
               file: null,
               title: "",
               body: "",
+              tags: "",
             });
+            setCheckedItems([]);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
