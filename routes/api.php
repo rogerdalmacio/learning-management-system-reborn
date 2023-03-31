@@ -1,6 +1,7 @@
 
 <?php
 
+use App\Http\Controllers\Connection\MisController;
 use Carbon\Carbon;
 use App\Models\CourseRating;
 use Illuminate\Support\Facades\Route;
@@ -221,6 +222,10 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     Route::patch('/editteachersubject/{id}', [SubjectTaggingController::class, 'editTeacherSubject']);
 
     Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
+
+    //MIS connection
+    Route::get('/mis/list-of-request', [MisController::class, 'listOfMisRequest']);
+    Route::post('/mis/request-exam-grantees', [MisController::class, 'requestExamGrantees']);
 });
 
 Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'ability:Admin,SuperAdmin']], function(){
