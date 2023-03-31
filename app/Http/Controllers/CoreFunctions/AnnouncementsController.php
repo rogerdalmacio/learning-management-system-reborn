@@ -47,7 +47,7 @@ class AnnouncementsController extends Controller
 
         $newFileName =  Str::uuid() . '.' . $extension;
 
-        $newFileLocation = 'public/announcement';
+        $newFileLocation = 'storage/announcement';
 
         $path = $request->file('photo_path')->storeAs(
             $newFileLocation,

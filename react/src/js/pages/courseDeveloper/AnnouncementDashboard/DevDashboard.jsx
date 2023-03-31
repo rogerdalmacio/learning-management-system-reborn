@@ -47,7 +47,7 @@ function DevDashboard() {
           .trim();
         console.log(info);
         const date = new Date(info.created_at);
-
+        console.log(`${import.meta.env.VITE_API_BASE_URL}/${info.photo_path}`);
         const options = {
           month: "long",
           day: "numeric",
@@ -77,7 +77,9 @@ function DevDashboard() {
                 <div className="d-flex pt-4 pt-xxl-0 justify-content-center">
                   <img
                     className="AnnouncementEmbedLinks rounded"
-                    src={info.embed_link}
+                    src={`${import.meta.env.VITE_API_BASE_URL}/${
+                      info.photo_path
+                    }`}
                     width={400}
                     alt=""
                   />

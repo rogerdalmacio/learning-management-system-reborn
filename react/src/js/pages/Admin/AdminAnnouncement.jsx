@@ -177,11 +177,13 @@ const AdminAnnouncement = () => {
       return;
     }
     let toastId;
+    const randomSutf = {};
     axios
       .patch(
         `${
           import.meta.env.VITE_API_BASE_URL
         }/api/core/deleteannouncement/${row.getValue("id")}`,
+        randomSutf,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -430,8 +432,10 @@ export const CreateNewAccountModal = ({
       values == null ||
       values.title == "" ||
       values.body == "" ||
+      values.tags == "" ||
       file == null ||
       values.title == null ||
+      values.tags == null ||
       values.body == null ||
       values.title == undefined ||
       values.body == undefined ||
@@ -464,20 +468,20 @@ export const CreateNewAccountModal = ({
       formData.append("photo_path", file);
       formData.append("title", values.title);
       formData.append("body", values.body);
-      formData.append("tags", "announcement");
+      formData.append("tags", values.tags);
       formData.append("users", JSON.stringify(listOfUsers));
       formData.append("status", 1);
 
       console.log(JSON.stringify(listOfUsers));
-      const item = {
-        embed_link: values.embed_link,
-        title: values.title,
-        body: values.body,
-        tags: "announcement",
-        users: JSON.stringify(listOfUsers),
-        status: 1,
-      };
-      console.log(item);
+      // const item = {
+      //   embed_link: values.embed_link,
+      //   title: values.title,
+      //   body: values.body,
+      //   tags: "announcement",
+      //   users: JSON.stringify(listOfUsers),
+      //   status: 1,
+      // };
+      // console.log(item);
 
       axios
         .post(
@@ -575,7 +579,10 @@ export const CreateNewAccountModal = ({
                     column.accessorKey == "title") ||
                   (hasError &&
                     values.body == "" &&
-                    column.accessorKey == "body")
+                    column.accessorKey == "body") ||
+                  (hasError &&
+                    values.tags == "" &&
+                    column.accessorKey == "tags")
                     ? "This field is required"
                     : ""
                 }

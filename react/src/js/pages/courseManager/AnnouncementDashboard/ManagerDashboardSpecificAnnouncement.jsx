@@ -76,12 +76,17 @@ function ManagerDashboardSpecificAnnouncement() {
             <div className="d-flex pt-4 pt-xxl-0 justify-content-center">
               <img
                 className="AnnouncementEmbedLinks rounded"
-                src={announcement.embed_link}
+                src={`${import.meta.env.VITE_API_BASE_URL}/${
+                  announcement.photo_path
+                }`}
                 width={400}
                 alt=""
               />
             </div>
           )}
+          <div className="AnnouncementTags text-light p-1">
+            <p className="mb-0">{announcement.tags}</p>
+          </div>
         </div>
       );
     } else if (

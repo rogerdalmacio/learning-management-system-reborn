@@ -3,6 +3,7 @@ import useAuth from "../../../hooks/useAuth";
 import Loading from "../../../components/layouts/Loading";
 import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 import { Link } from "react-router-dom";
+import { Fragment } from "react";
 
 function TeachDashboard() {
   const { token, role } = useAuth();
@@ -44,7 +45,7 @@ function TeachDashboard() {
           .trim();
         console.log(info);
         const date = new Date(info.created_at);
-
+        console.log(`${import.meta.env.VITE_API_BASE_URL}/${info.photo_path}`);
         const options = {
           month: "long",
           day: "numeric",
@@ -53,10 +54,10 @@ function TeachDashboard() {
 
         const formattedDate = date.toLocaleDateString("en-US", options);
         return (
-          <div key={i}>
+          <Fragment key={i}>
             <Link
               to={`/teacher/home/${info.id}`}
-              className="AnnouncementContainer d-xxl-flex shadow-lg rounded overflow-hidden mb-5 p-3 p-xxl-0 text-decoration-none"
+              className="AnnouncementContainer d-block d-xxl-flex shadow-lg rounded overflow-hidden mb-5 p-3 p-xxl-0 text-decoration-none"
             >
               <div className="AnnouncementContent m-xxl-3 overflow-hidden">
                 <h1 className="fs-2 text-dark">{info.title}</h1>
@@ -74,14 +75,19 @@ function TeachDashboard() {
                 <div className="d-flex pt-4 pt-xxl-0 justify-content-center">
                   <img
                     className="AnnouncementEmbedLinks rounded"
-                    src={info.embed_link}
+                    src={`${import.meta.env.VITE_API_BASE_URL}/${
+                      info.photo_path
+                    }`}
                     width={400}
                     alt=""
                   />
                 </div>
               )}
+              <div className="AnnouncementTags text-light p-1">
+                <p className="mb-0">{info.tags}</p>
+              </div>
             </Link>
-          </div>
+          </Fragment>
         );
       });
     } else if (
