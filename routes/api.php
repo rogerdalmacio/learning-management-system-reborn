@@ -191,6 +191,9 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
     Route::patch('/resetpassword/{id}', [PasswordResetController::class, 'passwordReset']);
 
     Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
+    
+    Route::get('/superadmin/registrar/list-of-request', [RegistrarController::class, 'listOfRegistrarRequest']);
+    Route::post('/superadmin/registrar/request-student-credentials', [RegistrarController::class, 'requestStudentCredentials']);
 });
 
 //Admin Core
@@ -229,7 +232,6 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
 
     //Registrar connection
     Route::get('/registrar/list-of-request', [RegistrarController::class, 'listOfRegistrarRequest']);
-    Route::post('/registrar/request-student-credentials', [RegistrarController::class, 'requestStudentCredentials']);
     Route::post('/registrar/request-student-subjects', [RegistrarController::class, 'requestStudentSubjects']);
 });
 
