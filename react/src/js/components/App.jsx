@@ -13,6 +13,7 @@ import SuperCreateStudentAcct from "../pages/superAdmin/SingleCreationAccount/Su
 import SuperCreateStudentAcctFilter from "../pages/superAdmin/SingleCreationAccount/SuperCreateStudentAcctFilter";
 import SuperCreateTeacherAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateTeacherAcct";
 import SuperCreateCourseManAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateCourseManAcct";
+import SuperRequestListOfStudents from "../pages/superAdmin/SuperRequestListOfStudents";
 
 // CourseManager
 import CourseManagerLayout from "./layouts/authenticatedLayout/CourseManagerNavigationBar/CourseManagerLayout";
@@ -61,6 +62,7 @@ import AdminGetGeneralization from "../pages/Admin/CreateModules/AdminGetGeneral
 import AdminGetLesson from "../pages/Admin/CreateModules/AdminGetLesson";
 import AdminGetPrelimAct from "../pages/Admin/CreateModules/AdminGetPrelimAct";
 import AdminRequestGrantExam from "../pages/Admin/ExamGranting/AdminRequestGrantExam";
+import AdminRequestSubjects from "../pages/Admin/AdminRequestSubjects/AdminRequestSubjects";
 
 // Course Developer
 import CourseDevLayout from "./layouts/authenticatedLayout/CourseDeveloperNavifationBar/CourseDevLayout";
@@ -374,7 +376,6 @@ function App() {
             path="/superAdmin/teacherBulkCreationAccount"
             element={<SuperBulkTeacherCreationAccount />}
           />
-
           <Route
             path="/superAdmin/teacherCreateSingleAccount"
             element={<SuperCreateTeacherAcct />}
@@ -399,6 +400,10 @@ function App() {
           <Route
             path="/superAdmin/courseManagerCreateSingleAccount"
             element={<SuperCreateCourseManAcct />}
+          />
+          <Route
+            path="/superAdmin/requestListOfStudents"
+            element={<SuperRequestListOfStudents />}
           />
         </Route>
       </Route>
@@ -473,6 +478,10 @@ function App() {
           <Route
             path="/admin/:id/modules/:id/generalization"
             element={<AdminGetGeneralization />}
+          />
+          <Route
+            path="/admin/requestSubjects"
+            element={<AdminRequestSubjects />}
           />
         </Route>
       </Route>

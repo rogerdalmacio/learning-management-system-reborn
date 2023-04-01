@@ -20,16 +20,20 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import { data, states } from "../../Admin/makeData";
-import useAuth from "../../../hooks/useAuth";
+import { data, states } from "../../pages/Admin/makeData";
 import { toast } from "react-toastify";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
-import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
+import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
+import useAuth from "../../hooks/useAuth";
 
-const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
+const SuperRequestListOfStudents = () => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
+  const [request, setRequest] = useState();
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [updatedList, setUpdatedList] = useState(false);
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [getAnnouncement, setGetAnnouncement] = useState(data);
@@ -47,10 +51,12 @@ const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
 
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
-      if (role === "CourseManager") {
+      if (role === "SuperAdmin") {
         await axios
           .get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/coursemanager/students`,
+            `${
+              import.meta.env.VITE_API_BASE_URL
+            }/api/core/superadmin/registrar/list-of-request`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -60,79 +66,143 @@ const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
             }
           )
           .then((response) => {
-            console.log(response.data.students);
+            console.log(response);
+            console.log(response.data.list);
 
-            const initialRender = response.data.students.filter((data) => {
-              return (
-                parseInt(data.year_and_section.toString().substr(0, 1)) ==
-                studentYear
-              );
-            });
-            console.log(initialRender);
+            // const data = response.data.List.map((studInfo) => {
+            //   return studInfo.grant.find((gran) => {
+            //     return gran;
+            //   });
+            // });
 
-            const firstNameAndLastName = initialRender.map(
-              ({ id, first_name, last_name, email, year_and_section }) => ({
-                first_name,
-                last_name,
-                email,
-                id,
-                year_and_section,
-                password: `#${last_name.substring(0, 2)}2023`,
-              })
+            // const filteredData = data.filter((item) => item !== undefined);
+            // console.log(filteredData);
+
+            setGetAnnouncement(
+              response.data.list.sort((a, b) => a.id - blur.id)
             );
-            setGetAnnouncement(firstNameAndLastName);
 
-            setTableData(firstNameAndLastName);
+            setTableData(
+              response.data.list.sort((a, b) => b.inq_num - a.inq_num)
+            );
           });
       }
     };
     GetAnnouncementHandler();
   }, [updatedList]);
+  console.log(request);
+  const HandleSubmit = () => {
+    let toastId;
+
+    if (request == "" || request == undefined) {
+      setError(true);
+      toast.error("Please fill out the blank area");
+    } else {
+      setIsLoading(true);
+      setError(false);
+      toastId = toast.info("Sending Request...");
+
+      const item = { Request: request };
+      console.log(item);
+      axios
+        .post(
+          `${
+            import.meta.env.VITE_API_BASE_URL
+          }/api/core/superadmin/registrar/request-student-credentials`,
+          item,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status >= 200 && response.status <= 300) {
+            toast.update(toastId, {
+              render: "Request Successfully",
+              type: toast.TYPE.SUCCESS,
+              autoClose: 2000,
+            });
+            setRequest("");
+            setUpdatedList(!updatedList);
+          } else {
+            throw new Error(response.status || "Something Went Wrong!");
+          }
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.data.message) {
+            toast.update(toastId, {
+              render: `${error.response.data.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          } else {
+            toast.update(toastId, {
+              render: `${error.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          }
+          setIsLoading(false);
+        });
+    }
+  };
 
   const columns = useMemo(() => [
     {
-      accessorKey: "id",
-      header: "Student ID",
+      accessorKey: "No",
+      header: "Inquiry Number",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "first_name",
-      header: "First Name",
+      accessorKey: "Department",
+      header: "Department",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "last_name",
-      header: "Last Name",
+      accessorKey: "Request",
+      header: "Inquiries Type",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "year_and_section",
-      header: "Year and Section",
+      accessorKey: "File",
+      header: "Student List",
+      enableColumnOrdering: false,
+      enableEditing: false, //disable editing on this column
+      enableSorting: false,
+      size: 80,
+      Cell: ({ row, column }) => (
+        <div>
+          {console.log(row.original.File)}
+          <a href={`${row.original.File}`}>{row.original.File}</a>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "Status",
+      header: "Status",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "email",
-      header: "Email",
-      enableColumnOrdering: false,
-      enableEditing: false, //disable editing on this column
-      enableSorting: false,
-      size: 80,
-    },
-    {
-      accessorKey: "password",
-      header: "Password",
+      accessorKey: "Request_Date",
+      header: "Date Request",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
@@ -161,8 +231,34 @@ const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
   return (
     <div>
       <ArrowNextAndPrevious>
-        <h3 className="m-0">List of Students</h3>
+        <h3 className="m-0">Student - Request Grant Exam</h3>
       </ArrowNextAndPrevious>
+      <div>
+        <div className="d-flex justify-content-start mb-3">
+          <div class="form-floating " style={{ maxWidth: "700px" }}>
+            <textarea
+              class="form-control m-auto"
+              placeholder="Leave a comment here"
+              id="floatingTextarea"
+              value={request}
+              onChange={(e) => {
+                setRequest(e.target.value);
+              }}
+              style={{ height: "200px", width: "700px" }}
+            ></textarea>
+            <label for="floatingTextarea">Comments</label>
+            <div className="d-flex justify-content-end">
+              <button
+                className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
+                onClick={HandleSubmit}
+                disabled={isLoading}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="MaterialUiTable">
         <MaterialReactTable
           enableRowSelection
@@ -239,4 +335,4 @@ const ManagerGetStudents = ({ updatedList, setUpdatedList }) => {
   );
 };
 
-export default ManagerGetStudents;
+export default SuperRequestListOfStudents;

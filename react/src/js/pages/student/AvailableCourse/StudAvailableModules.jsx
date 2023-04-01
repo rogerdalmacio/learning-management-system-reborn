@@ -70,7 +70,9 @@ function StudAvailableModules() {
                           className="text-decoration-none"
                         >
                           <div className="DevWeekContainer shadow mb-3 py-3 px-2">
-                            <h4>Week {mod.week}</h4>
+                            <h4>
+                              Week {mod.week} - {mod.title}
+                            </h4>
                             {CheckContentInside()}
                           </div>
                         </Link>

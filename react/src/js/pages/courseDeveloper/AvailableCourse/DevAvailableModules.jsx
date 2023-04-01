@@ -5,15 +5,18 @@ import Loading from "../../../components/layouts/Loading";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
+import useCourseDevContext from "../../../hooks/CourseDev/useCourseDevContext";
 
 function DevAvailableModules() {
   const { course } = useGetAvailableCourse();
+  const { setWeek, courses, module } = useCourseDevContext();
 
   const { id } = useParams();
 
+  console.log(module);
   const GetModulesHandler = () => {
-    if (course) {
-      return course.map((item) => {
+    if (courses) {
+      return courses.map((item) => {
         if (item.course == id) {
           return (
             <div key={item.id}>
@@ -63,7 +66,9 @@ function DevAvailableModules() {
                           className="text-decoration-none"
                         >
                           <div className="DevWeekContainer shadow mb-3 py-3 px-2">
-                            <h4>Week {mod.week}</h4>
+                            <h4>
+                              Week {mod.week} - {mod.title}
+                            </h4>
                             {CheckContentInside()}
                           </div>
                         </Link>

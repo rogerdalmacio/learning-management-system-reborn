@@ -16,6 +16,7 @@ function ManagerAvailableContent() {
   const { id } = useParams();
   const [moduleId, setModuleId] = useState();
   const [comment, setComment] = useState();
+  const [isApprove, setIsApprove] = useState();
   const [hasComment, setHasComment] = useState();
   const [alreadySubmitted, setAlreadySubmitted] = useState();
   const [hasError, setHasError] = useState(false);
@@ -26,7 +27,7 @@ function ManagerAvailableContent() {
   const courseBase = pathArray[2];
   const courseTitle = courseBase.replace(/%20/g, " ");
   console.log(courseTitle);
-
+  console.log(module);
   const newWeek = id.replace("week", "WEEK ");
   const weekNumber = newWeek.match(/\d+/)[0];
   console.log(weekNumber);
@@ -40,8 +41,8 @@ function ManagerAvailableContent() {
     ) {
       setHasComment(true);
       setComment(module.content_validate.comments);
+      setIsApprove(module.content_validate.status);
       console.log(module.content_validate.submitted);
-
       if (module.content_validate.submitted == 1) {
         setAlreadySubmitted(true);
       } else {
@@ -52,6 +53,11 @@ function ManagerAvailableContent() {
       setComment("");
     }
   }, [module]);
+
+  console.log(isApprove);
+
+  console.log(comment);
+
   useEffect(() => {
     if (courses !== undefined) {
       const course1 = courses.find((course) => {
@@ -221,14 +227,25 @@ function ManagerAvailableContent() {
         });
     }
   };
+  console.log(moduleId);
 
-  const HandleApprove = async (e) => {
+  const HandleApprove = async () => {
+    //put your validation logic here
+    let toastId;
+
+    setIsLoading(true);
+
+    const approvetodo = {
+      status: "approved",
+    };
+
+    toastId = toast.info("Sending Request...");
     await axios
       .patch(
         `${
           import.meta.env.VITE_API_BASE_URL
-        }/api/core/batchmoduleupdatestatus/${weekNumber}`,
-        status,
+        }/api/coursemanager/acceptTodo/${moduleId}`,
+        approvetodo,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -240,14 +257,44 @@ function ManagerAvailableContent() {
       .then((response) => {
         console.log(response);
         if (response.status >= 200 && response.status <= 300) {
-          toast.success("Module state successfully changed");
+          // if (response.data.length !== 0) {
+          //     toast.update(toastId, {
+          //         render: `Student ID is ${response.data[0]}`,
+          //         type: toast.TYPE.ERROR,
+          //         autoClose: 2000,
+          //     });
+          // } else {
+          toast.update(toastId, {
+            render: "Request Successfully",
+            type: toast.TYPE.SUCCESS,
+            autoClose: 2000,
+          });
+          // }]
+          setHasChange(!hasChange);
+          setIsLoading(false);
         } else {
           throw new Error(response.status || "Something Went Wrong!");
         }
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
-        toast.error(error.message);
+        if (error.response.data.errors) {
+          // to access the subject itself you can use this : error.response.data.SubjectAlreadyExists[1]
+          toast.update(toastId, {
+            render: error.response.data.errors.id[0],
+            type: toast.TYPE.ERROR,
+            autoClose: 2000,
+          });
+          setIdAlreadyTaken(error.response.data.errors.id[0]);
+        } else {
+          toast.update(toastId, {
+            render: `${error.message}`,
+            type: toast.TYPE.ERROR,
+            autoClose: 2000,
+          });
+        }
+        setIsLoading(false);
       });
   };
 
@@ -357,22 +404,27 @@ function ManagerAvailableContent() {
       );
     }
   };
-  console.log(hasComment);
+
   const AvailableModules = () => {
-    if (courses) {
+    if (courses && module) {
       return (
         <Fragment>
           <ArrowNextAndPrevious>
             <h3 className="m-0">{courseTitle}</h3>
           </ArrowNextAndPrevious>
           <div className="d-flex align-items-center mt-3 mb-4">
-            <h4 className="ms-sm-3 mb-0 me-3">{newWeek}</h4>
+            <h4 className="ms-sm-3 mb-0 me-3">
+              {newWeek} -{" "}
+              {module !== undefined && module !== null && module.title}
+            </h4>
             <button
-              className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2"
+              className={`taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 ${
+                isApprove == "approved" ? "bg-success" : ""
+              }`}
               onClick={HandleApprove}
-              disabled={isLoading}
+              disabled={isLoading || isApprove == "approved" ? true : false}
             >
-              Submit
+              {isApprove == "approved" ? "Approved" : "Approve"}
             </button>
           </div>
           <div className="ms-sm-3">{ContentCheckHandler()}</div>

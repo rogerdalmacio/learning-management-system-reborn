@@ -93,20 +93,20 @@ function AdminBatchGrantExam() {
         })
         .catch((error) => {
           console.log(error);
-          if (error.response.data.error) {
-            // to access the subject itself you can use this : error.response.data.SubjectAlreadyExists[1]
-            toast.update(toastId, {
-              render: error.response.data.error,
-              type: toast.TYPE.ERROR,
-              autoClose: 2000,
-            });
-          } else {
-            toast.update(toastId, {
-              render: `${error.message}`,
-              type: toast.TYPE.ERROR,
-              autoClose: 2000,
-            });
-          }
+          // if (error.response.data.error) {
+          //   // to access the subject itself you can use this : error.response.data.SubjectAlreadyExists[1]
+          //   toast.update(toastId, {
+          //     render: error.response.data.error,
+          //     type: toast.TYPE.ERROR,
+          //     autoClose: 2000,
+          //   });
+          // } else {
+          toast.update(toastId, {
+            render: `${error.message}`,
+            type: toast.TYPE.ERROR,
+            autoClose: 2000,
+          });
+          // }
           setProcessing(false);
           setSubmitFile(false);
           setIsLoading(false);

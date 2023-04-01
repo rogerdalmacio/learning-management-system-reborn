@@ -57,6 +57,7 @@ const ManagerDashboard = () => {
             }
           )
           .then((response) => {
+            // sdfdsfd
             console.log(response);
             const data = response.data.Course;
             const newArray = data.map((item) => ({

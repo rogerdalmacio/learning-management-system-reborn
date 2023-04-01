@@ -17,11 +17,16 @@ function SuperBulkTeacherCreationAccount() {
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
-
+  console.log(file);
   useEffect(() => {
     if (file && file.size > 26214400) {
       setSubmitFile(false);
-    } else if (file && file.type !== "text/csv") {
+    } else if (
+      file &&
+      file.type !== "text/csv" &&
+      file.type !==
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
       setSubmitFile(false);
     } else {
       setSubmitFile(true);
@@ -40,8 +45,12 @@ function SuperBulkTeacherCreationAccount() {
       return;
     } else if (file.size > 26214400) {
       toast.error("The file must not be exceeded to 25 MB");
-    } else if (file.type !== "text/csv") {
-      toast.error("The file must be in a CSV format");
+    } else if (
+      file.type !== "text/csv" &&
+      file.type !==
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      toast.error("The file must be in a CSV or XLSX format");
     } else {
       setIsLoading(true);
 

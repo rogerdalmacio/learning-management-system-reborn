@@ -20,6 +20,21 @@ function StudAvailableContent() {
   const newWeek = id.replace("week", "WEEK ");
   const weekNumber = newWeek.match(/\d+/)[0];
 
+  console.log(module);
+  useEffect(() => {
+    if (courses !== undefined) {
+      const course1 = courses.find((course) => {
+        return course.course == courseTitle;
+      });
+      // .find((week) => week.week == weekNumber);
+      console.log(course1);
+      const moduleId = course1.module.find((week) => {
+        return week.week == weekNumber;
+      });
+      setWeek(moduleId.id);
+    }
+  }, [courses, weekNumber, module]);
+  console.log(module);
   const NameOfExam = () => {
     if (weekNumber == 6) {
       return (
@@ -128,13 +143,16 @@ function StudAvailableContent() {
   };
 
   const AvailableModules = () => {
-    if (courses) {
+    if (courses && module) {
       return (
         <Fragment>
           <ArrowNextAndPrevious>
             <h3 className="mb-0">{courseTitle}</h3>
           </ArrowNextAndPrevious>
-          <h4 className="ms-sm-3 my-4">{newWeek}</h4>
+          <h4 className="ms-sm-3 my-4">
+            {newWeek} -{" "}
+            {module !== undefined && module !== null && module.title}
+          </h4>
           <div className="ms-sm-3">{ContentCheckHandler()}</div>
         </Fragment>
       );

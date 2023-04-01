@@ -19,6 +19,7 @@ export const CourseDevContextProvider = ({ children }) => {
   const [quizResultId, setQuizResultId] = useState();
   const [updateList, setUpdatedList] = useState(false);
   const [hasChange, setHasChange] = useState(false);
+  const [hasCourseChange, setHasCourseChange] = useState(false);
 
   // const pathname = window.location.pathname;
   // const pathArray = pathname.split("/");
@@ -41,6 +42,7 @@ export const CourseDevContextProvider = ({ children }) => {
             }
           )
           .then((response) => {
+            console.log(response);
             console.log(response.data);
             setCourses(response.data.course);
           });
@@ -48,7 +50,7 @@ export const CourseDevContextProvider = ({ children }) => {
     };
 
     renderCourse();
-  }, []);
+  }, [hasCourseChange]);
 
   useEffect(() => {
     const renderModule = async () => {
@@ -212,6 +214,8 @@ export const CourseDevContextProvider = ({ children }) => {
         quizResultId,
         hasChange,
         setHasChange,
+        hasCourseChange,
+        setHasCourseChange,
       }}
     >
       {children}

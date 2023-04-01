@@ -195,6 +195,24 @@ function Navbar({ openSidebar }) {
             </ul>
             <span className="tooltip">Mass Account Creation</span>
           </li>
+          <Link
+            to="/superAdmin/requestListOfStudents"
+            className="text-decoration-none"
+          >
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/superAdmin/requestListOfStudents"
+                    ? "activeSideBar"
+                    : ""
+                }`}
+              >
+                <i className="bx bx-grid-alt"></i>
+                <span className="links_name">Request Students</span>
+              </span>
+              <span className="tooltip">Request Students</span>
+            </li>
+          </Link>
         </ul>
       </div>
     </Fragment>

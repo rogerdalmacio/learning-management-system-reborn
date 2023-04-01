@@ -238,7 +238,9 @@ function DevAvailableContent() {
           <ArrowNextAndPrevious>
             <h3 className="m-0">{courseTitle}</h3>
           </ArrowNextAndPrevious>
-          <h4 className="ms-3 my-4">{newWeek}</h4>
+          <h4 className="ms-3 my-4">
+            {newWeek} - {quiz !== undefined && quiz !== null && quiz.title}
+          </h4>
           <div className="ms-3">{ContentCheckHandler()}</div>
           {quiz !== undefined &&
             quiz !== null &&

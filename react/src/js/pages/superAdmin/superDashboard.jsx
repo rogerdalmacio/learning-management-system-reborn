@@ -155,7 +155,7 @@ function FileUpload() {
   return (
     <div>
       <ArrowNextAndPrevious>
-        <h3 className="mb-0">Analytics</h3>
+        <h3 className="mb-0">Dashboard</h3>
       </ArrowNextAndPrevious>
       <div className="d-block">
         {getStudents !== undefined &&
