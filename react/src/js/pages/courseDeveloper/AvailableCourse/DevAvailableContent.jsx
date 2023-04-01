@@ -11,7 +11,8 @@ import useAuth from "../../../hooks/useAuth";
 function DevAvailableContent() {
   const { token } = useAuth();
   const { course } = useGetAvailableCourse();
-  const { courses, module, setWeekQuiz, quiz } = useCourseDevContext();
+  const { courses, module, setWeekQuiz, quiz, hasChange, setHasChange } =
+    useCourseDevContext();
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
 
@@ -86,6 +87,8 @@ function DevAvailableContent() {
             autoClose: 2000,
           });
           // }]
+
+          setHasChange(!hasChange);
           setIsLoading(false);
         } else {
           throw new Error(response.status || "Something Went Wrong!");
@@ -245,8 +248,10 @@ function DevAvailableContent() {
                 <h4 className="ms-sm-3 my-4">Comments: </h4>
                 <div className="ms-sm-3 ">
                   <div style={{ maxWidth: "700px" }}>
-                    <div className="border border-2 p-2 border-dark">
-                      {quiz && <p>{quiz.content_validate.comments}</p>}
+                    <div className="todoCDborderComment">
+                      {quiz && (
+                        <p className="p-2">{quiz.content_validate.comments}</p>
+                      )}
                     </div>
                     <div className="d-flex justify-content-end">
                       <button

@@ -17,6 +17,7 @@ function ManagerAvailableContent() {
   const [moduleId, setModuleId] = useState();
   const [comment, setComment] = useState();
   const [hasComment, setHasComment] = useState();
+  const [alreadySubmitted, setAlreadySubmitted] = useState();
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   // Course Title
@@ -29,7 +30,6 @@ function ManagerAvailableContent() {
   const newWeek = id.replace("week", "WEEK ");
   const weekNumber = newWeek.match(/\d+/)[0];
   console.log(weekNumber);
-  console.log(module);
 
   useEffect(() => {
     if (
@@ -40,6 +40,13 @@ function ManagerAvailableContent() {
     ) {
       setHasComment(true);
       setComment(module.content_validate.comments);
+      console.log(module.content_validate.submitted);
+
+      if (module.content_validate.submitted == 1) {
+        setAlreadySubmitted(true);
+      } else {
+        setAlreadySubmitted(false);
+      }
     } else {
       setHasComment(false);
       setComment("");
@@ -338,6 +345,7 @@ function ManagerAvailableContent() {
             isLoading={isLoading}
             comment={comment}
             hasComment={hasComment}
+            alreadySubmitted={alreadySubmitted}
           />
         </Fragment>
       );

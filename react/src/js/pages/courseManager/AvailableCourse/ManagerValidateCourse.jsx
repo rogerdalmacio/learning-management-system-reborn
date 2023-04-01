@@ -7,14 +7,24 @@ function ManagerValidateCourse({
   HandleEdit,
   hasComment,
   isLoading,
+  alreadySubmitted,
 }) {
   return (
     <div>
-      <h4 className="ms-sm-3 my-4">Comments: </h4>
+      <div className="ms-sm-3 my-4">
+        <h4>Comments: </h4>
+        {alreadySubmitted && (
+          <p className="fst-italic todoCDsubmitted">
+            * Course Developer submitted *
+          </p>
+        )}
+      </div>
       <div className="ms-sm-3 ">
         <div class="form-floating " style={{ maxWidth: "700px" }}>
           <textarea
-            class="form-control"
+            class={`form-control border ${
+              alreadySubmitted ? "border-primary" : "border-danger"
+            }`}
             placeholder="Leave a comment here"
             id="floatingTextarea"
             value={comment}

@@ -1,0 +1,11 @@
+@use "../../abstract/" as *;
+
+.todoCDsubmitted {
+  color: $primary-color;
+  font-weight: 700;
+}
+
+.todoCDborderComment {
+  border: 1.5px solid $danger-color;
+  border-radius: 5px;
+}
