@@ -52,7 +52,7 @@ class ModuleStatusUpdateController extends Controller
             'body' => 'you can now proceed and answer your modules, goodluck !',
             'status' => null,
             'photo_path' => null,
-            'users' => ['Student', 'Teacher'],
+            'users' => ["Student", "Teacher"],
             'tags' => 'notification',
         ]);
 
