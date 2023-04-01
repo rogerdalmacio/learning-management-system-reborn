@@ -27,6 +27,7 @@ class SCourseController extends Controller
 
         $courses = Course::with('module')
                             ->whereIn('course_code', $subjectsarray)
+                            ->whereNot('approval', 0)
                             ->where('department', $user->department)
                             ->whereHas('module', function ($query) {
                                 $query->where('status', true);

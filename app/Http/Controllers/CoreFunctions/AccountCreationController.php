@@ -27,112 +27,215 @@ class AccountCreationController extends Controller
 {
     public function batchCreateStudents(BatchCreateStudentRequest $request)
     {
-        
-        try {
+       
+        $extension = $request->file('file')->getClientOriginalExtension();
 
-            $success = [];
-            $insertStudents = [];
-            $errors = [];
+        if($extension == 'xlsx') {
 
-            $extension = $request->file('file')->getClientOriginalExtension();
+            try {
 
-            $csv = $request->file('file');
-            $csv = Reader::createFromPath($csv->getRealPath(), 'r');
-            if($extension == 'csv') {
-                $csv->setHeaderOffset(0);
-            }
-
-            $rules = [
-                'id' => [
-                    'required',
-                    'unique:lms_students'
-                ],
-                'first_name' => [
-                    'required',
-                ],
-                'last_name' => [
-                    'required',
-                ],
-                'year_and_section' => [
-                    'required',
-                ],
-                'major' => [
-                    'sometimes',
-                ],
-                'department' => [
-                    'required',
-                ],
-                'program' => [
-                    'required',
-                ]
-            ];
-        
-            foreach ($csv as $student) {
-
-                $firstTwoCharactersOfLastName = substr($student['last_name'], 0, 2);
-
-                $date = Carbon::now()->format('Y');
-
-                $password = '#' . $firstTwoCharactersOfLastName . $date;
-
-                $email = $student['id'] . '@lms.bcpsms.com';
-
-                $newstudent = [
-                    'id' => $student['id'],
-                    'first_name' => $student['first_name'],
-                    'last_name' => $student['last_name'],
-                    'email' => $email,
-                    'password' => Hash::make($password),
-                    'year_and_section' => $student['year_and_section'],
-                    'major' => $student['major'],
-                    'department' => $student['department'],
-                    'program' => $student['program'],
-                    'subjects' => '',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
+                $success = [];
+                $insertStudents = [];
+                $errors = [];
+    
+                $excel = $request->file('file');
+                $excel = Reader::createFromPath($excel->getRealPath());
+                $result = $excel->fetch();
+    
+                $rules = [
+                    'id' => [
+                        'required',
+                        'unique:lms_students'
+                    ],
+                    'first_name' => [
+                        'required',
+                    ],
+                    'last_name' => [
+                        'required',
+                    ],
+                    'year_and_section' => [
+                        'required',
+                    ],
+                    'major' => [
+                        'sometimes',
+                    ],
+                    'department' => [
+                        'required',
+                    ],
+                    'program' => [
+                        'required',
+                    ]
                 ];
-
-                $message = [
-                    'id.unique' => 'ID :input already exists'
-                ];
-
-                $validator = Validator::make($newstudent, $rules, $message);
-
-                if($validator->fails()){
-                    $errors[] = $validator->errors();
-                } else {
-                    $insertStudents[] = $newstudent;
-                    $success[] = $newstudent['email'] . ' - ' . $password;
+            
+                foreach ($result as $student) {
+    
+                    $firstTwoCharactersOfLastName = substr($student['last_name'], 0, 2);
+    
+                    $date = Carbon::now()->format('Y');
+    
+                    $password = '#' . $firstTwoCharactersOfLastName . $date;
+    
+                    $email = $student['id'] . '@lms.bcpsms.com';
+    
+                    $newstudent = [
+                        'id' => $student['id'],
+                        'first_name' => $student['first_name'],
+                        'last_name' => $student['last_name'],
+                        'email' => $email,
+                        'password' => Hash::make($password),
+                        'year_and_section' => $student['year_and_section'],
+                        'major' => $student['major'],
+                        'department' => $student['department'],
+                        'program' => $student['program'],
+                        'subjects' => '',
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ];
+    
+                    $message = [
+                        'id.unique' => 'ID :input already exists'
+                    ];
+    
+                    $validator = Validator::make($newstudent, $rules, $message);
+    
+                    if($validator->fails()){
+                        $errors[] = $validator->errors();
+                    } else {
+                        $insertStudents[] = $newstudent;
+                        $success[] = $newstudent['email'] . ' - ' . $password;
+                    }
+    
                 }
-
+    
+                $chunks = array_chunk($insertStudents, 100);
+    
+                foreach($chunks as $chunk) {
+                    Student::insert($chunk);
+                }
+    
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+    
+                return response()->json([
+                    'error' => $e->getMessage(),
+                    'errors' => $errors
+                ], 500);
             }
-
-            $chunks = array_chunk($insertStudents, 100);
-
-            foreach($chunks as $chunk) {
-                Student::insert($chunk);
-            }
-
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-
+    
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'user_type' => Auth::user()->usertype(),
+                'activity_log' => 'batch created students account'
+            ]);
+    
             return response()->json([
-                'error' => $e->getMessage(),
+                'accountSuccessfullyCreatedFor' => $success,
                 'errors' => $errors
-            ], 500);
+            ], 201);
+    
+        } else {
+            try {
+
+                $success = [];
+                $insertStudents = [];
+                $errors = [];
+    
+                $csv = $request->file('file');
+                $csv = Reader::createFromPath($csv->getRealPath(), 'r');
+                $csv->setHeaderOffset(0);
+    
+                $rules = [
+                    'id' => [
+                        'required',
+                        'unique:lms_students'
+                    ],
+                    'first_name' => [
+                        'required',
+                    ],
+                    'last_name' => [
+                        'required',
+                    ],
+                    'year_and_section' => [
+                        'required',
+                    ],
+                    'major' => [
+                        'sometimes',
+                    ],
+                    'department' => [
+                        'required',
+                    ],
+                    'program' => [
+                        'required',
+                    ]
+                ];
+            
+                foreach ($csv as $student) {
+    
+                    $firstTwoCharactersOfLastName = substr($student['last_name'], 0, 2);
+    
+                    $date = Carbon::now()->format('Y');
+    
+                    $password = '#' . $firstTwoCharactersOfLastName . $date;
+    
+                    $email = $student['id'] . '@lms.bcpsms.com';
+    
+                    $newstudent = [
+                        'id' => $student['id'],
+                        'first_name' => $student['first_name'],
+                        'last_name' => $student['last_name'],
+                        'email' => $email,
+                        'password' => Hash::make($password),
+                        'year_and_section' => $student['year_and_section'],
+                        'major' => $student['major'],
+                        'department' => $student['department'],
+                        'program' => $student['program'],
+                        'subjects' => '',
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ];
+    
+                    $message = [
+                        'id.unique' => 'ID :input already exists'
+                    ];
+    
+                    $validator = Validator::make($newstudent, $rules, $message);
+    
+                    if($validator->fails()){
+                        $errors[] = $validator->errors();
+                    } else {
+                        $insertStudents[] = $newstudent;
+                        $success[] = $newstudent['email'] . ' - ' . $password;
+                    }
+    
+                }
+    
+                $chunks = array_chunk($insertStudents, 100);
+    
+                foreach($chunks as $chunk) {
+                    Student::insert($chunk);
+                }
+    
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+    
+                return response()->json([
+                    'error' => $e->getMessage(),
+                    'errors' => $errors
+                ], 500);
+            }
+    
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'user_type' => Auth::user()->usertype(),
+                'activity_log' => 'batch created students account'
+            ]);
+    
+            return response()->json([
+                'accountSuccessfullyCreatedFor' => $success,
+                'errors' => $errors
+            ], 201);
+    
         }
-
-        Logs::create([
-            'user_id' => Auth::user()->id,
-            'user_type' => Auth::user()->usertype(),
-            'activity_log' => 'batch created students account'
-        ]);
-
-        return response()->json([
-            'accountSuccessfullyCreatedFor' => $success,
-            'errors' => $errors
-        ], 201);
-
     }
 
     public function batchCreateTeachers(BatchCreateTeachersRequest $request) {
@@ -143,13 +246,9 @@ class AccountCreationController extends Controller
             $insertTeacher = [];
             $errors = [];
 
-            $extension = $request->file('file')->getClientOriginalExtension();
-
             $csv = $request->file('file');
             $csv = Reader::createFromPath($csv->getRealPath(), 'r');
-            if($extension == 'csv') {
-                $csv->setHeaderOffset(0);
-            }
+            $csv->setHeaderOffset(0);
 
             $rules = [
                 'id' => [
