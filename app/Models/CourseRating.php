@@ -11,6 +11,8 @@ class CourseRating extends Model
 {
     use HasFactory;
 
+    protected $table = 'lms_course_ratings';
+
     protected $fillable = [
         'course_id',
         'comprehensiveness',
