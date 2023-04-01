@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('complete');
             $table->timestamps();
         });
+
+        Schema::rename('course_ratings', 'lms_course_ratings');
     }   
 
     /**

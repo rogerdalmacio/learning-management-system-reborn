@@ -49,6 +49,7 @@ use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CourseManager\CMCourseRatingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
+use App\Http\Controllers\Teacher\TActivityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,6 +117,8 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
 
     Route::apiResource('course', TCourseController::class);
 
+    Route::apiResource('activityresult', TActivityController::class); // submit score using patch method
+    
     Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
 });
 

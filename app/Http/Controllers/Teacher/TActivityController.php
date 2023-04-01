@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\CourseDeveloper;
+namespace App\Http\Controllers\Teacher;
 
-use Illuminate\Http\Request;
-use App\Models\Modules\Course;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Students\ActivityResult;
+use Illuminate\Http\Request;
 
-class CDCourseController extends Controller
+class TActivityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,19 +15,7 @@ class CDCourseController extends Controller
      */
     public function index()
     {
-
-        $user = Auth::user();
-
-        $subjectsArray = explode(',', $user->subjects);
-
-        $query = Course::with('module','syllabus')->whereIn('course_code', $subjectsArray)->where('department', $user->department)->get();
-
-        $response = [
-            'course' => $query
-        ];
-
-        return response($response, 200);
-
+        //
     }
 
     /**
@@ -50,15 +37,7 @@ class CDCourseController extends Controller
      */
     public function show($id)
     {
-
-        $course = Course::find($id);
-
-        $response = [
-            'Course' => $course
-        ];
-        
-        return response($response, 200);
-
+        //
     }
 
     /**
@@ -70,7 +49,21 @@ class CDCourseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'score' => 'required'
+        ]);
+
+        $activityresult = ActivityResult::find($id);
+
+        $activityresult->update([
+            'score' => $request['score']
+        ]);
+
+        $response = [
+            'score submitted successfully'
+        ];
+        
+        return response($response, 200);
     }
 
     /**

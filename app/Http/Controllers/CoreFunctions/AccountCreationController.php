@@ -285,7 +285,7 @@ class AccountCreationController extends Controller
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
             'email' => $email,
-            'password' => $password,
+            'password' => Hash::make($password),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -320,7 +320,7 @@ class AccountCreationController extends Controller
             'last_name' => $request['last_name'],
             'department' => $request['department'],
             'email' => $email,
-            'password' => $password,
+            'password' => Hash::make($password),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -356,7 +356,7 @@ class AccountCreationController extends Controller
             'department' => $request['department'],
             'subjects' => '',
             'email' => $email,
-            'password' => $password,
+            'password' => Hash::make($password),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -390,7 +390,7 @@ class AccountCreationController extends Controller
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
             'email' => $email,
-            'password' => $password,
+            'password' => Hash::make($password),
             'department' => $request['department'],
             'program' => $request['program'],
             'year_and_sections' => '',

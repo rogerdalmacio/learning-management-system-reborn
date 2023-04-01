@@ -36,8 +36,6 @@ class SubjectTaggingController extends Controller
             
             foreach ($csv as $student) {
 
-
-
                 $rules = [
                     'id' => [
                         'required',
@@ -45,13 +43,11 @@ class SubjectTaggingController extends Controller
                     ],
                     'subjects' => [
                         'required',
-                        'unique:lms_students,subjects'
                     ]
                 ];
 
                 $message = [
                     'id.exists' => 'This student id : :input does not exist',
-                    'subjects.unique' =>"Student ID: ". $student['id'] .','. 'The subjects :input you are trying to tag already exist'
                 ];
 
                 $validator = Validator::make($student, $rules, $message);
@@ -116,13 +112,11 @@ class SubjectTaggingController extends Controller
                     ],
                     'subjects' => [
                         'required',
-                        'unique:lms_teachers,subjects'
                     ]
                 ];
 
                 $message = [
                     'id.exists' => 'Teacher id : :input does not exist',
-                    'subjects.unique' =>"Teacher ID: ". $teacher['id'] .','. 'The subjects :input you are trying to tag already exist'
                 ];
 
                 $validator = Validator::make($teacher, $rules, $message);

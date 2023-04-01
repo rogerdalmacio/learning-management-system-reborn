@@ -29,13 +29,12 @@ class ModuleStatusUpdateController extends Controller
 
     }
 
-    public function editModuleStatus($id, Request $request) {
+    public function editModuleStatus(Request $request, $id) {
 
         $request->validate([
             'status' => 'required'
         ]);
 
-        // $modulesArr = [];
         $modules = Module::where('week', $id)->get();
 
         foreach($modules as $module) {
@@ -43,18 +42,6 @@ class ModuleStatusUpdateController extends Controller
                 'status' => $request['status']
             ]);
         }
-
-        // foreach($modules as $module) {
-
-        //     $modulesArr[] = $module->id;
-
-        // }
-
-        // $chunks = array_chunk($modulesArr, 100);
-
-        // foreach($chunks as $chunk) {
-        //     Module::whereIn('id', $chunk)->update(['status' => $request['status']]);
-        // }
 
         $response = [
             'Module status updated: ' => $modules,

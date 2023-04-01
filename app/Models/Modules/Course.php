@@ -74,4 +74,9 @@ class Course extends Model
     {
         return $this->hasOne(CourseRating::class);
     }
+
+    public function syllabus()
+    {
+        return $this->hasOne(CourseSyllabus::class);
+    }
 }
