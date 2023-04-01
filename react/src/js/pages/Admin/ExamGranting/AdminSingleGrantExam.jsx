@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
+import AdminListOfGrantees from "./AdminListOfGrantees";
+import { update } from "lodash";
 
 function AdminSingleGrantExam() {
   const { token } = useAuth();
@@ -12,6 +14,7 @@ function AdminSingleGrantExam() {
   const [preliminariesName, setPrelimnariesName] = useState("prelim");
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [updatedList, setUpdatedList] = useState(false);
 
   console.log(preliminariesName);
   console.log(studentId);
@@ -69,6 +72,7 @@ function AdminSingleGrantExam() {
                 autoClose: 2000,
               });
             }
+            setUpdatedList(!updatedList);
           } else {
             throw new Error(response.status || "Something Went Wrong!");
           }
@@ -187,13 +191,16 @@ function AdminSingleGrantExam() {
           </ul>
         </div>
       </div>
-      <button
-        disabled={isLoading}
-        className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
-        onClick={SubmitButton}
-      >
-        Submit
-      </button>
+      <div className="d-flex justify-content-end mb-3">
+        <button
+          disabled={isLoading}
+          className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
+          onClick={SubmitButton}
+        >
+          Submit
+        </button>
+      </div>
+      <AdminListOfGrantees updatedList={updatedList} />
     </div>
   );
 }

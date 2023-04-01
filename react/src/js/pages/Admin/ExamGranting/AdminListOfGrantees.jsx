@@ -27,13 +27,12 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
 
-const AdminRequestGrantExam = () => {
+const AdminListOfGrantees = ({ updatedList }) => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
   const [request, setRequest] = useState();
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [updatedList, setUpdatedList] = useState(false);
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [getAnnouncement, setGetAnnouncement] = useState(data);
@@ -53,139 +52,70 @@ const AdminRequestGrantExam = () => {
     const GetAnnouncementHandler = async () => {
       if (role === "admin") {
         await axios
-          .get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/core/mis/list-of-request`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-            }
-          )
+          .get(`${import.meta.env.VITE_API_BASE_URL}/api/core/grantees`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          })
           .then((response) => {
-            console.log(response.data.List);
+            console.log(response.data.students);
 
-            // const data = response.data.List.map((studInfo) => {
-            //   return studInfo.grant.find((gran) => {
-            //     return gran;
-            //   });
-            // });
+            const data = response.data.students.map((studInfo) => {
+              return studInfo.grant;
+            });
+            console.log(data);
 
-            // const filteredData = data.filter((item) => item !== undefined);
-            // console.log(filteredData);
+            const arrayOfArrays = [];
+            console.log(data.length);
+            for (let i = 0; i <= data.length - 1; i++) {
+              console.log(i);
+              const array = data[i];
+              console.log(array);
+              arrayOfArrays.push(array);
+            }
 
-            setGetAnnouncement(
-              response.data.List.sort((a, b) => a.id - blur.id)
-            );
+            const combinedArray = [].concat(...arrayOfArrays);
+            console.log(combinedArray);
 
-            setTableData(
-              response.data.List.sort((a, b) => b.inq_num - a.inq_num)
-            );
+            setGetAnnouncement(combinedArray);
+
+            setTableData(combinedArray);
           });
       }
     };
     GetAnnouncementHandler();
   }, [updatedList]);
 
-  const HandleSubmit = () => {
-    let toastId;
-
-    if (request == "" || request == undefined) {
-      setError(true);
-      toast.error("Please fill out the blank area");
-    } else {
-      setIsLoading(true);
-      setError(false);
-      toastId = toast.info("Sending Request...");
-
-      const item = { inq_type: request };
-      console.log(item);
-      axios
-        .post(
-          `${
-            import.meta.env.VITE_API_BASE_URL
-          }/api/core/mis/request-exam-grantees`,
-          item,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          if (response.status >= 200 && response.status <= 300) {
-            toast.update(toastId, {
-              render: "Request Successfully",
-              type: toast.TYPE.SUCCESS,
-              autoClose: 2000,
-            });
-            setRequest("");
-            setUpdatedList(!updatedList);
-          } else {
-            throw new Error(response.status || "Something Went Wrong!");
-          }
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.log(error);
-          if (error.response.data.message) {
-            toast.update(toastId, {
-              render: `${error.response.data.message}`,
-              type: toast.TYPE.ERROR,
-              autoClose: 2000,
-            });
-          } else {
-            toast.update(toastId, {
-              render: `${error.message}`,
-              type: toast.TYPE.ERROR,
-              autoClose: 2000,
-            });
-          }
-          setIsLoading(false);
-        });
-    }
-  };
-
   const columns = useMemo(() => [
     {
-      accessorKey: "inq_num",
-      header: "Inquiry Number",
+      accessorKey: "student_id",
+      header: "Student ID",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "department",
-      header: "Department",
+      accessorKey: "preliminaries",
+      header: "Term",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "inq_type",
-      header: "Inquiries Type",
+      accessorKey: "grant",
+      header: "Grant",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
       size: 80,
     },
     {
-      accessorKey: "status",
-      header: "Status",
-      enableColumnOrdering: false,
-      enableEditing: false, //disable editing on this column
-      enableSorting: false,
-      size: 80,
-    },
-    {
-      accessorKey: "date_req",
-      header: "Date Request",
+      accessorKey: "granted_at",
+      header: "Grant At",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column
       enableSorting: false,
@@ -213,35 +143,6 @@ const AdminRequestGrantExam = () => {
   };
   return (
     <div>
-      <ArrowNextAndPrevious>
-        <h3 className="m-0">Student - Request Grant Exam</h3>
-      </ArrowNextAndPrevious>
-      <div>
-        <div className="d-flex justify-content-start mb-3">
-          <div class="form-floating " style={{ maxWidth: "700px" }}>
-            <textarea
-              class="form-control m-auto"
-              placeholder="Leave a comment here"
-              id="floatingTextarea"
-              value={request}
-              onChange={(e) => {
-                setRequest(e.target.value);
-              }}
-              style={{ height: "200px", width: "700px" }}
-            ></textarea>
-            <label for="floatingTextarea">Comments</label>
-            <div className="d-flex justify-content-end">
-              <button
-                className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
-                onClick={HandleSubmit}
-                disabled={isLoading}
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="MaterialUiTable">
         <MaterialReactTable
           enableRowSelection
@@ -318,4 +219,4 @@ const AdminRequestGrantExam = () => {
   );
 };
 
-export default AdminRequestGrantExam;
+export default AdminListOfGrantees;
