@@ -250,7 +250,14 @@ function DevAvailableContent() {
                   <div style={{ maxWidth: "700px" }}>
                     <div className="todoCDborderComment">
                       {quiz && (
-                        <p className="p-2">{quiz.content_validate.comments}</p>
+                        <p
+                          className="p-2"
+                          dangerouslySetInnerHTML={{
+                            __html: quiz.content_validate.comments
+                              .replace(/(?:\r\n|\r|\n)/g, "<br>")
+                              .trim(),
+                          }}
+                        ></p>
                       )}
                     </div>
                     <div className="d-flex justify-content-end">

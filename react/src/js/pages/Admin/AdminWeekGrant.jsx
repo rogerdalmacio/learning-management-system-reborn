@@ -7,32 +7,6 @@ import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious"
 function AdminWeekGrant() {
   const { role, token } = useAuth();
   const [isToggled, setIsToggled] = useState();
-  // const [isToggled, setIsToggled] = useState({
-  //   week1: false,
-  //   week2: false,
-  //   week3: false,
-  //   week4: false,
-  //   week5: false,
-  //   week6: false,
-  //   week7: false,
-  //   week8: false,
-  //   week9: false,
-  //   week10: false,
-  //   week11: false,
-  //   week12: false,
-  //   week13: false,
-  //   week14: false,
-  //   week15: false,
-  //   week16: false,
-  //   week17: false,
-  //   week18: false,
-  //   week19: false,
-  //   week20: false,
-  //   week21: false,
-  //   week22: false,
-  //   week23: false,
-  //   week24: false,
-  // });
 
   console.log(isToggled);
 

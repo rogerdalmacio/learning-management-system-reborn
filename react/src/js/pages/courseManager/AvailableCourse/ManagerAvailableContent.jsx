@@ -222,6 +222,35 @@ function ManagerAvailableContent() {
     }
   };
 
+  const HandleApprove = async (e) => {
+    await axios
+      .patch(
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }/api/core/batchmoduleupdatestatus/${weekNumber}`,
+        status,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        if (response.status >= 200 && response.status <= 300) {
+          toast.success("Module state successfully changed");
+        } else {
+          throw new Error(response.status || "Something Went Wrong!");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
+  };
+
   const NameOfExam = () => {
     if (weekNumber == 6) {
       return (
@@ -336,7 +365,16 @@ function ManagerAvailableContent() {
           <ArrowNextAndPrevious>
             <h3 className="m-0">{courseTitle}</h3>
           </ArrowNextAndPrevious>
-          <h4 className="ms-sm-3 my-4">{newWeek}</h4>
+          <div className="d-flex align-items-center mt-3 mb-4">
+            <h4 className="ms-sm-3 mb-0 me-3">{newWeek}</h4>
+            <button
+              className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2"
+              onClick={HandleApprove}
+              disabled={isLoading}
+            >
+              Submit
+            </button>
+          </div>
           <div className="ms-sm-3">{ContentCheckHandler()}</div>
           <ManagerValidateCourse
             setComment={setComment}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../../../components/layouts/Loading";
 import { toast } from "react-toastify";
@@ -11,14 +11,9 @@ function ManagerAvailableModules() {
 
   const { id } = useParams();
 
-  console.log(id);
-
   const GetModulesHandler = () => {
     if (courses) {
-      console.log(courses);
       return courses.map((item) => {
-        console.log(item);
-        console.log("Mathematics In The Modern World" == id);
         if (item.course == id) {
           return (
             <div key={item.id}>
@@ -32,8 +27,6 @@ function ManagerAvailableModules() {
                     return a.id.split("-")[1] - b.id.split("-")[1];
                   })
                   .map((mod) => {
-                    console.log(mod);
-
                     const NameOfExam = () => {
                       if (mod.week == 6) {
                         return <p className="mb-0">Preliminary Examination</p>;
@@ -63,14 +56,13 @@ function ManagerAvailableModules() {
                         );
                       }
                     };
-                    console.log(mod);
                     return (
                       <div key={mod.id}>
                         <Link
                           to={`/courseManager/${item.course}/modules/week${mod.week}`}
                           className="text-decoration-none"
                         >
-                          <div className="DevWeekContainer shadow mb-3 py-3 px-2">
+                          <div className="DevWeekContainer  shadow mb-3 py-3 px-2">
                             <h4>Week {mod.week}</h4>
                             {CheckContentInside()}
                           </div>

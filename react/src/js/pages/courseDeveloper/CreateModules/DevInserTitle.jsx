@@ -38,7 +38,7 @@ function DevInsertTitle() {
         <div className="row gutters mt-4 ">
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div className="d-flex justify-content-end">
-              <button className=" buttonTemplate text-right sumbit-button btn px-5">
+              <button className=" smallButtonTemplate text-right sumbit-button btn px-5">
                 Submit
               </button>
             </div>
