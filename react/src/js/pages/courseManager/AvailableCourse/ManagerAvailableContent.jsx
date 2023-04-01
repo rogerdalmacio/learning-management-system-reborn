@@ -31,7 +31,7 @@ function ManagerAvailableContent() {
   const newWeek = id.replace("week", "WEEK ");
   const weekNumber = newWeek.match(/\d+/)[0];
   console.log(weekNumber);
-
+  console.log(module);
   useEffect(() => {
     if (
       module &&
