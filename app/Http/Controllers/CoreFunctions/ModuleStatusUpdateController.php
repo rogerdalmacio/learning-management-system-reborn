@@ -66,4 +66,3 @@ class ModuleStatusUpdateController extends Controller
 
     }   
 }
-    

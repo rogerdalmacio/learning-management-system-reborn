@@ -34,9 +34,13 @@ class AccountCreationController extends Controller
             $insertStudents = [];
             $errors = [];
 
+            $extension = $request->file('file')->getClientOriginalExtension();
+
             $csv = $request->file('file');
             $csv = Reader::createFromPath($csv->getRealPath(), 'r');
-            $csv->setHeaderOffset(0);
+            if($extension == 'csv') {
+                $csv->setHeaderOffset(0);
+            }
 
             $rules = [
                 'id' => [
@@ -139,9 +143,13 @@ class AccountCreationController extends Controller
             $insertTeacher = [];
             $errors = [];
 
+            $extension = $request->file('file')->getClientOriginalExtension();
+
             $csv = $request->file('file');
             $csv = Reader::createFromPath($csv->getRealPath(), 'r');
-            $csv->setHeaderOffset(0);
+            if($extension == 'csv') {
+                $csv->setHeaderOffset(0);
+            }
 
             $rules = [
                 'id' => [
