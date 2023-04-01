@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\Connection\MisController;
+use App\Http\Controllers\Connection\RegistrarController;
 use Carbon\Carbon;
 use App\Models\CourseRating;
 use Illuminate\Support\Facades\Route;
@@ -225,6 +226,11 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     //MIS connection
     Route::get('/mis/list-of-request', [MisController::class, 'listOfMisRequest']);
     Route::post('/mis/request-exam-grantees', [MisController::class, 'requestExamGrantees']);
+
+    //Registrar connection
+    Route::get('/registrar/list-of-request', [RegistrarController::class, 'listOfRegistrarRequest']);
+    Route::post('/registrar/request-student-credentials', [RegistrarController::class, 'requestStudentCredentials']);
+    Route::post('/registrar/request-student-subjects', [RegistrarController::class, 'requestStudentSubjects']);
 });
 
 Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'ability:Admin,SuperAdmin']], function(){
