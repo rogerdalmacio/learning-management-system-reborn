@@ -39,6 +39,7 @@ export const CourseContentProvider = ({ children }) => {
             },
           })
           .then((response) => {
+            console.log(response);
             console.log(response.data.Courses);
             setCourses(response.data.Courses);
           });
@@ -51,6 +52,7 @@ export const CourseContentProvider = ({ children }) => {
   useEffect(() => {
     const renderModule = async () => {
       if (role === "CourseManager" || (role === "admin" && week)) {
+        console.log(week);
         await axios
           .get(
             `${import.meta.env.VITE_API_BASE_URL}/api/content/module/${week}`,

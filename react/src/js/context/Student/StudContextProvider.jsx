@@ -40,9 +40,60 @@ export const StudContextProvider = ({ children }) => {
             },
           })
           .then((response) => {
+            console.log(response.data.grant);
             console.log(response.data.subjects);
+
+            const granted = response.data.grant.map((grant) => {
+              switch (grant.preliminaries) {
+                case "prelim":
+                  return "6";
+                case "midterm":
+                  return "12";
+                case "finals":
+                  return "18";
+                default:
+                  return "";
+              }
+            });
+
+            console.log(granted);
             const modulesWithStatus1 = response.data.subjects.map((sub) => {
-              console.log(sub);
+              // const weekArray = [6, 12, 18];
+              // const filteredData = sub.module.filter((item) => {
+              //   const weekNumber = item.week;
+              //   return weekNumber === 0 || granted.includes(weekNumber);
+              // });
+              // console.log(filteredData);
+              // const filteredData1 = sub.module.filter((item) =>
+              //   granted.includes(item.week)
+              // );
+              // console.log(filteredData1);
+              const [value1, value2, value3] = granted;
+              const filteredData = sub.module.filter((item) => {
+                return (
+                  (item.week == 1 ||
+                    item.week == 2 ||
+                    item.week == 3 ||
+                    item.week == 4 ||
+                    item.week == 5 ||
+                    item.week == value1 ||
+                    item.week == 7 ||
+                    item.week == 8 ||
+                    item.week == 9 ||
+                    item.week == 10 ||
+                    item.week == 11 ||
+                    item.week == value2 ||
+                    item.week == 13 ||
+                    item.week == 14 ||
+                    item.week == 15 ||
+                    item.week == 16 ||
+                    item.week == 17 ||
+                    item.week == value3) &&
+                  item.status === 1
+                );
+              });
+              console.log(filteredData);
+
               return {
                 approval: sub.approval,
                 course: sub.course,
@@ -51,7 +102,7 @@ export const StudContextProvider = ({ children }) => {
                 department: sub.department,
                 id: sub.id,
                 updated_at: sub.updated_at,
-                module: sub.module.filter((module) => module.status === 1),
+                module: filteredData,
               };
             });
             console.log(modulesWithStatus1);

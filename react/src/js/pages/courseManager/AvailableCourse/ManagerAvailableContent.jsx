@@ -10,11 +10,13 @@ import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 
 function ManagerAvailableContent() {
-  const { courses } = CourseContentProvider();
+  const { courses, module, setWeek, setHasChange, hasChange } =
+    CourseContentProvider();
   const { token } = useAuth();
   const { id } = useParams();
   const [moduleId, setModuleId] = useState();
   const [comment, setComment] = useState();
+  const [hasComment, setHasComment] = useState();
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   // Course Title
@@ -27,7 +29,22 @@ function ManagerAvailableContent() {
   const newWeek = id.replace("week", "WEEK ");
   const weekNumber = newWeek.match(/\d+/)[0];
   console.log(weekNumber);
+  console.log(module);
 
+  useEffect(() => {
+    if (
+      module &&
+      module !== null &&
+      module.content_validate &&
+      module.content_validate.comments
+    ) {
+      setHasComment(true);
+      setComment(module.content_validate.comments);
+    } else {
+      setHasComment(false);
+      setComment("");
+    }
+  }, [module]);
   useEffect(() => {
     if (courses !== undefined) {
       const course1 = courses.find((course) => {
@@ -38,9 +55,11 @@ function ManagerAvailableContent() {
       const moduleId = course1.module.find((week) => {
         return week.week == weekNumber;
       });
+      setWeek(moduleId.id);
       setModuleId(moduleId.id);
     }
-  }, [courses, weekNumber]);
+  }, [courses, weekNumber, module]);
+  console.log(module);
 
   const HandleSubmit = async () => {
     //put your validation logic here
@@ -87,6 +106,85 @@ function ManagerAvailableContent() {
               autoClose: 2000,
             });
             // }]
+            setHasChange(!hasChange);
+            setModuleId("");
+            setComment("");
+            setIsLoading(false);
+          } else {
+            throw new Error(response.status || "Something Went Wrong!");
+          }
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.data.errors) {
+            // to access the subject itself you can use this : error.response.data.SubjectAlreadyExists[1]
+            toast.update(toastId, {
+              render: error.response.data.errors.id[0],
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+            setIdAlreadyTaken(error.response.data.errors.id[0]);
+          } else {
+            toast.update(toastId, {
+              render: `${error.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          }
+          setIsLoading(false);
+        });
+    }
+  };
+
+  const HandleEdit = async () => {
+    //put your validation logic here
+    let toastId;
+    if (comment == null || comment == "") {
+      setHasError(true);
+      toast.error("Please fill out the blank area");
+    } else {
+      setIsLoading(true);
+      setHasError(false);
+
+      const userInformation = {
+        module_id: moduleId,
+        status: "inProgress",
+        comments: comment,
+      };
+
+      toastId = toast.info("Sending Request...");
+      await axios
+        .post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/coursemanager/edittodo/${
+            module.content_validate.id
+          }`,
+          userInformation,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status >= 200 && response.status <= 300) {
+            // if (response.data.length !== 0) {
+            //     toast.update(toastId, {
+            //         render: `Student ID is ${response.data[0]}`,
+            //         type: toast.TYPE.ERROR,
+            //         autoClose: 2000,
+            //     });
+            // } else {
+            toast.update(toastId, {
+              render: "Request Successfully",
+              type: toast.TYPE.SUCCESS,
+              autoClose: 2000,
+            });
+            // }]
+            setHasChange(!hasChange);
             setModuleId("");
             setComment("");
             setIsLoading(false);
@@ -223,6 +321,7 @@ function ManagerAvailableContent() {
       );
     }
   };
+  console.log(hasComment);
   const AvailableModules = () => {
     if (courses) {
       return (
@@ -235,8 +334,10 @@ function ManagerAvailableContent() {
           <ManagerValidateCourse
             setComment={setComment}
             HandleSubmit={HandleSubmit}
+            HandleEdit={HandleEdit}
             isLoading={isLoading}
             comment={comment}
+            hasComment={hasComment}
           />
         </Fragment>
       );

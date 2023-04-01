@@ -60,7 +60,8 @@ class CMToDoListController extends Controller
         Logs::create([
             'user_id' => Auth::user()->id,
             'user_type' => Auth::user()->usertype(),
-            'activity_log' => 'Created to do for ' . $contentvalidation->module_id
+            'activity_log' => 'Created to do for ' . 
+            $todo->module_id
         ]);
 
         return response($response, 204);

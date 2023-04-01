@@ -4,6 +4,8 @@ function ManagerValidateCourse({
   setComment,
   comment,
   HandleSubmit,
+  HandleEdit,
+  hasComment,
   isLoading,
 }) {
   return (
@@ -23,13 +25,23 @@ function ManagerValidateCourse({
           ></textarea>
           <label for="floatingTextarea">Comments</label>
           <div className="d-flex justify-content-end">
-            <button
-              className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
-              onClick={HandleSubmit}
-              disabled={isLoading}
-            >
-              Submit
-            </button>
+            {hasComment == false ? (
+              <button
+                className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
+                onClick={HandleSubmit}
+                disabled={isLoading}
+              >
+                Submit
+              </button>
+            ) : (
+              <button
+                className="taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 mt-3"
+                onClick={HandleEdit}
+                disabled={isLoading}
+              >
+                Update
+              </button>
+            )}
           </div>
         </div>
       </div>

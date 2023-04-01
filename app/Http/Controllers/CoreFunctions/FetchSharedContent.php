@@ -27,7 +27,7 @@ class FetchSharedContent extends Controller
             return response()->json($response, 200);
         }
 
-        $courses = Course::with('module', 'contentValidate')
+        $courses = Course::with('module')
                 ->where('department', $user->department)
                 ->get();
 
@@ -40,7 +40,7 @@ class FetchSharedContent extends Controller
 
     public function modules(string $id)
     {
-        $module = Module::with('activity','lesson','quiz')
+        $module = Module::with('activity','lesson','quiz', 'contentValidate')
                 ->find($id);
         $response = [
             'Modules' => $module
