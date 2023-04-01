@@ -24,7 +24,7 @@ class BatchCreateStudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|file|mimes:csv|max:25000'
+            'file' => 'required|file|mimes:csv,xlsx|max:25000'
         ];
     }
 }

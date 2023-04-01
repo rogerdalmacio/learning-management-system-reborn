@@ -7,6 +7,7 @@ use App\Models\Modules\Module;
 use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CoreFunctions\Announcement;
 
 class ModuleStatusUpdateController extends Controller
 {
@@ -58,6 +59,15 @@ class ModuleStatusUpdateController extends Controller
         $response = [
             'Module status updated: ' => $modules,
         ];
+
+        Announcement::create([
+            'title' => 'Module ' . $id . ' is now open',
+            'body' => 'you can now proceed and answer your modules, goodluck !',
+            'status' => null,
+            'photo_path' => null,
+            'users' => ['Student', 'Teacher'],
+            'tags' => 'notification',
+        ]);
 
         Logs::create([
             'user_id' => Auth::user()->id,

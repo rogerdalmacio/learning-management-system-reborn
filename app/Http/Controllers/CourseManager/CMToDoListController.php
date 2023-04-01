@@ -73,26 +73,28 @@ class CMToDoListController extends Controller
             'status' => 'required'
         ]);
 
-        $todo = ContentValidation::find($id);
-
-        $todo->update([
-            'status' => $request['status'],
-        ]);
-
-        $module = Module::find($todo->module_id);
+        $module = Module::find($id);
 
         $module->update([
-            'approval' => true
+            'status' => true
         ]);
 
+        $todo = ContentValidation::where('module_id', $id)->first();
+
+        if($todo) {
+            $todo->update([
+                'status' => $request['status']
+            ]);
+        }
+
         $response = [
-            'Todo' => $todo
+            'message' => 'Todo accepted successfully'
         ];
 
         Logs::create([
             'user_id' => Auth::user()->id,
             'user_type' => Auth::user()->usertype(),
-            'activity_log' => 'Accepted to do for ' . $todo->module_id
+            'activity_log' => 'Accepted to do for ' . $id
         ]);
 
         return response($response, 204);
