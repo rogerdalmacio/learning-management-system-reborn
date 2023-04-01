@@ -9,6 +9,8 @@ class RegistrarConnection extends Model
 {
     use HasFactory;
 
+    protected $table = 'registrar_requestdata';
+
     protected $fillable = [
         'No',
         'Request',
