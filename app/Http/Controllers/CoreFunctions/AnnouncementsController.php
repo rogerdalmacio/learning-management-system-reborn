@@ -14,6 +14,24 @@ use App\Http\Resources\CoreFunctions\AnnouncementResource;
 
 class AnnouncementsController extends Controller
 {
+    public function notification()
+    {
+        $user = Auth::user();
+
+        $data = Announcement::where('users', 'like', '%' . $user->usertype() . '%')
+        ->where('status', true)
+        ->where('tags', 'notification')
+        ->get();
+
+        $announcements = AnnouncementResource::collection($data);
+
+        $response = [
+            'data' => $announcements
+        ];
+
+        return response()->json($response, 200);
+    }
+
     public function announcement() {
 
         $user = Auth::user();
@@ -29,7 +47,10 @@ class AnnouncementsController extends Controller
             return response()->json($response, 200);
         }
 
-        $data = Announcement::where('users', 'like', '%' . $user->usertype() . '%')->where('status', true)->get();
+        $data = Announcement::where('users', 'like', '%' . $user->usertype() . '%')
+        ->where('status', true)
+        ->whereNot('tags', 'notification')
+        ->get();
 
         $announcements = AnnouncementResource::collection($data);
 

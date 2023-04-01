@@ -27,7 +27,7 @@ class FetchSharedContent extends Controller
             return response()->json($response, 200);
         }
 
-        $courses = Course::with('module')
+        $courses = Course::with('module', 'contentValidate')
                 ->where('department', $user->department)
                 ->get();
 

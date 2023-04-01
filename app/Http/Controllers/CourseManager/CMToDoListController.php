@@ -12,7 +12,6 @@ use App\Models\CourseManager\ContentValidation;
 
 class CMToDoListController extends Controller
 {
-
     public function createTodo(Request $request) {
 
         $request->validate([
