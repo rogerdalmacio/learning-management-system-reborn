@@ -69,18 +69,11 @@ class ExamGrantingController extends Controller
                     'granted_at' => Carbon::now(),
                 ];
 
-                $attributes = [
-                    'student_id' => $grant['student_id'],
-                    'grant' => $grant['grant'],
-                    'preliminaries' => $grant['preliminaries'],
-                    'granted_at' => Carbon::now(),
-                ];
-
                 $message = [
-                    'preliminaries.unique' => 'Student :student_id already have :preliminaries'
+                    'preliminaries.unique' => 'Student id '. $grant['student_id'] .' already have ' . $grant['preliminaries']
                 ];
                 
-                $validator = Validator::make($newGrant, $rules, $message, $attributes);
+                $validator = Validator::make($newGrant, $rules, $message);
 
                 if($validator->fails()){
                     $errors[] = $validator->errors();
@@ -115,7 +108,7 @@ class ExamGrantingController extends Controller
         return response()->json([   
             'Exam granted for' => $success,
             'errors' => $errors
-        ], 201);
+        ], 200);
 
     }
 
