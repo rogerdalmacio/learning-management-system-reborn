@@ -110,6 +110,25 @@ function TopNavbar({
       );
     }
   };
+  console.log(notifDetails);
+  const NotificationBodyHandler = () => {
+    if (notification && notifDetails !== undefined && notifDetails !== null) {
+      return notifDetails.data.map((notif) => {
+        console.log(notif);
+        return (
+          <Fragment>
+            <p className="notificationItem mb-0 px-2 py-2">
+              <span className="fw-semibold NotifTitle">{notif.title}</span>{" "}
+              <br />
+              {notif.body}
+            </p>
+          </Fragment>
+        );
+      });
+    } else {
+      return null;
+    }
+  };
 
   return (
     <Fragment>
@@ -164,22 +183,13 @@ function TopNavbar({
                   )}
                 </div>
               </button>
-
               {notification && (
                 <div
                   ref={notificationRef}
-                  className="NotificationContainer border-1 shadow"
+                  className="NotificationContainer p-1 border-1 shadow"
                 >
                   <h5 className="m-0 p-2">Notifications</h5>
-                  <p className="notificationItem mb-0 px-2 py-2">
-                    This is notification
-                  </p>
-                  <p className="notificationItem mb-0 px-2 py-2">
-                    This is notification2
-                  </p>
-                  <p className="notificationItem mb-0 px-2 py-2">
-                    This is notification3
-                  </p>
+                  {NotificationBodyHandler()}
                 </div>
               )}
             </div>
