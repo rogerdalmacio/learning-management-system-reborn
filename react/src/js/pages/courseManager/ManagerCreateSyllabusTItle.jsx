@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
 import { toast } from "react-toastify";
+import useAuth from "../../hooks/useAuth";
 
 function ManagerCreateSyllabusTItle() {
+  const { token } = useAuth();
   // Course Title
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
@@ -11,7 +13,7 @@ function ManagerCreateSyllabusTItle() {
   console.log(courseBase);
 
   const [content, setContent] = useState({
-    courseId: courseBase,
+    course_id: courseBase,
     week1: "",
     week2: "",
     week3: "",
@@ -84,20 +86,14 @@ function ManagerCreateSyllabusTItle() {
     } else {
       setIsLoading(true);
       setHasError(false);
-
-      const userInformation = {
-        module_id: moduleId,
-        status: "inProgress",
-        comments: comment,
-      };
-
+      console.log(content);
       toastId = toast.info("Sending Request...");
       await axios
         .post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/coursemanager/edittodo/${
-            module.content_validate.id
-          }`,
-          userInformation,
+          `${
+            import.meta.env.VITE_API_BASE_URL
+          }/api/coursemanager/course-syllabus`,
+          content,
           {
             headers: {
               Authorization: `Bearer ${token}`,
