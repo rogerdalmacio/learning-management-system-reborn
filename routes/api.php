@@ -167,7 +167,7 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
     Route::post('/course-rating', [CMCourseRatingController::class, 'rating']);
     Route::post('/course-rating/{id}', [CMCourseRatingController::class, 'editRating']);
 
-    Route::apiResource('course-syllabus', CMCourseDeveloper::class); // use only patch method
+    Route::apiResource('course-syllabus', CourseSyllabusController::class); // use only post method
 });
 
 //content routes
