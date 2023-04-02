@@ -39,7 +39,7 @@ class FacultyConnectionController extends Controller
             $newFileName
         );
 
-        $databasePath = 'storage/announcement/' . $newFileName;
+        $databasePath = env('APP_URL') . '/storage/announcement/' . $newFileName;
 
         $facultyrequest = FacultyConnection::find($id);
 
