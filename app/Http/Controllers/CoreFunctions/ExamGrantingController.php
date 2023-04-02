@@ -53,7 +53,7 @@ class ExamGrantingController extends Controller
                     ],
                     'preliminaries' => [
                         'required',
-                        Rule::unique('lms_examination_grants', function ($query) use($grant) {
+                        Rule::unique('lms_examination_grants')->where( function ($query) use($grant) {
                             return $query->where('student_id', $grant['student_id']);
                         })
                     ],
