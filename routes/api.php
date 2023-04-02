@@ -49,6 +49,7 @@ use App\Http\Controllers\CoreFunctions\SubjectTaggingController;
 use App\Http\Controllers\CourseManager\CMCourseRatingController;
 use App\Http\Controllers\CoreFunctions\AccountCreationController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
+use App\Http\Controllers\CourseManager\CourseSyllabusController;
 use App\Http\Controllers\Teacher\TActivityController;
 
 /*
@@ -165,6 +166,8 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
 
     Route::post('/course-rating', [CMCourseRatingController::class, 'rating']);
     Route::post('/course-rating/{id}', [CMCourseRatingController::class, 'editRating']);
+
+    Route::apiResource('course-syllabus', CMCourseDeveloper::class); // use only patch method
 });
 
 //content routes
