@@ -100,6 +100,8 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:
     Route::post('/snapshot', [SnapshotController::class, 'saveSnapshot']);
 
     Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
+
+    Route::get('/notification', [AnnouncementsController::class, 'notification']);
 });
 
 //teachers route

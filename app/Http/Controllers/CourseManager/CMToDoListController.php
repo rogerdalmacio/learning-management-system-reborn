@@ -70,7 +70,7 @@ class CMToDoListController extends Controller
     public function acceptTodo(Request $request, $id) {
 
         $request->validate([
-            'status' => 'required'
+            'status' => 'sometimes'
         ]);
 
         $module = Module::find($id);
