@@ -42,7 +42,7 @@ class HrController extends Controller
         Logs::create([
             'user_id' => Auth::user()->id,
             'user_type' => Auth::user()->usertype(),
-            'activity_log' => 'Requested CMO on academic'
+            'activity_log' => 'Requested teacher credentials on hr'
         ]);
 
         return response($response, 201);

@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\Connection\AmsController;
+use App\Http\Controllers\Connection\FacultyConnectionController;
 use App\Http\Controllers\Connection\HrController;
 use App\Http\Controllers\Connection\MisController;
 use App\Http\Controllers\Connection\RegistrarController;
@@ -125,6 +126,10 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
     Route::apiResource('activityresult', TActivityController::class); // submit score using patch method
     
     Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
+
+    //
+    Route::post('/faculty/approve-request', [FacultyConnectionController::class, 'approveRequest']);
+    Route::get('/faculty/list-of-request', [FacultyConnectionController::class, 'listOfFacultyRequest']);
 });
 
 //course developer route
