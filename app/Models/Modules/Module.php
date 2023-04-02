@@ -22,6 +22,7 @@ class Module extends Model
         'title',
         'week',
         'status',
+        'approval',
     ];
 
     public $incrementing = false;

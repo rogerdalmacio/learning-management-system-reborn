@@ -76,7 +76,7 @@ class CMToDoListController extends Controller
         $module = Module::find($id);
 
         $module->update([
-            'approval' => 1
+            'approval' => true
         ]);
 
         $todo = ContentValidation::where('module_id', $id)->first();
@@ -97,7 +97,7 @@ class CMToDoListController extends Controller
             'activity_log' => 'Accepted to do for ' . $id
         ]);
 
-        return response($response, 204);
+        return response($response, 200);
 
     }
 
@@ -121,6 +121,6 @@ class CMToDoListController extends Controller
             'activity_log' => $message
         ]);
 
-        return response($response, 204);
+        return response($response, 200);
     }
 }
