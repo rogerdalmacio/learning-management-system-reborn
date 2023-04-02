@@ -215,7 +215,7 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
 
 //Admin Core
 Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Admin']], function(){
-    
+
     Route::apiResource('tagsubject', SubjectTaggingController::class);
     Route::apiResource('subjects', ListOfSubjectsController::class);
 

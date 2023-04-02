@@ -213,6 +213,24 @@ function Navbar({ openSidebar }) {
               <span className="tooltip">Request Students</span>
             </li>
           </Link>
+          <Link
+            to="/superAdmin/requestListOfTeachers"
+            className="text-decoration-none"
+          >
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/superAdmin/requestListOfTeachers"
+                    ? "activeSideBar"
+                    : ""
+                }`}
+              >
+                <i className="bx bx-git-pull-request"></i>
+                <span className="links_name">Request Teachers</span>
+              </span>
+              <span className="tooltip">Request Teachers</span>
+            </li>
+          </Link>
         </ul>
       </div>
     </Fragment>

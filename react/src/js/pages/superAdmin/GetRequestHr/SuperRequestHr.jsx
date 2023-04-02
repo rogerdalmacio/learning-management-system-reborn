@@ -20,14 +20,13 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import { data, states } from "../../pages/Admin/makeData";
+import { data, states } from "../../Admin/makeData";
 import { toast } from "react-toastify";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
-import ArrowNextAndPrevious from "../../components/layouts/ArrowNextAndPrevious";
-import useAuth from "../../hooks/useAuth";
-
-const SuperRequestListOfStudents = () => {
+import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
+import useAuth from "../../../hooks/useAuth";
+const SuperRequestHr = () => {
   const { role, token } = useAuth();
   const tableInstanceRef = useRef(null);
   const [request, setRequest] = useState();
@@ -56,7 +55,7 @@ const SuperRequestListOfStudents = () => {
           .get(
             `${
               import.meta.env.VITE_API_BASE_URL
-            }/api/core/superadmin/registrar/list-of-request`,
+            }/api/core/superadmin/hr/list-of-request`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -108,7 +107,7 @@ const SuperRequestListOfStudents = () => {
         .post(
           `${
             import.meta.env.VITE_API_BASE_URL
-          }/api/core/superadmin/registrar/request-student-credentials`,
+          }/api/core/superadmin/hr/request-hr-credentials`,
           item,
           {
             headers: {
@@ -231,7 +230,7 @@ const SuperRequestListOfStudents = () => {
   return (
     <div>
       <ArrowNextAndPrevious>
-        <h3 className="m-0">Request List of Students</h3>
+        <h3 className="m-0">Request List of Teachers</h3>
       </ArrowNextAndPrevious>
       <div>
         <div className="d-flex justify-content-start mb-3">
@@ -335,4 +334,4 @@ const SuperRequestListOfStudents = () => {
   );
 };
 
-export default SuperRequestListOfStudents;
+export default SuperRequestHr;

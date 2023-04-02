@@ -14,6 +14,7 @@ import SuperCreateStudentAcctFilter from "../pages/superAdmin/SingleCreationAcco
 import SuperCreateTeacherAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateTeacherAcct";
 import SuperCreateCourseManAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateCourseManAcct";
 import SuperRequestListOfStudents from "../pages/superAdmin/SuperRequestListOfStudents";
+import SuperRequestHr from "../pages/superAdmin/GetRequestHr/SuperRequestHr";
 
 // CourseManager
 import CourseManagerLayout from "./layouts/authenticatedLayout/CourseManagerNavigationBar/CourseManagerLayout";
@@ -38,6 +39,7 @@ import ManagerGetGeneralization from "../pages/courseManager/CreateModules/Manag
 import ManagerDashboard from "../pages/courseManager/AnnouncementDashboard/ManagerDashboard";
 import ManagerDashboardSpecificAnnouncement from "../pages/courseManager/AnnouncementDashboard/ManagerDashboardSpecificAnnouncement";
 import ManagerGetTeachers from "../pages/courseManager/GetTeachers/ManagerGetTeachers";
+import ManagerGetCMO from "../pages/courseManager/GetCMO/ManagerGetCMO";
 
 // Admin
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
@@ -357,6 +359,10 @@ function App() {
             path="/courseManager/:id/modules/:id/generalization"
             element={<ManagerGetGeneralization />}
           />
+          <Route
+            path="/courseManager/requestsyllabus"
+            element={<ManagerGetCMO />}
+          />
         </Route>
       </Route>
 
@@ -404,6 +410,10 @@ function App() {
           <Route
             path="/superAdmin/requestListOfStudents"
             element={<SuperRequestListOfStudents />}
+          />
+          <Route
+            path="/superAdmin/requestListOfTeachers"
+            element={<SuperRequestHr />}
           />
         </Route>
       </Route>

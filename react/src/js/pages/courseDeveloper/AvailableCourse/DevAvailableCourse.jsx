@@ -6,7 +6,7 @@ import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevio
 
 function DevAvailableCourse() {
   const { course } = useGetAvailableCourse();
-
+  console.log(course);
   const AvailableCourseHandler = () => {
     return course.map((item) => {
       const count = item.module.reduce((acc, curr) => acc + 1, 0);

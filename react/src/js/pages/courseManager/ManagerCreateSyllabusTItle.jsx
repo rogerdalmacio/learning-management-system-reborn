@@ -32,20 +32,13 @@ function ManagerCreateSyllabusTItle() {
     week16: "",
     week17: "",
     week18: "",
-    week19: "",
-    week20: "",
-    week21: "",
-    week22: "",
-    week23: "",
-    week24: "",
   });
 
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  console.log(content);
   const numberOfContent = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
   ];
 
   const sampleTopics = [
@@ -88,12 +81,35 @@ function ManagerCreateSyllabusTItle() {
       setHasError(false);
       console.log(content);
       toastId = toast.info("Sending Request...");
+
+      const data = {
+        course_id: content.course_id,
+        week1: content.week1,
+        week2: content.week2,
+        week3: content.week3,
+        week4: content.week4,
+        week5: content.week5,
+        week6: content.week6,
+        week7: content.week7,
+        week8: content.week8,
+        week9: content.week9,
+        week10: content.week10,
+        week11: content.week11,
+        week12: content.week12,
+        week13: content.week13,
+        week14: content.week14,
+        week15: content.week15,
+        week16: content.week16,
+        week17: content.week17,
+        week18: content.week18,
+      };
+
       await axios
         .post(
           `${
             import.meta.env.VITE_API_BASE_URL
           }/api/coursemanager/course-syllabus`,
-          content,
+          data,
           {
             headers: {
               Authorization: `Bearer ${token}`,

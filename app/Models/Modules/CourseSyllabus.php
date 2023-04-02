@@ -11,7 +11,7 @@ class CourseSyllabus extends Model
 
     protected $table = 'lms_course_syllabi';
 
-    protected $fillables = [
+    protected $fillable = [
         'course_id',
         'week1',
         'week2',
