@@ -227,6 +227,19 @@ function Navbar({ openSidebar }) {
             <span className="tooltip">Course</span>
             {AvailableCourseNavbar()}
           </li>
+          <Link to="/teacher/facultyRequest" className="text-decoration-none">
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/teacher/facultyRequest" ? "activeSideBar" : ""
+                }`}
+              >
+                <i className="bx bx-grid-alt"></i>
+                <span className="links_name">Faculty Request</span>
+              </span>
+              <span className="tooltip">Dashboard</span>
+            </li>
+          </Link>
         </ul>
       </div>
     </Fragment>

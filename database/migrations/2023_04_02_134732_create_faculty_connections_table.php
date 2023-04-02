@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('request');
             $table->string('department');
             $table->string('status');
-            $table->strign('file');
+            $table->string('file')->nullable();
             $table->timestamps();
         });
 

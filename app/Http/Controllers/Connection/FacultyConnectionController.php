@@ -25,16 +25,16 @@ class FacultyConnectionController extends Controller
     public function approveRequest(Request $request, $id)
     {
         $request->validate([
-            'Request' => 'required',
+            'file' => 'required',
         ]);
 
-        $extension = $request->file('photo_path')->getClientOriginalExtension();
+        $extension = $request->file('file')->getClientOriginalExtension();
 
         $newFileName =  Str::uuid() . '.' . $extension;
 
         $newFileLocation = 'public/announcement';
 
-        $path = $request->file('photo_path')->storeAs(
+        $path = $request->file('file')->storeAs(
             $newFileLocation,
             $newFileName
         );

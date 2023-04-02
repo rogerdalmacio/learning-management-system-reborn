@@ -123,6 +123,7 @@ import TeachDashboardSpecificAnnouncement from "../pages/Teacher/AnnouncementDas
 import TeacherAvailableContent from "../pages/Teacher/AvailableCourse/TeacherAvailableContent";
 import TeacherAvailableModules from "../pages/Teacher/AvailableCourse/TeacherAvailableModules";
 import TeacherAvailableSubjects from "../pages/Teacher/AvailableCourse/TeacherAvailableSubjects";
+import TeacherListFaculty from "../pages/Teacher/SendListToFaculty/TeacherListFaculty";
 
 import TeacherGetAAE from "../pages/Teacher/CreateModules/TeacherGetAAE";
 import TeacherGetAssignment from "../pages/Teacher/CreateModules/TeacherGetAssignment";
@@ -321,6 +322,10 @@ function App() {
           <Route
             path="/teacher/:id/modules/:id/generalization"
             element={<TeacherGetGeneralization />}
+          />
+          <Route
+            path="/teacher/facultyRequest"
+            element={<TeacherListFaculty />}
           />
         </Route>
       </Route>
