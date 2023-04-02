@@ -197,7 +197,7 @@ class AccountCreationController extends Controller
                     $message = [
                         'id.unique' => 'ID :input already exists'
                     ];
-    
+                    
                     $validator = Validator::make($newstudent, $rules, $message);
     
                     if($validator->fails()){

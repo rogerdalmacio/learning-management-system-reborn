@@ -19,7 +19,6 @@ class AnnouncementsController extends Controller
         $user = Auth::user();
 
         $data = Announcement::where('users', 'like', '%' . $user->usertype() . '%')
-        ->where('status', true)
         ->where('tags', 'notification')
         ->get();
 
