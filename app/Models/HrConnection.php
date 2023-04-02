@@ -16,7 +16,7 @@ class HrConnection extends Model
         'Request',
         'Department',
         'Status',
-        'Request_date',
+        'Request_Date',
         'File'
     ];
 }
