@@ -42,27 +42,25 @@ class ExamGrantingController extends Controller
             $errors = [];
             $success = [];
 
-            $rules = [
-                'student_id' => [
-                    'required',
-                    'unique:lms_examination_grants'
-                ],
-                'grant' => [
-                    'required',
-                ],
-                'preliminaries' => [
-                    'required',
-                ],
-            ];
-
             foreach($csv as $grant) {
 
-                $grantExists = ExaminationGrant::where('student_id', $grant['student_id'])
-                                ->where('preliminaries', $grant['preliminaries'])->get(); 
+                $rules = [
+                    'student_id' => [
+                        'required'  ,
+                    ],
+                    'grant' => [
+                        'required',
+                    ],
+                    'preliminaries' => [
+                        'required',
+                        Rule::unique('preliminaries', function ($query) use($grant) {
+                            $query->where('student_id', $grant['student_id']);
+                        })
+                    ],
+                ];
 
-                if($grantExists->count() > 0) {
-                    return response(['already exist'], 201);
-                }
+                // ExaminationGrant::where('student_id', $grant['student_id'])
+                //                 ->where('preliminaries', $grant['preliminaries'])->get();
 
                 $newGrant = [
                     'student_id' => $grant['student_id'],
@@ -71,7 +69,7 @@ class ExamGrantingController extends Controller
                     'granted_at' => Carbon::now(),
                 ];
 
-                $message = ['student_id.unique' => 'Student_id: :student_id already granted'];
+                $message = ['student_id.unique' => 'Student_id: :input already granted'];
                 $validator = Validator::make($newGrant, $rules, $message);
 
                 if($validator->fails()){
