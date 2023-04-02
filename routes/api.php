@@ -181,7 +181,7 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
 });
 
 //content routes
-Route::group(['prefix' => 'content', 'middleware' => ['auth:sanctum','ability:CourseManager,Admin']], function(){
+Route::group(['prefix' => 'content', 'middleware' => ['auth:sanctum','ability:CourseManager,Admin,Teacher']], function(){
 
     Route::get('/course', [FetchSharedContent::class, 'courses']);
     Route::get('/module/{id}', [FetchSharedContent::class, 'modules']);
