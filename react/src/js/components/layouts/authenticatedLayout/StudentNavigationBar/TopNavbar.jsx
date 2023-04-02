@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Fragment } from "react";
 import useAuth from "../../../../hooks/useAuth";
 import logoImg from "/images/newLogin/logo.png";
@@ -11,7 +11,28 @@ function TopNavbar({
   imageExisting,
   userImagePng,
 }) {
-  const { userInfo, token } = useAuth();
+  const { userInfo, token, role } = useAuth();
+  const [notification, setNotification] = useState(false);
+  const notificationRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
+        setNotification(false);
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Unbind the event listener on cleanup
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [notificationRef]);
 
   const LogoutHandler = async () => {
     const response = await fetch(
@@ -36,6 +57,30 @@ function TopNavbar({
     // localStorage.clear();
     // window.location.reload();
   };
+
+  // useEffect(() => {
+  //   const renderModule = async () => {
+  //     if (role === "student") {
+  //       await axios
+  //         .get(
+  //           `${import.meta.env.VITE_API_BASE_URL}/api/student/module/${week}`,
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${token}`,
+  //               "Content-Type": "application/json",
+  //               Accept: "application/json",
+  //             },
+  //           }
+  //         )
+  //         .then((response) => {
+  //           console.log(response);
+  //           setModule(response.data.Module);
+  //         });
+  //     }
+  //   };
+
+  //   renderModule();
+  // });
 
   const setTheUserProfile = () => {
     if (imageExisting === true) {
@@ -101,7 +146,42 @@ function TopNavbar({
         </li>
         <div className="d-flex align-items-center justify-content-end">
           <li>
-            <i className="bx bxs-bell fs-4 mt-1 m-0"></i>
+            <div className="NotifButtonContainer" ref={notificationRef}>
+              <button
+                className="border border-0 NotificationBellButton "
+                onClick={() => {
+                  setNotification(!notification);
+                }}
+              >
+                <i className="bx bxs-bell fs-2 mt-1 m-0"></i>
+
+                <div className="notificationCount">
+                  {!notification && (
+                    <p className="bg-danger rounded-circle notificationPara">
+                      1
+                    </p>
+                  )}
+                </div>
+              </button>
+
+              {notification && (
+                <div
+                  ref={notificationRef}
+                  className="NotificationContainer border-1 shadow"
+                >
+                  <h5 className="m-0 p-2">Notifications</h5>
+                  <p className="notificationItem mb-0 px-2 py-2">
+                    This is notification
+                  </p>
+                  <p className="notificationItem mb-0 px-2 py-2">
+                    This is notification2
+                  </p>
+                  <p className="notificationItem mb-0 px-2 py-2">
+                    This is notification3
+                  </p>
+                </div>
+              )}
+            </div>
           </li>
           <li>
             <div className="nav-item dropdown my-auto ms-4">

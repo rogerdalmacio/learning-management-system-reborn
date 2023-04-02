@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 
 function ManagerAvailableContent() {
-  const { courses, module, setWeek, setHasChange, hasChange } =
+  const { courses, module, setWeek, week, setHasChange, hasChange } =
     CourseContentProvider();
   const { token } = useAuth();
   const { id } = useParams();
@@ -50,9 +50,11 @@ function ManagerAvailableContent() {
       }
     } else {
       setHasComment(false);
+      setAlreadySubmitted(false);
+      setIsApprove(false);
       setComment("");
     }
-  }, [module]);
+  }, [module, moduleId, week]);
 
   console.log(isApprove);
 
@@ -71,7 +73,7 @@ function ManagerAvailableContent() {
       setWeek(moduleId.id);
       setModuleId(moduleId.id);
     }
-  }, [courses, weekNumber, module]);
+  });
   console.log(module);
 
   const HandleSubmit = async () => {
@@ -229,15 +231,25 @@ function ManagerAvailableContent() {
   };
   console.log(moduleId);
 
+  console.log(module);
+
   const HandleApprove = async () => {
     //put your validation logic here
     let toastId;
 
     setIsLoading(true);
-
-    const approvetodo = {
-      status: "approved",
-    };
+    let approvetodo;
+    if (
+      module !== undefined &&
+      module !== null &&
+      module.content_validate == null
+    ) {
+      approvetodo = { status: "randomData" };
+    } else {
+      approvetodo = {
+        status: "approved",
+      };
+    }
 
     toastId = toast.info("Sending Request...");
     await axios
