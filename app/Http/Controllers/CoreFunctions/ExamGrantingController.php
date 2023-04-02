@@ -52,10 +52,12 @@ class ExamGrantingController extends Controller
                         'required',
                     ],
                     'preliminaries' => [
-                        'required',
-                        Rule::unique('preliminaries', function ($query) use($grant) {
-                            $query->where('student_id', $grant['student_id']);
-                        })
+                        ['required'],
+                        [
+                            Rule::unique('preliminaries', function ($query) use($grant) {
+                                $query->where('student_id', $grant['student_id']);
+                            })
+                        ] 
                     ],
                 ];
 
