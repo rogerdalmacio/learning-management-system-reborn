@@ -22,7 +22,7 @@ class FacultyConnectionController extends Controller
         return response($response, 200);
     }
 
-    public function approveRequest(Request $request)
+    public function approveRequest(Request $request, $id)
     {
         $request->validate([
             'Request' => 'required',
@@ -41,7 +41,9 @@ class FacultyConnectionController extends Controller
 
         $databasePath = 'storage/announcement/' . $newFileName;
 
-        $facultyrequest = FacultyConnection::insert([
+        $facultyrequest = FacultyConnection::find($id);
+
+        $facultyrequest->update([
             'status' => 'approved',
             'file' => $databasePath
         ]);

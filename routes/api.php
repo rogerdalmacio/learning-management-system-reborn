@@ -128,7 +128,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
     Route::get('/announcements', [AnnouncementsController::class, 'announcement']);
 
     //
-    Route::post('/faculty/approve-request', [FacultyConnectionController::class, 'approveRequest']);
+    Route::patch('/faculty/approve-request/{id}', [FacultyConnectionController::class, 'approveRequest']);
     Route::get('/faculty/list-of-request', [FacultyConnectionController::class, 'listOfFacultyRequest']);
 });
 
