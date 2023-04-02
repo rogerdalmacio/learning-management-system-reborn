@@ -56,7 +56,27 @@ class CourseSyllabusController extends Controller
             'week24' => 'sometimes|nullable',
         ]);
 
-        $data = CourseSyllabus::create($request->all());
+        $data = CourseSyllabus::create([
+            'course_id' => $request['course_id'],
+            'week1' => $request['week1'],
+            'week2' => $request['week2'],
+            'week3' => $request['week3'],
+            'week4' => $request['week4'],
+            'week5' => $request['week5'],
+            'week6' => $request['week6'],
+            'week7' => $request['week7'],
+            'week8' => $request['week8'],
+            'week9' => $request['week9'],
+            'week10' => $request['week10'],
+            'week11' => $request['week11'],
+            'week12' => $request['week12'],
+            'week13' => $request['week13'],
+            'week14' => $request['week14'],
+            'week15' => $request['week15'],
+            'week16' => $request['week16'],
+            'week17' => $request['week17'],
+            'week18' => $request['week18'],
+        ]); 
 
         $response = [
             'Syllabus' => $data,
