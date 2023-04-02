@@ -431,12 +431,20 @@ function ManagerAvailableContent() {
             </h4>
             <button
               className={`taggingSubjectButton smallButtonTemplate sumbit-button btn rounded-2 ${
-                isApprove == "approved" ? "bg-success" : ""
+                isApprove == "approved" || module.approval == 1
+                  ? "bg-success"
+                  : ""
               }`}
               onClick={HandleApprove}
-              disabled={isLoading || isApprove == "approved" ? true : false}
+              disabled={
+                isLoading || isApprove == "approved" || module.approval == 1
+                  ? true
+                  : false
+              }
             >
-              {isApprove == "approved" ? "Approved" : "Approve"}
+              {isApprove == "approved" || module.approval == 1
+                ? "Approved"
+                : "Approve"}
             </button>
           </div>
           <div className="ms-sm-3">{ContentCheckHandler()}</div>

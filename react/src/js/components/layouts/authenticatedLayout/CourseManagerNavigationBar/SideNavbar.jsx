@@ -161,7 +161,7 @@ function Navbar({ openSidebar }) {
                     : ""
                 }`}
               >
-                <i className="bx bx-grid-alt"></i>
+                <i className="bx bx-unite"></i>
                 <span className="links_name">List of Students</span>
               </span>
               <span className="tooltip">List of Students</span>
@@ -179,7 +179,7 @@ function Navbar({ openSidebar }) {
                     : ""
                 }`}
               >
-                <i className="bx bx-grid-alt"></i>
+                <i className="bx bxs-book-open"></i>
                 <span className="links_name">List of Teachers</span>
               </span>
               <span className="tooltip">List of Teachers</span>
@@ -197,7 +197,7 @@ function Navbar({ openSidebar }) {
                     : ""
                 }`}
               >
-                <i className="bx bx-grid-alt"></i>
+                <i className="bx bxs-book-add"></i>
                 <span className="links_name">Request Syllabus</span>
               </span>
               <span className="tooltip">Request Syllabus</span>
@@ -233,7 +233,7 @@ function Navbar({ openSidebar }) {
                     : ""
                 }`}
               >
-                <i className="bx bx-palette"></i>
+                <i className="bx bxs-book-heart"></i>
                 <span className="links_name">Create Course</span>
               </span>
               <span className="tooltip">Create Course</span>

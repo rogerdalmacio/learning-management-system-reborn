@@ -151,7 +151,7 @@ function Navbar({ openSidebar }) {
                   pathName === "/teacher/quizresult" ? "activeSideBar" : ""
                 }`}
               >
-                <i className="bx bx-grid-alt"></i>
+                <i className="bx bxs-extension"></i>
                 <span className="links_name">Quiz Results</span>
               </span>
               <span className="tooltip">Quiz Results</span>
@@ -169,7 +169,7 @@ function Navbar({ openSidebar }) {
                     : ""
                 }`}
               >
-                <i className="bx bx-grid-alt"></i>
+                <i className="bx bxs-edit-alt"></i>
                 <span className="links_name">Student's Activities</span>
               </span>
               <span className="tooltip">Student's Activities</span>
@@ -184,7 +184,7 @@ function Navbar({ openSidebar }) {
                     : ""
                 }`}
               >
-                <i className="bx bx-grid-alt"></i>
+                <i className="bx bxs-camera"></i>
                 <span className="links_name">Validate Snapshot</span>
               </span>
               <span className="tooltip">Validate Snapshot</span>
@@ -199,7 +199,7 @@ function Navbar({ openSidebar }) {
                     : ""
                 }`}
               >
-                <i className="bx bx-grid-alt"></i>
+                <i className="bx bx-reset"></i>
                 <span className="links_name">Reset Quiz Attempt</span>
               </span>
               <span className="tooltip">Reset Quiz Attempt</span>
@@ -234,7 +234,7 @@ function Navbar({ openSidebar }) {
                   pathName === "/teacher/facultyRequest" ? "activeSideBar" : ""
                 }`}
               >
-                <i className="bx bx-grid-alt"></i>
+                <i className="bx bxs-school"></i>
                 <span className="links_name">Faculty Request</span>
               </span>
               <span className="tooltip">Dashboard</span>

@@ -65,10 +65,11 @@ const ManagerGetTeachers = ({}) => {
             console.log(response.data.students);
 
             const firstNameAndLastName = response.data.students.map(
-              ({ id, first_name, last_name, year_and_sections }) => ({
+              ({ id, first_name, email, last_name, year_and_sections }) => ({
                 first_name,
                 last_name,
                 id,
+                email,
                 year_and_sections,
                 password: `#${last_name.substring(0, 2)}2023`,
               })
@@ -169,6 +170,14 @@ const ManagerGetTeachers = ({}) => {
   const columns = useMemo(() => [
     {
       accessorKey: "id",
+      header: "Teacher ID",
+      enableColumnOrdering: false,
+      enableEditing: false, //disable editing on this column
+      enableSorting: false,
+      size: 80,
+    },
+    {
+      accessorKey: "email",
       header: "Email",
       enableColumnOrdering: false,
       enableEditing: false, //disable editing on this column

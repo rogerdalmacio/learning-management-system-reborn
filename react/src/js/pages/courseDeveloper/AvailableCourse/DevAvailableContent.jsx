@@ -243,17 +243,21 @@ function DevAvailableContent() {
               className="d-flex align-items-center"
               style={{ maxWidth: "500px" }}
             >
-              <h3 className="m-0 pe-2">{courseTitle}| </h3>
-              <p className="fs-6 mb-0">
-                {syllabusContent !== null &&
-                  syllabusContent !== undefined &&
-                  syllabusContent}
-              </p>
+              <h3 className="m-0 pe-2">{courseTitle}</h3>
             </div>
           </ArrowNextAndPrevious>
-          <h4 className="ms-3 my-4">
-            {newWeek} - {quiz !== undefined && quiz !== null && quiz.title}
-          </h4>
+          <div className="ms-3 my-4">
+            <h4 className="mb-2">
+              <span className="SyllabusColor fst-italic">Syllabus: </span>
+              {syllabusContent !== null &&
+                syllabusContent !== undefined &&
+                syllabusContent}
+            </h4>
+            <h4 className="">
+              {newWeek} - {quiz !== undefined && quiz !== null && quiz.title}
+            </h4>
+          </div>
+
           <div className="ms-3">{ContentCheckHandler()}</div>
           {quiz !== undefined &&
             quiz !== null &&

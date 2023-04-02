@@ -46,7 +46,8 @@ class ExamGrantingController extends Controller
 
                 $rules = [
                     'student_id' => [
-                        'required'  ,
+                        'required',
+                        // 'exists:lms_students,id'
                     ],
                     'grant' => [
                         'required',

@@ -216,7 +216,11 @@ const TeacherListFaculty = () => {
             </div>
           );
         } else {
-          return <p>{row.original.file}</p>;
+          return (
+            <a target="_blank" href={row.original.file}>
+              {row.original.file}
+            </a>
+          );
         }
       },
     },
@@ -259,7 +263,7 @@ const TeacherListFaculty = () => {
   return (
     <div>
       <ArrowNextAndPrevious>
-        <h3 className="m-0">Request Syllabus</h3>
+        <h3 className="m-0">Faculty Request</h3>
       </ArrowNextAndPrevious>
 
       <div className="MaterialUiTable">

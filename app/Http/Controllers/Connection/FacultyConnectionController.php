@@ -32,14 +32,14 @@ class FacultyConnectionController extends Controller
 
         $newFileName =  Str::uuid() . '.' . $extension;
 
-        $newFileLocation = 'public/announcement';
+        $newFileLocation = 'public/faculty';
 
         $path = $request->file('file')->storeAs(
             $newFileLocation,
             $newFileName
         );
 
-        $databasePath = env('APP_URL') . '/storage/announcement/' . $newFileName;
+        $databasePath = env('APP_URL') . '/storage/faculty/' . $newFileName;
 
         $facultyrequest = FacultyConnection::find($id);
 
