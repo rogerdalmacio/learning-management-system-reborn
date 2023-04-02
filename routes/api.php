@@ -1,6 +1,7 @@
 
 <?php
 
+use App\Http\Controllers\Connection\AmsController;
 use App\Http\Controllers\Connection\MisController;
 use App\Http\Controllers\Connection\RegistrarController;
 use Carbon\Carbon;
@@ -168,6 +169,9 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
     Route::post('/course-rating/{id}', [CMCourseRatingController::class, 'editRating']);
 
     Route::apiResource('course-syllabus', CourseSyllabusController::class); // use only post method
+
+    Route::post('/ams/request-cmo', [AmsController::class, 'requestCmo']);
+    Route::get('/ams/list-of-request', [AmsController::class, 'listOfAmsRequest']);
 });
 
 //content routes
