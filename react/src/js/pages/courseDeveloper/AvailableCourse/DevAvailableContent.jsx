@@ -15,7 +15,7 @@ function DevAvailableContent() {
     useCourseDevContext();
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
-
+  const [syllabusContent, setSyllabusContent] = useState();
   // Course Title
   const pathname = window.location.pathname;
   const pathArray = pathname.split("/");
@@ -26,12 +26,15 @@ function DevAvailableContent() {
   const weekMod = pathArray[4];
   const currentWeek = weekMod.replace("week", "Week ");
   const weekForModule = weekMod.match(/\d+/)[0];
-  const contentType = pathArray[5];
-  console.log(quiz);
-
+  const contentType = pathArray[4];
+  console.log(contentType);
+  console.log(syllabusContent);
   useEffect(() => {
     if (courses) {
       courses.map((course) => {
+        if (course.syllabus !== undefined && course.syllabus !== null) {
+          setSyllabusContent(course.syllabus[contentType]);
+        }
         if (course.course == courseTitle) {
           course.module.map((mod) => {
             if (mod.week == weekForModule) {
@@ -44,7 +47,7 @@ function DevAvailableContent() {
 
     // this will check if quizId is available
   });
-  console.log(course);
+  console.log(courses);
   console.log(module);
 
   const newWeek = id.replace("week", "WEEK ");
@@ -236,7 +239,17 @@ function DevAvailableContent() {
       return (
         <Fragment>
           <ArrowNextAndPrevious>
-            <h3 className="m-0">{courseTitle}</h3>
+            <div
+              className="d-flex align-items-center"
+              style={{ maxWidth: "500px" }}
+            >
+              <h3 className="m-0 pe-2">{courseTitle}| </h3>
+              <p className="fs-6 mb-0">
+                {syllabusContent !== null &&
+                  syllabusContent !== undefined &&
+                  syllabusContent}
+              </p>
+            </div>
           </ArrowNextAndPrevious>
           <h4 className="ms-3 my-4">
             {newWeek} - {quiz !== undefined && quiz !== null && quiz.title}
