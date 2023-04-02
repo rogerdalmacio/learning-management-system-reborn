@@ -69,7 +69,10 @@ class ExamGrantingController extends Controller
                     'granted_at' => Carbon::now(),
                 ];
 
-                $message = ['student_id.unique' => 'Student_id: :input already granted'];
+                $message = [
+                    'prelimaries.unique' => 'Student :student_id already have :prelimaries'
+                ];
+                
                 $validator = Validator::make($newGrant, $rules, $message);
 
                 if($validator->fails()){
