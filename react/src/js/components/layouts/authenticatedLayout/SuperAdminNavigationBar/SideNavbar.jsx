@@ -94,7 +94,7 @@ function Navbar({ openSidebar }) {
               }}
             >
               <a>
-                <i className="bx bxs-tag-alt"></i>
+                <i className="bx bx-tag-alt"></i>
                 <span className="links_name">Single Create Account</span>
               </a>
               <i className="bx bx-chevron-down arrow"></i>
@@ -207,7 +207,7 @@ function Navbar({ openSidebar }) {
                     : ""
                 }`}
               >
-                <i className="bx bx-grid-alt"></i>
+                <i className="bx bx-git-pull-request"></i>
                 <span className="links_name">Request Students</span>
               </span>
               <span className="tooltip">Request Students</span>

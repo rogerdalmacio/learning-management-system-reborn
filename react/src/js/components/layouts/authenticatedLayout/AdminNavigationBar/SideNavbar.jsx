@@ -41,7 +41,7 @@ function Navbar({ openSidebar }) {
                   pathName === "/admin/subjects" ? "activeSideBar" : ""
                 }`}
               >
-                <i className="bx bxs-pie-chart-alt-2"></i>
+                <i className="bx bxs-book"></i>
                 <span className="links_name">Courses</span>
               </span>
               <span className="tooltip">Courses</span>

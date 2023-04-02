@@ -21,11 +21,9 @@ function StudGeneralizationSubmit({ content, activityResultid }) {
   useEffect(() => {
     if (file && file.size > 5242880) {
       setSubmitFile(false);
-    }
-    //  else if (file && file.type !== "text/csv") {
-    //   setSubmitFile(false);
-    // }
-    else {
+    } else if (file && file.type !== "application/pdf") {
+      setSubmitFile(false);
+    } else {
       setSubmitFile(true);
     }
   });

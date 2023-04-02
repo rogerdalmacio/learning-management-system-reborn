@@ -202,6 +202,11 @@ function StudQuizEvaluation() {
 
   console.log(content);
 
+  // prevent user from right click
+  function handleContextMenu(event) {
+    event.preventDefault();
+  }
+
   const OptionsContentHandler = () => {
     return content[currentQuestionIndex].options.map((opt, index) => {
       console.log(opt);
@@ -428,7 +433,11 @@ function StudQuizEvaluation() {
       } else {
         if (content) {
           return (
-            <div className="py-4 px-3 py-sm-5 px-sm-5 position-relative">
+            <div
+              className="py-4 px-3 py-sm-5 px-sm-5 position-relative vh-100"
+              style={{ userSelect: "none" }}
+              onContextMenu={handleContextMenu}
+            >
               <ToastContainer
                 position="top-right"
                 autoClose={3000}

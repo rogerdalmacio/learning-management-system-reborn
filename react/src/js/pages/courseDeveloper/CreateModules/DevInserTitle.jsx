@@ -55,6 +55,7 @@ function DevInsertTitle() {
       setItem(module[0].title);
       setHasItem(true);
     } else {
+      setHasItem(false);
       setItem("");
     }
   }, [module]);

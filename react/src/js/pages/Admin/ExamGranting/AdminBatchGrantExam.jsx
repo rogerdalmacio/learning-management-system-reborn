@@ -70,11 +70,15 @@ function AdminBatchGrantExam() {
                 autoClose: 2000,
               });
               const errorId = response.data.errors.map((error) => {
-                return error.student_id;
+                return error.preliminaries;
               });
               console.log(errorId);
               const errorwithJoin = Object.values(errorId).join(", ");
-              setError(errorwithJoin.match(/\d+/g).join(", "));
+              console.log(errorwithJoin);
+              const replacedText = errorwithJoin.replace(/,\s/g, "<br/>");
+
+              console.log(errorId);
+              setError(replacedText);
             } else {
               toast.update(toastId, {
                 render: "Request Successfully",
@@ -102,7 +106,7 @@ function AdminBatchGrantExam() {
           //   });
           // } else {
           toast.update(toastId, {
-            render: `${error.message}`,
+            render: `${error.response.data.error}`,
             type: toast.TYPE.ERROR,
             autoClose: 2000,
           });
@@ -199,10 +203,10 @@ function AdminBatchGrantExam() {
         </div>
         <div className="d-flex justify-content-center mt-2">
           {error !== undefined && (
-            <p className="text-danger fst-italic fs-6">
-              * Account ID <span className="fw-bold">{error}</span> already
-              granted *
-            </p>
+            <p
+              className="text-danger fst-italic fs-6"
+              dangerouslySetInnerHTML={{ __html: error }}
+            ></p>
           )}
         </div>
       </form>

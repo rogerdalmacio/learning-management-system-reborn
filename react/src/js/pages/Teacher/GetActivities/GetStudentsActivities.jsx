@@ -35,6 +35,8 @@ const GetStudentActivities = ({}) => {
   const [tableData, setTableData] = useState(getAnnouncement);
   const [validationErrors, setValidationErrors] = useState({});
   const [updatedList, setUpdatedList] = useState(false);
+  const [score, setScore] = useState({});
+  const [isLoading, setIsloading] = useState(false);
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
       if (role === "teacher") {
@@ -91,6 +93,8 @@ const GetStudentActivities = ({}) => {
                     year_and_section: item.year_and_section,
                     program: item.program,
                     activity: `${item.id}${cur.activity_type}${cur.activity_id}`,
+                    score: cur.score,
+                    activityId: cur.activity_id,
                     weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
                   };
 
@@ -122,38 +126,80 @@ const GetStudentActivities = ({}) => {
     GetAnnouncementHandler();
   }, [updatedList]);
   console.log(tableData);
-  const handleAction = (quizResultId, studID, quizType) => {
-    if (
-      !confirm(
-        `Are you sure you want to delete studentID: ${studID}'s ${quizType}`
-      )
-    ) {
-      return;
+  console.log(score);
+  const SubmitScoreHandler = async (activityId) => {
+    let GetScore;
+
+    if (activityId in score) {
+      GetScore = score[activityId];
     }
-    let toastId;
 
-    let item = {
-      id: quizResultId,
-    };
+    console.log(GetScore);
+    if (Object.keys(score).length === 0 || GetScore == "") {
+      toast.error("Please Provide Score");
+    } else if (parseInt(GetScore) < 1 || parseInt(GetScore) > 10) {
+      toast.error("Please Provide Score from 1-10 only");
+    } else {
+      setIsloading(true);
+      let toastId;
 
-    axios
-      .post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/teacher/deleteattempt`,
-        item,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        toast.success("Successfully Deleted");
-        setUpdatedList(!updatedList);
-      });
+      const scoreHandler = {
+        score: GetScore,
+      };
+      console.log(scoreHandler);
+      toastId = toast.info("Sending Request...");
+      await axios
+        .patch(
+          `${
+            import.meta.env.VITE_API_BASE_URL
+          }/api/teacher/activityresult/${activityId}`,
+          scoreHandler,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status >= 200 && response.status <= 300) {
+            toast.update(toastId, {
+              render: "Request Successfully",
+              type: toast.TYPE.SUCCESS,
+              autoClose: 2000,
+            });
+            setUpdatedList(!updatedList);
+            setIsloading(false);
+          } else {
+            throw new Error(response.status || "Something Went Wrong!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.data.errors) {
+            // to access the subject itself you can use this : error.response.data.SubjectAlreadyExists[1]
+            toast.update(toastId, {
+              render: error.response.data.errors.id[0],
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+            setIdAlreadyTaken(error.response.data.errors.id[0]);
+          } else {
+            toast.update(toastId, {
+              render: `${error.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          }
+          setUpdatedList(!updatedList);
+          setIsloading(false);
+        });
+    }
   };
 
+  console.log(score);
   const columns = useMemo(() => [
     {
       accessorKey: "id",
@@ -210,34 +256,67 @@ const GetStudentActivities = ({}) => {
       enableEditing: false, //disable editing on this column
       enableSorting: true,
       size: 80,
-      Cell: ({ row, column }) => (
-        <div
-          className={`${
-            row.original.activity !== ""
-              ? "d-flex align-items-center"
-              : "d-none"
-          }`}
-        >
-          {console.log(column.id)}
-          <a
-            className="text-decoration-none fs-6"
-            target="_blank"
-            href={`${
-              import.meta.env.VITE_API_BASE_URL
-            }/storage/activity/${courseActivity}/${row.original.activity}.pdf`}
+      Cell: ({ row, column }) => {
+        const id = row.original.id;
+
+        return (
+          <div
+            className={`${
+              row.original.activity !== ""
+                ? "d-block align-items-center"
+                : "d-none"
+            }`}
           >
-            {`${row.original.activity}.pdf`}
-          </a>{" "}
-          <button
-            className="smallButtonTemplateDanger text-right sumbit-button btn py-1"
-            onClick={() =>
-              handleAction(row.original.aaeid, row.original.id, column.id)
-            }
-          >
-            Delete
-          </button>
-        </div>
-      ),
+            {console.log(column.id)}
+            <a
+              className="text-decoration-none fs-6"
+              target="_blank"
+              href={`${
+                import.meta.env.VITE_API_BASE_URL
+              }/storage/activity/${courseActivity}/${
+                row.original.activity
+              }.pdf`}
+            >
+              {`${row.original.activity}.pdf`}
+            </a>
+            <div className="d-flex mt-2" style={{ maxWidth: "170px" }}>
+              <input
+                className="inputField input-form form-control py-1 px-1 fs-6 fw-normal me-2"
+                type="number"
+                name={row.original.activityId}
+                onChange={(e) => {
+                  setScore({ ...score, [e.target.name]: e.target.value });
+                }}
+              />
+              <button
+                className="uploadButton smallButtonTemplate sumbit-button btn rounded-2"
+                disabled={isLoading}
+                onClick={() => {
+                  SubmitScoreHandler(row.original.activityId);
+                }}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "score",
+      header: "Score",
+      enableColumnOrdering: true,
+      enableEditing: false, //disable editing on this column
+      enableSorting: true,
+      size: 80,
+    },
+    {
+      accessorKey: "activityId",
+      header: "Activity Id",
+      enableColumnOrdering: true,
+      enableEditing: false, //disable editing on this column
+      enableSorting: true,
+      size: 80,
     },
   ]);
 

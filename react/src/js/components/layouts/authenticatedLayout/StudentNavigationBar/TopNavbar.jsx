@@ -12,6 +12,7 @@ function TopNavbar({
   userImagePng,
 }) {
   const { userInfo, token, role } = useAuth();
+  const [notifDetails, setNotifDetails] = useState();
   const [notification, setNotification] = useState(false);
   const notificationRef = useRef(null);
 
@@ -58,29 +59,29 @@ function TopNavbar({
     // window.location.reload();
   };
 
-  // useEffect(() => {
-  //   const renderModule = async () => {
-  //     if (role === "student") {
-  //       await axios
-  //         .get(
-  //           `${import.meta.env.VITE_API_BASE_URL}/api/student/module/${week}`,
-  //           {
-  //             headers: {
-  //               Authorization: `Bearer ${token}`,
-  //               "Content-Type": "application/json",
-  //               Accept: "application/json",
-  //             },
-  //           }
-  //         )
-  //         .then((response) => {
-  //           console.log(response);
-  //           setModule(response.data.Module);
-  //         });
-  //     }
-  //   };
+  useEffect(() => {
+    const renderModule = async () => {
+      if (role === "student") {
+        await axios
+          .get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/student/notification`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            setNotifDetails(response.data);
+          });
+      }
+    };
 
-  //   renderModule();
-  // });
+    renderModule();
+  }, []);
 
   const setTheUserProfile = () => {
     if (imageExisting === true) {

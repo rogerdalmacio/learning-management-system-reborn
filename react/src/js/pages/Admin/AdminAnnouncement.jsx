@@ -106,7 +106,7 @@ const AdminAnnouncement = () => {
             title: info.title,
             body: info.body,
             tags: info.tags,
-            status: 1,
+            status: info.status,
             users: info.users,
           };
           console.log(item);
