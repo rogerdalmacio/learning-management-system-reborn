@@ -207,6 +207,10 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Su
     
     Route::get('/superadmin/registrar/list-of-request', [RegistrarController::class, 'listOfRegistrarRequest']);
     Route::post('/superadmin/registrar/request-student-credentials', [RegistrarController::class, 'requestStudentCredentials']);
+
+    //Hr connection
+    Route::get('/superadmin/hr/list-of-request', [HrController::class, 'listOfHrRequest']);
+    Route::post('/superadmin/hr/request-hr-credentials', [HrController::class, 'requestTeacherCredentials']);
 });
 
 //Admin Core
@@ -246,10 +250,6 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     //Registrar connection
     Route::get('/registrar/list-of-request', [RegistrarController::class, 'listOfRegistrarRequest']);
     Route::post('/registrar/request-student-subjects', [RegistrarController::class, 'requestStudentSubjects']);
-
-    //Hr connection
-    Route::get('/hr/list-of-request', [HrController::class, 'listOfHrRequest']);
-    Route::post('/hr/request-hr-credentials', [HrController::class, 'requestTeacherCredentials']);
 });
 
 Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'ability:Admin,SuperAdmin']], function(){
