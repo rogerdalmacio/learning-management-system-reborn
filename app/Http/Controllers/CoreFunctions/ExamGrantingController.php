@@ -70,7 +70,7 @@ class ExamGrantingController extends Controller
                 ];
 
                 $message = [
-                    'prelimaries.unique' => 'Student :student_id already have :prelimaries'
+                    'preliminaries.unique' => 'Student :student_id already have :preliminaries'
                 ];
                 
                 $validator = Validator::make($newGrant, $rules, $message);
