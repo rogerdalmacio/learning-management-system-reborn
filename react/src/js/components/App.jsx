@@ -120,6 +120,17 @@ import GetStudentsActivities from "../pages/Teacher/GetActivities/GetStudentsAct
 import GetActivitiesSortByAct from "../pages/Teacher/GetActivities/GetActivitiesSortByAct";
 import TeachDashboard from "../pages/Teacher/AnnouncementDashboard/TeachDashboard";
 import TeachDashboardSpecificAnnouncement from "../pages/Teacher/AnnouncementDashboard/TeachDashboardSpecificAnnouncement";
+import TeacherAvailableContent from "../pages/Teacher/AvailableCourse/TeacherAvailableContent";
+import TeacherAvailableModules from "../pages/Teacher/AvailableCourse/TeacherAvailableModules";
+import TeacherAvailableSubjects from "../pages/Teacher/AvailableCourse/TeacherAvailableSubjects";
+
+import TeacherGetAAE from "../pages/Teacher/CreateModules/TeacherGetAAE";
+import TeacherGetAssignment from "../pages/Teacher/CreateModules/TeacherGetAssignment";
+import TeacherGetEvaluation from "../pages/Teacher/CreateModules/TeacherGetEvaluation";
+import TeacherGetExam from "../pages/Teacher/CreateModules/TeacherGetExam";
+import TeacherGetGeneralization from "../pages/Teacher/CreateModules/TeacherGetGeneralization";
+import TeacherGetLesson from "../pages/Teacher/CreateModules/TeacherGetLesson";
+import TeacherGetPrelimAct from "../pages/Teacher/CreateModules/TeacherGetPrelimAct";
 
 // Others
 import Login from "./authentication/Login";
@@ -268,6 +279,48 @@ function App() {
           <Route
             path="/teacher/studentsActivities/:id/:id/:id"
             element={<GetStudentsActivities />}
+          />
+          {/* courses */}
+          <Route
+            path="/teacher/subjects"
+            element={<TeacherAvailableSubjects />}
+          />
+          <Route
+            path="/teacher/:id/modules"
+            element={<TeacherAvailableModules />}
+          />
+          <Route
+            path="/teacher/:id/modules/:id"
+            element={<TeacherAvailableContent />}
+          />
+          {/* modules */}
+          <Route
+            path="/teacher/:id/modules/:id/aae"
+            element={<TeacherGetAAE />}
+          />
+          <Route
+            path="/teacher/:id/modules/:id/assignment"
+            element={<TeacherGetAssignment />}
+          />
+          <Route
+            path="/teacher/:id/modules/:id/evaluation"
+            element={<TeacherGetEvaluation />}
+          />
+          <Route
+            path="/teacher/:id/modules/:id/:id"
+            element={<TeacherGetExam />}
+          />
+          <Route
+            path="/teacher/:id/modules/:id/lesson"
+            element={<TeacherGetLesson />}
+          />
+          <Route
+            path="/teacher/:id/modules/:id/preliminaryactivity"
+            element={<TeacherGetPrelimAct />}
+          />
+          <Route
+            path="/teacher/:id/modules/:id/generalization"
+            element={<TeacherGetGeneralization />}
           />
         </Route>
       </Route>

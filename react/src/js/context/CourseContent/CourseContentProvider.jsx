@@ -29,7 +29,7 @@ export const CourseContentProvider = ({ children }) => {
 
   useEffect(() => {
     const renderCourse = async () => {
-      if (role === "CourseManager" || role === "admin") {
+      if (role === "CourseManager" || role === "admin" || role === "teacher") {
         await axios
           .get(`${import.meta.env.VITE_API_BASE_URL}/api/content/course`, {
             headers: {
@@ -51,7 +51,11 @@ export const CourseContentProvider = ({ children }) => {
 
   useEffect(() => {
     const renderModule = async () => {
-      if (role === "CourseManager" || (role === "admin" && week)) {
+      if (
+        role === "CourseManager" ||
+        role === "teacher" ||
+        (role === "admin" && week)
+      ) {
         console.log(week);
         await axios
           .get(
@@ -77,7 +81,11 @@ export const CourseContentProvider = ({ children }) => {
   useEffect(() => {
     const renderLesson = async () => {
       console.log(weekLesson);
-      if (role === "CourseManager" || (role === "admin" && weekLesson)) {
+      if (
+        role === "CourseManager" ||
+        role === "teacher" ||
+        (role === "admin" && weekLesson)
+      ) {
         await axios
           .get(
             `${
@@ -103,7 +111,11 @@ export const CourseContentProvider = ({ children }) => {
 
   useEffect(() => {
     const renderQuiz = async () => {
-      if (role === "CourseManager" || (role === "admin" && weekQuiz)) {
+      if (
+        role === "CourseManager" ||
+        role === "teacher" ||
+        (role === "admin" && weekQuiz)
+      ) {
         console.log(weekQuiz);
         await axios
           .get(
@@ -134,6 +146,7 @@ export const CourseContentProvider = ({ children }) => {
       console.log(quizid);
       if (
         role === "CourseManager" ||
+        role === "teacher" ||
         (role === "admin" && quizid !== undefined)
       ) {
         await axios
