@@ -76,7 +76,7 @@ class CMToDoListController extends Controller
         $module = Module::find($id);
 
         $module->update([
-            'status' => true
+            'approval' => true
         ]);
 
         $todo = ContentValidation::where('module_id', $id)->first();
