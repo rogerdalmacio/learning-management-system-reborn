@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\Connection\AmsController;
+use App\Http\Controllers\Connection\HrController;
 use App\Http\Controllers\Connection\MisController;
 use App\Http\Controllers\Connection\RegistrarController;
 use Carbon\Carbon;
@@ -245,6 +246,10 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     //Registrar connection
     Route::get('/registrar/list-of-request', [RegistrarController::class, 'listOfRegistrarRequest']);
     Route::post('/registrar/request-student-subjects', [RegistrarController::class, 'requestStudentSubjects']);
+
+    //Hr connection
+    Route::get('/hr/list-of-request', [HrController::class, 'listOfHrRequest']);
+    Route::post('/hr/request-hr-credentials', [HrController::class, 'requestTeacherCredentials']);
 });
 
 Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'ability:Admin,SuperAdmin']], function(){
