@@ -113,7 +113,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
 
     Route::post('/deleteattempt', [QuizAttemptController::class, 'deleteAttempt']);
 
-    Route::post('/computegrade', [GradesController::class, 'computeGrades']);
+    Route::get('/grade', [GradesController::class, 'index']);
 
     Route::get('/listofstudents', [ListOfStudentController::class, 'listOfStudents']);
 
