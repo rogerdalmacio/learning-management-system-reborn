@@ -82,6 +82,8 @@ Route::get('/test', function() {
 Route::post('/login', [UserController::class, 'login']);
 //logout API
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+//Reset password
+Route::post('/resetpassword', [UserController::class, 'passwordResetRequest']);
 
 //student route
 Route::group(['prefix' => 'student', 'middleware' => ['auth:sanctum','abilities:Student']], function(){
@@ -255,6 +257,10 @@ Route::group(['prefix' => 'core', 'middleware' => ['auth:sanctum', 'abilities:Ad
     //Registrar connection
     Route::get('/registrar/list-of-request', [RegistrarController::class, 'listOfRegistrarRequest']);
     Route::post('/registrar/request-student-subjects', [RegistrarController::class, 'requestStudentSubjects']);
+
+    //reset password
+    Route::get('resetpasswordlist', [PasswordResetController::class, 'passwordResetList']);
+    Route::post('resetpassword', [PasswordResetController::class, 'passwordReset']);
 });
 
 Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'ability:Admin,SuperAdmin']], function(){

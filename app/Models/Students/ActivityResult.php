@@ -20,7 +20,8 @@ class ActivityResult extends Model
         'terms',
         'status',
         'attempt',
-        'score'
+        'score',
+        'percentage',
     ];
 
     public function student(){

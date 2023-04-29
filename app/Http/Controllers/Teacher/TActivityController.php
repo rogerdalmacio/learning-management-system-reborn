@@ -50,13 +50,14 @@ class TActivityController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'score' => 'required'
+            'score' => 'required|integer|max:10'
         ]);
 
         $activityresult = ActivityResult::find($id);
 
         $activityresult->update([
-            'score' => $request['score']
+            'score' => $request['score'],
+            'percentage' => $request['score'] / 10 * 100,
         ]);
 
         $response = [

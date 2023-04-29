@@ -73,7 +73,7 @@ class AutoSaveProgressController extends Controller
 
             $quizresult->update([
                 'score' => $score,
-                'percentage' => $numberOfItems / $score,
+                'percentage' => $score / $numberOfItems * 100,
                 'logs' => $autoSavedProgress['logs'],
                 'snapshot' => $autoSavedProgress['snapshot'],
                 'time_elapsed' => $timeElapsed

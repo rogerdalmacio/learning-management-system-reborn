@@ -11,39 +11,41 @@ use App\Models\Users\SuperAdmin;
 use App\Models\CoreFunctions\Logs;
 use App\Models\Users\CourseManager;
 use App\Http\Controllers\Controller;
-use App\Models\CoreFunctions\PasswordReset;
+use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Users\CourseDeveloper;
+use App\Models\PasswordReset as ModelsPasswordReset;
 
 class PasswordResetController extends Controller
 {   
-    public function passwordReset(Request $request) {
+    public function passwordResetList() {
+        $password_reset = ModelsPasswordReset::all();
 
-        $request->validate([
-            'user_id' => 'required|integer',
-            'user_type' => 'required|string',
-        ]);
+        $response = [
+            'users' => $password_reset
+        ];
 
-        $user = $request['user_type']::find($request['user_id']);
-
-        $firstTwoCharactersOfLastName = substr($user['last_name'], 0, 2);
-
-        $date = Carbon::now()->format('Y');
-
-        $password = '#' . $firstTwoCharactersOfLastName . $date;
-
-        $user->update([
-            'password' => bcrypt($password),
-            'is_logged_in' => 1,
-        ]);
-
-        Logs::create([
-            'user_id' => Auth::user()->id,
-            'user_type' => Auth::user()->usertype(),
-            'activity_log' => 'Reset password for user - ' . $user->userType() . $user->first_name . ' ' . $user->last_name
-        ]);
-
-        return response(['message' => 'Password reset successful'], 204);
+        return response($response, 200);
     }
 
+    public function passwordReset(Request $request, $id) {
+
+        $password_reset = ModelsPasswordReset::find($id);
+
+        $user = $password_reset->user_type::where('email', $password_reset->email)->get();
+
+        $user->update([
+            'password' => $password_reset->base_password,
+            'password_updated' => 0,
+        ]);
+        
+        Mail::to($user->email)->send(new ResetPasswordMail($user, $password_reset->base_password));
+
+        $response = [
+            'success'
+        ];
+
+        return response($response, 201);
+    }
 }

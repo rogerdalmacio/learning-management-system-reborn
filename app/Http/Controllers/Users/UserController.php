@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Users;
 
+use Carbon\Carbon;
 use App\Models\Users\Admin;
 use Illuminate\Http\Request;
+use App\Models\PasswordReset;
 use App\Models\Users\Student;
 use App\Models\Users\Teacher;
 use App\Models\Users\SuperAdmin;
@@ -342,5 +344,40 @@ class UserController extends Controller
         } else {
             return response('Old password is incorrect', 404);
         }
+    }
+
+
+    public function passwordResetRequest(Request $request)
+    {
+
+        $user = $request->user_type::where('email', $request->email)->get();
+
+        if(!$user) {
+            $response = [
+                'error' => 'this account does not exist on our database'
+            ];
+            return response($response, 404);
+        }
+        
+        $firstTwoCharactersOfLastName = substr($user['last_name'], 0, 2);
+    
+        $date = Carbon::now()->format('Y');
+
+        $password = '#' . $firstTwoCharactersOfLastName . $date;
+
+        PasswordReset::create([
+            'user_type' => $user->userType(),
+            'email' => $user->email,
+            'base_password' => $password,
+            'status' => 0,
+        ]);
+        
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'user_type' => Auth::user()->usertype(),
+            'activity_log' => 'Reset password'
+        ]);
+
+        return response('success', 200);
     }
 }

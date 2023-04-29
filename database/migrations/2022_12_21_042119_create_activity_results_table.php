@@ -23,6 +23,7 @@ return new class extends Migration
             $table->boolean('attempt');
             $table->string('status');
             $table->string('score')->nullable();
+            $table->decimal('percentage')->nullable();
             $table->timestamps();
         });
 
