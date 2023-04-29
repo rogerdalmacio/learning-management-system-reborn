@@ -11,6 +11,7 @@ use App\Models\CoreFunctions\Logs;
 use App\Models\Users\CourseManager;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Users\CourseDeveloper;
 
 class UserController extends Controller
@@ -296,5 +297,50 @@ class UserController extends Controller
         ];
         
         return response($response, 200);
+    }
+
+    public function changePassword(Request $request) {
+        $request->validate([
+            'old_password' => $user->userType() == 'Student' ? 'required' : 'sometimes',
+            'password' => 'required|min:8'
+        ]);
+
+        $user = Auth::user();
+
+        if($user->userType == 'Student') {
+
+            $user->update([
+                'password' => $request['password'],
+                'password_updated' => true
+            ]);
+
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'user_type' => Auth::user()->usertype(),
+                'activity_log' => 'Changed password'
+            ]);
+
+            return response('success', 200);
+        }
+
+        $check_password = Hash::check($request['old_password'], $user->password);
+
+        if($check_password) {
+
+            $user->update([
+                'password' => $request['password'],
+                'password_updated' => true
+            ]);
+
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'user_type' => Auth::user()->usertype(),
+                'activity_log' => 'Changed password'
+            ]);
+
+            return response('success', 200);
+        } else {
+            return response('Old password is incorrect', 404);
+        }
     }
 }

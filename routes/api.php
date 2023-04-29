@@ -276,5 +276,5 @@ Route::group(['prefix' => 'core-shared', 'middleware' => ['auth:sanctum', 'abili
 
 Route::group(['prefix' => 'users', 'middleware' => ['auth:sanctum']], function(){
     Route::post('/uploadprofilepicture', [ProfilePictureController::class, 'uploadProfilePicture']);
-    Route::post('/changepassword', [ChangePasswordController::class, 'changePassword']);
+    Route::post('/changepassword', [UserController::class, 'changePassword']);
 });

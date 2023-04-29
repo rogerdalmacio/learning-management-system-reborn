@@ -20,6 +20,7 @@ class QuizResult extends Model
         'quiz_type',
         'attempt',
         'score',
+        'percentage',
         'logs',
         'snapshot',
         'start_time',

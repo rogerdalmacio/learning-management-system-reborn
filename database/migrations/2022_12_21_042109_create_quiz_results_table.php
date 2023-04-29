@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('quiz_type');
             $table->string('attempt');
             $table->integer('score')->nullable();
+            $table->decimal('percentage')->nullable();
             $table->string('logs')->nullable();
             $table->boolean('snapshot')->default(false)->nullable();
             $table->dateTime('start_time');

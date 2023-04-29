@@ -37,6 +37,7 @@ class Student extends Model
         'program',
         'subjects',
         'is_logged_in',
+        'password_updated',
     ];
 
     protected $attribute = [

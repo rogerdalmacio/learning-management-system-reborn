@@ -183,6 +183,7 @@ class SQuizResultController extends Controller
 
         $quizresult->update([
             'score' => $score,
+            'percentage' => $numberOfItems / $score,
             'logs' => $quizresult->logs ? $quizresult->logs . ',' . $request['logs'] : $request['logs'],
             'time_elapsed' => $timeElapsed,
             'attempt' => $request['attempt']
