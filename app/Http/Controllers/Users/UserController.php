@@ -311,7 +311,7 @@ class UserController extends Controller
 
         if(!$user->password_updated) {
             $user->update([
-                'password' => $request['password'],
+                'password' => bcrypt($request['password']),
                 'password_updated' => true
             ]);
 
@@ -329,7 +329,7 @@ class UserController extends Controller
         if($check_password) {
 
             $user->update([
-                'password' => $request['password'],
+                'password' => bcrypt($request['password']),
                 'password_updated' => true
             ]);
 
@@ -367,7 +367,7 @@ class UserController extends Controller
         PasswordReset::create([
             'user_type' => $user->userType(),
             'email' => $user->email,
-            'base_password' => $password,
+            'base_password' => bcrypt($password),
             'status' => 0,
         ]);
         
