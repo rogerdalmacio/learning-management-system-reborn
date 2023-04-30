@@ -302,15 +302,14 @@ class UserController extends Controller
     }
 
     public function changePassword(Request $request) {
+        $user = Auth::user();
+
         $request->validate([
-            'old_password' => $user->userType() == 'Student' ? 'required' : 'sometimes',
+            'old_password' => $user->password_updated ? 'required' : 'sometimes',
             'password' => 'required|min:8'
         ]);
 
-        $user = Auth::user();
-
-        if($user->userType == 'Student') {
-
+        if(!$user->password_updated) {
             $user->update([
                 'password' => $request['password'],
                 'password_updated' => true

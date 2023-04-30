@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\CoreFunctions;
 
 use Illuminate\Http\Request;
+use App\Models\Users\Student;
 use App\Models\Modules\Module;
 use App\Models\CoreFunctions\Logs;
 use App\Http\Controllers\Controller;
+use App\Mail\ModuleGrantMail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\CoreFunctions\Announcement;
 
 class ModuleStatusUpdateController extends Controller
@@ -55,6 +58,14 @@ class ModuleStatusUpdateController extends Controller
             'users' => '["Student", "Teacher"]',
             'tags' => 'notification',
         ]);
+
+        if($module->status == true) {
+            $students = Student::all();
+
+            foreach($students as $student) {
+                Mail::to($student->email)->queue(new ModuleGrantMail($student, $id, $request['status']));
+            }
+        } 
 
         Logs::create([
             'user_id' => Auth::user()->id,

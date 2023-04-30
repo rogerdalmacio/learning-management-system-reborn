@@ -11,8 +11,10 @@ use App\Models\CoreFunctions\Logs;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Core\ExamGrantRequest;
+use App\Mail\ExamGrantMail;
 use App\Models\CoreFunctions\ExaminationGrant;
 
 class ExamGrantingController extends Controller
@@ -88,7 +90,10 @@ class ExamGrantingController extends Controller
             $chunks = array_chunk($massgrant, 100);
             
             foreach($chunks as $chunk) {
-                ExaminationGrant::insert($chunk); 
+                ExaminationGrant::insert($chunk);
+                $student = Student::find($chunk->student_id);
+
+                Mail::to($student->email)->queue(new ExamGrantMail($student, $chunk->preliminaries));
             }
 
         } catch (\Exception $e) {
@@ -136,6 +141,10 @@ class ExamGrantingController extends Controller
             'preliminaries' => $request['preliminaries'],
             'granted_at' => Carbon::now()
         ]);
+
+        $student = Student::find($request['student_id']);
+
+        Mail::to($student->email)->queue(new ExamGrantMail($student, $request['preliminaries']));
 
         Logs::create([
             'user_id' => Auth::user()->id,
