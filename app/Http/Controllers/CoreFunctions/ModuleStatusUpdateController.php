@@ -63,7 +63,7 @@ class ModuleStatusUpdateController extends Controller
             $students = Student::all();
 
             foreach($students as $student) {
-                Mail::to($student->email)->queue(new ModuleGrantMail($student, $id, $request['status']));
+                Mail::to($student->email)->queue(new ModuleGrantMail($student, $id));
             }
         } 
 
