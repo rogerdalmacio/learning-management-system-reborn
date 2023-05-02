@@ -66,17 +66,11 @@ use App\Http\Controllers\Teacher\TActivityController;
 |
 */
 
-Route::get('/test', function() {
-    $carbonHour1 = Carbon::createFromFormat('Y-m-d H:i:s', '2022-01-01 10:00:10');
-    $carbonHour2 = Carbon::createFromFormat('Y-m-d H:i:s', '2022-01-01 12:00:00');
+// password reset request
+Route::post('/reset-password-request', [UserController::class, 'passwordResetRequest']);
 
-    $diffInSeconds = $carbonHour1->diffInSeconds($carbonHour2);
-
-    $minutes = floor($diffInSeconds / 60);
-    $seconds = $diffInSeconds % 60;
-
-    return $minutes . ':' . $seconds;
-});
+// password reset
+Route::get('/reset-password', [UserController::class, 'handlePasswordReset']);
 
 //Login API
 Route::post('/login', [UserController::class, 'login']);

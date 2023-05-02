@@ -3,28 +3,29 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ResetPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     protected $user;
-    protected $password;
+    protected $token;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user, $password)
+    public function __construct($user, $token)
     {
         $this->user = $user;
-        $this->password = $password;
+        $this->token = $token;
     }
 
     /**
@@ -49,8 +50,8 @@ class ResetPasswordMail extends Mailable
         return new Content(
             view: 'emails.reset_password',
             with: [
-                'user' => $this->user,
-                'password' => $this->password
+                'token' => Crypt::encrypt($this->user->id),
+                'usertype' => $this->user->userType()
             ]
         );
     }

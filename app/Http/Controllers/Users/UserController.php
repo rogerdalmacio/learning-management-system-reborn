@@ -8,13 +8,16 @@ use Illuminate\Http\Request;
 use App\Models\PasswordReset;
 use App\Models\Users\Student;
 use App\Models\Users\Teacher;
+use App\Mail\ResetPasswordMail;
 use App\Models\Users\SuperAdmin;
 use App\Models\CoreFunctions\Logs;
 use App\Models\Users\CourseManager;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Users\CourseDeveloper;
+use Illuminate\Support\Facades\Crypt;
 
 class UserController extends Controller
 {
@@ -345,38 +348,57 @@ class UserController extends Controller
         }
     }
 
+    public function passwordResetRequest(Request $request) {
 
-    public function passwordResetRequest(Request $request)
-    {
+        $request->validate([
+            'user_type' => 'required',
+            'email' => 'required',
+        ]);
 
-        $user = $request->user_type::where('email', $request->email)->get();
+        switch($request->user_type) {
+            case 'Student' :
+                $user = Student::where('email', $request->email)->first();
 
-        if(!$user) {
-            $response = [
-                'error' => 'this account does not exist on our database'
-            ];
-            return response($response, 404);
-        }
+                $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
         
+                Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
+
+                $response = [
+                    'success'
+                ];
+
+                return response($response, 201);
+                break;
+        }
+    }
+
+    public function handlePasswordReset(Request $request) {
+        switch($request->usertype) {
+            case 'Student' :
+                
+                $user = Student::find(Crypt::decrypt($request->token));
+
+                if(!$user) {
+                    return response('invalid link', 404);
+                }
+
+                $user->update([
+                    'password' => bcrypt($this->basePassword($user))
+                ]);
+
+                return redirect()->away(env('FRONT_END_URL'))->with('password reset successfull');
+
+                break;
+        }
+    }
+
+    public function basePassword($user) {
         $firstTwoCharactersOfLastName = substr($user['last_name'], 0, 2);
     
         $date = Carbon::now()->format('Y');
 
         $password = '#' . $firstTwoCharactersOfLastName . $date;
 
-        PasswordReset::create([
-            'user_type' => $user->userType(),
-            'email' => $user->email,
-            'base_password' => bcrypt($password),
-            'status' => 0,
-        ]);
-        
-        Logs::create([
-            'user_id' => Auth::user()->id,
-            'user_type' => Auth::user()->usertype(),
-            'activity_log' => 'Reset password'
-        ]);
-
-        return response('success', 200);
+        return $password;
     }
 }

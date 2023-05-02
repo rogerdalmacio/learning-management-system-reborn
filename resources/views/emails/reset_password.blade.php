@@ -1,13 +1,14 @@
+@php
+    $url = env('APP_URL') . '/api/reset-password?token=' . $token . '&usertype=' . $usertype;
+@endphp
 <!DOCTYPE html>
 <html>
 <head>
 <title>Password reset</title>
 </head>
 <body>
-<h1>Hello {{ $user->first_name }} {{ $user->last_name }}</h1>
-<h3>{{ $password }}</h3>
-<p>please use this password to log in to your account</p>
-<a href="https://lms.bcpsms.com">Log in</a>
-<p>Don't forget to change your password once you have logged in</p>
+<a href={{ $url }}>Click to reset password</a>
+<br>
+<p>If you didn't asked to reset your password you can ignore this email.</p>
 </body>
 </html>
