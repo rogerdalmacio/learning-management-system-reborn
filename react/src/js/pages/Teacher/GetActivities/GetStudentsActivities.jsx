@@ -95,6 +95,7 @@ const GetStudentActivities = ({}) => {
                     activity: `${item.id}${cur.activity_type}${cur.activity_id}`,
                     score: cur.score,
                     activityId: cur.activity_id,
+                    activityresultId: cur.id,
                     weekNo: acc.weekNo == undefined ? "" : acc.weekNo,
                   };
 
@@ -127,13 +128,14 @@ const GetStudentActivities = ({}) => {
   }, [updatedList]);
   console.log(tableData);
   console.log(score);
-  const SubmitScoreHandler = async (activityId) => {
-    let GetScore;
 
+  const SubmitScoreHandler = async (activityId, activityResultId) => {
+    let GetScore;
+    console.log(activityId);
     if (activityId in score) {
       GetScore = score[activityId];
     }
-
+    console.log(score);
     console.log(GetScore);
     if (Object.keys(score).length === 0 || GetScore == "") {
       toast.error("Please Provide Score");
@@ -152,7 +154,7 @@ const GetStudentActivities = ({}) => {
         .patch(
           `${
             import.meta.env.VITE_API_BASE_URL
-          }/api/teacher/activityresult/${activityId}`,
+          }/api/teacher/activityresult/${activityResultId}`,
           scoreHandler,
           {
             headers: {
@@ -267,7 +269,7 @@ const GetStudentActivities = ({}) => {
                 : "d-none"
             }`}
           >
-            {console.log(column.id)}
+            {console.log(row.original)}
             <a
               className="text-decoration-none fs-6"
               target="_blank"
@@ -292,7 +294,10 @@ const GetStudentActivities = ({}) => {
                 className="uploadButton smallButtonTemplate sumbit-button btn rounded-2"
                 disabled={isLoading}
                 onClick={() => {
-                  SubmitScoreHandler(row.original.activityId);
+                  SubmitScoreHandler(
+                    row.original.activityId,
+                    row.original.activityresultId
+                  );
                 }}
               >
                 Submit

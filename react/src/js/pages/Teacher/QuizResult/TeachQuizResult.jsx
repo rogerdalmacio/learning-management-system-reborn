@@ -52,7 +52,7 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
             const numbers = [
               1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
             ];
-
+            console.log(data);
             const result2 = numbers.map((num) => {
               return data.map((item) => {
                 console.log(item.year_and_section);

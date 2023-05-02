@@ -237,7 +237,20 @@ function Navbar({ openSidebar }) {
                 <i className="bx bxs-school"></i>
                 <span className="links_name">Faculty Request</span>
               </span>
-              <span className="tooltip">Dashboard</span>
+              <span className="tooltip">Faculty Request</span>
+            </li>
+          </Link>
+          <Link to="/teacher/studentsGrade" className="text-decoration-none">
+            <li>
+              <span
+                className={`a ${
+                  pathName === "/teacher/studentsGrade" ? "activeSideBar" : ""
+                }`}
+              >
+                <i className="bx bxs-school"></i>
+                <span className="links_name">Student's Grade</span>
+              </span>
+              <span className="tooltip">Student's Grade</span>
             </li>
           </Link>
         </ul>

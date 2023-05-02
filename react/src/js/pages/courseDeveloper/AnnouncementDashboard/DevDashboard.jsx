@@ -8,7 +8,7 @@ import { Fragment } from "react";
 function DevDashboard() {
   const { token, role } = useAuth();
 
-  const [announcement, setAnnouncement] = useState();
+  const [announcement, setAnnouncement] = useState([]);
 
   useEffect(() => {
     const renderCourse = async () => {
@@ -39,7 +39,11 @@ function DevDashboard() {
   console.log(announcement);
 
   const RenderAnnouncement = () => {
-    if (announcement !== undefined && announcement !== null) {
+    if (
+      announcement !== undefined &&
+      announcement !== null &&
+      announcement.length !== 0
+    ) {
       return announcement.map((info, i) => {
         console.log(info);
         let formattedParagraph = info.body
@@ -92,11 +96,7 @@ function DevDashboard() {
           </Fragment>
         );
       });
-    } else if (
-      announcement !== undefined &&
-      announcement !== null &&
-      announcement.length == 0
-    ) {
+    } else if (announcement.length == 0) {
       return (
         <h4 className="d-flex justify-content-center w-100 fst-italic text-secondary py-5">
           No Content has been added yet.

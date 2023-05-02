@@ -39,6 +39,8 @@ function AdminWeekGrant() {
   }, []);
 
   const handleToggle = async (weekNum, e) => {
+    toast.success("Module state successfully changed");
+
     const name = e.target.name;
     const weekNumber = parseInt(name.match(/\d+/)[0]);
     console.log(weekNumber);
@@ -65,7 +67,6 @@ function AdminWeekGrant() {
       .then((response) => {
         console.log(response);
         if (response.status >= 200 && response.status <= 300) {
-          toast.success("Module state successfully changed");
         } else {
           throw new Error(response.status || "Something Went Wrong!");
         }

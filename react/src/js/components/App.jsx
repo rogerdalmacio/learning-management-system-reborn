@@ -101,6 +101,7 @@ import StudPrelimExam from "../pages/student/AvailableModules/StudPrelimExam";
 import StudQuizPrelimExam from "../pages/student/AvailableModules/AnotherTabForQuiz/StudQuizPrelimExam";
 import GetActivitiesSortBySection from "../pages/Teacher/GetActivities/GetActivitiesSortBySection";
 import GetActivitiesSortBySubjects from "../pages/Teacher/GetActivities/GetActivitiesSortBySubjects";
+import StudentChangePassword from "../pages/student/StudentChangePassword";
 
 // Teacher
 import TeacherLayout from "./layouts/authenticatedLayout/TeacherNavigationBar/TeacherLayout";
@@ -132,7 +133,11 @@ import TeacherGetExam from "../pages/Teacher/CreateModules/TeacherGetExam";
 import TeacherGetGeneralization from "../pages/Teacher/CreateModules/TeacherGetGeneralization";
 import TeacherGetLesson from "../pages/Teacher/CreateModules/TeacherGetLesson";
 import TeacherGetPrelimAct from "../pages/Teacher/CreateModules/TeacherGetPrelimAct";
-
+import TeacherComputeGrade from "../pages/Teacher/GetGrades/TeacherComputeGrade";
+import SortBySubjectsGrade from "../pages/Teacher/GetGrades/SortBySubjectsGrade";
+import SortBySectionGrade from "../pages/Teacher/GetGrades/SortBySectionGrade";
+import SortByTerm from "../pages/Teacher/GetGrades/sortByTerm";
+import TeacherChangePassword from "../pages/Teacher/TeacherChangePassword";
 // Others
 import Login from "./authentication/Login";
 import RequireAuth from "./authentication/RequireAuth";
@@ -141,6 +146,7 @@ import UnAuthorized from "./layouts/unAuthorized";
 import Missing from "./layouts/Missing";
 import ClearAttemptSortBySection from "../pages/Teacher/ClearQuizAttempt/ClearAttemptSortBySection";
 import ClearAttemptSortBySubjects from "../pages/Teacher/ClearQuizAttempt/ClearAttemptSortBySubjects";
+import ForgotPassword from "./authentication/ForgotPassword";
 
 function App() {
   useEffect(() => {
@@ -217,6 +223,10 @@ function App() {
           <Route
             path="/student/:id/modules/:id/:id"
             element={<StudPrelimExam />}
+          />
+          <Route
+            path="/student/changepassword"
+            element={<StudentChangePassword />}
           />
         </Route>
       </Route>
@@ -326,6 +336,24 @@ function App() {
           <Route
             path="/teacher/facultyRequest"
             element={<TeacherListFaculty />}
+          />
+          {/* get grades */}
+          <Route path="/teacher/studentsGrade" element={<SortByTerm />} />
+          <Route
+            path="/teacher/studentsGrade/:id"
+            element={<SortBySubjectsGrade />}
+          />
+          <Route
+            path="/teacher/studentsGrade/:id/:id"
+            element={<SortBySectionGrade />}
+          />
+          <Route
+            path="/teacher/studentsGrade/:id/:id/:id"
+            element={<TeacherComputeGrade />}
+          />
+          <Route
+            path="/teacher/changepassword"
+            element={<TeacherChangePassword />}
           />
         </Route>
       </Route>
@@ -614,7 +642,8 @@ function App() {
 
       {/* UnAuthorized Pages */}
       <Route path="unauthorized" element={<UnAuthorized />} />
-
+      {/* Forgot Password */}
+      <Route path="/forgotpassword" element={<ForgotPassword />} />
       {/* 404 ERROR */}
       <Route path="*" element={<Missing />} />
     </Routes>

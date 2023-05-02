@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import Loading from "../../../components/layouts/Loading";
 import ArrowNextAndPrevious from "../../../components/layouts/ArrowNextAndPrevious";
+import ChangePassword from "./InitialChangePassword";
 import { Link } from "react-router-dom";
 import { Fragment } from "react";
 
 function Dashboard() {
-  const { token, role } = useAuth();
+  const { token, role, userInfo } = useAuth();
 
-  const [announcement, setAnnouncement] = useState();
-
+  const [announcement, setAnnouncement] = useState([]);
+  console.log(userInfo);
   useEffect(() => {
     const renderCourse = async () => {
       if (role === "student") {
@@ -34,10 +35,14 @@ function Dashboard() {
 
     renderCourse();
   }, []);
-  console.log(announcement);
+  console.log(announcement.length == 0);
 
   const RenderAnnouncement = () => {
-    if (announcement !== undefined && announcement !== null) {
+    if (
+      announcement !== undefined &&
+      announcement !== null &&
+      announcement.length !== 0
+    ) {
       return announcement.map((info, i) => {
         console.log(info);
         let formattedParagraph = info.body
@@ -90,11 +95,7 @@ function Dashboard() {
           </Fragment>
         );
       });
-    } else if (
-      announcement !== undefined &&
-      announcement !== null &&
-      announcement.length == 0
-    ) {
+    } else if (announcement.length == 0) {
       return (
         <h4 className="d-flex justify-content-center w-100 fst-italic text-secondary py-5">
           No Content has been added yet.
@@ -106,11 +107,14 @@ function Dashboard() {
   };
 
   return (
-    <div>
+    <div className="">
       <ArrowNextAndPrevious>
         <h2 className="mb-0">Announcements</h2>
       </ArrowNextAndPrevious>
       <div className="d-flex flex-wrap">{RenderAnnouncement()}</div>
+      {userInfo.password_updated == 0 && (
+        <ChangePassword userInfo={userInfo} token={token} />
+      )}
     </div>
   );
 }
