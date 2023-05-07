@@ -31,6 +31,7 @@ class CourseDeveloper extends Model
         'department',
         'subjects',
         'is_logged_in',
+        'password_updated',
     ];
 
     /**

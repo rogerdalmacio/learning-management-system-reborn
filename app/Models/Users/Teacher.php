@@ -34,6 +34,7 @@ class Teacher extends Model
         'year_and_sections',
         'subjects',
         'is_logged_in',
+        'password_updated',
     ];
 
     /**

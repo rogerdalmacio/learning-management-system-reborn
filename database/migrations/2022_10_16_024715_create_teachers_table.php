@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('year_and_sections');
             $table->string('subjects');
             $table->boolean('is_logged_in')->default(0);
+            $table->boolean('password_updated')->default(0);
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp('email_verified_at')->nullable();

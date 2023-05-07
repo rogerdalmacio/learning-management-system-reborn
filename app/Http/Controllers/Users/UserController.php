@@ -13,6 +13,7 @@ use App\Models\Users\SuperAdmin;
 use App\Models\CoreFunctions\Logs;
 use App\Models\Users\CourseManager;
 use App\Http\Controllers\Controller;
+use App\Mail\ResetPasswordSuccessfulMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -368,6 +369,82 @@ class UserController extends Controller
                 ];
 
                 return response($response, 201);
+
+                break;
+
+            case 'Teacher' :
+                $user = Teacher::where('email', $request->email)->first();
+
+                $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
+        
+                Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
+
+                $response = [
+                    'success'
+                ];
+
+                return response($response, 201);
+                
+                break;
+
+            case 'CourseDeveloper' :
+                $user = CourseDeveloper::where('email', $request->email)->first();
+
+                $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
+        
+                Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
+
+                $response = [
+                    'success'
+                ];
+
+                return response($response, 201);
+                
+                break;
+
+            case 'CourseManager' :
+                $user = CourseManager::where('email', $request->email)->first();
+
+                $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
+        
+                Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
+
+                $response = [
+                    'success'
+                ];
+
+                return response($response, 201);
+                
+                break;
+                
+            case 'Admin' :
+                $user = Admin::where('email', $request->email)->first();
+
+                $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
+        
+                Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
+
+                $response = [
+                    'success'
+                ];
+
+                return response($response, 201);
+                
+                break;
+
+            case 'SuperAdmin' :
+                $user = SuperAdmin::where('email', $request->email)->first();
+
+                $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
+        
+                Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
+
+                $response = [
+                    'success'
+                ];
+
+                return response($response, 201);
+                
                 break;
         }
     }
@@ -383,6 +460,98 @@ class UserController extends Controller
                 }
 
                 $user->update([
+                    'password_updated' => 0,
+                    'password' => bcrypt($this->basePassword($user))
+                ]);
+
+                Mail::to($user->email)->send(new ResetPasswordSuccessfulMail());
+                return redirect()->away(env('FRONT_END_URL'))->with('password reset successfull');
+
+                break;
+
+            case 'Teacher' :
+                
+                $user = Teacher::find(Crypt::decrypt($request->token));
+
+                if(!$user) {
+                    return response('invalid link', 404);
+                }
+
+                $user->update([
+                    'password_updated' => 0,
+                    'password' => bcrypt($this->basePassword($user))
+                ]);
+
+                Mail::to($user->email)->send(new ResetPasswordSuccessfulMail());
+                return redirect()->away(env('FRONT_END_URL'))->with('password reset successfull');
+
+                break;
+
+            case 'CourseDeveloper' :
+                
+                $user = CourseDeveloper::find(Crypt::decrypt($request->token));
+
+                if(!$user) {
+                    return response('invalid link', 404);
+                }
+
+                $user->update([
+                    'password_updated' => 0,
+                    'password' => bcrypt($this->basePassword($user))
+                ]);
+
+                Mail::to($user->email)->send(new ResetPasswordSuccessfulMail());
+                return redirect()->away(env('FRONT_END_URL'))->with('password reset successfull');
+
+                break;
+
+            case 'CourseManager' :
+                
+                $user = CourseManager::find(Crypt::decrypt($request->token));
+
+                if(!$user) {
+                    return response('invalid link', 404);
+                }
+
+                Mail::to($user->email)->send(new ResetPasswordSuccessfulMail());
+                $user->update([
+                    'password_updated' => 0,
+                    'password' => bcrypt($this->basePassword($user))
+                ]);
+
+                return redirect()->away(env('FRONT_END_URL'))->with('password reset successfull');
+
+                break;
+
+            case 'Admin' :
+                
+                $user = Admin::find(Crypt::decrypt($request->token));
+
+                if(!$user) {
+                    return response('invalid link', 404);
+                }
+
+                Mail::to($user->email)->send(new ResetPasswordSuccessfulMail());
+                $user->update([
+                    'password_updated' => 0,
+                    'password' => bcrypt($this->basePassword($user))
+                ]);
+
+                return redirect()->away(env('FRONT_END_URL'))->with('password reset successfull');
+
+                break;
+
+            case 'SuperAdmin' :
+                
+                $user = SuperAdmin::find(Crypt::decrypt($request->token));
+
+                if(!$user) {
+                    return response('invalid link', 404);
+                }
+
+                Mail::to($user->email)->send(new ResetPasswordSuccessfulMail());
+                $user->update([
+                    'password_updated' => 0,
                     'password' => bcrypt($this->basePassword($user))
                 ]);
 
