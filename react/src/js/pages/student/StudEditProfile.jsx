@@ -196,11 +196,9 @@ function StudEditProfile() {
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
                     <div className="form-group">
-                      <div className="mb-2" htmlFor="eMail">
-                        Email
-                      </div>
+                      <div className="mb-2">Department</div>
                       <input
-                        type="email"
+                        type="text"
                         disabled={true}
                         value={userInfo.department}
                         className="form-control"

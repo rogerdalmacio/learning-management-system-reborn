@@ -1,12 +1,9 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
-import useAuth from "../../hooks/useAuth";
-import axiosClient from "../../axios-client";
 import { Link } from "react-router-dom";
 
 function Login() {
-  const { user } = useAuth();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [type, setType] = useState("Student");
@@ -30,7 +27,7 @@ function Login() {
   const SubmitHandler = async (e) => {
     e.preventDefault();
 
-    await axios.get(`${import.meta.env.VITE_API_BASE_URL}/sanctum/csrf-cookie`);
+    // await axios.get(`${import.meta.env.VITE_API_BASE_URL}/sanctum/csrf-cookie`);
 
     setIsLoading(true);
     let item = { email, password, type };

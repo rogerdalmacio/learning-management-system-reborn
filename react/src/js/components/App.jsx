@@ -15,6 +15,7 @@ import SuperCreateTeacherAcct from "../pages/superAdmin/SingleCreationAccount/Su
 import SuperCreateCourseManAcct from "../pages/superAdmin/SingleCreationAccount/SuperCreateCourseManAcct";
 import SuperRequestListOfStudents from "../pages/superAdmin/SuperRequestListOfStudents";
 import SuperRequestHr from "../pages/superAdmin/GetRequestHr/SuperRequestHr";
+import SuperChangePassword from "../pages/superAdmin/SuperChangePassword";
 
 // CourseManager
 import CourseManagerLayout from "./layouts/authenticatedLayout/CourseManagerNavigationBar/CourseManagerLayout";
@@ -40,6 +41,7 @@ import ManagerDashboard from "../pages/courseManager/AnnouncementDashboard/Manag
 import ManagerDashboardSpecificAnnouncement from "../pages/courseManager/AnnouncementDashboard/ManagerDashboardSpecificAnnouncement";
 import ManagerGetTeachers from "../pages/courseManager/GetTeachers/ManagerGetTeachers";
 import ManagerGetCMO from "../pages/courseManager/GetCMO/ManagerGetCMO";
+import ManagerChangePassword from "../pages/courseManager/ManagerChangePassword";
 
 // Admin
 import AdminLayout from "./layouts/authenticatedLayout/AdminNavigationBar/AdminLayout";
@@ -65,6 +67,7 @@ import AdminGetLesson from "../pages/Admin/CreateModules/AdminGetLesson";
 import AdminGetPrelimAct from "../pages/Admin/CreateModules/AdminGetPrelimAct";
 import AdminRequestGrantExam from "../pages/Admin/ExamGranting/AdminRequestGrantExam";
 import AdminRequestSubjects from "../pages/Admin/AdminRequestSubjects/AdminRequestSubjects";
+import AdminChangePassword from "../pages/Admin/AdminChangePassword";
 
 // Course Developer
 import CourseDevLayout from "./layouts/authenticatedLayout/CourseDeveloperNavifationBar/CourseDevLayout";
@@ -82,6 +85,7 @@ import DevCreateExam from "../pages/courseDeveloper/CreateModules/DevCreateExam"
 import DevCreateLesson from "../pages/courseDeveloper/CreateModules/DevCreateLesson";
 import DevDashboard from "../pages/courseDeveloper/AnnouncementDashboard/DevDashboard";
 import DevDashboardSpecificAnnouncement from "../pages/courseDeveloper/AnnouncementDashboard/DevDashboardSpecificAnnouncement";
+import DevChangePassword from "../pages/courseDeveloper/DevChangePassword";
 
 // Student
 import StudentLayout from "./layouts/authenticatedLayout/StudentNavigationBar/StudentLayout";
@@ -449,6 +453,10 @@ function App() {
             path="/courseManager/requestsyllabus"
             element={<ManagerGetCMO />}
           />
+          <Route
+            path="/courseManager/changepassword"
+            element={<ManagerChangePassword />}
+          />
         </Route>
       </Route>
 
@@ -500,6 +508,10 @@ function App() {
           <Route
             path="/superAdmin/requestListOfTeachers"
             element={<SuperRequestHr />}
+          />
+          <Route
+            path="/superAdmin/changepassword"
+            element={<SuperChangePassword />}
           />
         </Route>
       </Route>
@@ -579,6 +591,10 @@ function App() {
             path="/admin/requestSubjects"
             element={<AdminRequestSubjects />}
           />
+          <Route
+            path="/admin/changepassword"
+            element={<AdminChangePassword />}
+          />
         </Route>
       </Route>
 
@@ -591,7 +607,6 @@ function App() {
             path="/developer/home/:id"
             element={<DevDashboardSpecificAnnouncement />}
           />
-
           <Route path="/developer/editprofile" element={<DevEditProfile />} />
           <Route
             path="/developer/availableCourse"
@@ -636,6 +651,10 @@ function App() {
           <Route
             path="/developer/:id/modules/:id/lesson"
             element={<DevCreateLesson />}
+          />
+          <Route
+            path="/developer/changepassword"
+            element={<DevChangePassword />}
           />
         </Route>
       </Route>

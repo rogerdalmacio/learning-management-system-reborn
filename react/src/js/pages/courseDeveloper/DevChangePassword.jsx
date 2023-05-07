@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 
-function TeacherChangePassword() {
+function DevChangePassword() {
   const { token } = useAuth();
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
@@ -144,4 +144,4 @@ function TeacherChangePassword() {
   );
 }
 
-export default TeacherChangePassword;
+export default DevChangePassword;

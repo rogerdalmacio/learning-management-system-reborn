@@ -3,7 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 
 function StudentChangePassword() {
-  const { userInfo, token } = useAuth();
+  const { token } = useAuth();
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
 

@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
 import dummyProfile from "/images/man.png";
 import { useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function DevEditProfile() {
   const { userInfo, token, role } = useAuth();
@@ -145,13 +146,13 @@ function DevEditProfile() {
           <div className="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
             <div className="card h-100">
               <form onSubmit={SubmitProfileHandler} className="card-body">
-                <div className="row gutters">
+                <div className="row gutters mb-0">
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <h6 className="mb-2 text-primary">Personal Details</h6>
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div className="form-group">
-                      <div>Full Name</div>
+                    <div className="form-group mb-2">
+                      <div className="mb-2">Full Name</div>
                       <input
                         type="text"
                         disabled={true}
@@ -163,8 +164,10 @@ function DevEditProfile() {
                     </div>
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div className="form-group">
-                      <div htmlFor="eMail">Email</div>
+                    <div className="form-group mb-2">
+                      <div className="mb-2" htmlFor="eMail">
+                        Email
+                      </div>
                       <input
                         type="email"
                         disabled={true}
@@ -176,54 +179,36 @@ function DevEditProfile() {
                     </div>
                   </div>
                 </div>
+
                 <div className="row gutters">
-                  <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <h6 className="mt-3 mb-2 text-primary">Address</h6>
-                  </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                     <div className="form-group">
-                      <label htmlFor="Street">Street</label>
-                      <input
-                        type="name"
-                        className="form-control"
-                        id="Street"
-                        placeholder="Enter Street"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div className="form-group">
-                      <label htmlFor="ciTy">City</label>
-                      <input
-                        type="name"
-                        className="form-control"
-                        id="ciTy"
-                        placeholder="Enter City"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div className="form-group">
-                      <label htmlFor="sTate">State</label>
+                      <div className="mb-2">Program</div>
                       <input
                         type="text"
+                        disabled={true}
+                        value={`${userInfo.program}`}
                         className="form-control"
-                        id="sTate"
-                        placeholder="Enter State"
                       />
                     </div>
                   </div>
-                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
                     <div className="form-group">
-                      <label htmlFor="zIp">Zip Code</label>
+                      <div className="mb-2">Department</div>
                       <input
                         type="text"
+                        disabled={true}
+                        value={userInfo.department}
                         className="form-control"
-                        id="zIp"
-                        placeholder="Zip Code"
                       />
                     </div>
                   </div>
+                  <Link
+                    to="/developer/changepassword"
+                    className="text-decoration-none"
+                  >
+                    Change Password?
+                  </Link>
                 </div>
                 <div className="row gutters mt-4 ">
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

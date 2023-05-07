@@ -231,7 +231,7 @@ const AdminRequestCMO = () => {
   return (
     <div>
       <ArrowNextAndPrevious>
-        <h3 className="m-0">Student - Request Grant Exam</h3>
+        <h3 className="m-0">Student - Request Subjects</h3>
       </ArrowNextAndPrevious>
       <div>
         <div className="d-flex justify-content-start mb-3">
