@@ -118,7 +118,7 @@ export const StudContextProvider = ({ children }) => {
     const renderModule = async () => {
       console.log(week);
 
-      if (role === "student" && week) {
+      if (role === "student" && week !== undefined && week !== null) {
         await axios
           .get(
             `${import.meta.env.VITE_API_BASE_URL}/api/student/module/${week}`,
@@ -142,7 +142,11 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderLesson = async () => {
-      if (role === "student" && weekLesson) {
+      if (
+        role === "student" &&
+        weekLesson !== undefined &&
+        weekLesson !== null
+      ) {
         await axios
           .get(
             `${
@@ -170,7 +174,11 @@ export const StudContextProvider = ({ children }) => {
   useEffect(() => {
     const renderActivityResult = async () => {
       console.log(activityid);
-      if (role === "student" && activityid) {
+      if (
+        role === "student" &&
+        activityid !== undefined &&
+        activityid !== null
+      ) {
         await axios
           .get(
             `${
@@ -196,7 +204,11 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderQuizResult = async () => {
-      if (role === "student" && activityid) {
+      if (
+        role === "student" &&
+        activityid !== undefined &&
+        activityid !== null
+      ) {
         const activity_id = { activity_id: activityid };
 
         await axios
@@ -257,7 +269,7 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderSpecificQuiz = async () => {
-      if (role === "student" && quizid) {
+      if (role === "student" && quizid !== undefined && quizid !== null) {
         await axios
           .get(
             `${import.meta.env.VITE_API_BASE_URL}/api/student/quiz/${quizid}`,
@@ -281,7 +293,7 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderQuizResult = async () => {
-      if (role === "student" && quizid) {
+      if (role === "student" && quizid !== undefined && quizid !== null) {
         const quiz_id = { quiz_id: quizid };
 
         await axios

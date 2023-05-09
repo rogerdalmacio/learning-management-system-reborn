@@ -244,17 +244,20 @@ const TeacherComputeGrade = ({ updatedList, setUpdatedList }) => {
               let totalGeneralization = 0;
 
               // getting the value of the exams
-              const examScores = [];
+              const examScores = [0];
 
               if (item.prelim_examination !== "") {
+                examScores.pop();
                 examScores.push(parseFloat(item.prelim_examination));
               }
 
               if (item.midterm_examination !== "") {
+                examScores.pop();
                 examScores.push(parseFloat(item.midterm_examination));
               }
 
               if (item.final_examination !== "") {
+                examScores.pop();
                 examScores.push(parseFloat(item.final_examination));
               }
               // Iterate over the values and add up the numbers
@@ -263,7 +266,7 @@ const TeacherComputeGrade = ({ updatedList, setUpdatedList }) => {
                   totalAssignment += parseFloat(value) / 5;
                 }
               });
-
+              console.log(examScores);
               evaluationValues.forEach((value) => {
                 if (!isNaN(parseFloat(value))) {
                   totalEvaluation += parseFloat(value) / 5;

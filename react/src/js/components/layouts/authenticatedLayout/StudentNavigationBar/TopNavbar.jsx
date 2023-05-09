@@ -14,7 +14,19 @@ function TopNavbar({
   const { userInfo, token, role } = useAuth();
   const [notifDetails, setNotifDetails] = useState();
   const [notification, setNotification] = useState(false);
+  const [notifCLicked, setNotifClicked] = useState(
+    localStorage.getItem("notificationCount") === "true" ? true : false
+  );
   const notificationRef = useRef(null);
+  console.log(notification);
+  console.log(notifCLicked);
+  console.log(localStorage.getItem("notificationCount"));
+
+  useEffect(() => {
+    if (notifCLicked) {
+      localStorage.setItem("notificationCount", "true");
+    }
+  }, [notifCLicked]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -113,10 +125,10 @@ function TopNavbar({
   console.log(notifDetails);
   const NotificationBodyHandler = () => {
     if (notification && notifDetails !== undefined && notifDetails !== null) {
-      return notifDetails.data.map((notif) => {
+      return notifDetails.data.map((notif, index) => {
         console.log(notif);
         return (
-          <Fragment>
+          <Fragment key={index}>
             <p className="notificationItem mb-0 px-2 py-2">
               <span className="fw-semibold NotifTitle">{notif.title}</span>{" "}
               <br />
@@ -129,7 +141,6 @@ function TopNavbar({
       return null;
     }
   };
-
   return (
     <Fragment>
       <div className="topbarChild d-flex justify-content-between align-items-center">
@@ -171,16 +182,20 @@ function TopNavbar({
                 className="border border-0 NotificationBellButton "
                 onClick={() => {
                   setNotification(!notification);
+                  setNotifClicked(true);
                 }}
               >
                 <i className="bx bxs-bell fs-2 mt-1 m-0"></i>
 
                 <div className="notificationCount">
-                  {!notification && (
-                    <p className="bg-danger rounded-circle notificationPara">
-                      1
-                    </p>
-                  )}
+                  {!notification &&
+                    !notifCLicked &&
+                    notifDetails !== undefined &&
+                    notifDetails !== null && (
+                      <p className="bg-danger rounded-circle notificationPara">
+                        {notifCLicked ? "0" : notifDetails.data.length}
+                      </p>
+                    )}
                 </div>
               </button>
               {notification && (
