@@ -268,6 +268,7 @@ Route::group(['prefix' => 'listofusers', 'middleware' => ['auth:sanctum', 'abili
 
 });
 
+
 Route::group(['prefix' => 'core-shared', 'middleware' => ['auth:sanctum', 'ability:Admin,SuperAdmin']], function(){
 
     Route::get('/logs', [LogsController::class, 'logsList']);

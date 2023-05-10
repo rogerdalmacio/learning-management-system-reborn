@@ -64,13 +64,17 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
 
                 console.log(filteredItem);
                 return filteredItem.reduce((acc, cur) => {
-                  console.log(cur);
+                  console.log(cur.logs);
                   console.log(cur.module_id);
+                  const logs = cur.logs;
+                  const logsResult = parseInt(logs.match(/\d+/)[0]);
+
+                  console.log(logs);
                   const value = cur.id;
                   const quizType = cur.quiz_type + "id";
 
                   const weekNo = parseInt(cur.module_id.split("-")[1], 10);
-                  acc[cur.quiz_type] = cur.score;
+                  acc[cur.quiz_type] = `${cur.score} / ${logsResult}`;
                   acc.weekNo = weekNo;
                   acc[quizType] = value;
                   console.log(acc);
@@ -123,6 +127,7 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
           });
       }
     };
+
     GetAnnouncementHandler();
   }, [updatedList]);
 
@@ -177,7 +182,7 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
     },
     {
       accessorKey: "aae",
-      header: "AAE",
+      header: "AAE / Logs",
       enableColumnOrdering: true,
       enableEditing: false, //disable editing on this column
       enableSorting: true,
@@ -188,7 +193,7 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
     },
     {
       accessorKey: "evaluation",
-      header: "Evaluation",
+      header: "Evaluation / Logs",
       enableColumnOrdering: true,
       enableEditing: false, //disable editing on this column
       enableSorting: true,
@@ -199,7 +204,7 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
     },
     {
       accessorKey: "assignment",
-      header: "Assignment",
+      header: "Assignment / Logs",
       enableColumnOrdering: true,
       enableEditing: false, //disable editing on this column
       enableSorting: true,
@@ -210,7 +215,7 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
     },
     {
       accessorKey: "prelim_examination",
-      header: "Preliminary Exam",
+      header: "Prelim Exam / Logs",
       enableColumnOrdering: true,
       enableEditing: false, //disable editing on this column
       enableSorting: true,
@@ -223,7 +228,7 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
     },
     {
       accessorKey: "midterm_examination",
-      header: "Midterm Exam",
+      header: "Midterm Exam / Logs",
       enableColumnOrdering: true,
       enableEditing: false, //disable editing on this column
       enableSorting: true,
@@ -236,7 +241,7 @@ const TeachDashboard = ({ updatedList, setUpdatedList }) => {
     },
     {
       accessorKey: "final_examination",
-      header: "Final Exam",
+      header: "Final Exam / Logs",
       enableColumnOrdering: true,
       enableEditing: false, //disable editing on this column
       enableSorting: true,
