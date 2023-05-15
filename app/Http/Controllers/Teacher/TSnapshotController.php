@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class TSnapshotController extends Controller
 {
-
+    
     public function checkSnapshot(Request $request, int $id) {
 
         $request->validate([

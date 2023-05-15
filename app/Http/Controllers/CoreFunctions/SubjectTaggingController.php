@@ -8,6 +8,7 @@ use App\Models\Users\Student;
 use App\Models\Users\Teacher;
 use Illuminate\Validation\Rule;
 use App\Models\CoreFunctions\Logs;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -25,52 +26,48 @@ class SubjectTaggingController extends Controller
     public function batchStudentsSubjectTagging(BatchStudentsSubjectTaggingRequest $request)
     {
 
+        DB::beginTransaction();
         try {
-
-            $success = [];
-            $errors = [];
 
             $csv = $request->file('file');
             $csv = Reader::createFromPath($csv->getRealPath(), 'r');
             $csv->setHeaderOffset(0);
             
-            foreach ($csv as $student) {
+            foreach ($csv as $config) {
 
                 $rules = [
-                    'id' => [
+                    'year_and_semester' => [
                         'required',
-                        Rule::exists('lms_students', 'id')
+                    ],
+                    'program' => [
+                        'required',
+                    ],
+                    'major' => [
+                        'required'
                     ],
                     'subjects' => [
-                        'required',
-                    ]
+                        'required'
+                    ],
                 ];
 
-                $message = [
-                    'id.exists' => 'This student id : :input does not exist',
-                ];
+                Validator::make($config, $rules);
 
-                $validator = Validator::make($student, $rules, $message);
-
-                if($validator->fails()){
-                    
-                    $errors[] = $validator->errors();
+                $students = Student::where('program', $config['program'])
+                    ->where('year_and_section', 'LIKE', $config['year_and_semester' . '%'])
+                    ->when($config['major'], function($query) use ($config) {
+                        return $query->where('major', $config['major']);
+                    })
+                    ->get();
                 
+                foreach($students as $student) {
+                    $student->update([
+                        'subjects' => $config['subjects']
+                    ]);
                 }
-
-                $user = Student::find($student['id']);
-
-                if($user) {
-                    
-                    $success[] = $student['id'];
-                    $user->subjects = $student['subjects'];
-                    $user->save();
-
-                }
-
             }
 
         } catch (\Exception $e) {
+            DB::rollback();
             Log::error($e->getMessage());
 
             return response()->json([
@@ -84,11 +81,11 @@ class SubjectTaggingController extends Controller
             'activity_log' => 'Batch tagged students on their subjects'
         ]);
 
-        return response()->json([
-            'Subjects Tagged to' => $success,
-            'errors' => $errors,
-        ], 201);
+        DB::commit();
 
+        return response()->json([
+            'Task executed successfully'
+        ], 201);
     }
 
     public function batchTeacherSubjectTagging(BatchTeacherSubjectTaggingRequest $request)
