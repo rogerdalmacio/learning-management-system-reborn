@@ -72,6 +72,7 @@ const SuperCreateTeacherAcct = () => {
                 quizresult,
                 year_and_section,
                 subjects,
+                weekNo,
               }) => {
                 console.log(quizresult);
 
@@ -87,6 +88,9 @@ const SuperCreateTeacherAcct = () => {
                 );
                 console.log(snapshot);
                 return snapshot.map((snapshot) => {
+                  const module_id = snapshot.module_id;
+                  const weekNumber = module_id.split("-")[1];
+
                   const weekNo =
                     Number(snapshot?.module_id?.match(/\d+/)[0]) || null;
                   const snapshotValue = snapshot
@@ -102,6 +106,7 @@ const SuperCreateTeacherAcct = () => {
                     program,
                     snapshot: snapshotValue,
                     weekNo,
+                    weekNumber: weekNumber,
                     quizresultId: snapshot.id,
                   };
                 });
@@ -183,6 +188,12 @@ const SuperCreateTeacherAcct = () => {
         enableEditing: false, //disable editing on this column
       },
       {
+        accessorKey: "weekNumber",
+        header: "Week No.",
+        size: 140,
+        enableEditing: false, //disable editing on this column
+      },
+      {
         accessorKey: "program",
         header: "Course",
         size: 80,
@@ -232,6 +243,11 @@ const SuperCreateTeacherAcct = () => {
   };
 
   const handleApprovedRow = (row) => {
+    console.log(row);
+    console.log(row.getValue("weekNumber"));
+    console.log(row.getValue("year_and_section"));
+    console.log(row.getValue("quiz_type"));
+
     if (
       !confirm(
         `Are you sure you want to delete ${row.getValue("quizresultId")}`
@@ -240,8 +256,13 @@ const SuperCreateTeacherAcct = () => {
       return;
     }
     let toastId;
+
+    //
     let item = {
       student_id: row.getValue("id"),
+      year_and_section: row.getValue("year_and_section"),
+      quiz_type: row.getValue("quiz_type"),
+      week_number: row.getValue("weekNumber"),
     };
     axios
       .patch(
