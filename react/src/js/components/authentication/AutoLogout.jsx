@@ -28,9 +28,18 @@ const AutoLogout = ({ logoutTime }) => {
       resetTimer();
     };
 
+    const handlePageVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        resetTimer();
+      } else {
+        clearTimeout(logoutTimer);
+      }
+    };
+
     // Attach the event listeners
     window.addEventListener("mousemove", handleUserActivity);
     window.addEventListener("keydown", handleUserActivity);
+    document.addEventListener("visibilitychange", handlePageVisibilityChange);
 
     // Reset the timer whenever the component mounts or the logoutTime prop changes
     resetTimer();
@@ -40,6 +49,10 @@ const AutoLogout = ({ logoutTime }) => {
       clearTimeout(logoutTimer);
       window.removeEventListener("mousemove", handleUserActivity);
       window.removeEventListener("keydown", handleUserActivity);
+      document.removeEventListener(
+        "visibilitychange",
+        handlePageVisibilityChange
+      );
     };
   }, [logoutTime]);
 
