@@ -6,7 +6,7 @@ import AutoLogout from "../authentication/AutoLogout";
 const RequireAuth = ({ allowedRoles }) => {
   const { role, userInfo } = useAuth();
   const [type, setType] = useState(localStorage.getItem("role"));
-  const logoutTime = 20 * 60 * 1000;
+  const logoutTime = 1 * 60 * 1000;
   console.log(logoutTime);
   useEffect(() => {
     const storedRole = localStorage.getItem("role");
