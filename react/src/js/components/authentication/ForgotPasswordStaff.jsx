@@ -1,14 +1,15 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 function ForgotPassword() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState();
   const [error, setError] = useState(false);
+  const [type, setType] = useState("Teacher");
+  console.log(type);
   const [isLoading, setIsLoading] = useState(false);
   const SubmitHandler = async (e) => {
     e.preventDefault();
-    let item = { email, user_type: "Student" };
+    let item = { email, user_type: type };
     if (email === "" || email == undefined) {
       setError(true);
     } else {
@@ -76,6 +77,82 @@ function ForgotPassword() {
               <span className="loginLineBreak my-3" />
 
               <div className="mb-3">
+                <label htmlFor="dropdown" className="fw-semibold fs-6 mb-2">
+                  Dashboard
+                </label>
+                <div id="dropdown" className="dropdown">
+                  <button
+                    className="dropdownMenu px-3 fw-normal btn dropdown-toggle w-100 d-flex justify-content-between align-items-center dropDownBorder border-0"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {type}
+                  </button>
+                  <ul className="dropdown-menu w-100">
+                    <li>
+                      <button
+                        value="Teacher"
+                        type="button"
+                        className={`dropdown-item`}
+                        onClick={(e) => {
+                          setType(e.target.value);
+                        }}
+                      >
+                        Teacher
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        value="Admin"
+                        type="button"
+                        className={`dropdown-item`}
+                        onClick={(e) => {
+                          setType(e.target.value);
+                        }}
+                      >
+                        Admin
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        value="CourseDeveloper"
+                        type="button"
+                        className={`dropdown-item`}
+                        onClick={(e) => {
+                          setType(e.target.value);
+                        }}
+                      >
+                        Course Developer
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        value="CourseManager"
+                        type="button"
+                        className={`dropdown-item`}
+                        onClick={(e) => {
+                          setType(e.target.value);
+                        }}
+                      >
+                        Course Manager
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        value="SuperAdmin"
+                        type="button"
+                        className={`dropdown-item`}
+                        onClick={(e) => {
+                          setType(e.target.value);
+                        }}
+                      >
+                        Super Admin
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+                <span className="loginLineBreak my-4" />
                 <label
                   htmlFor="exampleInputEmail1"
                   className="form-label fw-semibold fs-6 w-100"
@@ -86,7 +163,7 @@ function ForgotPassword() {
                   value={email}
                   type="email"
                   className={`inputField input-form form-control px-3 fs-6 fw-normal ${
-                    email === "" && error ? "errorInput" : "noErrorInput"
+                    email === "" || error ? "errorInput" : "noErrorInput"
                   }`}
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
@@ -99,7 +176,6 @@ function ForgotPassword() {
                 </p>
               </div>
               <button
-                type="submit"
                 disabled={isLoading}
                 className="buttonTemplate sumbit-button btn rounded-2 w-100 mt-3"
               >

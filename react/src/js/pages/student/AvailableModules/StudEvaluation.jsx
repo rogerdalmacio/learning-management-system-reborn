@@ -301,10 +301,8 @@ function StudAAE() {
                   <td>
                     <div className="d-block">
                       <span className="text-secondary">
-                        Submitted {formattedDate}
-                      </span>
-                      <span className="text-secondary">
-                        {quizResultId[0].attempt}
+                        <span className="fw-bold">Submitted </span>
+                        {formattedDate}
                       </span>
                     </div>
                   </td>

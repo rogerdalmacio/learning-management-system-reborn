@@ -62,6 +62,9 @@ const ManagerDashboard = () => {
             const data = response.data.Course;
             const newArray = data.map((item) => ({
               ...item,
+              configuredApproval: `${
+                item.approval == 1 ? "approved" : "not approved"
+              }`,
               module: item.module.length,
             }));
 
@@ -75,6 +78,7 @@ const ManagerDashboard = () => {
   }, [updatedList]);
 
   const handleCreateNewRow = (values) => {
+    console.log(values);
     const tablesdataito = tableData.push(values);
 
     setTableData([...tableData]);
@@ -289,6 +293,24 @@ const ManagerDashboard = () => {
         }),
       },
       {
+        accessorKey: "configuredApproval",
+        header: "Approval",
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...getCommonEditTextFieldProps(cell),
+        }),
+        Cell: ({ row }) => (
+          <p
+            className={`mb-0 fw-bold me-3 fs-6 ${
+              row.original.configuredApproval == "approved"
+                ? "text-success"
+                : "text-danger"
+            }`}
+          >
+            {row.original.configuredApproval}
+          </p>
+        ),
+      },
+      {
         accessorKey: "created_at",
         header: "Created At",
         size: 80,
@@ -362,9 +384,11 @@ export const CreateNewAccountModal = ({
   const [values, setValues] = useState(() =>
     columns.reduce((acc, column) => {
       acc[column.accessorKey ?? ""] = "";
+      acc.module = 18;
       return acc;
     }, {})
   );
+
   const [hasError, setHasError] = useState(false);
   const [hasErrorNumber, setHasErrorNumber] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -387,6 +411,8 @@ export const CreateNewAccountModal = ({
       toast.error("Please fill out the blank area");
     } else if (isNaN(values.module)) {
       setHasErrorNumber(true);
+    } else if (values.module <= 0 || values.module > 20) {
+      toast.error("Module should not exceed to 20 or below 0");
     } else {
       setIsLoading(true);
       onSubmit(values);
@@ -416,6 +442,7 @@ export const CreateNewAccountModal = ({
           }
         )
         .then((response) => {
+          console.log(response);
           if (
             response.status >= 200 &&
             response.status < 300 &&
@@ -433,7 +460,7 @@ export const CreateNewAccountModal = ({
             setValues({
               course: "",
               course_code: "",
-              module: "",
+              module: 18,
             });
           } else if (response.data[0] == "already exist") {
             onClose();
@@ -445,11 +472,24 @@ export const CreateNewAccountModal = ({
         })
         .catch((error) => {
           console.log(error);
-          toast.update(toastId, {
-            render: `${error.message}`,
-            type: toast.TYPE.ERROR,
-            autoClose: 2000,
-          });
+          if (
+            error.response &&
+            error.response.data !== undefined &&
+            error.response.data !== null
+          ) {
+            toast.update(toastId, {
+              render: `${error.response.data.errors.errorInfo[2]}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          } else {
+            toast.update(toastId, {
+              render: `${error.message}`,
+              type: toast.TYPE.ERROR,
+              autoClose: 2000,
+            });
+          }
+
           setIsLoading(false);
         });
     }
@@ -504,6 +544,7 @@ export const CreateNewAccountModal = ({
                     : false
                 }
                 multiline
+                value={values[column.accessorKey]}
                 key={column.accessorKey}
                 label={column.header}
                 name={column.accessorKey}

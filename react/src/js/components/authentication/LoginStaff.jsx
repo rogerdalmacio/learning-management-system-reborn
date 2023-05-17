@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [type, setType] = useState("Teacher");
   const [showPassword, setShowPassword] = useState("password");
   let error;
   const [isLoading, setIsLoading] = useState(false);
@@ -29,8 +30,7 @@ function Login() {
     // await axios.get(`${import.meta.env.VITE_API_BASE_URL}/sanctum/csrf-cookie`);
 
     setIsLoading(true);
-
-    let item = { email, password, type: "Student" };
+    let item = { email, password, type };
     const fetchedData = await axios
       .post(`${import.meta.env.VITE_API_BASE_URL}/api/login`, item, {
         headers: {
@@ -99,6 +99,82 @@ function Login() {
               <h1 className="header2 fw-bold fs-1 m-0">LEARNING MANAGEMENT</h1>
             </div>
             <form onSubmit={SubmitHandler}>
+              <label htmlFor="dropdown" className="fw-semibold fs-6 mb-2">
+                Dashboard
+              </label>
+              <div id="dropdown" className="dropdown">
+                <button
+                  className="dropdownMenu px-3 fw-normal btn dropdown-toggle w-100 d-flex justify-content-between align-items-center dropDownBorder border-0"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {type}
+                </button>
+                <ul className="dropdown-menu w-100">
+                  <li>
+                    <button
+                      value="Teacher"
+                      type="button"
+                      className={`dropdown-item`}
+                      onClick={(e) => {
+                        setType(e.target.value);
+                      }}
+                    >
+                      Teacher
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      value="Admin"
+                      type="button"
+                      className={`dropdown-item`}
+                      onClick={(e) => {
+                        setType(e.target.value);
+                      }}
+                    >
+                      Admin
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      value="CourseDeveloper"
+                      type="button"
+                      className={`dropdown-item`}
+                      onClick={(e) => {
+                        setType(e.target.value);
+                      }}
+                    >
+                      Course Developer
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      value="CourseManager"
+                      type="button"
+                      className={`dropdown-item`}
+                      onClick={(e) => {
+                        setType(e.target.value);
+                      }}
+                    >
+                      Course Manager
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      value="SuperAdmin"
+                      type="button"
+                      className={`dropdown-item`}
+                      onClick={(e) => {
+                        setType(e.target.value);
+                      }}
+                    >
+                      Super Admin
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
               <span className="loginLineBreak my-4" />
               <div className="mb-3">
                 <label
@@ -158,7 +234,7 @@ function Login() {
                 Log in
               </button>
               <Link
-                to="/forgotpassword"
+                to="/staff/forgotpassword"
                 className="w-100 mt-3 text-decoration-none d-flex justify-content-end"
               >
                 Forgot Password?

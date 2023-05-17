@@ -144,6 +144,7 @@ import SortByTerm from "../pages/Teacher/GetGrades/sortByTerm";
 import TeacherChangePassword from "../pages/Teacher/TeacherChangePassword";
 // Others
 import Login from "./authentication/Login";
+import LoginStaff from "./authentication/LoginStaff";
 import RequireAuth from "./authentication/RequireAuth";
 import NotRequireAuth from "./authentication/notRequireAuth";
 import UnAuthorized from "./layouts/unAuthorized";
@@ -151,8 +152,11 @@ import Missing from "./layouts/Missing";
 import ClearAttemptSortBySection from "../pages/Teacher/ClearQuizAttempt/ClearAttemptSortBySection";
 import ClearAttemptSortBySubjects from "../pages/Teacher/ClearQuizAttempt/ClearAttemptSortBySubjects";
 import ForgotPassword from "./authentication/ForgotPassword";
+import ForgotPasswordStaff from "./authentication/ForgotPasswordStaff";
+import AutoLogout from "./authentication/AutoLogout";
 
 function App() {
+  const logoutTime = 20 * 60 * 1000;
   useEffect(() => {
     document.cookie = `name=value;samesite=None;secure;httponly;expires=${new Date(
       Date.now() + 86400 * 1000
@@ -163,6 +167,11 @@ function App() {
     <Routes>
       <Route element={<NotRequireAuth />}>
         <Route path="/" element={<Login />} />
+        <Route path="/staff" element={<LoginStaff />} />
+
+        {/* forgotpassword */}
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/staff/forgotpassword" element={<ForgotPasswordStaff />} />
       </Route>
 
       {/* STUDENT */}
@@ -662,7 +671,7 @@ function App() {
       {/* UnAuthorized Pages */}
       <Route path="unauthorized" element={<UnAuthorized />} />
       {/* Forgot Password */}
-      <Route path="/forgotpassword" element={<ForgotPassword />} />
+
       {/* 404 ERROR */}
       <Route path="*" element={<Missing />} />
     </Routes>

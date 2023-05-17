@@ -271,7 +271,8 @@ function StudAAE() {
                 <tr scope="row">
                   <td>
                     <span className="text-secondary">
-                      Submitted {formattedDate}
+                      <span className="fw-bold">Submitted </span>
+                      {formattedDate}
                     </span>
                   </td>
                   <td>

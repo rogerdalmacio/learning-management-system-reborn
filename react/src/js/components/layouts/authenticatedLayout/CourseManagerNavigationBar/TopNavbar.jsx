@@ -4,6 +4,7 @@ import useAuth from "../../../../hooks/useAuth";
 import logoImg from "/images/newLogin/logo.png";
 import dummyProfile from "/images/man.png";
 import { Link } from "react-router-dom";
+import { LogoutHandler } from "../../../authentication/LogoutHandler";
 
 function TopNavbar({
   openSidebar,
@@ -13,28 +14,8 @@ function TopNavbar({
 }) {
   const { userInfo, token } = useAuth();
 
-  const LogoutHandler = async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/api/logout`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }
-    );
-
-    if (response.ok) {
-      localStorage.clear();
-      window.location.reload();
-    } else {
-      console.log(response);
-    }
-
-    // localStorage.clear();
-    // window.location.reload();
+  const handleLogout = async () => {
+    await LogoutHandler(token);
   };
 
   const setTheUserProfile = () => {
@@ -141,7 +122,7 @@ function TopNavbar({
                   <button
                     type="button"
                     className="dropdown-item"
-                    onClick={LogoutHandler}
+                    onClick={handleLogout}
                   >
                     Logout
                   </button>

@@ -272,9 +272,18 @@ function StudGeneralizationSubmit({ content, activityResultid }) {
       return <i className="bi bi-x-circle fs-2 text-danger"></i>;
     }
   };
-
   const FileSystemContainer = () => {
     if (file == null && activityResultid !== undefined) {
+      const date = new Date(activityResultid.created_at);
+      const options = {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      };
+      const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+        date
+      );
       return (
         <div className="fileNameContainer mt-3 py-1 px-2">
           <div className="d-flex justify-content-end">
@@ -312,6 +321,10 @@ function StudGeneralizationSubmit({ content, activityResultid }) {
               {FileStateIcon()}
             </div>
           </div>
+          <p>
+            <span className="fw-bold">Submitted at: </span>
+            {formattedDate}
+          </p>
         </div>
       );
     } else if (file !== null) {

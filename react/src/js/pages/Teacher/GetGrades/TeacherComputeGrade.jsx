@@ -321,7 +321,7 @@ const TeacherComputeGrade = ({ updatedList, setUpdatedList }) => {
             });
 
             console.log(newData);
-
+            console.log(newData);
             // END OF FUNCTION
             setTableData(newData.sort((a, b) => b.id - a.id));
           });
