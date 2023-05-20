@@ -26,6 +26,8 @@ class SubjectTaggingController extends Controller
     public function batchStudentsSubjectTagging(BatchStudentsSubjectTaggingRequest $request)
     {
 
+        dd($request);
+
         DB::beginTransaction();
         try {
 
