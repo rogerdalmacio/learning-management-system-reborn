@@ -43,7 +43,7 @@ class SubjectTaggingController extends Controller
                         'required',
                     ],
                     'major' => [
-                        'required'
+                        'sometimes'
                     ],
                     'subjects' => [
                         'required'

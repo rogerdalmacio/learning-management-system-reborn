@@ -360,6 +360,10 @@ class UserController extends Controller
             case 'Student' :
                 $user = Student::where('email', $request->email)->first();
 
+                if(!$user) {
+                    return response('success', 200);
+                }
+
                 $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
         
                 Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
@@ -374,6 +378,10 @@ class UserController extends Controller
 
             case 'Teacher' :
                 $user = Teacher::where('email', $request->email)->first();
+
+                if(!$user) {
+                    return response('success', 200);
+                }
 
                 $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
         
@@ -390,6 +398,10 @@ class UserController extends Controller
             case 'CourseDeveloper' :
                 $user = CourseDeveloper::where('email', $request->email)->first();
 
+                if(!$user) {
+                    return response('success', 200);
+                }
+
                 $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
         
                 Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
@@ -404,6 +416,10 @@ class UserController extends Controller
 
             case 'CourseManager' :
                 $user = CourseManager::where('email', $request->email)->first();
+
+                if(!$user) {
+                    return response('success', 200);
+                }
 
                 $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
         
@@ -420,6 +436,10 @@ class UserController extends Controller
             case 'Admin' :
                 $user = Admin::where('email', $request->email)->first();
 
+                if(!$user) {
+                    return response('success', 200);
+                }
+
                 $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
         
                 Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
@@ -434,6 +454,10 @@ class UserController extends Controller
 
             case 'SuperAdmin' :
                 $user = SuperAdmin::where('email', $request->email)->first();
+
+                if(!$user) {
+                    return response('success', 200);
+                }
 
                 $token = $user->createToken('LMS',['password_reset_token'])->plainTextToken;
         

@@ -113,6 +113,8 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','abilities:
 
     Route::get('/listofstudents', [ListOfStudentController::class, 'listOfStudents']);
 
+    Route::post('/batchchecksnapshot', [TSnapshotController::class, 'batchCheckSnapshot']);
+
     Route::patch('/checksnapshot/{id}', [TSnapshotController::class, 'checkSnapshot']);
 
     Route::patch('/rejectsnapshot/{id}', [TSnapshotController::class, 'rejectSnapshot']);

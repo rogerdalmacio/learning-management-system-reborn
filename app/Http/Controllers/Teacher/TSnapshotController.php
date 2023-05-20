@@ -13,6 +13,42 @@ use Illuminate\Support\Facades\Storage;
 
 class TSnapshotController extends Controller
 {
+
+    public function batchCheckSnapshot(Request $request) {
+        $request->validate([
+            'year_and_section' => 'required',
+            'quiz_type' => 'required',
+            'week_no' => 'required',
+        ]);
+
+        $quizzes = QuizResult::with('student')
+            ->where('year_and_section', $request['year_and_section'])
+            ->where('quiz_type', $request['quiz_type'])
+            ->where('week_no', $request['week_no'])
+            ->get();
+
+        foreach($quizzes as $quiz) {
+            $quiz->update([
+                'attempt' => 'recorded'
+            ]);
+
+            $path = storage_path('app/public/quiz/' . $quiz->student->id . $quiz->quiz_type . $quiz->id . '.jpg');
+
+            File::delete($path);
+    
+            $response = [
+                'Snapshot accepted'
+            ];
+    
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'user_type' => Auth::user()->usertype(),
+                'activity_log' => 'Snapshot accepted for quiz - ' . $quiz->quiz_id
+            ]);
+        }
+
+        return response($response, 200);
+    }
     
     public function checkSnapshot(Request $request, int $id) {
 
