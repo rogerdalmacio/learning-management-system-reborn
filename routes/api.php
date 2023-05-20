@@ -172,7 +172,7 @@ Route::group(['prefix' => 'coursemanager', 'middleware' => ['auth:sanctum','abil
     Route::post('/course-rating', [CMCourseRatingController::class, 'rating']);
     Route::post('/course-rating/{id}', [CMCourseRatingController::class, 'editRating']);
 
-    Route::apiResource('course-syllabus', CourseSyllabusController::class); // use only post method
+    Route::apiResource('course-syllabus', CourseSyllabusController::class);
 
     Route::post('/ams/request-cmo', [AmsController::class, 'requestCmo']);
     Route::get('/ams/list-of-request', [AmsController::class, 'listOfAmsRequest']);

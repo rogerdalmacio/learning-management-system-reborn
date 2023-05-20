@@ -15,10 +15,10 @@ class CourseSyllabusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index()
-    // {
-    //     $data = CourseSyllabus::all();
-    // }
+    public function index()
+    {
+        return response([CourseSyllabus::all()], 200);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -99,7 +99,7 @@ class CourseSyllabusController extends Controller
      */
     public function show($id)
     {
-        //
+        return response([CourseSyllabus::find($id)], 200);
     }
 
     /**

@@ -53,9 +53,7 @@ class SubjectTaggingController extends Controller
 
                 $students = Student::where('program', $config['program'])
                     ->where('year_and_section', 'LIKE', $config['year_and_semester'] . '%')
-                    ->when($config['major'], function($query) use ($config) {
-                        return $query->where('major', $config['major']);
-                    })
+                    ->where('major', $config['major'])
                     ->get();
                 
                 foreach($students as $student) {
