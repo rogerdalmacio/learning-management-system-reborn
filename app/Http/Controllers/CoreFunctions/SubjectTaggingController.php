@@ -25,9 +25,6 @@ class SubjectTaggingController extends Controller
     
     public function batchStudentsSubjectTagging(BatchStudentsSubjectTaggingRequest $request)
     {
-
-        dd($request);
-
         DB::beginTransaction();
         try {
 
@@ -55,7 +52,7 @@ class SubjectTaggingController extends Controller
                 Validator::make($config, $rules);
 
                 $students = Student::where('program', $config['program'])
-                    ->where('year_and_section', 'LIKE', $config['year_and_semester' . '%'])
+                    ->where('year_and_section', 'LIKE', $config['year_and_semester'] . '%')
                     ->when($config['major'], function($query) use ($config) {
                         return $query->where('major', $config['major']);
                     })
@@ -85,9 +82,7 @@ class SubjectTaggingController extends Controller
 
         DB::commit();
 
-        return response()->json([
-            'Task executed successfully'
-        ], 201);
+        return response('Task executed successfully', 201);
     }
 
     public function batchTeacherSubjectTagging(BatchTeacherSubjectTaggingRequest $request)
