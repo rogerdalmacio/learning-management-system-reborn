@@ -450,7 +450,7 @@ function StudQuizEvaluation() {
                 pauseOnHover
                 theme="light"
               />
-              <h4 className="text-center mb-3 mb-sm-5">Evaluation</h4>
+              <h4 className="text-center mb-3 mb-sm-5">Examination</h4>
               <div className="row g-3">
                 <div className="col-12 col-md-8 col-lg-9">
                   {QuizContent()}

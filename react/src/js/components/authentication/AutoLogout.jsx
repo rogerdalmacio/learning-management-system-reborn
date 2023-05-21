@@ -6,54 +6,47 @@ const AutoLogout = ({ logoutTime }) => {
   const { userInfo, token, role } = useAuth();
 
   const [logoutTimer, setLogoutTimer] = useState(null);
-  useEffect(() => {
-    const resetTimer = () => {
-      if (logoutTimer) {
-        clearTimeout(logoutTimer);
-      }
 
-      setLogoutTimer(setTimeout(logout, logoutTime));
-    };
+  // function to check for inactivit and logout
+  const checkForInactivity = () => {
+    const expireTime = localStorage.getItem("expireTime");
 
-    const logout = () => {
-      // Perform logout action here (e.g., calling an API endpoint)
+    if (expireTime < Date.now()) {
+      console.log("Logout");
       LogoutHandler(token);
-      // Redirect the user to the login page
-      // window.location.href = "/login";
-    };
+    }
+  };
+  // function to update expire time
+  const updateExpireTime = () => {
+    const expireTime = Date.now() + 600000;
 
-    const handleUserActivity = () => {
-      resetTimer();
-    };
+    localStorage.setItem("expireTime", expireTime);
+  };
 
-    const handlePageVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        resetTimer();
-      } else {
-        clearTimeout(logoutTimer);
-      }
-    };
+  // useEffect to set interval to check for inactivity
+  useEffect(() => {
+    const interval = setInterval(() => {
+      checkForInactivity();
+    }, 5000);
 
-    // Attach the event listeners
-    window.addEventListener("mousemove", handleUserActivity);
-    window.addEventListener("keydown", handleUserActivity);
-    document.addEventListener("visibilitychange", handlePageVisibilityChange);
+    return () => clearInterval(interval);
+  }, []);
 
-    // Reset the timer whenever the component mounts or the logoutTime prop changes
-    resetTimer();
+  useEffect(() => {
+    updateExpireTime();
 
-    // Clean up the event listeners and the timer
+    window.addEventListener("click", updateExpireTime);
+    window.addEventListener("keypress", updateExpireTime);
+    window.addEventListener("scroll", updateExpireTime);
+    window.addEventListener("mousemove", updateExpireTime);
+
     return () => {
-      clearTimeout(logoutTimer);
-      window.removeEventListener("mousemove", handleUserActivity);
-      window.removeEventListener("keydown", handleUserActivity);
-      document.removeEventListener(
-        "visibilitychange",
-        handlePageVisibilityChange
-      );
+      window.addEventListener("click", updateExpireTime);
+      window.addEventListener("keypress", updateExpireTime);
+      window.addEventListener("scroll", updateExpireTime);
+      window.addEventListener("mousemove", updateExpireTime);
     };
-  }, [logoutTime]);
-
+  }, []);
   return null; // You can customize this component if needed
 };
 
