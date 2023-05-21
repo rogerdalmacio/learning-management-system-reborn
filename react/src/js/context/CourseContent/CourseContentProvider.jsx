@@ -52,9 +52,9 @@ export const CourseContentProvider = ({ children }) => {
   useEffect(() => {
     const renderModule = async () => {
       if (
-        role === "CourseManager" ||
+        (week !== undefined && week !== null && role === "CourseManager") ||
         role === "teacher" ||
-        (role === "admin" && week)
+        role === "admin"
       ) {
         console.log(week);
         await axios
@@ -82,9 +82,11 @@ export const CourseContentProvider = ({ children }) => {
     const renderLesson = async () => {
       console.log(weekLesson);
       if (
-        role === "CourseManager" ||
+        (weekLesson !== undefined &&
+          weekLesson !== null &&
+          role === "CourseManager") ||
         role === "teacher" ||
-        (role === "admin" && weekLesson)
+        role === "admin"
       ) {
         await axios
           .get(
@@ -112,9 +114,11 @@ export const CourseContentProvider = ({ children }) => {
   useEffect(() => {
     const renderQuiz = async () => {
       if (
-        role === "CourseManager" ||
+        (weekQuiz !== undefined &&
+          weekQuiz !== null &&
+          role === "CourseManager") ||
         role === "teacher" ||
-        (role === "admin" && weekQuiz)
+        role === "admin"
       ) {
         console.log(weekQuiz);
         await axios
@@ -145,9 +149,9 @@ export const CourseContentProvider = ({ children }) => {
     const renderSpecificQuiz = async () => {
       console.log(quizid);
       if (
-        role === "CourseManager" ||
+        (quizid !== undefined && quizid !== null && role === "CourseManager") ||
         role === "teacher" ||
-        (role === "admin" && quizid !== undefined)
+        role === "admin"
       ) {
         await axios
           .get(

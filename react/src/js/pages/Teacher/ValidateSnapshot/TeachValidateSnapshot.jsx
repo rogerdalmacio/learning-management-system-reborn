@@ -43,7 +43,7 @@ const SuperCreateTeacherAcct = () => {
   const [updatedList, setUpdatedList] = useState(false);
   const [tableData, setTableData] = useState(getAnnouncement);
   const [validationErrors, setValidationErrors] = useState({});
-
+  const [listOfData, setListOfData] = useState();
   useEffect(() => {
     const GetAnnouncementHandler = async () => {
       if (role === "teacher") {
@@ -260,9 +260,9 @@ const SuperCreateTeacherAcct = () => {
     //
     let item = {
       student_id: row.getValue("id"),
-      year_and_section: row.getValue("year_and_section"),
-      quiz_type: row.getValue("quiz_type"),
-      week_number: row.getValue("weekNumber"),
+      // year_and_section: row.getValue("year_and_section"),
+      // quiz_type: row.getValue("quiz_type"),
+      // week_number: row.getValue("weekNumber"),
     };
     axios
       .patch(
@@ -286,7 +286,52 @@ const SuperCreateTeacherAcct = () => {
 
     //send api delete request here, then refetch or update local table data for re-render
   };
+  console.log(listOfData);
 
+  const handleApproveAll = (row) => {
+    // console.log(row);
+    // console.log(row.getValue("weekNumber"));
+    // console.log(row.getValue("year_and_section"));
+    // console.log(row.getValue("quiz_type"));
+    const weekNumber = listOfData.getValue("weekNumber");
+    const yearAndSection = listOfData.getValue("year_and_section");
+    const quizType = listOfData.getValue("quiz_type");
+    if (
+      !confirm(
+        `Are you sure you want to approve all ${listOfData.getValue(
+          "quiz_type"
+        )}`
+      )
+    ) {
+      return;
+    }
+
+    //
+    let item = {
+      year_and_sections: yearAndSection,
+      quiz_type: quizType,
+      week_no: weekNumber,
+    };
+    axios
+      .post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/teacher/batchchecksnapshot`,
+        item,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        toast.success("Approved");
+        setUpdatedList(!updatedList);
+      });
+
+    //send api delete request here, then refetch or update local table data for re-render
+  };
   return (
     <div>
       <ArrowNextAndPrevious>
@@ -294,6 +339,7 @@ const SuperCreateTeacherAcct = () => {
           Validate Snapshot - {courseBase} - {courseSection}
         </h3>
       </ArrowNextAndPrevious>
+      <button onClick={() => handleApproveAll()}>Approve All</button>
       <div className="MaterialUiTable">
         <MaterialReactTable
           className="MaterialReactTable"
@@ -311,27 +357,33 @@ const SuperCreateTeacherAcct = () => {
           enableColumnOrdering
           enableEditing
           renderRowActions={({ row, table }) => (
-            <Box
-              sx={{
-                display: "flex",
-                gap: "1rem",
-                justifyContent: "center",
-              }}
-            >
-              <Tooltip arrow placement="right" title="Reject">
-                <IconButton color="error" onClick={() => handleRejectRow(row)}>
-                  <Delete />
-                </IconButton>
-              </Tooltip>
-              <Tooltip arrow placement="right" title="Approve">
-                <IconButton
-                  color="success"
-                  onClick={() => handleApprovedRow(row)}
-                >
-                  <Check />
-                </IconButton>
-              </Tooltip>
-            </Box>
+            <>
+              {setListOfData(row)}
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "1rem",
+                  justifyContent: "center",
+                }}
+              >
+                <Tooltip arrow placement="right" title="Reject">
+                  <IconButton
+                    color="error"
+                    onClick={() => handleRejectRow(row)}
+                  >
+                    <Delete />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip arrow placement="right" title="Approve">
+                  <IconButton
+                    color="success"
+                    onClick={() => handleApprovedRow(row)}
+                  >
+                    <Check />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </>
           )}
         />
       </div>

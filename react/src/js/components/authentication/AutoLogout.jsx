@@ -6,7 +6,6 @@ const AutoLogout = ({ logoutTime }) => {
   const { userInfo, token, role } = useAuth();
 
   const [logoutTimer, setLogoutTimer] = useState(null);
-  console.log(logoutTimer);
   useEffect(() => {
     const resetTimer = () => {
       if (logoutTimer) {
@@ -18,7 +17,6 @@ const AutoLogout = ({ logoutTime }) => {
 
     const logout = () => {
       // Perform logout action here (e.g., calling an API endpoint)
-      console.log("LOGOUT");
       LogoutHandler(token);
       // Redirect the user to the login page
       // window.location.href = "/login";

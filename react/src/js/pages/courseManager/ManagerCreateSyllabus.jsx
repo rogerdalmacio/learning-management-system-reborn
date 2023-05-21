@@ -44,6 +44,8 @@ function ManagerCreateSyllabus() {
     return course.map((item) => {
       console.log(item);
       const date = new Date(item.created_at);
+      const syllabusId = item.syllabus;
+      console.log(syllabusId?.id);
 
       const monthNames = [
         "January",

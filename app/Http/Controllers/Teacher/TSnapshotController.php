@@ -16,13 +16,13 @@ class TSnapshotController extends Controller
 
     public function batchCheckSnapshot(Request $request) {
         $request->validate([
-            'year_and_section' => 'required',
+            'year_and_sections' => 'required',
             'quiz_type' => 'required',
             'week_no' => 'required',
         ]);
 
         $quizzes = QuizResult::with('student')
-            ->where('year_and_section', $request['year_and_section'])
+            ->where('year_and_sections', $request['year_and_sections'])
             ->where('quiz_type', $request['quiz_type'])
             ->where('week_no', $request['week_no'])
             ->get();

@@ -66,49 +66,49 @@ function AdminStudentSubjectTagging() {
         .then((response) => {
           console.log(response);
           if (response.status >= 200 && response.status <= 300) {
-            if (response.data.errors.length !== 0) {
-              const errorId = response.data.errors.map((error) => {
-                if (error.id !== undefined) {
-                  return error.id;
-                }
-              });
+            // if (response.data.errors.length !== 0) {
+            //   const errorId = response.data.errors.map((error) => {
+            //     if (error.id !== undefined) {
+            //       return error.id;
+            //     }
+            //   });
 
-              const errorSubject = response.data.errors.map((error) => {
-                if (error.subjects !== undefined) {
-                  return error.subjects;
-                }
-              });
-              console.log(errorId);
-              console.log(errorSubject);
+            //   const errorSubject = response.data.errors.map((error) => {
+            //     if (error.subjects !== undefined) {
+            //       return error.subjects;
+            //     }
+            //   });
+            //   console.log(errorId);
+            //   console.log(errorSubject);
 
-              if (errorId[0] !== undefined) {
-                const errorwithJoin = Object.values(errorId).join(", ");
-                setError(errorwithJoin.match(/\d+/g).join(", "));
-                setErrorSubject(undefined);
-                toast.update(toastId, {
-                  render: `Account ID does not exist`,
-                  type: toast.TYPE.ERROR,
-                  autoClose: 2000,
-                });
-              } else if (errorSubject[0] !== undefined) {
-                const errorwithJoinSubj = Object.values(errorSubject);
-                setErrorSubject(errorwithJoinSubj);
-                setError(undefined);
-                toast.update(toastId, {
-                  render: `Subject already exist`,
-                  type: toast.TYPE.ERROR,
-                  autoClose: 2000,
-                });
-              }
-            } else {
-              toast.update(toastId, {
-                render: "Request Successfully",
-                type: toast.TYPE.SUCCESS,
-                autoClose: 2000,
-              });
-              setError(undefined);
-              setErrorSubject(undefined);
-            }
+            //   if (errorId[0] !== undefined) {
+            //     const errorwithJoin = Object.values(errorId).join(", ");
+            //     setError(errorwithJoin.match(/\d+/g).join(", "));
+            //     setErrorSubject(undefined);
+            //     toast.update(toastId, {
+            //       render: `Account ID does not exist`,
+            //       type: toast.TYPE.ERROR,
+            //       autoClose: 2000,
+            //     });
+            //   } else if (errorSubject[0] !== undefined) {
+            //     const errorwithJoinSubj = Object.values(errorSubject);
+            //     setErrorSubject(errorwithJoinSubj);
+            //     setError(undefined);
+            //     toast.update(toastId, {
+            //       render: `Subject already exist`,
+            //       type: toast.TYPE.ERROR,
+            //       autoClose: 2000,
+            //     });
+            //   }
+            // } else {
+            toast.update(toastId, {
+              render: "Request Successfully",
+              type: toast.TYPE.SUCCESS,
+              autoClose: 2000,
+            });
+            setError(undefined);
+            setErrorSubject(undefined);
+            // }
 
             setSubmitFile(true);
             setProcessing(false);

@@ -118,7 +118,7 @@ export const StudContextProvider = ({ children }) => {
     const renderModule = async () => {
       console.log(week);
 
-      if (role === "student" && week !== undefined && week !== null) {
+      if (week !== undefined && week !== null && role === "student") {
         await axios
           .get(
             `${import.meta.env.VITE_API_BASE_URL}/api/student/module/${week}`,
@@ -143,9 +143,9 @@ export const StudContextProvider = ({ children }) => {
   useEffect(() => {
     const renderLesson = async () => {
       if (
-        role === "student" &&
         weekLesson !== undefined &&
-        weekLesson !== null
+        weekLesson !== null &&
+        role === "student"
       ) {
         await axios
           .get(
@@ -175,9 +175,9 @@ export const StudContextProvider = ({ children }) => {
     const renderActivityResult = async () => {
       console.log(activityid);
       if (
-        role === "student" &&
         activityid !== undefined &&
-        activityid !== null
+        activityid !== null &&
+        role === "student"
       ) {
         await axios
           .get(
@@ -205,9 +205,9 @@ export const StudContextProvider = ({ children }) => {
   useEffect(() => {
     const renderQuizResult = async () => {
       if (
-        role === "student" &&
         activityid !== undefined &&
-        activityid !== null
+        activityid !== null &&
+        role === "student"
       ) {
         const activity_id = { activity_id: activityid };
 
@@ -241,7 +241,7 @@ export const StudContextProvider = ({ children }) => {
   useEffect(() => {
     const renderQuiz = async () => {
       console.log(weekQuiz);
-      if (role === "student") {
+      if (weekQuiz !== undefined && weekQuiz !== null && role === "student") {
         await axios
           .get(
             `${
@@ -269,7 +269,7 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderSpecificQuiz = async () => {
-      if (role === "student" && quizid !== undefined && quizid !== null) {
+      if (quizid !== undefined && quizid !== null && role === "student") {
         await axios
           .get(
             `${import.meta.env.VITE_API_BASE_URL}/api/student/quiz/${quizid}`,
@@ -293,7 +293,7 @@ export const StudContextProvider = ({ children }) => {
 
   useEffect(() => {
     const renderQuizResult = async () => {
-      if (role === "student" && quizid !== undefined && quizid !== null) {
+      if (quizid !== undefined && quizid !== null && role === "student") {
         const quiz_id = { quiz_id: quizid };
 
         await axios
