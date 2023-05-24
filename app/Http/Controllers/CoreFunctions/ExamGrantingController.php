@@ -49,7 +49,6 @@ class ExamGrantingController extends Controller
                 $rules = [
                     'student_id' => [
                         'required',
-                        // 'exists:lms_students,id'
                     ],
                     'grant' => [
                         'required',
@@ -57,13 +56,11 @@ class ExamGrantingController extends Controller
                     'preliminaries' => [
                         'required',
                         Rule::unique('lms_examination_grants')->where( function ($query) use($grant) {
-                            return $query->where('student_id', $grant['student_id']);
+                            return $query->where('student_id', $grant['student_id'])
+                                ->where('preliminaries', $grant['preliminaries']);
                         })
                     ],
                 ];
-
-                // ExaminationGrant::where('student_id', $grant['student_id'])
-                //                 ->where('preliminaries', $grant['preliminaries'])->get();
 
                 $newGrant = [
                     'student_id' => $grant['student_id'],
@@ -84,16 +81,14 @@ class ExamGrantingController extends Controller
                     $massgrant[] = $newGrant;
                     $success[] = $grant;
                 }
-
             }
-
-            $chunks = array_chunk($massgrant, 100);
             
-            foreach($chunks as $chunk) {
+            foreach($massgrant as $chunk) {
                 ExaminationGrant::insert($chunk);
-                $student = Student::find($chunk->student_id);
 
-                Mail::to($student->email)->queue(new ExamGrantMail($student, $chunk->preliminaries));
+                $student = Student::find($chunk['student_id']);
+
+                Mail::to($student->email)->queue(new ExamGrantMail($student, $chunk['preliminaries']));
             }
 
         } catch (\Exception $e) {

@@ -54,6 +54,7 @@ use App\Http\Controllers\CoreFunctions\AccountCreationController;
 use App\Http\Controllers\CoreFunctions\ModuleStatusUpdateController;
 use App\Http\Controllers\CourseManager\CourseSyllabusController;
 use App\Http\Controllers\Teacher\TActivityController;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +66,10 @@ use App\Http\Controllers\Teacher\TActivityController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/dispatch-emails', function(){
+    artisan::call('queue:work');
+});
 
 // password reset request
 Route::post('/reset-password-request', [UserController::class, 'passwordResetRequest']);
